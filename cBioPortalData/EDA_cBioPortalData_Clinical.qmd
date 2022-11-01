@@ -1,0 +1,370 @@
+---
+title: "Explore datasets in cBioPortalData"
+author: "Sehyun Oh"
+date: "`r format(Sys.time(), '%B %d, %Y')`"
+format:
+    html:
+        fontsize: 14px
+        toc: true
+        top-depth: 2
+abstract: "Prepare U24 Supplement: AI/ML-ready"
+---
+
+```{r setup, include=FALSE}
+knitr::opts_chunk$set(echo = TRUE)
+```
+
+```{r echo=FALSE, eval=TRUE}
+suppressPackageStartupMessages({
+    library(cBioPortalData)
+    library(dplyr)
+    library(tableone)
+})
+```
+
+```{r load_data, echo=FALSE, eval=TRUE}
+cbio <- cBioPortal()
+cbioStudies <- getStudies(cbio) 
+
+## Load cleaned files
+studyIds <- cbioStudies$studyId
+fnames <- list.files(getwd())
+fname <- fnames[grep("cBioPortal_all_clinicalData_2", fnames)]
+clinical_var_all <- readRDS(fname)
+
+fname <- fnames[grep("cBioPortal_all_clinicalData_combined_", fnames)]
+template <- readRDS(fname)
+```
+
+# Load cBioPortal data
+
+```{r eval=TRUE}
+cbio <- cBioPortal()
+cbio
+```
+
+* `SampleList` : all `sampleListIds` for a particular `studyId`
+```{r eval=TRUE}
+studyId <- "acc_tcga"
+x <- sampleLists(cbio, studyId)
+dim(x)
+as.data.frame(head(x))
+```
+
+## Two ways to get data
+### cBioDataPack: Obtain data as zipped tarballs
+```{r}
+acc_1 <- cBioDataPack("acc_tcga", ask = TRUE)
+acc_1
+```
+
+### cBioPortalData: Obtain data from the cBioPortal API
+```{r}
+acc_2 <- cBioPortalData(cbio, 
+                        by = "hugoGeneSymbol", 
+                        studyId = "acc_tcga",
+                        genePanelId = "IMPACT341",
+                        molecularProfileIds = c("acc_tcga_rppa", 
+                                                "acc_tcga_linear_CNA")
+)
+acc_2
+```
+
+# Data availability
+
+## Number of samples per studies available in cBioPortal
+
+`cBioPortalData` accesses 356 studies comprised of 170,830 samples. All of 
+them are publicly available. There are 13 study-level metadata on general 
+information, e.g. PMID.
+
+```{r eval=TRUE}
+cbioStudies <- getStudies(cbio)  
+dim(cbioStudies) # 356 studies with 13 study metadata <<<<< Study number continuously changes
+head(cbioStudies, 3)
+
+table(cbioStudies$publicStudy)  # all of them are public data
+sum(cbioStudies$allSampleCount)  # 170,830 samples are available <<<<< Sample number continuously changes
+```
+
+## Compare to curatedTCGAData
+
+cBioPortal hosts 90 TCGA studies for 36 different cancer types. (Any of the remaining 266 studies are overlapping with EH records? How to check it?)
+
+```{r}
+tcga <- cbioStudies$studyId[grep("tcga", cbioStudies$studyId)]
+length(tcga)  # 90 TCGA studies are included in cBioPortal data
+tcga_in_cbioportal <- c()
+
+for (x in tcga) {
+    y <- stringr::str_split(x, pattern = "_") %>% unlist
+    tcga_in_cbioportal <- c(tcga_in_cbioportal, y[1])
+}
+
+## Name of 36 TCGA studies
+unique(tcga_in_cbioportal)
+```
+
+31 TCGA datasets are available through both curatedTCGAData and cBioPortalData.
+
+```{r}
+data('diseaseCodes', package = "TCGAutils")
+head(diseaseCodes)
+
+common <- intersect(unique(toupper(tcga_in_cbioportal)),
+                    diseaseCodes$Study.Abbreviation)
+common
+length(common) # 31 TCGA cancers' data are both available through curatedTCGAData and cBioPortalData 
+```
+
+### How to handle redundancy of the same dataset?
+
+For example, there are two versions of TCGA-ACC datasets in cBioPortal.
+
+```{r}
+cbioStudies[grep("acc_tcga", cbioStudies$studyId),]
+```
+
+Check the redundancy of ACC datasets in curatedTCGAData and cBioPortal:
+
+```{r}
+## curatedTCGAData dataset
+library(curatedTCGAData)
+tcga_acc <- curatedTCGAData(diseaseCode = "ACC", assays = "*", version = "2.0.1")
+tcga_acc
+
+## cBioPortalData datasets
+cbioStudies <- getStudies(cbio)
+cbio_acc <- cbioStudies[which(cbioStudies$cancerTypeId == "acc"),]
+
+## ACC dataset #1 in cBioPortalData
+id <- "acc_tcga"
+cbio_acc_clinic <- clinicalData(cbio, id)
+dim(cbio_acc_clinic)
+head(cbio_acc_clinic, 3)
+
+cbio_acc_mol <- molecularProfiles(cbio, id)
+dim(cbio_acc_mol)
+cbio_acc_mol
+
+cbio_allSamples <- allSamples(cbio, id) # all the samples
+head(cbio_allSamples, 3)
+
+## ACC dataset #2 in cBioPortalData
+id <- "acc_tcga_pan_can_atlas_2018"
+cbio_acc_clinic <- clinicalData(cbio, id)
+dim(cbio_acc_clinic)
+head(cbio_acc_clinic, 3)
+
+cbio_acc_mol <- molecularProfiles(cbio, id)
+dim(cbio_acc_mol)
+cbio_acc_mol
+```
+
+Available clinical data varies even between datasets for the same disease 
+(e.g. breast cancer) in cBioPortal.
+
+```{r}
+studyIds <- cbioStudies$studyId
+
+## Use breast cancer (BRCA) as an example
+brca_ind <- grep("brca", studyIds)
+studyIds[brca_ind] # 19 breast cancer related datasets
+
+a <- clinicalData(cbio, "brca_tcga_pub2015") # 818 patients with 109 metadata
+b <- clinicalData(cbio, "brca_tcga_pub") # 825 patients with 36 metadata
+length(intersect(colnames(a), colnames(b))) # 15 common metadata between two brca_tcga datasets
+length(intersect(a$patientId, b$patientId)) # 688 common patients between two brca_tcga datasets
+```
+
+# Clinical data availability
+
+We summarized the available metadata fields for all 356 studies in cBioPortal 
+as a list named `clinical_var` and the number of studies include a given 
+metadata (a total of 3,504) is saved in `allClinicalVar`. `clnical_var_all` is
+a list with the length of 356, where each element is a full clinical metadata 
+table for a given study. 
+
+```{r eval=FALSE}
+## All 360 studies (on 10.12.22)
+studyIds <- cbioStudies$studyId
+clinical_var_all <- vector(mode = "list", length = length(studyIds))
+names(clinical_var_all) <- studyIds
+
+for (studyId in studyIds) {
+    x <- clinicalData(cbio, studyId)
+    clinical_var_all[[studyId]] <- x
+}
+
+## Save the summary
+fname <- paste0("cBioPortal_all_clinicalData_", Sys.Date(), ".rds")
+saveRDS(clinical_var_all, fname)
+```
+
+The minimum and the maximum number of metadata per study is 7 and 172, respectively.
+```{r}
+## Ranges of the number of available clinical variables
+clinical_var <- lapply(clinical_var_all, colnames)
+num <- sapply(clinical_var, length)
+summary(num)
+```
+
+55 metadata are collected in more than 34 studies (~10%).
+```{r}
+## Clinical variables that are available from >= 35 studies (~10%)
+length(unique(unlist(clinical_var)))  # the number of unique clinical variables
+allClinicalVar <- sort(table(unlist(clinical_var)), decreasing = TRUE)
+sumMeta <- allClinicalVar[allClinicalVar > 34]
+
+length(sumMeta) # the number of metadata collected by >= 35 studies
+sumMeta 
+```
+
+Combine all the metadata (= 3,504) from all the studies (= 356).
+```{r eval=FALSE}
+# template <- data.frame(patientId = character(),
+#                        SAMPLE_COUNT = character(),
+#                        sampleId = character())
+# for (i in seq_along(clinical_var_all)) {
+#     template <- dplyr::full_join(template, clinical_var_all[[i]], 
+#                             by = intersect(colnames(template),
+#                                            colnames(clinical_var_all[[(i)]])))
+# }
+
+template <- as.data.frame(matrix(data = character(), nrow = 1, 
+                                 ncol = (length(allClinicalVar)+1)))
+colnames(template) <- c("studyId", names(allClinicalVar))
+
+# for (i in seq_along(clinical_var_all)) {
+for (i in 301:360) {
+    clinical_var_all[[i]]$studyId <- names(clinical_var_all[i])
+    template <- dplyr::full_join(template, clinical_var_all[[i]], 
+                            by = colnames(clinical_var_all[[i]]))
+    print(paste(i, "out of", length(clinical_var_all), "is added."))
+}
+
+template <- template[-1,] # remove the 1st NA row
+fname <- paste0("cBioPortal_all_clinicalData_combined_", Sys.Date(), ".csv")
+fwrite(template, fname)
+
+dim(template)
+```
+
+```{r echo=FALSE}
+dim(template)
+```
+
+
+55 clinical variables most widely available in cBioPortal data.
+
+```{r fig.width=10, fig.height=4}
+## Plot
+end_point = 0.5 + length(sumMeta) + length(sumMeta) - 1
+barplot(sumMeta/length(clinical_var)*100,
+        main = "Availability of 55 clinical variables in cBioPortal data",
+        ylab = "Study-level availability (%)",
+        xlab = "",
+        xaxt = "n", # Do not plot the default labels
+        las = 2, space = 1)
+text(seq(1.5, end_point, by = 2), par("usr")[3]-0.25, 
+     srt = 60, adj = 1, xpd = TRUE,
+     labels = paste(names(sumMeta)), cex = 0.65)
+```
+
+
+## Clinical variable availability at the sample level
+```{r}
+x <- colSums(is.na(template)) %>% sort
+x_percent <- round(((nrow(template)-x)/nrow(template))*100, 1)
+head(x_percent, 20)
+```
+
+```{r fig.height=4, fig.width=7}
+## Subset clinical variable with >= 20% value available out of all the samples (= 179,266)
+sub <- x_percent[x_percent >= 20] # 23 variables out of 3,504
+    
+## Plot
+end_point = 0.5 + length(sub) + length(sub) - 1
+barplot(sub,
+        main = "Availability of clinical variables for cBioPortal samples",
+        ylab = "Completeness at the sample level (%)",
+        xlab = "",
+        xaxt = "n", # Do not plot the default labels
+        las = 2, space = 1)
+text(seq(1.5, end_point, by = 2), par("usr")[3]-0.25, 
+     srt = 60, adj = 1, xpd = TRUE,
+     labels = paste(names(sub)), cex = 0.75)
+```
+
+
+## Missing attributes for major features
+`Age` columns are called differently. 
+```{r}
+age_ind <- grep("^AGE_|_AGE$", colnames(template))
+age_labels <- colnames(template)[age_ind]
+length(age_labels)
+age_labels
+
+template_sub <- template[, age_labels]
+str(template_sub)
+
+for (i in seq_along(template_sub)) {
+    res <- head(table(template_sub[,i]))
+    # res <- table(template_sub[,i]) %>%
+    #     order(., decreasing = TRUE) %>%
+    #     head(3)
+    print(res)
+}
+```
+
+there are 40 columns (clinical variables) without any information. Where are they from?
+```{r}
+sum(colSums(is.na(template_sub)) == nrow(template_sub)) 
+```
+
+```{r}
+c("AGE", "AGE_AT_DIAGNOSIS", "AGE_AT_SEQ_REPORTED_YEARS", "AGE_CURRENT",
+  "AGE_AT_SURGERY", "AGE_AT_PROCUREMENT", "AGE_IN_DAYS", "AGE_AT_SEQ_REPORT",
+  "AGE_GROUP", "AGE_AT_INITIAL_DIAGNOSIS", "AGE_CLASS", "IPI_AGE", "AGE_AT_*")
+```
+
+
+```{r eval=FALSE}
+catVars <- c("SEX", "RACE", "AGE_NA", "ETHNICITY")
+tableone_summary <- as.data.frame(matrix(data = character(), 
+                                         nrow = 1, 
+                                         ncol = length(catVars) + 1))
+colnames(tableone_summary) <- c("studyId", catVars)
+
+# for (i in seq_along(clinical_var_all)) {
+for (i in 1:5) {
+    dat <- clinical_var_all[[i]]
+    dat$studyId <- names(clinical_var_all[i])
+    
+    age_ind <- grep("AGE", colnames(dat))
+    if (length(age_ind))
+    age_availability <- is.na(dat$AGE)
+    dat$AGE_NA <- age_availability
+    dat$AGE <- NA
+    dat <- dat[,catVars]
+    x <- CreateTableOne(data = dat,
+                        # strata = "studyId",
+                        factorVars = catVars,
+                        includeNA = TRUE) %>%
+        print(., showAllLevels = TRUE)
+    
+    # tableone_summary <- dplyr::full_join(tableone_summary, x, by = colnames(x))
+}
+```
+
+```{r eval=FALSE}
+template_sub <- template[,c("studyId", "SEX", "RACE", "AGE", "ETHNICITY")]
+myVars <- c()
+catVars <- c("SEX", "RACE", "AGE", "ETHNICITY")
+z <- CreateTableOne(data = template_sub, 
+                    strata = "studyId", 
+                    factorVars = catVars,
+                    includeNA = TRUE) %>%
+    print(., showAllLevels = TRUE)
+```
+
