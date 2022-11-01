@@ -1,0 +1,200 @@
+---
+title: "Explore curatedMetagenomicData"
+author: "Sehyun Oh"
+date: "`r format(Sys.time(), '%B %d, %Y')`"
+format:
+    html:
+        fontsize: 14px
+        toc: true
+        top-depth: 3
+abstract: "Prepare U24 Supplement: AI/ML-ready"
+---
+
+```{r setup, include=FALSE}
+knitr::opts_chunk$set(echo = TRUE, warning = FALSE, message = FALSE, 
+                      collapse = TRUE)
+```
+
+```{r}
+suppressPackageStartupMessages({
+    library(curatedMetagenomicData)
+    library(AnnotationHub)
+    library(ExperimentHub)
+    library(tableone)
+    library(dplyr)
+})
+```
+
+# cMD basic
+Available dataset for a given study:
+```{r}
+curatedMetagenomicData("AsnicarF_20.+")
+```
+
+There are 90 studies available in cMD package.
+```{r}
+studyNames <- unique(sampleMetadata$study_name)
+length(studyNames)
+```
+
+Access individual data:
+```{r}
+## Return a list object
+asnicarf_ra <- curatedMetagenomicData("AsnicarF_2017.relative_abundance", 
+                                      dryrun = FALSE, rownames = "short")
+asnicarf_ra[[1]]
+```
+
+
+# ExperimentHub records for cMD
+
+Summarized the EH records (`cmd_eh`) and their data types (`cmd_rda`) 
+for each cMD study.
+
+```{r}
+eh <- ExperimentHub()
+cmd_eh <- vector(mode = "list", length = length(studyNames))
+cmd_rda <- vector(mode = "list", length = length(studyNames))
+names(cmd_eh) <- studyNames
+names(cmd_rda) <- studyNames
+
+for (studyName in studyNames) {
+    q <- query(eh, studyName)
+    cmd_eh[[studyName]] <- names(q)
+    cmd_rda[[studyName]] <- q$rdataclass
+}
+
+length(unlist(cmd_eh)) # The number of EH records accessed by cMD
+head(cmd_eh, 2) # EH records for each study
+head(cmd_rda, 2) # data type of EH records for each study
+```
+
+cMD studies contain 4 different data types:
+
+```{r}
+## R data types for cMD studies
+table(unlist(cmd_rda))
+```
+
+
+# Sample-level Metadata
+```{r}
+dim(sampleMetadata)
+sampleMetadata[1:3, 1:30]
+```
+
+Sort the metadata based on their availability (%)
+```{r}
+x <- colSums(is.na(sampleMetadata)) %>% sort
+x_percent <- round(((nrow(sampleMetadata)-x)/nrow(sampleMetadata))*100, 1)
+head(x_percent, 20)
+```
+
+Plot the percentage of completeness for 35 out of 136 metadata fields, which 
+have >= 10% value available.
+
+```{r fig.height=4, fig.width=7}
+## Subset metadata with >= 10% value available
+sub <- x_percent[x_percent >= 10] # 35 attributes out of 136
+    
+## Plot
+end_point = 0.5 + length(sub) + length(sub) - 1
+barplot(sub,
+        main = "% metadata availability of cMD data (top 35 out of 136)",
+        ylab = "Completeness at the sample level (%)",
+        xlab = "",
+        xaxt = "n", # Do not plot the default labels
+        las = 2, space = 1)
+text(seq(1.5, end_point, by = 2), par("usr")[3]-0.25, 
+     srt = 60, adj = 1, xpd = TRUE,
+     labels = paste(names(sub)), cex = 0.75)
+```
+
+Certain metadata has very low frequency attributes. For example, `disease`
+have 132 different values (~70% are healthy) and 80 of them have fewer then 
+10 samples. For multiple diseases cases (e.g. `T2D;adenoma;fatty_liver;hypertension`),
+should we keep them the way it is? How to document them?
+
+```{r}
+length(unique(sampleMetadata$disease))
+head(sort(table(sampleMetadata$disease), decreasing = TRUE), 10) # most common conditions
+tail(sort(table(sampleMetadata$disease), decreasing = TRUE), 10) # least common conditions
+sum(table(sampleMetadata$disease) < length(sampleMetadata$disease)*0.1) # conditions recorded < 10% samples
+```
+
+
+### Study-level summary of cMD data
+
+* Variables to be summarized:
+    + continuous variable: age, infant_age
+    + categorical variable: antibiotics_current_use, gender
+```{r var_to_be_summarized, echo=FALSE}
+myVars <- c(
+    # "body_site", # complete
+    "antibiotics_current_use", # 55.8% available
+    # "study_condition", # 99.8% available >>>>>>>>>>> Need harmonization
+    # "disease", # complete >>>>>>>>>>>>>>>>>>>>> Need harmonization 
+    "age", # 73.9% available
+    "infant_age", # 14.1% available
+    # "age_category", # complete
+    "gender" # 84.7% available
+    # "country", # complete
+    # "non_westernized", # complete
+    # "sequencing_platform", # complete
+    # "pregnant", # 7.4% available
+    # "lactating" # 4.3% available
+    )
+catVars <- c("antibiotics_current_use", "gender")
+```
+
+```{r save_table_csv, eval=FALSE}
+z <- CreateTableOne(vars = myVars,
+                    data = sampleMetadata, 
+                    strata = "study_name", 
+                    factorVars = catVars,
+                    includeNA = TRUE) %>%
+    print(., showAllLevels = TRUE)
+
+## Export
+tabMat <- print(t(z), showAllLevels = TRUE, quote = FALSE, 
+                noSpaces = TRUE, printToggle = FALSE)
+write.csv(tabMat, file = "cMD_byStudy_table.csv")
+```
+
+```{r}
+z <- read.table("cMD_byStudy_table.csv", 
+                sep = ",", header = TRUE, check.names = FALSE)
+head(z)
+```
+
+```{r save_table_image, echo=FALSE, eval=FALSE}
+library(flextable)
+ft <- t(z) %>%
+    as.data.frame() %>%
+    add_rownames() %>%
+    flextable()
+save_as_image(ft, "cMD_byStudy_table.png")
+```
+
+`curatedMetagenomicData::mergeData()` merges the same typs of datasets, such 
+as old/new processing of the same dataset. This merging is different from 
+creating MultiAssayExperiment object. 
+
+### Study-level missingness of the major variables
+```{r percentage_missing, eval=FALSE}
+x <- sampleMetadata %>%
+    group_by(study_name) %>%
+    summarize(PMID = unique(PMID),
+              `# of samples` = n(),
+              `missing: age(%)` = round(sum(is.na(age))/length(age)*100, 1),
+              `missing: gender(%)` = round(sum(is.na(gender))/length(gender)*100, 1),
+              `missing: antibiotics_current_use(%)` = round(sum(is.na(antibiotics_current_use))/length(antibiotics_current_use)*100, 1),
+              `missing: infant_age(%)` = round(sum(is.na(infant_age))/length(infant_age)*100, 1),)
+write.csv(x, file = "cMD_missingness_byStudy_table.csv", row.names = FALSE)
+```
+
+```{r}
+x <- read.table("cMD_missingness_byStudy_table.csv", 
+                sep = ",", header = TRUE, check.names = FALSE)
+head(x)
+```
