@@ -1,0 +1,15 @@
+Package: OmicsMLRepoData
+Title: Curate metadata of omics datasets for AI/ML
+Version: 0.99.0
+Date: 2022-11-14
+Authors@R: 
+    person(given = "Sehyun",
+           family = "Oh",
+           role = c("aut", "cre"),
+           email = "shbrief@gmail.com",
+           comment = c(ORCID = "0000-0002-9490-3061"))
+Description: Provide functions to help and monitor manual curation processes. 
+License: Artistic-2.0
+Encoding: UTF-8
+Roxygen: list(markdown = TRUE)
+RoxygenNote: 7.2.1

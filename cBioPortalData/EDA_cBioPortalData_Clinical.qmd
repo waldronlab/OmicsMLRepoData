@@ -235,8 +235,7 @@ template <- as.data.frame(matrix(data = character(), nrow = 1,
                                  ncol = (length(allClinicalVar)+1)))
 colnames(template) <- c("studyId", names(allClinicalVar))
 
-# for (i in seq_along(clinical_var_all)) {
-for (i in 301:360) {
+for (i in seq_along(clinical_var_all)) {
     clinical_var_all[[i]]$studyId <- names(clinical_var_all[i])
     template <- dplyr::full_join(template, clinical_var_all[[i]], 
                             by = colnames(clinical_var_all[[i]]))

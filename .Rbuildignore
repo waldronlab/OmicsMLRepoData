@@ -1,0 +1,9 @@
+^README\.Rmd$
+^cBioPortalData$
+^curatedMetagenomicData$
+^curatedTCGAData$
+^ExperimentHub$
+^HMP$
+^LICENSE\.md$
+^.*\.Rproj$
+^\.Rproj\.user$
