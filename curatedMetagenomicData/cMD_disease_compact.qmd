@@ -1,0 +1,83 @@
+---
+title: "Clean-up the disease attributes of cMD sample metadata"
+author: "Sehyun Oh"
+date: "`r format(Sys.time(), '%B %d, %Y')`"
+format:
+    html:
+        fontsize: 14px
+        toc: true
+        top-depth: 3
+abstract: "Prepare U24 Supplement: AI/ML-ready"
+---
+
+```{r setup, include=FALSE}
+knitr::opts_chunk$set(echo = TRUE, warning = FALSE, message = FALSE, 
+                      collapse = TRUE)
+```
+
+# Collect curations files 
+Manual curation efforts for curatedMetagenomicData `sampleMetadata` are 
+happening in a several GitHub repositories. We will first collect the most
+up-to-date versions of them. 
+
+## curatedMetagenomicDataCuration
+### Disease
+```{r}
+file_url <- "https://raw.githubusercontent.com/waldronlab/curatedMetagenomicDataCuration/master/inst/extdata/updated-disease-ontology.csv"
+cmd_disease <- read.csv(file_url)
+head(cmd_disease, 3)
+```
+
+## sampleMetadata from cMD
+```{r}
+file_url <- "https://github.com/waldronlab/curatedMetagenomicData/raw/master/data/sampleMetadata.rda"
+download.file(file_url, "sampleMetadata.rda")
+load("sampleMetadata.rda")
+```
+
+## OmicsMLRepo
+
+
+# Merging curation files
+## Disease
+Merge 'study_condition' and 'disease_subtype' columns. 
+
+```{r}
+unique_subtype <- unique(sampleMetadata$disease_subtype)
+subtype_all <- c() # collect all the subtypes
+for (i in seq_along(unique_subtype)) {
+    subtype <- strsplit(unique_subtype[i], split = ";") # split the split semicolon-separated values
+    subtype_all <- c(subtype_all, unlist(subtype))
+}
+    
+## All the unique study_condition and disease_subtypes
+unique_disease <- c(unique(sampleMetadata$study_condition), unique(subtype_all)) 
+
+## Format it as same as cmd_disease table
+unique_disease_tb <- data.frame(Original.Abbreviation.Name = sort(unique_disease), 
+                                Full.Name = NA,
+                                Ontology.link = NA)
+```
+
+Next, we should combine `unique_disease_tb` and `cmd_disease` tables 
+without losing any information. 
+
+## Age
+Merge 'age', 'infant_age', and 'gestational_age' columns.
+
+## Body Site
+Merge 'body_site' and 'body_subsite' columns.
+
+
+
+
+# Temporal file for manual curation
+Export the merged mapping table to Google Sheet for manual curation.
+
+
+
+# Save manually curated mapping table 
+After the manual curation, update the target mapping table in GitHub. 
+
+
+
