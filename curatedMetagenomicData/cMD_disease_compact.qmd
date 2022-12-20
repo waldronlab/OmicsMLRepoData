@@ -126,12 +126,6 @@ Export the merged mapping table to Google Sheet for manual curation.
 (ss <- gs4_create("cMDOntology_NeedsCuration", sheets = manaul_curation))
 ```
 
-# Temporal file for manual curation
-Export the merged mapping table to Google Sheet for manual curation.
-```{r}
-(ss <- gs4_create("cMD metadata ontology_DRAFT", sheets = cmd_disease_unique_disease))
-```
-
 # Save manually curated mapping table 
 After the manual curation, update the target mapping table in GitHub. 
 ```{r}
