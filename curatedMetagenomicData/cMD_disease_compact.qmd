@@ -67,7 +67,7 @@ load("sampleMetadata.rda")
 ### Bioinformatics_Data_Curation_Collaboration/disease_ontology.yaml
 This needs to be fixed. Wait until the updated merged by Ethan-Loo. ACTION: Make a comment for them to mrege soon that it's.  
 ```{r}
-file_url <- "https://github.com/mcarlsn/Bioinformatics_Data_Curation_Collaboration/blob/main/disease_ontology.yaml"
+file_url <- "https://github.com/Ethan-Loo/Bioinformatics_Data_Curation_Collaboration/blob/main/disease_ontology.yaml"
 download.file(file_url, "disease_ontology.yaml")
 disease_ontology <- yaml::yaml.load_file("disease_ontology.yaml")
 head(disease_ontology, 3)
@@ -103,24 +103,27 @@ without losing any information.
 cmd_disease_unique_disease <- rbind(cmd_disease, unique_disease_tb)
 
 # Rename Full.Name column header to 
-# cmd_disease_unique_disease %>% rename("Full.Name.Curated" = "Full.Name")
-# Error: Error in rename(., Full.Name.Curated = "Full.Name") : Some 'from' names in value not found on 'x': Full.Name.Curated
+cmd_disease_unique_disease <- rename(cmd_disease_unique_disease, "Full.Name" = "Full.Name.Curated")
 ```
 
 ## Create ont_complete by including only unqiue values and filter rows where "ontology" col is not empty into 1 DF "ont_complete" 
 ```{r}
 ont_complete <- cmd_disease_unique_disease %>% distinct(Original.Abbreviation.Name, .keep_all=TRUE) %>% filter(Ontology.link != "")
 ```
+
 ## Create ont_complete by including only unqiue values and filter rows where "ontology" col is not empty into 1 DF "ont_complete" 
 ```{r}
 # Filter rows where manual curation is needed
 manaul_curation <- cmd_disease_unique_disease %>% distinct(Original.Abbreviation.Name, .keep_all=TRUE) %>% filter(Ontology.link == "")
+
+# Add a new column for "Revision Required" that explains observations that require clarification
+manaul_curation <- manaul_curation %>% add_column(Revision_Required = "")
 ```
 
 # Temporal file for manual curation
 Export the merged mapping table to Google Sheet for manual curation.
 ```{r}
-(ss <- gs4_create("cMD metadata ontology_NeedsCuration", sheets = manaul_curation))
+(ss <- gs4_create("cMDOntology_NeedsCuration", sheets = manaul_curation))
 ```
 
 # Temporal file for manual curation
@@ -132,7 +135,7 @@ Export the merged mapping table to Google Sheet for manual curation.
 # Save manually curated mapping table 
 After the manual curation, update the target mapping table in GitHub. 
 ```{r}
-manual_curation <- read_sheet("https://docs.google.com/spreadsheets/d/1TOcV_T6gvtbs0KTC9m_jCdbEST2QTFsfXb3RF-VXu9I/edit?usp=sharing")
+manual_curation <- read_sheet("https://docs.google.com/spreadsheets/d/1Vai_5gfH3UYg3F5eyA27NytqfAZMN0805aE8MBSQstk/edit?usp=sharing")
 ```
 
 ## Merge curated data with the cleaned DF 
