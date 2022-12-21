@@ -5,7 +5,7 @@
 #' @param value Character(1). Attribute of your interest.
 #' 
 #' @export
-GetPMID <- function(db, key, value) {
+getPMID <- function(db, key, value) {
     # ## Further curated, alpha-version of cMD sampleMetadata table:
     # dir <- system.file("extdata", package = "OmicsMLRepoData")
     # fname <- paste0(db, "_sampleMetadataCompact.csv")
@@ -16,6 +16,6 @@ GetPMID <- function(db, key, value) {
     fname <- paste0(db, "_sampleMetadata.csv")
     meta <- read.table(file.path(dir, fname), sep = ",", header = TRUE)
     
-    ind <- which(meta[,key] == value)
+    ind <- grep(value, meta[,key])
     print(unique(meta$PMID[ind]))
 }
