@@ -1,7 +1,7 @@
 Package: OmicsMLRepoData
 Title: Curate metadata of omics datasets for AI/ML
-Version: 0.99.0
-Date: 2022-11-14
+Version: 0.99.1
+Date: 2022-12-21
 Authors@R: 
     person(given = "Sehyun",
            family = "Oh",

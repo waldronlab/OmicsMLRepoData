@@ -6,9 +6,14 @@
 #' 
 #' @export
 GetPMID <- function(db, key, value) {
-    ## Further curated, alpha-version of cMD sampleMetadata table:
+    # ## Further curated, alpha-version of cMD sampleMetadata table:
+    # dir <- system.file("extdata", package = "OmicsMLRepoData")
+    # fname <- paste0(db, "_sampleMetadataCompact.csv")
+    # meta <- read.table(file.path(dir, fname), sep = ",", header = TRUE)
+    
+    ## Uncurated cMD sampleMetadata
     dir <- system.file("extdata", package = "OmicsMLRepoData")
-    fname <- paste0(db, "_sampleMetadataCompactCurated.csv")
+    fname <- paste0(db, "_sampleMetadata.csv")
     meta <- read.table(file.path(dir, fname), sep = ",", header = TRUE)
     
     ind <- which(meta[,key] == value)
