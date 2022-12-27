@@ -49,12 +49,12 @@ cmd_disease <- read.csv("updated-disease-ontology.csv")
 head(cmd_disease, 3)
 ```
 
-body-site-ontology.csv
+Completed cMD_bodysite, body-site-ontology.csv
 ```{r}
 file_url <- "https://raw.githubusercontent.com/waldronlab/curatedMetagenomicDataCuration/master/inst/extdata/body-site-ontology.csv"
 download.file(file_url, "body-site-ontology.csv")
-cmd_body_site <- read.csv("body-site-ontology.csv")
-head(cmd_body_site, 3)
+cMD_bodysite <- read.csv("body-site-ontology.csv")
+head(cMD_bodysite, 5)
 ```
 
 ### sample Metadata from cMD
@@ -101,9 +101,6 @@ without losing any information.
 ## Vertical merge `unique_disease_tb` and `cmd_disease` tables 
 ```{r}
 cmd_disease_unique_disease <- rbind(cmd_disease, unique_disease_tb)
-
-# Rename Full.Name column header to 
-cmd_disease_unique_disease <- rename(cmd_disease_unique_disease, "Full.Name" = "Full.Name.Curated")
 ```
 
 ## Create ont_complete by including only unqiue values and filter rows where "ontology" col is not empty into 1 DF "ont_complete" 
@@ -134,28 +131,34 @@ manual_curation <- read_sheet("https://docs.google.com/spreadsheets/d/1Vai_5gfH3
 
 ## Merge curated data with the cleaned DF 
 ```{r}
-Disease_Curation <- full_join(manual_curation, ont_complete, by = NULL)
+cMD_disease <- full_join(manual_curation, ont_complete, by = NULL)
+```
+
+Rename Full.Name column header to Full.Name.Curated
+```{r}
+cMD_disease <- rename(cMD_disease, "Full.Name" = "Full.Name.Curated")
 ```
 
 ## Export to .CSV 
 ```{r}
-write.csv(Disease_Curation, "~/OmicsMLRepoData/curatedMetagenomicData/Disease_Curation.csv", row.names=FALSE)
+write.csv(cMD_disease, "~/OmicsMLRepoData/curatedMetagenomicData/Disease_Curation.csv", row.names=FALSE)
 ```
 
-Need to repeat steps, shown above, for age and body site. As of 12/9 body site and age both have different types that is making 
-it difficult to merge. 
+Need to repeat steps, shown above, for age. 
 
 ## Age
 Merge 'age', 'infant_age', and 'gestational_age' columns.
 
-## Body Site
-Merge 'body_site' and 'body_subsite' columns.
+Outstanding task: Work with team to strategize ways to structure this data.  
 
 
+# Appendix 
 
+Used the following chunk to review Disease_Curation Google sheet: 
 
-
-
-
-
+library(curatedMetagenomicData)
+getPMID <- function(key, value) {
+    ind <- grep(value, sampleMetadata[,key])
+    print(unique(sampleMetadata$PMID[ind]))
+}
 
