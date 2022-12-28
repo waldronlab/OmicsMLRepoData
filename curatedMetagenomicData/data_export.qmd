@@ -1,0 +1,492 @@
+---
+title: "Data Export for AI/ML Repo"
+author: "Sehyun Oh"
+date: "`r format(Sys.time(), '%B %d, %Y')`"
+format:
+    html:
+        fontsize: 14px
+        toc: true
+        top-depth: 2
+abstract: "Write a function for AI/ML-ready data export/conversion: cMD studies"
+---
+
+```{r setup, include=FALSE}
+knitr::opts_chunk$set(echo = TRUE, warning = FALSE, message = FALSE)
+```
+
+# Setup
+
+```{r}
+suppressPackageStartupMessages({
+    library(curatedMetagenomicData)
+})
+```
+
+```{r}
+all_studies <- unique(sampleMetadata$study_name)
+dataTypes <- c("gene_families", "marker_abundance", "marker_presence", 
+               "pathway_abundance", "pathway_coverage", "relative_abundance")
+
+# for (i in seq_along(all_studies[1:2])) {
+#     for (j in seq_along(dataTypes[1:2])) {
+#         res <- sampleMetadata |>
+#             dplyr::filter(study_name == all_studies[i]) |>
+#             returnSamples(dataTypes[j])
+#         print(paste("i=",i, "j=",j))
+#     }
+#     # return(res)
+# }
+```
+
+# Reference
+
+```{r eval=FALSE}
+library(MultiAssayExperiment)
+exportClass
+```
+
+```{r ref, eval=FALSE}
+## From cMDAnalyses repo: https://github.com/waldronlab/curatedMetagenomicDataAnalyses/blob/main/R/makeSEforCondition.R
+
+#' Make a dataset for a condition of interest.
+#'
+#' @param condition Condition of study for which to build a case-control dataset.
+#'  See "study_condition" column of the `sampleMetadata` object.
+#' @param removestudies Any studies not to be included (default: NULL)
+#' @param dataType Type of metagenomic data to return, see `?curatedMetagenomicData`
+#' @param counts Convert to something resembling counts, by multiplying through
+#' by read depth?
+#'
+#' @return a (Tree)SummarizedExperiment containing merged data from 1+ studies
+#' @importFrom curatedMetagenomicData returnSamples
+#' @importFrom dplyr filter pull select %>%
+#' @export
+#' @details
+#' This function finds datasets that contain the condition of interest, returns
+#' those datasets, and filters them to contain only samples of the condition or
+#' controls. These datasets are then merged into a single
+#' (Tree)SummarizedExperiment. Controls from other datasets are not included.
+#'
+#' @examples
+#' makeSEforCondition("STH")
+makeSEforCondition <-
+  function(condition,
+           removestudies = NULL,
+           dataType = "relative_abundance",
+           counts = FALSE) {
+    studies <-
+      dplyr::filter(curatedMetagenomicData::sampleMetadata,
+                    study_condition %in% condition) %>%
+      dplyr::pull(study_name) %>%
+      base::unique()
+    studies <- studies[!studies %in% removestudies]
+    dplyr::filter(curatedMetagenomicData::sampleMetadata,
+                  study_condition %in% c(condition, "control")) %>%
+      dplyr::filter(study_name %in% studies) %>%
+      dplyr::select(where( ~ !all(is.na(.x)))) %>%
+      curatedMetagenomicData::returnSamples(dataType = dataType,
+                                            counts = counts)
+  }
+```
+
+```{r ref_usecase, eval=FALSE}
+for (i in seq_along(studies)){
+  cond <- names(studies)[i]
+  se <- curatedMetagenomicAnalyses::makeSEforCondition(cond, removestudies = "HMP_2019_ibdmdb", dataType = "relative_abundance")
+  
+  print(paste("Next study condition:", cond, " /// Body site: ", unique(colData(se)$body_site)))
+  print(with(colData(se), table(study_name, study_condition)))
+  cat("\n \n")
+  save(se, file = paste0(cond, ".rda"))
+  
+  flattext <- select(as.data.frame(colData(se)), c("study_name", "study_condition", "subject_id"))
+  rownames(flattext) <- colData(se)$sample_id
+  flattext <- cbind(flattext, data.frame(t(assay(se))))
+  write.csv(flattext, file = paste0(cond, ".csv"))
+  system(paste0("gzip ", cond, ".csv"))
+}
+```
+
+# Sample-level Export
+
+## per sample, per datatype
+
+For example, study `AsnicarF_2017` contains 24 samples in it. So it will be 
+exported to 168 csv files. = 24(#samples) x {6(#datatypes) + 1(metadata table)}
+
+```{r perSample_perDatatype}
+## Collect values for manifest file
+sample_mani <- data.frame(sample_id = character(),
+                          location = character(), # physical location the file is stored
+                          size = numeric(), # file size in Byte
+                          checksum = character(), # md5sum
+                          updated = as.Date(character())) # the date last modified    
+
+
+for (i in seq_along(all_studies[1])) { ##<<<<<<<<<< Switch to run all studies
+    ## Target repository <<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<< Need to update
+    study_dir <- "~/Packages/OmicsMLRepoData/vignettes/export_example/study_level" 
+    sample_dir <- "~/Packages/OmicsMLRepoData/vignettes/export_example/sample_level"
+    
+    ## Get all the sample metadata for a given study
+    study <- all_studies[i]
+    meta <- sampleMetadata |> 
+        dplyr::filter(study_name == study) |>
+        dplyr::select(where(~ !all(is.na(.x)))) 
+    
+    ## Calculate metadata completeness
+    meta_completeness <- round(colSums(!is.na(meta))/nrow(meta)*100)
+    
+    ## Collect study-level metadata <<<<< Might be required for non-curated datasets
+    # study_mani <- data.frame(attribute = names(meta),
+    #                          completeness = unname(meta_completeness),
+    #                          values = NA,
+    #                          type = NA, ##<<<<<<<<<<<<< Use metadata dictionary
+    #                          keywords = NA)
+    # 
+    # ## Save study-level manifest file including attributes
+    # jsonlite::write_json(study_mani, 
+    #                      file.path(study_dir, paste0(study, "_manifest.json")),
+    #                      na = "null")
+        
+    for (j in seq_len(nrow(meta))[1:3]) { ##<<<<<<<<<< Switch to run all samples
+        id <- meta$sample_id[j] ##<<<<<<<<<< Confirm the header label
+        
+        ## Save sample metadata for each sample
+        meta_fname <- file.path(sample_dir, paste0(id, "_metadata.csv"))
+        data.table::fwrite(meta[j,], meta_fname)
+
+        ## Value for manifest file
+        res1 <- data.frame(sample_id = id,
+                           study = study,
+                           type = "metadata",
+                           location = meta_fname,
+                           size = file.size(meta_fname),
+                           checksum = tools::md5sum(meta_fname),
+                           updated = Sys.Date())
+        sample_mani <- rbind(sample_mani, res1, make.row.names = FALSE)
+        
+        for (k in seq_along(dataTypes)) {
+            ## Get the all the assay data for a study's given data type
+            dataType <- dataTypes[k]
+            se <- returnSamples(meta, dataType)
+        
+            ## Save assay data for each sample for a given data type
+            data_fname <- file.path(sample_dir, paste0(id, "_", dataType, ".csv"))
+            assay_tb <- as.data.frame(as.matrix(assay(se))) 
+            data.table::fwrite(assay_tb[,id,drop = FALSE],
+                               file = data_fname, 
+                               row.names = TRUE, col.names = FALSE)
+
+            ## Value for manifest file
+            res2 <- data.frame(sample_id = id,
+                               study = study,
+                               type = dataType,
+                               location = data_fname,
+                               size = file.size(data_fname),
+                               checksum = tools::md5sum(data_fname),
+                               updated = Sys.Date())
+            sample_mani <- rbind(sample_mani, res2, make.row.names = FALSE)
+        }
+    }
+}
+```
+
+Online YAML tool: https://onlineyamltools.com/prettify-yaml Online JSON viewer: http://jsonviewer.stack.hu/
+
+```{r}
+library(purrr)
+library(dplyr)
+
+## Temporal reformatting of the sample_manifest table
+df <- sample_mani[,c("sample_id", "type", "location", "size", "checksum", "updated")]
+colnames(df)[c(1,5)] <- c("name", "md5sum")
+```
+
+# Study-level sample manifest YAML file
+Below is the example YAML structure containing sample-level file information
+for each study. 
+```{yaml example_sample_yaml_structure, eval=FALSE}
+samples:
+  - name: MV_FEI1_t1Q14
+    files: 
+      - type: gene_families
+        location:
+        size:
+        md5sum:
+        updated:
+      - type: marker_abundance
+        location:
+        size:
+        md5sum:
+        updated:
+      - type: marker_presence
+        location:
+        size:
+        md5sum:
+        updated:   
+```
+
+I first made the nested list for file information and created one level
+deeper list with the `name` and `files` elements. 
+```{r}
+## A nested list containing file metadata, such as type, location, checksum, etc.
+nested_file <- df %>%   
+    group_split(name) %>%
+    purrr::map(dplyr::select, -name) %>%
+    purrr::map(~ group_split(., type)) 
+nested_file
+
+# fu <- function(x) {
+#     res <- split(as.data.frame(x), seq_len(nrow(x$data))) #<<< split each row into a element in the list
+#     return(res)
+# }
+# 
+# nested_file <- df %>%   
+#     group_by(name) %>%
+#     nest() %>%
+#     mutate(file = map(.$data, fu))
+
+
+
+## A nested list with the 'name' and 'files' level added
+study_manifest <- vector(mode = "list", length = length(unique(df$name)))
+for (i in seq_along(unique(df$name))) {
+    study_manifest[[i]] <- list(name = unique(df$name)[i],
+                              files = nested_file[i]) # more depth
+}
+# cat(yaml::as.yaml(list(samples = study_manifest))) ## If I want to comment "samples" category
+cat(yaml::as.yaml(study_manifest))
+
+## Save
+yaml::write_yaml(study_manifest, 
+                 file.path(study_dir, paste0(study, "_sample_manifest.yaml")))
+```
+
+
+# Study-level attribute manifest YAML file
+Below is the example YAML structure containing attribute information
+for each study. 
+
+```{yaml example_attr_yaml_structure, eval=FALSE}
+attributes:
+      - name: body_site
+        values:
+          - name: stool
+            ontology: 
+            description: 
+          - name: oral
+        completeness: 100
+        type: categorical
+      - name: PMID
+        values:
+          - name: ## Actual PMID here?
+            ontology: NA
+            description: ## Title of the paper?
+        completeness: 100
+        type: categorical
+      - name: Age
+        values:
+          - name:
+            ontology:
+            description:
+        completeness:
+        type:
+      - name: location
+        values:
+          - name: USA
+            ontology:
+            description: United Stated of America
+```
+
+```{r study_level_attributes, eval=FALSE}
+attributes <- stack(meta_completeness)[,c(2,1)]
+colnames(attributes) <- c("attribute", "completeness")
+# attributes$values <- unname(apply(meta, 2, function(x) {paste(unique(x), collapse = ";")}))
+attributes$values <- unname(apply(meta, 2, unique))
+attributes$type <- NA
+
+propNonNA <- function(x) { # x is a vector
+    res <- round(sum(!is.na(x))/length(x)*100)
+    return(res)
+}
+
+nested_attr_manifest <- vector(mode = "list", length = ncol(meta))
+for (i in seq_along(nested_attr_manifest)) {
+    nested_attr_manifest[[i]] <- list(name = colnames(meta)[i],
+                                      values = list(name = unique(meta[,i]),
+                                                    ontology = NA,
+                                                    description = NA),
+                                      completness = propNonNA(meta[,i]),
+                                      type = NA)
+}
+
+nested_attr_manifest <- meta %>%
+    dplyr::summarise_each(., unique)
+nested_attr_manifest
+
+data.frame(name = colnames(.x),
+           values = data.frame(name = unique(.x),
+                               ontology = NA,
+                               description = NA),
+           completeness = propNonNA(.x),
+           type = NA)
+
+## YAML formatting for attributes
+nested_study_manifest <- attributes %>%
+    split(f = .$attribute) %>%
+    purrr::map(dplyr::select, -attribute) %>%
+    list(samples = .)
+cat(yaml::as.yaml(nested_study_manifest))
+
+yaml::write_yaml(nested_study_manifest, 
+                 file.path(study_dir, paste0(study, "_manifest.yaml")))
+```
+
+
+# Study-level export
+
+## per study, per datatype
+
+Do we even need this? A study-level manifest file that can collect sample data files should be used to create 'study-level' metadata tables.
+
+```{r perStudy_perDatatype, eval=FALSE}
+for (i in seq_along(all_studies[1])) {
+    for (j in seq_along(dataTypes)) {
+        
+        study <- all_studies[i]
+        dataType <- dataTypes[j] 
+
+        ## Get all available sample metadata for a given study
+        meta <- sampleMetadata |>
+            dplyr::filter(study_name == study) |>
+            dplyr::select(where(~ !all(is.na(.x)))) 
+
+        fname <- paste0(study, "_", dataType, ".csv")
+        study_dir <- "~/Packages/OmicsMLRepoData/vignettes/export_example/study_level" #<<<<<<<<<<< Update destination
+        data.table::fwrite(flattext, file = file.path(study_dir, fname)) 
+        system(paste0("gzip ", fname))
+    }
+}
+```
+
+## Manifest
+
+Write this in JSON. Make a manifest file for each study?
+
+-   the type of data? (e.g. categorical, ordinal, ...) --\> use 'metadata dictionary' from Sean
+-   All the sample_id in each study
+-   All available study-level metadata
+-   Outcome variables as potential data labels for supervised training
+
+Should I add these into the sample metadata table?
+
+-   URL for each file
+-   File size
+-   md5sum
+-   API key?
+
+Make a named list for the study-level manifest file?
+
+```{r}
+
+```
+
+# Assemble the exported data
+
+## For a study
+
+```{r}
+## Target dataset to re-create
+query <- "AsnicarF_2017"
+dataType <- "relative_abundance"
+
+meta <- sampleMetadata |>
+    dplyr::filter(study_name == query)
+se <- returnSamples(meta, dataType)
+
+# se_gf <- returnSamples(meta, dataTypes[1]) # SummarizedExperiment
+# se_ma <- returnSamples(meta, dataTypes[2]) # SummarizedExperiment
+# se_mp <- returnSamples(meta, dataTypes[3]) # SummarizedExperiment
+# se_pa <- returnSamples(meta, dataTypes[4]) # SummarizedExperiment
+# se_pc <- returnSamples(meta, dataTypes[5]) # SummarizedExperiment
+# se_ra <- returnSamples(meta, dataTypes[6]) # TreeSummarizedExperiment
+```
+
+```{r}
+## Look for the manifest for the target study
+all <- list.files(study_dir)
+fname <- all[grep(query, all)]
+x <- yaml::read_yaml(file.path(study_dir, fname))
+
+samples <- names(x$samples)
+sample_fpaths <- file.path(sample_dir, 
+                           paste0(samples, "_", dataType, ".csv"))
+
+assay_data <- matrix()
+for (i in seq_along(samples)) {
+    sample_fpath <- file.path(sample_dir, paste0(samples[i], "_", dataType, ".csv"))
+    res <- data.table::fread(sample_fpath, sep = ",", col.names = c("", samples[i])) %>% 
+        as.matrix(., rownames = 1)
+    assay_data <- cbind(assay_data, res, fill = TRUE)
+}
+```
+
+```{r pullData_function}
+#'
+#' @param query Character(1). Options are "study", "data type", and "attribute".
+#'
+availableData <- function(query) {
+    if (query == "study") {
+        
+    }
+}
+
+
+
+#' `manifest_dir` and `sample_dir` arguments can be removed once we decide the repository.
+#' @param manifest_dir Character(1). Path to the directory where the manifest YAML file is stored.
+#' @param sample_dir Character(1). Path to the directory where the csv files for samples are stored.
+#' @param study Character(1). Study name.
+#' @param data_type Character vector. Type of the data, such as relative_abundance for metagenomic data. 
+#' @param attribute
+#' @param value
+
+pullData <- function(manifest_dir, sample_dir,
+                     study, data_type, attribute, value) {
+    # Import study-level YAML
+    all <- list.files(manifest_dir)
+    fname <- all[grep(query, all)]
+    x <- yaml::read_yaml(file.path(manifest_dir, fname)) 
+    
+    # Extract the file path for target samples
+    samples <- names(x$samples)
+    sample_fpaths <- file.path(sample_dir, 
+                               paste0(samples, "_", dataType, ".csv"))
+    
+    for (i in seq_along(x))
+    data.table::fread(x, sep = ",", col.names = c("rownames", y)) %>%
+        tibble::column_to_rownames(., var = "rownames")
+}
+
+
+assay_data <- sample_fpaths %>% 
+    # lapply(data.table::fread, sep = ",", col.names = c("", "test")) %>% 
+    lapply(importData, samples[1]) %>%
+    dplyr::bind_cols()     #<<<<<<<<<<<<<<<< Check the case when there are different rows
+
+tse <- TreeSummarizedExperiment(assays = list(Count = assay_data),
+                                rowData = row_data,
+                                colData = col_data,
+                                rowTree = row_tree,
+                                rowNodeLab = row_lab,
+                                colTree = col_tree)
+```
+
+## For a condition
+
+```{r}
+condition <- "colon"
+```
+
+# Group at different level
