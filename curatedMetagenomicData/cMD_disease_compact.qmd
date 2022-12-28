@@ -15,33 +15,70 @@ knitr::opts_chunk$set(echo = TRUE, warning = FALSE, message = FALSE,
                       collapse = TRUE)
 ```
 
+# Load Packages 
+```{r}
+library(gsheet)
+library(dplyr)
+library(RCurl) # for getURL
+library(curatedMetagenomicData)
+library(OmicsMLRepoData)
+library(readr)
+library(tidyr)
+library(yaml)
+library(googlesheets4)
+library(tidyverse)
+```
+
 # Collect curations files 
 Manual curation efforts for curatedMetagenomicData `sampleMetadata` are 
 happening in a several GitHub repositories. We will first collect the most
-up-to-date versions of them. 
+up-to-date versions of them. Data Inputs Include: 
 
-## curatedMetagenomicDataCuration
-### Disease
+1. Hand-curated disease ontology table 
+2. Curated metagenomic data curation tables 
+3. Original long data frame that has been split into unique values (1 per row)
+4. Metadata from the curated disease ontology terms 
+
+### curatedMetagenomicDataCuration
+
+Disease ontology CSV
 ```{r}
 file_url <- "https://raw.githubusercontent.com/waldronlab/curatedMetagenomicDataCuration/master/inst/extdata/updated-disease-ontology.csv"
-cmd_disease <- read.csv(file_url)
+download.file(file_url, "updated-disease-ontology.csv")
+cmd_disease <- read.csv("updated-disease-ontology.csv")
 head(cmd_disease, 3)
 ```
 
-## sampleMetadata from cMD
+Completed cMD_bodysite, body-site-ontology.csv
+```{r}
+file_url <- "https://raw.githubusercontent.com/waldronlab/curatedMetagenomicDataCuration/master/inst/extdata/body-site-ontology.csv"
+download.file(file_url, "body-site-ontology.csv")
+cMD_bodysite <- read.csv("body-site-ontology.csv")
+head(cMD_bodysite, 5)
+```
+
+### sample Metadata from cMD
 ```{r}
 file_url <- "https://github.com/waldronlab/curatedMetagenomicData/raw/master/data/sampleMetadata.rda"
 download.file(file_url, "sampleMetadata.rda")
 load("sampleMetadata.rda")
 ```
 
-## OmicsMLRepo
+### Bioinformatics_Data_Curation_Collaboration/disease_ontology.yaml
+This needs to be fixed. Wait until the updated merged by Ethan-Loo. ACTION: Make a comment for them to mrege soon that it's.  
+```{r}
+file_url <- "https://github.com/Ethan-Loo/Bioinformatics_Data_Curation_Collaboration/blob/main/disease_ontology.yaml"
+download.file(file_url, "disease_ontology.yaml")
+disease_ontology <- yaml::yaml.load_file("disease_ontology.yaml")
+head(disease_ontology, 3)
+```
 
+### OmicsMLRepo
 
-# Merging curation files
+# Merging Curation Files
+
 ## Disease
 Merge 'study_condition' and 'disease_subtype' columns. 
-
 ```{r}
 unique_subtype <- unique(sampleMetadata$disease_subtype)
 subtype_all <- c() # collect all the subtypes
@@ -52,7 +89,6 @@ for (i in seq_along(unique_subtype)) {
     
 ## All the unique study_condition and disease_subtypes
 unique_disease <- c(unique(sampleMetadata$study_condition), unique(subtype_all)) 
-
 ## Format it as same as cmd_disease table
 unique_disease_tb <- data.frame(Original.Abbreviation.Name = sort(unique_disease), 
                                 Full.Name = NA,
@@ -60,24 +96,69 @@ unique_disease_tb <- data.frame(Original.Abbreviation.Name = sort(unique_disease
 ```
 
 Next, we should combine `unique_disease_tb` and `cmd_disease` tables 
-without losing any information. 
+without losing any information.
+
+## Vertical merge `unique_disease_tb` and `cmd_disease` tables 
+```{r}
+cmd_disease_unique_disease <- rbind(cmd_disease, unique_disease_tb)
+```
+
+## Create ont_complete by including only unqiue values and filter rows where "ontology" col is not empty into 1 DF "ont_complete" 
+```{r}
+ont_complete <- cmd_disease_unique_disease %>% distinct(Original.Abbreviation.Name, .keep_all=TRUE) %>% filter(Ontology.link != "")
+```
+
+## Create ont_complete by including only unqiue values and filter rows where "ontology" col is not empty into 1 DF "ont_complete" 
+```{r}
+# Filter rows where manual curation is needed
+manaul_curation <- cmd_disease_unique_disease %>% distinct(Original.Abbreviation.Name, .keep_all=TRUE) %>% filter(Ontology.link == "")
+
+# Add a new column for "Revision Required" that explains observations that require clarification
+manaul_curation <- manaul_curation %>% add_column(Revision_Required = "")
+```
+
+# Temporal file for manual curation
+Export the merged mapping table to Google Sheet for manual curation.
+```{r}
+(ss <- gs4_create("cMDOntology_NeedsCuration", sheets = manaul_curation))
+```
+
+# Save manually curated mapping table 
+After the manual curation, update the target mapping table in GitHub. 
+```{r}
+manual_curation <- read_sheet("https://docs.google.com/spreadsheets/d/1Vai_5gfH3UYg3F5eyA27NytqfAZMN0805aE8MBSQstk/edit?usp=sharing")
+```
+
+## Merge curated data with the cleaned DF 
+```{r}
+cMD_disease <- full_join(manual_curation, ont_complete, by = NULL)
+```
+
+Rename Full.Name column header to Full.Name.Curated
+```{r}
+cMD_disease <- rename(cMD_disease, "Full.Name" = "Full.Name.Curated")
+```
+
+## Export to .CSV 
+```{r}
+write.csv(cMD_disease, "~/OmicsMLRepoData/curatedMetagenomicData/Disease_Curation.csv", row.names=FALSE)
+```
+
+Need to repeat steps, shown above, for age. 
 
 ## Age
 Merge 'age', 'infant_age', and 'gestational_age' columns.
 
-## Body Site
-Merge 'body_site' and 'body_subsite' columns.
+Outstanding task: Work with team to strategize ways to structure this data.  
 
 
+# Appendix 
 
+Used the following chunk to review Disease_Curation Google sheet: 
 
-# Temporal file for manual curation
-Export the merged mapping table to Google Sheet for manual curation.
-
-
-
-# Save manually curated mapping table 
-After the manual curation, update the target mapping table in GitHub. 
-
-
+library(curatedMetagenomicData)
+getPMID <- function(key, value) {
+    ind <- grep(value, sampleMetadata[,key])
+    print(unique(sampleMetadata$PMID[ind]))
+}
 
