@@ -130,7 +130,7 @@ gs4_create("cMDOntology_NeedsCuration", sheets = manaul_curation)
 ## Save manually curated mapping table 
 After the manual curation, update the target mapping table in GitHub. 
 ```{r eval=FALSE}
-manual_curation <- read_sheet("https://docs.google.com/spreadsheets/d/1Vai_5gfH3UYg3F5eyA27NytqfAZMN0805aE8MBSQstk/edit?usp=sharing")
+manual_curated <- read_sheet("https://docs.google.com/spreadsheets/d/1Vai_5gfH3UYg3F5eyA27NytqfAZMN0805aE8MBSQstk/edit?usp=sharing")
 ```
 
 # Final curation file
@@ -140,7 +140,7 @@ manual_curation <- read_sheet("https://docs.google.com/spreadsheets/d/1Vai_5gfH3
 ont_complete <- rename(ont_complete, "Full.Name" = "Full.Name.Curated")
 
 ## Merge curated data with the cleaned DF
-cMD_disease <- full_join(manual_curation, ont_complete, by = NULL)
+cMD_disease <- full_join(manual_curated, ont_complete, by = NULL)
 
 ## Save
 write.csv(cMD_disease, "cMD_disease_ontology.csv", row.names = FALSE)
