@@ -1,0 +1,88 @@
+"Original.Abbreviation.Name","Full.Name.Curated","Ontology.link","Note","Revision_Required"
+"abdominalhernia","Abdominal Hernia","http://purl.obolibrary.org/obo/NCIT_C98700",NA,NA
+"advancedadenoma","Adenoma","http://purl.obolibrary.org/obo/NCIT_C2855","Advanced: http://purl.obolibrary.org/obo/NCIT_C25411",NA
+"AR","Atopic Dermatitis","http://purl.obolibrary.org/obo/NCIT_C176630",NA,"[Curator] Check with the curator where ""AR"" came from."
+"ascites","Ascites","http://purl.obolibrary.org/obo/NCIT_C2885",NA,NA
+"carcinoma_surgery_history","Carcinoma","http://purl.obolibrary.org/obo/NCIT_C2916","Surgery: http://purl.obolibrary.org/obo/NCRO_0000228; History: http://purl.obolibrary.org/obo/OMIT_0007819",NA
+"cephalosporins","Cephalosporins","http://purl.obolibrary.org/obo/OMIT_0003840",NA,NA
+"cholera","Cholera","http://purl.obolibrary.org/obo/NCIT_C157812",NA,NA
+"cough","cough","http://purl.obolibrary.org/obo/NCIT_C37935",NA,NA
+"fever","fever","http://purl.obolibrary.org/obo/NCIT_C3038",NA,NA
+"FMT","Fecal Microbiota Transplantation","http://purl.obolibrary.org/obo/NCIT_C118643",NA,NA
+"healthy","Healthy","http://purl.obolibrary.org/obo/NCIT_C115935",NA,NA
+"largeadenoma","large adenoma","http://purl.obolibrary.org/obo/NCIT_C2855",NA,"In original publication, large adenoma is described as "" clinically significant precursors of CRC that were excluded from comparisons"" so I have included the ontology link as ""adenoma"""
+"metastases",NA,"http://purl.obolibrary.org/obo/NCIT_C180354",NA,"The disease dicussed in associated article is colorectal cancer. There is no mention of metastases. No clues when I search for key words associated with metastases e.g., ""secondary"" ""malignant"" or ""growths"" in the analysis"
+"necator_americanus","Necator americanus","http://purl.obolibrary.org/obo/NCIT_C123524",NA,NA
+"NK","natural killer cell","http://purl.obolibrary.org/obo/NCIT_C12536",NA,NA
+"otitis","Otitis Externa","http://purl.obolibrary.org/obo/NCIT_C79601",NA,NA
+"pre-hypertension",NA,NA,NA,"Cannot locate. Hypertention exists on OLS but not pre-hypertention"
+"respiratoryinf","Respiratory Tract Infection","http://purl.obolibrary.org/obo/NCIT_C27219",NA,NA
+"salmonellosis","Salmonellosis","http://purl.obolibrary.org/obo/NCIT_C157974",NA,NA
+"skininf","Skin Infection","http://purl.obolibrary.org/obo/NCIT_C35025",NA,NA
+"smalladenoma","Small Adenoma","http://purl.obolibrary.org/obo/NCIT_C2855","Small: http://purl.obolibrary.org/obo/NCIT_C25376",NA
+"SRP","Scaling and Root Planing","http://purl.obolibrary.org/obo/NCIT_C63714",NA,"SRP in the associated article (see PMID) defines it as ""Scaling and Root Planing"" and in OLS, closest match is ""Periodontal Scaling and Root Planing"" - is this accurate?"
+"STEC","Shiga-Toxigenic Escherichia Coli","http://purl.obolibrary.org/obo/NCIT_C184689",NA,NA
+"STH","soil transmitted helminths","http://purl.obolibrary.org/obo/NCIT_C125642","transmitted by: http://purl.obolibrary.org/obo/RO_0002451; soil: http://purl.obolibrary.org/obo/OMIT_0013874","[Sean/Levi] Only ""Helminth"" is available - Helminth is the ontology link. Assign multiple ontology terms?"
+"suspinf",NA,NA,NA,"[Sean/Levi] Curator meant ""suspected infection (a reason why a newborn took ABX)""."
+"T1D_nonconverter","T1D not seroconversion","http://purl.obolibrary.org/obo/HP_0100651",NA,"In the associated publication,  T1D nonconverter is defined as T1D not seroconverted as opposed to seroconverted (not diagnosed with T1D). Therefore, I added the T1D ontology link. Is this approporiate?"
+"T1D_seroconverter","T1D Seroconversion","http://purl.obolibrary.org/obo/HP_0100651","Seroconversion: http://purl.obolibrary.org/obo/NCIT_C173772","Ontology for ""Seroconversion"" is available but not type 1 diabetes seroconversion"
+"tonsillitis","Tonsillitis","http://purl.obolibrary.org/obo/NCIT_C116006",NA,NA
+"wilson","Wilson Wisease","http://purl.obolibrary.org/obo/NCIT_C84756",NA,"[Curator] Can't find this term in the original paper (PMID 25079328)."
+"ACVD","atherosclerosis","http://www.ebi.ac.uk/efo/EFO_0003914",NA,NA
+"acute_diarrhoea","acute diarrhea","http://purl.obolibrary.org/obo/DOID_0050140",NA,NA
+"cellulitis","cellulitis","http://www.ebi.ac.uk/efo/EFO_0003035",NA,NA
+"melanoma","melanoma","http://www.ebi.ac.uk/efo/EFO_0000756",NA,NA
+"gangrene","gangrene","http://www.ebi.ac.uk/efo/EFO_0008574",NA,NA
+"osteoarthritis","osteoarthritis","http://www.ebi.ac.uk/efo/EFO_0002506",NA,NA
+"control","control","http://www.ebi.ac.uk/efo/EFO_0001461",NA,NA
+"pyelonefritis","pyelonephritis","http://www.ebi.ac.uk/efo/EFO_1001141",NA,NA
+"sepsis","sepsis","http://www.ebi.ac.uk/efo/EFO_1001478",NA,NA
+"arthritis","arthritis","http://www.ebi.ac.uk/efo/EFO_0005856",NA,NA
+"CRC","colorectal Cancer","http://www.ebi.ac.uk/efo/EFO_0005842",NA,NA
+"adenoma","adenoma","http://www.ebi.ac.uk/efo/EFO_0000232",NA,NA
+"fatty_liver","fatty liver","http://purl.obolibrary.org/obo/MONDO_0004790",NA,NA
+"hypertension","hypertension","http://www.ebi.ac.uk/efo/EFO_0000537",NA,NA
+"coeliac","celiac disease","http://www.ebi.ac.uk/efo/EFO_0001060",NA,NA
+"asthma","asthma","http://www.ebi.ac.uk/efo/EFO_0000270",NA,NA
+"gestational_diabetes","gestational diabetes","http://www.ebi.ac.uk/efo/EFO_0004593",NA,NA
+"cirrhosis","cirrhosis of liver","http://www.ebi.ac.uk/efo/EFO_0001422",NA,NA
+"HBV","hepatitis B virus infection","http://www.ebi.ac.uk/efo/EFO_0004197",NA,NA
+"HDV","hepatitis D virus infection","http://www.ebi.ac.uk/efo/EFO_0007304",NA,NA
+"HEV","hepatitis E virus infection","http://www.ebi.ac.uk/efo/EFO_0007303",NA,NA
+"CMV","cytomegalovirus infection","http://www.ebi.ac.uk/efo/EFO_0001062",NA,NA
+"CDI","clostridium difficile infection","http://www.ebi.ac.uk/efo/EFO_0009130",NA,NA
+"IBD","irritable bowel syndrome","http://www.ebi.ac.uk/efo/EFO_0000555",NA,NA
+"T2D","type 2 diabetes mellitus","http://www.ebi.ac.uk/efo/EFO_0001360",NA,NA
+"T1D","type 1 diabetes mellitus","http://www.ebi.ac.uk/efo/EFO_0001359",NA,NA
+"AD","alzheimer's disease","http://www.ebi.ac.uk/efo/EFO_0000249",NA,NA
+"IGT","abnormal glucose tolerance","http://www.ebi.ac.uk/efo/EFO_0002546",NA,NA
+"schizophrenia","schizophrenia","http://www.ebi.ac.uk/efo/EFO_0000692",NA,NA
+"bronchitis","bronchitis","http://www.ebi.ac.uk/efo/EFO_0009661",NA,NA
+"pneumonia","pneumonia","http://www.ebi.ac.uk/efo/EFO_0003106",NA,NA
+"stomatitis","stomatitis","http://www.ebi.ac.uk/efo/EFO_0009688",NA,NA
+"pyelonephritis","pyelonephritis","http://www.ebi.ac.uk/efo/EFO_1001141",NA,NA
+"infectiousgastroenteritis","gastroenteritis","http://www.ebi.ac.uk/efo/EFO_1001463",NA,NA
+"cystitis","cystitis","http://www.ebi.ac.uk/efo/EFO_1000025",NA,NA
+"psoriasis","psoriasis","http://www.ebi.ac.uk/efo/EFO_0000676",NA,NA
+"AS","ankylosing spondylitis","http://www.ebi.ac.uk/efo/EFO_0003898",NA,NA
+"RA","rheumatoid Arthritis","http://www.ebi.ac.uk/efo/EFO_0000685",NA,NA
+"metabolic_syndrome","metabolic syndrome","http://www.ebi.ac.uk/efo/EFO_0000195",NA,NA
+"premature_born","premature birth","http://www.ebi.ac.uk/efo/EFO_0003917",NA,NA
+"periodontitis","periodontitis","http://www.ebi.ac.uk/efo/EFO_0000649",NA,NA
+"BD","behcet's syndrome","http://www.ebi.ac.uk/efo/EFO_0003780",NA,NA
+"chorioamnionitis","chorioamnionitis","http://www.ebi.ac.uk/efo/EFO_0009948",NA,NA
+"pre-eclampsia","preeclampsia","http://www.ebi.ac.uk/efo/EFO_0000668",NA,NA
+"hepatitis","hepatitis","http://purl.obolibrary.org/obo/HP_0012115",NA,NA
+"hypercholesterolemia","hypercholesterolemia","http://purl.obolibrary.org/obo/HP_0003124",NA,NA
+"ascaris_lumbricoides","ascaris lumbricoides","http://www.ebi.ac.uk/efo/EFO_0007154",NA,NA
+"trichuris_trichiura","trichuris trichiura","http://www.ebi.ac.uk/efo/EFO_0007524",NA,NA
+"CD","crohn's disease","http://www.ebi.ac.uk/efo/EFO_0000384",NA,NA
+"UC","ulcerative Colitis","http://www.ebi.ac.uk/efo/EFO_0000729",NA,NA
+"adenocarcinoma","adenocarcinoma","http://www.ebi.ac.uk/efo/EFO_0000228",NA,NA
+"carcinoma","carcinoma","http://www.ebi.ac.uk/efo/EFO_0000313",NA,NA
+"NAFLD","non alcoholic fatty liver disease","http://www.ebi.ac.uk/efo/EFO_1001248",NA,NA
+"Indeterminate_colitis","indeterminate colitis","http://www.ebi.ac.uk/efo/EFO_1000034",NA,NA
+"PD","parkinson disease","http://purl.obolibrary.org/obo/MONDO_0005180",NA,NA
+"uveitis","uveitis","http://www.ebi.ac.uk/efo/EFO_1001231",NA,NA
+"VKH","Vogt-Koyanagi-Harada disease (uveitis)","http://purl.obolibrary.org/obo/MONDO_0018092",NA,NA
+"CAD","coronary artery disease","http://www.ebi.ac.uk/efo/EFO_0001645",NA,NA
