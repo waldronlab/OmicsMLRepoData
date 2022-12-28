@@ -60,10 +60,8 @@ load("sampleMetadata.rda")
 ```{r}
 file_url <- "https://raw.githubusercontent.com/Ethan-Loo/Bioinformatics_Data_Curation_Collaboration/main/disease_ontology.yaml"
 x <- yaml::yaml.load_file(file_url)
-y <- as.data.frame(do.call(rbind, x))
-disease_ontology <- tibble::rownames_to_column(y, "Original.Abbreviation.Name")
-
-disease_ontology <- as.data.frame(do.call(rbind, x))
+disease_ontology <- as.data.frame(do.call(rbind, x)) %>%
+    tibble::rownames_to_column(., "Original.Abbreviation.Name")
 head(disease_ontology, 3)
 ```
 
@@ -87,6 +85,7 @@ for (i in seq_along(unique_subtype)) {
     
 ## All the unique study_condition and disease_subtypes
 unique_disease <- c(unique(sampleMetadata$study_condition), unique(subtype_all)) 
+
 ## Format it as same as cmd_disease table
 unique_disease_tb <- data.frame(Original.Abbreviation.Name = sort(unique_disease), 
                                 Full.Name = NA,
@@ -96,13 +95,13 @@ unique_disease_tb <- data.frame(Original.Abbreviation.Name = sort(unique_disease
 Next, we should combine `unique_disease_tb` and `cmd_disease` tables 
 without losing any information.
 ```{r}
-cmd_disease_unique_disease <- rbind(cmd_disease, unique_disease_tb)
+cmd_unique_disease <- rbind(cmd_disease, unique_disease_tb)
 ```
 
-We subset `cmd_disease_unique_disease` with the unique values that also have 
+We subset `cmd_unique_disease` with the unique values that also have 
 the `Ontology.link` value. This table is named `ont_complete`. 
 ```{r}
-ont_complete <- cmd_disease_unique_disease %>% 
+ont_complete <- cmd_unique_disease %>% 
     distinct(Original.Abbreviation.Name, .keep_all=TRUE) %>% 
     filter(Ontology.link != "")
 ```
@@ -111,13 +110,10 @@ Any unique value without `Ontology.link` information is subjected for the
 further manual curation and exported 
 ```{r}
 # Filter rows where manual curation is needed
-manaul_curation <- cmd_disease_unique_disease %>% 
+manaul_curation <- cmd_unique_disease %>% 
     distinct(Original.Abbreviation.Name, .keep_all=TRUE) %>% 
-    filter(Ontology.link == "")
-
-# Add a new column for "Revision Required" that explains observations that require clarification
-manaul_curation <- manaul_curation %>% 
-    add_column(Revision_Required = "")
+    filter(Ontology.link == "") %>%
+    add_column(Revision_Required = "") # explains observations that require clarification
 ```
 
 # Manual Curation
