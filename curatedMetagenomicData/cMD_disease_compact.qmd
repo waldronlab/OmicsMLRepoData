@@ -1,6 +1,6 @@
 ---
 title: "Clean-up the disease attributes of cMD sample metadata"
-author: "Sehyun Oh and Madelyn Carlson"
+author: "Sehyun Oh"
 date: "`r format(Sys.time(), '%B %d, %Y')`"
 format:
     html:
@@ -36,18 +36,18 @@ Manual curation efforts for curatedMetagenomicData `sampleMetadata` are
 happening in a several GitHub repositories. We will first collect the most
 up-to-date versions of them. Data inputs include: 
 
-1. Hand-curated disease ontology table 
-2. Curated metagenomic data curation tables ([link](https://github.com/waldronlab/curatedMetagenomicDataCuration/tree/master/inst/extdata)) 
-3. `sampleMetadata` table from the curatedMetagenomicData package ([link](https://github.com/waldronlab/curatedMetagenomicData/blob/master/data/sampleMetadata.rda))
-4. Metadata from the curated disease ontology terms 
+1. Hand-curated disease ontology table ([link](https://github.com/waldronlab/curatedMetagenomicDataCuration/blob/master/inst/extdata/updated-disease-ontology.csv)) 
+2. [Body-site-ontology.csv](https://github.com/waldronlab/curatedMetagenomicDataCuration/blob/master/inst/extdata/body-site-ontology.csv)
+3. Curated metagenomic data curation tables ([link](https://github.com/waldronlab/curatedMetagenomicDataCuration/tree/master/inst/extdata)) 
+4. `sampleMetadata` table from the curatedMetagenomicData package ([link](https://github.com/waldronlab/curatedMetagenomicData/blob/master/data/sampleMetadata.rda))
 
 ## curatedMetagenomicDataCuration
-
 ```{r}
 file_url <- "https://raw.githubusercontent.com/waldronlab/curatedMetagenomicDataCuration/master/inst/extdata/updated-disease-ontology.csv"
 cmd_disease <- read.csv(file_url, sep = ",", header = TRUE)
 head(cmd_disease, 3)
 ```
+matching ontology for that term - or just match all the col to the ontology terms using/ cBioPortal is 100% cancer and it's all the same - it's all gut cancer so they're not going to be related other than they're both description 
 
 ## Sample metadata from cMD
 ```{r}
@@ -70,11 +70,12 @@ head(disease_ontology, 3)
 ## Our curation file
 ```
 
-
 # Merge Curation Files
 
 ## Disease
-Merge 'study_condition' and 'disease_subtype' columns of the `sampleMetadata` table. 
+
+Merge 'study_condition' and 'disease_subtype' columns of the `sampleMetadata` 
+table. 
 ```{r}
 unique_subtype <- unique(sampleMetadata$disease_subtype)
 subtype_all <- c() # collect all the subtypes
@@ -85,7 +86,6 @@ for (i in seq_along(unique_subtype)) {
     
 ## All the unique study_condition and disease_subtypes
 unique_disease <- c(unique(sampleMetadata$study_condition), unique(subtype_all)) 
-
 ## Format it as same as cmd_disease table
 unique_disease_tb <- data.frame(Original.Abbreviation.Name = sort(unique_disease), 
                                 Full.Name = NA,
@@ -117,13 +117,16 @@ manaul_curation <- cmd_unique_disease %>%
 ```
 
 # Manual Curation
+
 ## Temporal file for manual curation
+
 Export the merged mapping table to Google Sheet for manual curation.
 ```{r export_gs, eval=FALSE}
 gs4_create("cMDOntology_NeedsCuration", sheets = manaul_curation)
 ```
 
 ## Save manually curated mapping table 
+
 After the manual curation, update the target mapping table in GitHub. 
 ```{r eval=FALSE}
 manual_curated <- read_sheet("https://docs.google.com/spreadsheets/d/1Vai_5gfH3UYg3F5eyA27NytqfAZMN0805aE8MBSQstk/edit?usp=sharing")
@@ -134,22 +137,108 @@ manual_curated <- read_sheet("https://docs.google.com/spreadsheets/d/1Vai_5gfH3U
 ```{r eval=FALSE}
 ## Rename `Full.Name` column header of `ont_complete` table to `Full.Name.Curated`
 ont_complete <- rename(ont_complete, "Full.Name" = "Full.Name.Curated")
-
 ## Merge curated data with the cleaned DF
 cMD_disease <- full_join(manual_curated, ont_complete, by = NULL)
-
 ## Save
 write.csv(cMD_disease, "cMD_disease_ontology.csv", row.names = FALSE)
 ```
 
-Need to repeat steps, shown above, for age. 
-
 # Other attributes
+
 ## Age
+
 Merge 'age', 'infant_age', and 'gestational_age' columns.
-Outstanding task: Work with team to strategize ways to structure this data.  
+```{r}
+# First, EDA to understand the approx. number of observations with multiple age values as well as how many observations have no age values. 
+sub_new <- sampleMetadata[,c("age", "infant_age", "gestational_age")]
+rowSums(!is.na(sub_new))
+ind_3 <- which(rowSums(!is.na(sub_new)) == 3)
+ind_2 <- which(rowSums(!is.na(sub_new)) == 2)
+ind_0 <- which(rowSums(!is.na(sub_new)) == 0)
+dim(ind)
+head(sub[ind_3,])
+head(sub[ind_2,])
+head(sub[ind_0,])
+
+ind <- which(is.na(sampleMetadata$age) & is.na(sampleMetadata$infant_age & is.na(sampleMetadata$gestational_age)))
+length(ind)
+head(ind)
+head(sampleMetadata[ind,])
+```
+
+```{r}
+# Filter observations to understand whether any observations missing age data have age_group data. The returned DF has zero rows.  
+dplyr::filter(sampleMetadata, age == "" & age_group != "")
+sub_2 <- sampleMetadata[,c("age", "age_group")]
+rowSums(!is.na(sub_2))
+rowSums(!is.na(sub_2)) %>% table()
+ind_22 <- which(rowSums(!is.na(sub_2)) == 2)
+ind_12 <- which(rowSums(!is.na(sub_2)) == 1)
+ind_02 <- which(rowSums(!is.na(sub_2)) == 0)
+```
+
+Check potential data entry errors in gestational_age column. No observations 
+should exceed 43 weeks.
+```{r}
+sum(sampleMetadata$gestational_age > 43, na.rm=TRUE)
+```
+No gestational_age observations exceed the cut off point: 43 weeks. If additional
+data was added that included values exceeding 43 weeks, we'd need to decide how to handle it. Option is to set all observations exceeding 43 weeks to NA. 
+
+```{r}
+# Convert infant_age variable to year unit
+
+sampleMetadata$infant_age_year <- sampleMetadata$infant_age/365
+sampleMetadata$age_year <- sampleMetadata$age
+# sampleMetadata$gestational_age_year <- sampleMetadata$gestational_age/52 
+# Decided not to include gestational age because merging it with infant_age and age was comparing apples to oranges. Gestational age has been added in it's own column in the data frame, see steps below.
+
+# Using dplyr, filter > select col > append the static values (i.e., the unit values)
+
+output_infant <- sampleMetadata %>% 
+                dplyr::filter(!is.na(infant_age)) %>% 
+                dplyr::mutate(curated.age.low = infant_age_year,
+                              curated.age.high = infant_age_year,
+                              original.age.value = infant_age,
+                              original.age = 'infant_age',
+                              original.age.unit = 'day',
+                              curated.age.unit = 'year') %>%
+                dplyr::select(original.age, original.age.value, original.age.unit,
+                              curated.age.low, curated.age.high, curated.age.unit)
+
+output_age <- sampleMetadata %>% 
+                dplyr::filter(!is.na(age)) %>% 
+                dplyr::mutate(curated.age.low = age_year,
+                              curated.age.high = age_year,
+                              original.age.value = age,
+                              original.age = 'age',
+                              original.age.unit = 'year',
+                              curated.age.unit = 'year') %>%
+                dplyr::select(original.age, original.age.value, original.age.unit,
+                              curated.age.low, curated.age.high, curated.age.unit)  
+
+output_gestational <- sampleMetadata %>% 
+                      dplyr::mutate(curated.gestational.age.weeks = gestational_age) %>%   
+                      dplyr::select(curated.gestational.age.weeks)
+        
+# Append the tibbles 
+curated_age_df <- output_infant %>% bind_rows(output_age) %>% bind_rows(output_gestational)
+```
+
+
+```{r}
+# Check whether there were data entering error for any infant age observations. Infant_age/365 should be larger than age but less than age + 1.
+sum(sampleMetadata$infant_age/365 > sampleMetadata$age+1, na.rm = TRUE)
+
+check_infant <- rowSums(sampleMetadata$infant_age/365 > sampleMetadata$age+1, na.rm = TRUE)
+# There are 14 observations flagged after running this line 
+
+sampleMetadata %>% filter(sampleMetadata$infant_age/365 > sampleMetadata$age+1)
+# Of the 14 observations that do not pass our sanity check, examples include rows where age = 0 and infant age = 420, 372, 371, etc. This may not be an issue because in our converted age columns, infant_age is divided by 365 to convert to year values. Correct age per observation is still captured. 
+```
 
 ## Bodysite
+
 This curation is completed.
 
 ```{r}
@@ -178,5 +267,4 @@ getPMID("disease", "T1D_nonconverter")
 getPMID("study_condition", "T1D_nonconverter")
 getPMID("disease_subtype", "T1D_nonconverter")
 ```
-
 
