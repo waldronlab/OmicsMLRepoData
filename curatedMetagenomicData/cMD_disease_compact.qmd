@@ -152,7 +152,6 @@ Merge 'age', 'infant_age', and 'gestational_age' columns.
 # First, EDA to understand the approx. number of observations with multiple age values as well as how many observations have no age values. 
 sub_new <- sampleMetadata[,c("age", "infant_age", "gestational_age")]
 rowSums(!is.na(sub_new))
-rowSums(!is.na(sub)) %>% table()
 ind_3 <- which(rowSums(!is.na(sub_new)) == 3)
 ind_2 <- which(rowSums(!is.na(sub_new)) == 2)
 ind_0 <- which(rowSums(!is.na(sub_new)) == 0)
@@ -225,12 +224,17 @@ output_gestational <- sampleMetadata %>%
 # Append the tibbles 
 curated_age_df <- output_infant %>% bind_rows(output_age) %>% bind_rows(output_gestational)
 ```
-Observations on the selected age variables: Age = year units, gestational_age = week units, infant_age = day units. There is a variable labeled "age category", options: newborn, child, adult. 
+
 
 ```{r}
 # Check whether there were data entering error for any infant age observations. Infant_age/365 should be larger than age but less than age + 1.
-
 sum(sampleMetadata$infant_age/365 > sampleMetadata$age+1, na.rm = TRUE)
+
+check_infant <- rowSums(sampleMetadata$infant_age/365 > sampleMetadata$age+1, na.rm = TRUE)
+# There are 14 observations flagged after running this line 
+
+sampleMetadata %>% filter(sampleMetadata$infant_age/365 > sampleMetadata$age+1)
+# Of the 14 observations that do not pass our sanity check, examples include rows where age = 0 and infant age = 420, 372, 371, etc. This may not be an issue because in our converted age columns, infant_age is divided by 365 to convert to year values. Correct age per observation is still captured. 
 ```
 
 ## Bodysite
