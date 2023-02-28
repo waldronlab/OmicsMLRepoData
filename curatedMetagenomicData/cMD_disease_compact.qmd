@@ -1,6 +1,6 @@
 ---
 title: "Clean-up the disease attributes of cMD sample metadata"
-author: "Sehyun Oh"
+author: "Madelyn Carlson and Sehyun Oh"
 date: "`r format(Sys.time(), '%B %d, %Y')`"
 format:
     html:
@@ -12,7 +12,7 @@ abstract: "Prepare U24 Supplement: AI/ML-ready"
 
 ```{r setup, include=FALSE}
 knitr::opts_chunk$set(echo = TRUE, warning = FALSE, message = FALSE, 
-                      collapse = TRUE)
+                      collapse = TRUE, eval=FALSE)
 ```
 
 # Load Packages 
@@ -47,7 +47,6 @@ file_url <- "https://raw.githubusercontent.com/waldronlab/curatedMetagenomicData
 cmd_disease <- read.csv(file_url, sep = ",", header = TRUE)
 head(cmd_disease, 3)
 ```
-matching ontology for that term - or just match all the col to the ontology terms using/ cBioPortal is 100% cancer and it's all the same - it's all gut cancer so they're not going to be related other than they're both description 
 
 ## Sample metadata from cMD
 ```{r}
@@ -107,7 +106,7 @@ ont_complete <- cmd_unique_disease %>%
 ```
 
 Any unique value without `Ontology.link` information is subjected for the 
-further manual curation and exported 
+further manual curation and exported to Google Sheet.
 ```{r}
 # Filter rows where manual curation is needed
 manaul_curation <- cmd_unique_disease %>% 
@@ -136,11 +135,11 @@ manual_curated <- read_sheet("https://docs.google.com/spreadsheets/d/1Vai_5gfH3U
  
 ```{r eval=FALSE}
 ## Rename `Full.Name` column header of `ont_complete` table to `Full.Name.Curated`
-ont_complete <- rename(ont_complete, "Full.Name" = "Full.Name.Curated")
+ont_complete <- rename(ont_complete, Full.Name.Curated = Full.Name)
 ## Merge curated data with the cleaned DF
 cMD_disease <- full_join(manual_curated, ont_complete, by = NULL)
 ## Save
-write.csv(cMD_disease, "cMD_disease_ontology.csv", row.names = FALSE)
+write.csv(cMD_disease, "maps/cMD_disease_ontology.csv", row.names = FALSE)
 ```
 
 # Other attributes
