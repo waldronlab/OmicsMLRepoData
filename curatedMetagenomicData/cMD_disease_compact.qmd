@@ -67,7 +67,7 @@ head(disease_ontology, 3)
 This is currently stored under the private repo.
 ```{r}
 ## Our curation file
-file_url <- "https://raw.githubusercontent.com/waldronlab/OmicsMLRepoData/master/curatedMetagenomicData/maps/cMD_disease_ontology.csv?token=GHSAT0AAAAAAB7ODWEJUMTSW27IDEOA3IZWZAEVVUQ"
+file_url <- "https://raw.githubusercontent.com/waldronlab/OmicsMLRepoData/master/curatedMetagenomicData/maps/cMD_condition_ontology.csv?token=GHSAT0AAAAAAB7ODWEIAR2LACWJGB2M2KWKZALPIQA"
 mlRepo_disease_all <- read.csv(file_url, sep = ",", header = TRUE)
 head(mlRepo_disease_all, 3)
 
