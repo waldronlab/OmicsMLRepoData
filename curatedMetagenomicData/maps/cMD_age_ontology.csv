@@ -1,0 +1,6 @@
+"age_category","curated_age_group","curated_age_group_ontology","curated_age_min","curated_age_max"
+"schoolage","Adolescent","http://purl.obolibrary.org/obo/NCIT_C27954",11,18
+"adult","Adult","http://purl.obolibrary.org/obo/NCIT_C49685",18,65
+"child","Children 2-11 Years Old","http://purl.obolibrary.org/obo/NCIT_C49683",2,11
+"senior","Elderly","http://purl.obolibrary.org/obo/NCIT_C16268",65,130
+"newborn","Infant","http://purl.obolibrary.org/obo/NCIT_C27956",0,2
