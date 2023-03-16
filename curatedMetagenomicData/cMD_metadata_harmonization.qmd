@@ -29,6 +29,7 @@ suppressPackageStartupMessages({
     library(googlesheets4)
     library(tidyverse)
     library(plyr)
+    library(rols)
 })
 ```
 
@@ -74,14 +75,13 @@ head(disease_ontology, 3)
 This is currently stored under the private repo.
 ```{r}
 ## Our curation file
-file_url <- "https://raw.githubusercontent.com/waldronlab/OmicsMLRepoData/master/curatedMetagenomicData/maps/cMD_condition_ontology.csv?token=GHSAT0AAAAAAB7ODWEIAR2LACWJGB2M2KWKZALPIQA"
+file_url <- "https://raw.githubusercontent.com/waldronlab/OmicsMLRepoData/master/curatedMetagenomicData/maps/cMD_condition_ontology.csv?token=GHSAT0AAAAAAB7ODWEIMK4WXDXWGC3BTVDIZATQQKA"
 mlRepo_disease_all <- read.csv(file_url, sep = ",", header = TRUE)
 head(mlRepo_disease_all, 3)
 
-mlRepo_disease <- mlRepo_disease_all[,c("Original.Abbreviation.Name",
-                                        "Full.Name.Curated",
-                                        "Ontology.link")]
-colnames(mlRepo_disease)[2] <- "Full.Name" # To merge with the other tables
+colnames(mlRepo_disease) <- c("Original.Abbreviation.Name",
+                              "Full.Name",
+                              "Ontology.link") # To merge with the other tables
 ```
 
 ### sampleMetadata
@@ -271,7 +271,34 @@ ss <- googledrive::as_id(url)
 condition_map <- read_sheet(ss, sheet = "disease_ontology_all")
 ```
 
+Double-check whether the curation is correct. Any curated ontology terms
+returned with `corret == FLASE` in `validation_tb` are reviewed.
+
 ```{r}
+validation_tb <- data.frame(matrix(NA, nrow = nrow(condition_map), ncol = 4))
+colnames(validation_tb) <- c("curated_onto_term", "curated_onto_id", 
+                             "query_onto_term", "correct")
+
+for (i in seq_len(nrow(condition_map))) {
+    onto_term <- condition_map$original_value[i]
+    onto_id <- basename(condition_map$Ontology.link[i])
+    qry <- OlsSearch(q = onto_id, exact = TRUE)
+    qry <- olsSearch(qry)
+    qdrf <- as(qry, "data.frame")
+    
+    validation_tb$curated_onto_term[i] <- onto_term
+    validation_tb$curated_onto_id[i] <- onto_id
+    validation_tb$query_onto_term[i] <- unique(qdrf$label)
+    validation_tb$correct[i] <- identical(validation_tb$curated_onto_term[i],
+                                       validation_tb$query_onto_term[i])
+}
+```
+
+```{r}
+colnames(condition_map) <- c("original_value",
+                             "curated_ontology_term",
+                             "curated_ontology_term_id")
+
 ## Save
 write.csv(condition_map, "maps/cMD_condition_ontology.csv", row.names = FALSE)
 ```
@@ -282,7 +309,7 @@ Assign disease ontology terms to sampleMetadata
 ## Import the condition map
 condition_map <- read.csv(file.path(proj_dir, "maps/cMD_condition_ontology.csv"), 
                           sep = ",", header = TRUE)
-condition_map$Ontology.link <- basename(condition_map$Ontology.link)
+condition_map$curated_ontology_term_id <- basename(condition_map$curated_ontology_term_id)
 ```
 
 ```{r}
@@ -292,8 +319,8 @@ condition_tb <- sampleMetadata[,c("curation_id", "disease",
 combine_condition <- function(x) { # x is a character vector from each row (e.g. condition_tb[2374,])
     y <- strsplit(x[c("disease", "disease_subtype", "study_condition")], ";") %>% unlist
     z <- plyr::mapvalues(unlist(y), 
-                         from = condition_map$Original.Abbreviation.Name,
-                         to = condition_map$Full.Name.Curated,
+                         from = condition_map$original_value,
+                         to = condition_map$curated_ontology_term,
                          warn_missing = FALSE)
     term <- unique(z[!is.na(z)], na.rm = TRUE) %>% paste(., collapse = ";")
     return(term)
@@ -302,8 +329,8 @@ combine_condition <- function(x) { # x is a character vector from each row (e.g.
 combine_condition_ontology <- function(x) {
     y <- strsplit(x[c("disease", "disease_subtype", "study_condition")], ";") %>% unlist
     z <- plyr::mapvalues(unlist(y), 
-                         from = condition_map$Original.Abbreviation.Name,
-                         to = condition_map$Ontology.link,
+                         from = condition_map$original_value,
+                         to = condition_map$curated_ontology_term_id,
                          warn_missing = FALSE)
     onto <- unique(z[!is.na(z)], na.rm = TRUE) %>% paste(., collapse = ";")
     return(onto)
@@ -569,12 +596,15 @@ further curation, this table is exported as Google Sheet.
 ```{r eval=FALSE}
 file_url <- "https://raw.githubusercontent.com/waldronlab/curatedMetagenomicDataCuration/master/inst/extdata/body-site-ontology.csv"
 cMD_bodysite <- read.csv(file_url, sep = ",", header = TRUE)
+colnames(cMD_bodysite) <- c("original_value",
+                            "curated_ontology_term",
+                            "curated_ontology_term_id")
 sheet_write(cMD_bodysite, ss = ss, sheet = "bodysite_ontology")
 
 ## Confirm that the manual curation table contains all the values in sampleMetadata
 bodysites <- unique(c(sampleMetadata$body_site,
                       sampleMetadata$body_subsite))
-setdiff(bodysites, cMD_bodysite$Original.Abbreviation.Name)
+setdiff(bodysites, cMD_bodysite$original_value)
 ```
 
 Manual curated file is imported.
@@ -586,7 +616,32 @@ bodysite_map <- read_sheet(ss, sheet = "bodysite_ontology")
 bodysite_map
 ```
 
+Double-check whether the curation is correct. Any curated ontology terms
+returned with `corret == FLASE` in `validation_tb` are reviewed.
+
+```{r}
+validation_tb <- data.frame(matrix(NA, nrow = nrow(bodysite_map), ncol = 4))
+colnames(validation_tb) <- c("curated_onto_term", "curated_onto_id", 
+                             "query_onto_term", "correct")
+
+for (i in seq_len(nrow(bodysite_map))) {
+    onto_term <- bodysite_map$curated_ontology_term[i]
+    onto_id <- basename(bodysite_map$curated_ontology_term_id[i])
+    qry <- OlsSearch(q = onto_id, exact = TRUE)
+    qry <- olsSearch(qry)
+    qdrf <- as(qry, "data.frame")
+    
+    validation_tb$curated_onto_term[i] <- onto_term
+    validation_tb$curated_onto_id[i] <- onto_id
+    validation_tb$query_onto_term[i] <- unique(qdrf$label)
+    validation_tb$correct[i] <- identical(validation_tb$curated_onto_term[i],
+                                       validation_tb$query_onto_term[i])
+}
+```
+
 ```{r eval=FALSE}
+sheet_write(bodysite_map, ss = ss, sheet = "bodysite_ontology")
+
 ## Save
 write.csv(bodysite_map, "maps/cMD_bodysite_ontology.csv", row.names = FALSE)
 ```
@@ -602,20 +657,20 @@ bodysite_tb <- sampleMetadata[,c("curation_id", "body_site", "body_subsite")]
 curated_bodysite <- bodysite_tb %>%
     transmute(curation_id = curation_id,
               curated_body_site = mapvalues(x = bodysite_tb$body_site,
-                                            from = bodysite_map$Original.Abbreviation.Name,
-                                            to = bodysite_map$Ontology.Name,
+                                            from = bodysite_map$original_value,
+                                            to = bodysite_map$curated_ontology_term,
                                             warn_missing = TRUE),
               curated_body_site_ontology = mapvalues(x = bodysite_tb$body_site,
-                                                    from = bodysite_map$Original.Abbreviation.Name,
-                                                    to = bodysite_map$Ontology.link,
+                                                    from = bodysite_map$original_value,
+                                                    to = bodysite_map$curated_ontology_term_id,
                                                     warn_missing = TRUE),
               curated_body_subsite = mapvalues(x = bodysite_tb$body_subsite,
-                                               from = bodysite_map$Original.Abbreviation.Name,
-                                               to = bodysite_map$Ontology.Name,
+                                               from = bodysite_map$original_value,
+                                               to = bodysite_map$curated_ontology_term,
                                                warn_missing = TRUE),
               curated_body_subsite_ontology = mapvalues(x = bodysite_tb$body_subsite,
-                                                        from = bodysite_map$Original.Abbreviation.Name,
-                                                        to = bodysite_map$Ontology.link,
+                                                        from = bodysite_map$original_value,
+                                                        to = bodysite_map$curated_ontology_term_id,
                                                         warn_missing = TRUE))
 
 ## Remove body_subsite that is identical to body_site

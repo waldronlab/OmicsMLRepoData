@@ -1,4 +1,4 @@
-"Original.Abbreviation.Name","Ontology.Name","Ontology.link"
+"original_value","curated_ontology_term","curated_ontology_term_id"
 "anterior_nares","anterior naris","http://purl.obolibrary.org/obo/UBERON_2001427"
 "buccal_mucosa","buccal mucosa","http://purl.obolibrary.org/obo/UBERON_0006956"
 "chest","chest","http://purl.obolibrary.org/obo/UBERON_0001443"
