@@ -1,4 +1,4 @@
-"curation_id","curated_study_condition","curated_study_condition_ontology_term_id","curated_disease","curated_disease_ontology"
+"curation_id","curated_study_condition","curated_study_condition_ontology_term_id","curated_disease","curated_disease_ontology_term_id"
 "AsnicarF_2017:MV_FEI1_t1Q14","Study Control","NCIT_C142703","Healthy","NCIT_C115935"
 "AsnicarF_2017:MV_FEI2_t1Q14","Study Control","NCIT_C142703","Healthy","NCIT_C115935"
 "AsnicarF_2017:MV_FEI3_t1Q14","Study Control","NCIT_C142703","Healthy","NCIT_C115935"
