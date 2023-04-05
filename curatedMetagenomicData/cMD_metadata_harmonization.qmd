@@ -34,10 +34,15 @@ suppressPackageStartupMessages({
 ```
 
 ```{r echo=FALSE}
+## Add the `curation_id` column
 proj_dir <- "~/Packages/OmicsMLRepoData/curatedMetagenomicData/"
 sampleMetadata$curation_id <- paste(sampleMetadata$study_name,
                                     sampleMetadata$sample_id,
                                     sep = ":")
+
+## Google Sheet connection
+url <- "https://docs.google.com/spreadsheets/d/1QSbB_b1DkfqOc7q5eHE0IDHSiGqNUyTE8d4GzbSEzjM/edit?usp=sharing"
+ss <- googledrive::as_id(url)
 ```
 
 # Disease 
@@ -266,8 +271,6 @@ sheet_write(condition_map, ss = ss, sheet = "disease_ontology_all")
 
 After manual fixes, import the final condition_ontology_map.
 ```{r}
-url <- "https://docs.google.com/spreadsheets/d/1QSbB_b1DkfqOc7q5eHE0IDHSiGqNUyTE8d4GzbSEzjM/edit?usp=sharing"
-ss <- googledrive::as_id(url)
 condition_map <- read_sheet(ss, sheet = "disease_ontology_all")
 ```
 
@@ -280,8 +283,8 @@ colnames(validation_tb) <- c("curated_onto_term", "curated_onto_id",
                              "query_onto_term", "correct")
 
 for (i in seq_len(nrow(condition_map))) {
-    onto_term <- condition_map$original_value[i]
-    onto_id <- basename(condition_map$Ontology.link[i])
+    onto_term <- condition_map$curated_ontology_term[i]
+    onto_id <- basename(condition_map$curated_ontology_term_id[i])
     qry <- OlsSearch(q = onto_id, exact = TRUE)
     qry <- olsSearch(qry)
     qdrf <- as(qry, "data.frame")
@@ -290,11 +293,15 @@ for (i in seq_len(nrow(condition_map))) {
     validation_tb$curated_onto_id[i] <- onto_id
     validation_tb$query_onto_term[i] <- unique(qdrf$label)
     validation_tb$correct[i] <- identical(validation_tb$curated_onto_term[i],
-                                       validation_tb$query_onto_term[i])
+                                          validation_tb$query_onto_term[i])
 }
+
+## 11 need-a-review entries
+## 5 yet un-mapped + 6 with multiple mapped
+validation_tb$correct[!validation_tb$correct,]
 ```
 
-```{r}
+```{r update_the_condition_map, eval=FALSE}
 colnames(condition_map) <- c("original_value",
                              "curated_ontology_term",
                              "curated_ontology_term_id")
@@ -312,10 +319,8 @@ condition_map <- read.csv(file.path(proj_dir, "maps/cMD_condition_ontology.csv")
 condition_map$curated_ontology_term_id <- basename(condition_map$curated_ontology_term_id)
 ```
 
-```{r}
-## Subset the condition/disease-related columns
-condition_tb <- sampleMetadata[,c("curation_id", "disease", 
-                                  "disease_subtype", "study_condition")]
+```{r prepare_condition_mapping}
+## A function to combine multiple values from multiple columns, separated by semicolon
 combine_condition <- function(x) { # x is a character vector from each row (e.g. condition_tb[2374,])
     y <- strsplit(x[c("disease", "disease_subtype", "study_condition")], ";") %>% unlist
     z <- plyr::mapvalues(unlist(y), 
@@ -326,21 +331,38 @@ combine_condition <- function(x) { # x is a character vector from each row (e.g.
     return(term)
 }
 
+## A function to assign ontology term id to combined values, separated by semicolon
 combine_condition_ontology <- function(x) {
     y <- strsplit(x[c("disease", "disease_subtype", "study_condition")], ";") %>% unlist
     z <- plyr::mapvalues(unlist(y), 
                          from = condition_map$original_value,
-                         to = condition_map$curated_ontology_term_id,
+                         to = basename(condition_map$curated_ontology_term_id),
                          warn_missing = FALSE)
     onto <- unique(z[!is.na(z)], na.rm = TRUE) %>% paste(., collapse = ";")
     return(onto)
 }
+```
+
+```{r}
+## Subset to the condition/disease-related columns
+condition_tb <- sampleMetadata[,c("curation_id", "disease", 
+                                  "disease_subtype", "study_condition")]
+
+## Keep only 'contol' in the study_condition column
+control_ind <- which(condition_tb$study_condition == "control")
+condition_tb$curated_study_condition <- NA
+condition_tb$curated_study_condition_ontology_term_id <- NA
+condition_tb$curated_study_condition[control_ind] <- "Study Control"
+condition_tb$curated_study_condition_ontology_term_id[control_ind] <- "NCIT_C142703"
 
 ## Combine all disease-related information in one column
+condition_tb$study_condition[control_ind] <- NA
 curated_condition <- condition_tb %>%
     transmute(curation_id = curation_id,
-              curated_condition = apply(., 1, combine_condition),
-              curated_condition_ontology = apply(., 1, combine_condition_ontology))
+              curated_study_condition = curated_study_condition,
+              curated_study_condition_ontology_term_id = curated_study_condition_ontology_term_id,
+              curated_disease = apply(., 1, combine_condition),
+              curated_disease_ontology = apply(., 1, combine_condition_ontology))
 head(curated_condition)
 tail(curated_condition)
 ```
@@ -388,8 +410,11 @@ all(age_tb$infant_age[ind_3yr] < 365*4 & age_tb$infant_age[ind_3yr] >= 365*3)
 ```
 
 There are 15 samples assigned with `age = 0` while there `infant_age` is larger
-than 365. However, the final `curated_age`
-```{r}
+than 365. However, the final `curated_age` will use most detailed information
+(i.e. `infant_age > 365` instead of `age = 0` for a given sample), this error
+will be self-corrected in the process.
+
+```{r sanity_check_age_disagreement} 
 age_tb_0yr <- age_tb[ind_0yr,]
 errored_ind <- which(!age_tb_0yr$infant_age < 365*1 & age_tb_0yr$infant_age >= 0)
 age_tb_0yr[errored_ind,]
@@ -427,11 +452,11 @@ curated_infant_age <- age_tb %>%
                      original_age_source = "infant_age",
                      original_age_value = infant_age,
                      original_age_unit = "day",
-                     curated_age = infant_age/365,
+                     curated_age_years = infant_age/365,
                      curated_age_min = infant_age/365,
                      curated_age_max = infant_age/365,
                      curated_age_group = NA,
-                     curated_age_group_ontology = NA)
+                     curated_age_group_ontology_term_id = NA)
 
 curated_age <- age_tb %>%
     dplyr::filter(is.na(infant_age) & !is.na(age)) %>% 
@@ -439,11 +464,11 @@ curated_age <- age_tb %>%
                      original_age_source = "age",
                      original_age_value = age,
                      original_age_unit = "year",
-                     curated_age = age,
+                     curated_age_years = age,
                      curated_age_min = age,
                      curated_age_max = age,
                      curated_age_group = NA,
-                     curated_age_group_ontology = NA)
+                     curated_age_group_ontology_term_id = NA)
 
 # no_age_info <- age_tb %>%
 #     dplyr::filter(is.na(age) & is.na(infant_age)) %>%
@@ -471,17 +496,17 @@ age_group_only <- age_tb %>%
                      original_age_source = "age_category",
                      original_age_value = NA,
                      original_age_unit = NA,
-                     curated_age = NA,
+                     curated_age_years = NA,
                      curated_age_min = NA,
                      curated_age_max = NA,
                      curated_age_group = NA,
-                     curated_age_group_ontology = NA)  
+                     curated_age_group_ontology_term_id = NA)  
 
 age_group_need_curation <- age_tb %>%   # curated age fields are filled with numeric value
     dplyr::filter(!is.na(age) | !is.na(infant_age)) %>%
     dplyr::transmute(curation_id = curation_id,
                      curated_age_group = NA,
-                     curated_age_group_ontology = NA)
+                     curated_age_group_ontology_term_id = NA)
 ```
 
 Original curation on `age_category` is erroneous and not following proper
@@ -507,17 +532,19 @@ for (i in seq_along(age_categories)) {
     age_category_def[i, 2] <- min(res$age)
     age_category_def[i, 3] <- max(res$age)
 }
+
+## The original `age_category` definition (not mutually exclusive/ wrong)
 age_category_def
 ```
 
 ```{r export_gs_sheet_for_age, eval=FALSE, echo=FALSE}
-age_group_ontology <- data.frame(age_category = NA,
+age_group_ontology <- data.frame(original_value = NA,
                                  curated_age_group = NA,
-                                 curated_age_group_ontology = NA)
+                                 curated_age_group_ontology_term_id = NA)
 sheet_write(age_group_ontology, ss = ss, sheet = "age_group_ontology")
 ```
 
-```{r}
+```{r eval=FALSE}
 ## Import the age-mapping table
 age_group_map <- read_sheet(ss, sheet = "age_group_ontology")
 age_group_map
@@ -528,22 +555,26 @@ write.csv(age_group_map, "maps/cMD_age_ontology.csv", row.names = FALSE)
 
 
 ### Update sampleMetadata
+```{r load_age_map, echo=FALSE}
+age_group_map <- read.table("maps/cMD_age_ontology.csv", sep = ",", header = TRUE)
+```
+
 ```{r age_group_for_no_numeric_age}
 ## age_group ontology
 curated_age_group <- plyr::mapvalues(x = age_group_only$age_category, 
-                                     from = age_group_map$age_category, 
+                                     from = age_group_map$original_value, 
                                      to = age_group_map$curated_age_group, 
                                      warn_missing = TRUE)
 
 ## age_group min
 curated_age_min <- plyr::mapvalues(x = age_group_only$age_category, 
-                                   from = age_group_map$age_category, 
+                                   from = age_group_map$original_value, 
                                    to = age_group_map$curated_age_min, 
                                    warn_missing = TRUE)
 
 ## age_group max
 curated_age_max <- plyr::mapvalues(x = age_group_only$age_category, 
-                                   from = age_group_map$age_category, 
+                                   from = age_group_map$original_value, 
                                    to = age_group_map$curated_age_max, 
                                    warn_missing = TRUE)
 
@@ -560,7 +591,7 @@ curated_numeric_age <- rbind(curated_infant_age, curated_age)
 
 ## Assign age_group based on the numeric age info
 res_pool <- age_group_map$curated_age_group[order(age_group_map$curated_age_min)]
-res_ind <- findInterval(curated_numeric_age$curated_age, vec = sort(age_group_map$curated_age_min))
+res_ind <- findInterval(curated_numeric_age$curated_age_years, vec = sort(age_group_map$curated_age_min))
 curated_numeric_age$curated_age_group <- res_pool[res_ind]
 
 curated_age_all <- rbind(curated_numeric_age, age_group_only)
@@ -569,18 +600,18 @@ nrow(curated_age_all) == nrow(age_tb) ## Check all 22,588 samples are there
 ## Assign ontology to all
 age_onto <- plyr::mapvalues(x = curated_age_all$curated_age_group, 
                             from = age_group_map$curated_age_group, 
-                            to = age_group_map$curated_age_group_ontology, 
+                            to = basename(age_group_map$curated_age_group_ontology_term_id), 
                             warn_missing = TRUE)
-curated_age_all$curated_age_group_ontology <- age_onto
+curated_age_all$curated_age_group_ontology_term_id <- age_onto
 ```
 
 ```{r eval=FALSE}
 ## Save
+curated_age_all <- curated_age_all[order(curated_age_all$curation_id),]
 write.csv(curated_age_all, 
           file = file.path(proj_dir, "data/curated_age.csv"),
           row.names = FALSE)
 ```
-
 
 
 
@@ -660,22 +691,22 @@ curated_bodysite <- bodysite_tb %>%
                                             from = bodysite_map$original_value,
                                             to = bodysite_map$curated_ontology_term,
                                             warn_missing = TRUE),
-              curated_body_site_ontology = mapvalues(x = bodysite_tb$body_site,
-                                                    from = bodysite_map$original_value,
-                                                    to = bodysite_map$curated_ontology_term_id,
-                                                    warn_missing = TRUE),
+              curated_body_site_ontology_term_id = mapvalues(x = bodysite_tb$body_site,
+                                                             from = bodysite_map$original_value,
+                                                             to = basename(bodysite_map$curated_ontology_term_id),
+                                                             warn_missing = TRUE),
               curated_body_subsite = mapvalues(x = bodysite_tb$body_subsite,
                                                from = bodysite_map$original_value,
                                                to = bodysite_map$curated_ontology_term,
                                                warn_missing = TRUE),
-              curated_body_subsite_ontology = mapvalues(x = bodysite_tb$body_subsite,
-                                                        from = bodysite_map$original_value,
-                                                        to = bodysite_map$curated_ontology_term_id,
-                                                        warn_missing = TRUE))
+              curated_body_subsite_ontology_term_id = mapvalues(x = bodysite_tb$body_subsite,
+                                                                from = bodysite_map$original_value,
+                                                                to = basename(bodysite_map$curated_ontology_term_id),
+                                                                warn_missing = TRUE))
 
 ## Remove body_subsite that is identical to body_site
 redundant_ind <- which(curated_bodysite$curated_body_site == curated_bodysite$curated_body_subsite)
-curated_bodysite[redundant_ind, c("curated_body_subsite", "curated_body_subsite_ontology")] <- NA
+curated_bodysite[redundant_ind, c("curated_body_subsite", "curated_body_subsite_ontology_term_id")] <- NA
 ```
 
 ```{r eval=FALSE}
