@@ -1,5 +1,5 @@
 ---
-title: "Clean-up the disease/age/bodysite of cMD sample metadata"
+title: "Harmonize disease/age/bodysite information in cMD sample metadata"
 author: "Sehyun Oh"
 date: "`r format(Sys.time(), '%B %d, %Y')`"
 format:
@@ -323,6 +323,7 @@ condition_map$curated_ontology_term_id <- basename(condition_map$curated_ontolog
 ## A function to combine multiple values from multiple columns, separated by semicolon
 combine_condition <- function(x) { # x is a character vector from each row (e.g. condition_tb[2374,])
     y <- strsplit(x[c("disease", "disease_subtype", "study_condition")], ";") %>% unlist
+    y[!(y %in% condition_map$original_value)] <- "review_required" # leave a "missing_map" note if the value is not in the map
     z <- plyr::mapvalues(unlist(y), 
                          from = condition_map$original_value,
                          to = condition_map$curated_ontology_term,
@@ -334,6 +335,7 @@ combine_condition <- function(x) { # x is a character vector from each row (e.g.
 ## A function to assign ontology term id to combined values, separated by semicolon
 combine_condition_ontology <- function(x) {
     y <- strsplit(x[c("disease", "disease_subtype", "study_condition")], ";") %>% unlist
+    y[!(y %in% condition_map$original_value)] <- "review_required"
     z <- plyr::mapvalues(unlist(y), 
                          from = condition_map$original_value,
                          to = basename(condition_map$curated_ontology_term_id),
@@ -362,7 +364,7 @@ curated_condition <- condition_tb %>%
               curated_study_condition = curated_study_condition,
               curated_study_condition_ontology_term_id = curated_study_condition_ontology_term_id,
               curated_disease = apply(., 1, combine_condition),
-              curated_disease_ontology = apply(., 1, combine_condition_ontology))
+              curated_disease_ontology_term_id = apply(., 1, combine_condition_ontology))
 head(curated_condition)
 tail(curated_condition)
 ```
