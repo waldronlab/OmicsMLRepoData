@@ -25,15 +25,16 @@ suppressPackageStartupMessages({
 ```{r load_data, echo=FALSE, eval=TRUE}
 cbio <- cBioPortal()
 cbioStudies <- getStudies(cbio) 
-
-## Load cleaned files
 studyIds <- cbioStudies$studyId
+
+## Load the cleaned files: these are actually created following the process 
+## described this vignette below.
 fnames <- list.files(getwd())
 fname <- fnames[grep("cBioPortal_all_clinicalData_2", fnames)]
 clinical_var_all <- readRDS(fname)
 
 fname <- fnames[grep("cBioPortal_all_clinicalData_combined_", fnames)]
-template <- readRDS(fname)
+template <- readRDS(fname) # our curation/harmonization starts from this table
 ```
 
 # Load cBioPortal data
@@ -74,18 +75,21 @@ acc_2
 
 ## Number of samples per studies available in cBioPortal
 
-`cBioPortalData` accesses 356 studies comprised of 170,830 samples. All of 
-them are publicly available. There are 13 study-level metadata on general 
-information, e.g. PMID.
-
 ```{r eval=TRUE}
 cbioStudies <- getStudies(cbio)  
-dim(cbioStudies) # 356 studies with 13 study metadata <<<<< Study number continuously changes
+studyNum <- nrow(cbioStudies)
+paste("There are", studyNum, "studies available in cBioPortal on", Sys.Date())
 head(cbioStudies, 3)
 
-table(cbioStudies$publicStudy)  # all of them are public data
-sum(cbioStudies$allSampleCount)  # 170,830 samples are available <<<<< Sample number continuously changes
+table(cbioStudies$publicStudy)  # TRUE if they are public data
+sampleNum <- sum(cbioStudies$allSampleCount)  # The number of samples
+paste("There are", sampleNum, "samples available in cBioPortal on", Sys.Date())
 ```
+
+`cBioPortalData` accesses `r nrow(cbioStudies)` studies comprised of 
+`r sum(cbioStudies$allSampleCount)` samples. `r sum(cbioStudies$publicStudy)`
+of them are publicly available. There are 13 study-level metadata on general 
+information, e.g. PMID.
 
 ## Compare to curatedTCGAData
 
@@ -202,7 +206,7 @@ saveRDS(clinical_var_all, fname)
 ```
 
 The minimum and the maximum number of metadata per study is 7 and 172, respectively.
-```{r}
+```{r eval=TRUE}
 ## Ranges of the number of available clinical variables
 clinical_var <- lapply(clinical_var_all, colnames)
 num <- sapply(clinical_var, length)
@@ -210,7 +214,7 @@ summary(num)
 ```
 
 55 metadata are collected in more than 34 studies (~10%).
-```{r}
+```{r eval=TRUE}
 ## Clinical variables that are available from >= 35 studies (~10%)
 length(unique(unlist(clinical_var)))  # the number of unique clinical variables
 allClinicalVar <- sort(table(unlist(clinical_var)), decreasing = TRUE)
@@ -220,6 +224,7 @@ length(sumMeta) # the number of metadata collected by >= 35 studies
 sumMeta 
 ```
 
+## Combine all clinical data
 Combine all the metadata (= 3,504) from all the studies (= 356).
 ```{r eval=FALSE}
 # template <- data.frame(patientId = character(),
@@ -253,12 +258,27 @@ dim(template)
 dim(template)
 ```
 
+### Most common clinical variables
+```{r export_colnames_for_curation, eval=FALSE, echo=FALSE}
+codebook <- stack(allClinicalVar)
+codebook$pct_complete <- round(codebook$values/length(clinical_var_all)*100)
+colnames(codebook)[2] <- "column_name"
+codebook$description <- NA
+codebook$harmonized_column_name <- NA
+codebook <- codebook[,-1]
+
+library(googlesheets4)
+gs4_create("cBioPortalData_curation")
+url <- "https://docs.google.com/spreadsheets/d/15vn8QJ9uYMCWx71lfhlguH5EPD7Z-mmeA9y8UpI5_Nk/edit?usp=sharing"
+ss <- googledrive::as_id(url)
+sheet_write(codebook, ss = ss, sheet = "clinical_variable_colnames")
+```
 
 55 clinical variables most widely available in cBioPortal data.
 
-```{r fig.width=10, fig.height=4}
+```{r fig.width=10, fig.height=4, eval=TRUE}
 ## Plot
-end_point = 0.5 + length(sumMeta) + length(sumMeta) - 1
+end_point = 0.5 + length(sumMeta)*2 - 1
 barplot(sumMeta/length(clinical_var)*100,
         main = "Availability of 55 clinical variables in cBioPortal data",
         ylab = "Study-level availability (%)",
@@ -271,14 +291,46 @@ text(seq(1.5, end_point, by = 2), par("usr")[3]-0.25,
 ```
 
 
-## Clinical variable availability at the sample level
+
 ```{r}
+## Check the agreements across redundant metadata entries
+i <- 5
+redun <- names(dup_sampleId)[i]
+
+## Most common metadata across all cBioPortal datasets
+selectedCols <- c("studyId", names(sumMeta))
+template[which(template$sampleId == redun), selectedCols] %>% as.data.frame
+
+## All available metadata across multiplicates
+tb <- template[which(template$sampleId == redun),] 
+col_keep <- which(colSums(is.na(tb)) != 7)
+as.data.frame(tb[, col_keep])  
+
+## Overlap between available and most-common metadata attributes for multiplicates
+length(sumMeta)
+length(col_keep)
+length(intersect(names(col_keep), names(sumMeta)))
+```
+
+[Question] How can we do inference/merging of these data to make the most
+complete and least redundant information?
+
+### Values for the common attributes
+```{r}
+sub <- template[,which(colnames(template) %in% names(sumMeta))]
+str(sub)
+```
+
+
+
+### Clinical variable availability at the sample level
+```{r eval=TRUE}
 x <- colSums(is.na(template)) %>% sort
 x_percent <- round(((nrow(template)-x)/nrow(template))*100, 1)
 head(x_percent, 20)
 ```
 
-```{r fig.height=4, fig.width=7}
+```{r fig.height=4, fig.width=7, eval=TRUE}
 ## Subset clinical variable with >= 20% value available out of all the samples (= 179,266)
 sub <- x_percent[x_percent >= 20] # 23 variables out of 3,504
     
@@ -294,76 +346,3 @@ text(seq(1.5, end_point, by = 2), par("usr")[3]-0.25,
      srt = 60, adj = 1, xpd = TRUE,
      labels = paste(names(sub)), cex = 0.75)
 ```
-
-
-## Missing attributes for major features
-`Age` columns are called differently. 
-```{r}
-age_ind <- grep("^AGE_|_AGE$", colnames(template))
-age_labels <- colnames(template)[age_ind]
-length(age_labels)
-age_labels
-
-template_sub <- template[, age_labels]
-str(template_sub)
-
-for (i in seq_along(template_sub)) {
-    res <- head(table(template_sub[,i]))
-    # res <- table(template_sub[,i]) %>%
-    #     order(., decreasing = TRUE) %>%
-    #     head(3)
-    print(res)
-}
-```
-
-there are 40 columns (clinical variables) without any information. Where are they from?
-```{r}
-sum(colSums(is.na(template_sub)) == nrow(template_sub)) 
-```
-
-```{r}
-c("AGE", "AGE_AT_DIAGNOSIS", "AGE_AT_SEQ_REPORTED_YEARS", "AGE_CURRENT",
-  "AGE_AT_SURGERY", "AGE_AT_PROCUREMENT", "AGE_IN_DAYS", "AGE_AT_SEQ_REPORT",
-  "AGE_GROUP", "AGE_AT_INITIAL_DIAGNOSIS", "AGE_CLASS", "IPI_AGE", "AGE_AT_*")
-```
-
-
-```{r eval=FALSE}
-catVars <- c("SEX", "RACE", "AGE_NA", "ETHNICITY")
-tableone_summary <- as.data.frame(matrix(data = character(), 
-                                         nrow = 1, 
-                                         ncol = length(catVars) + 1))
-colnames(tableone_summary) <- c("studyId", catVars)
-
-# for (i in seq_along(clinical_var_all)) {
-for (i in 1:5) {
-    dat <- clinical_var_all[[i]]
-    dat$studyId <- names(clinical_var_all[i])
-    
-    age_ind <- grep("AGE", colnames(dat))
-    if (length(age_ind))
-    age_availability <- is.na(dat$AGE)
-    dat$AGE_NA <- age_availability
-    dat$AGE <- NA
-    dat <- dat[,catVars]
-    x <- CreateTableOne(data = dat,
-                        # strata = "studyId",
-                        factorVars = catVars,
-                        includeNA = TRUE) %>%
-        print(., showAllLevels = TRUE)
-    
-    # tableone_summary <- dplyr::full_join(tableone_summary, x, by = colnames(x))
-}
-```
-
-```{r eval=FALSE}
-template_sub <- template[,c("studyId", "SEX", "RACE", "AGE", "ETHNICITY")]
-myVars <- c()
-catVars <- c("SEX", "RACE", "AGE", "ETHNICITY")
-z <- CreateTableOne(data = template_sub, 
-                    strata = "studyId", 
-                    factorVars = catVars,
-                    includeNA = TRUE) %>%
-    print(., showAllLevels = TRUE)
-```
-

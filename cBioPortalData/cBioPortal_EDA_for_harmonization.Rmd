@@ -1,0 +1,153 @@
+---
+title: "Find mergeable columns in cBioPortal clinical metadata"
+author: "Sehyun Oh"
+date: "`r format(Sys.time(), '%B %d, %Y')`"
+format:
+    html:
+        fontsize: 14px
+        toc: true
+        top-depth: 3
+abstract: "Prepare U24 Supplement: AI/ML-ready"
+---
+
+```{r setup, include=FALSE}
+knitr::opts_chunk$set(echo = TRUE, warning = FALSE, message = FALSE, 
+                      collapse = TRUE, eval = FALSE)
+```
+
+```{r load_data, echo=FALSE, eval=TRUE}
+cbio <- cBioPortal()
+cbioStudies <- getStudies(cbio) 
+studyIds <- cbioStudies$studyId
+
+## Load the cleaned files: these are actually created following the process 
+## described the `EDA_cBioPortalData_Clinical.qmd` file.
+fnames <- list.files(getwd())
+fname <- fnames[grep("cBioPortal_all_clinicalData_2", fnames)]
+clinical_var_all <- readRDS(fname)
+
+fname <- fnames[grep("cBioPortal_all_clinicalData_combined_", fnames)]
+template <- readRDS(fname) # our curation/harmonization starts from this table
+
+allCols <- colnames(template)
+```
+
+# Sample Redundancy
+```{r}
+## Unique samples
+sum(is.na(template$sampleId)) # 26 entries without sampleId
+unique_sample <- length(unique(template$sampleId))-1  # remove NA
+percent_unique <- unique_sample/nrow(template)*100
+paste(round(percent_unique), "percent of samples are unique.")
+
+## Unique patients
+sum(is.na(template$patientId)) # patientID is complete
+unique_patient <- length(unique(template$patientId))
+percent_unique <- unique_patient /nrow(template)*100
+paste(round(percent_unique), "percent of patients are unique.")
+```
+
+```{r}
+dup_sampleId <- sort(table(template$sampleId), decreasing = TRUE)
+no_meta <- sum(is.na(template$sampleId)) # the number of entries without sampleId
+one_meta <- sum(dup_sampleId == 1) # the number of samples with only one metadata entry
+multi_meta <- sum(dup_sampleId >= 2) # the number of samples with more than one metadata entries
+
+paste(no_meta, "out of", nrow(template), "entries doesn't have sampleId assigned.")
+paste(one_meta, "samples out of", unique_sample, "have a single entry.")
+paste(multi_meta, "samples out of", unique_sample, "have multiple entries.")
+```
+
+For example, there are 8 entries with the sampleId 'P-0005045-T01-IM5'. 
+```{r}
+## The number of multiplicates for a given samples
+head(dup_sampleId)
+```
+
+# Empty Columns
+There are 782 columns (clinical variables) without any information. 
+Where are they from?
+```{r}
+empty_col_all <- which(colSums(is.na(template)) == nrow(template)) # index
+length(empty_col_all)
+```
+
+
+
+# Major Attributes
+
+## Age
+`Age` columns are called differently. 
+```{r}
+age_ind <- grep("^AGE_|_AGE$|^AGE$", colnames(template))
+age_labels <- colnames(template)[age_ind]
+length(age_labels)
+age_labels
+```
+
+```{r}
+template_sub <- template[,age_labels]
+res_all <- vector(mode = "list", length = length(age_labels))
+completeness <- vector(length = length(age_labels))
+names(completeness) <- age_labels
+
+for (i in seq_len(ncol(template_sub))) {
+    summary <- summary(template_sub[,i])
+    head <- head(table(template_sub[,i]))
+    percent <- round((nrow(template_sub)-sum(is.na(template_sub[,i])))/nrow(template_sub)*100, 1)
+    
+    res_all[[i]]$summary <- summary
+    res_all[[i]]$head <- head
+    completeness[[i]] <- percent
+}
+
+head(completeness)
+```
+
+```{r}
+## Plot
+end_point = 0.5 + length(completeness) + length(completeness) - 1
+barplot(completeness,
+        main = "% metadata availability",
+        ylab = "Completeness at the sample level (%)",
+        xlab = "",
+        xaxt = "n", # Do not plot the default labels
+        ylim = c(0, 50), las = 2, space = 1)
+text(seq(1.5, end_point, by = 2), par("usr")[3]-0.25, 
+     srt = 60, adj = 1, xpd = TRUE,
+     labels = paste(names(completeness)), cex = 0.75)
+```
+
+There are 13 _AGE_ columns (clinical variables) without any information. 
+Where are they from?
+```{r}
+empty_age_col <- which(colSums(is.na(template_sub)) == nrow(template_sub)) 
+length(empty_age_col)
+names(empty_age_col)
+```
+
+
+## Race/Ethnicity
+```{r}
+
+```
+
+## Disease
+```{r}
+disease_colnames <- allCols[grep("disease|cancer", allCols, ignore.case = TRUE)]
+disease_tb <- template[,colnames(template) %in% disease_colnames]
+str(disease_tb)
+```
+
+
+
+# Data Harmonization Schema
+## Edit distance
+```{r}
+# adist()
+```
+
+## Semantic  similarity (ontology)
+```{r}
+library(rols)
+```
