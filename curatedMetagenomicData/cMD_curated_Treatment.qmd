@@ -1,0 +1,492 @@
+---
+title: "Harmonize treatment-associated information in cMD sample metadata"
+author:
+  - Sehyun Oh
+  - Kaelyn Long
+date: "`r format(Sys.time(), '%B %d, %Y')`"
+format:
+    html:
+        fontsize: 14pxs
+        toc: true
+        top-depth: 3
+abstract: "Prepare U24 Supplement: AI/ML-ready"
+---
+
+```{r setup, include=FALSE}
+knitr::opts_chunk$set(echo = TRUE, 
+                    warning = FALSE,
+                    message = FALSE,
+                    collapse = TRUE,
+                    eval = TRUE)
+```
+
+# Overview
+
+This .qmd file demonstrates a workflow for curating and harmonizing treatment data with the curatedMetagenomicData package.
+The primary goal is to obtain curated ontology terms and IDs for treatment data,
+but the same can be done for antibiotics family data if desired.
+This additional antibiotics workflow is included as the final section of this file.
+
+# Setup
+## Load Packages and Define Project Directory
+
+```{r load}
+suppressPackageStartupMessages({
+  library(curatedMetagenomicData)
+  library(tidyverse)
+  library(googlesheets4)
+  library(rols)
+  library(AMR)
+})
+
+# absolute path to project directory
+proj_dir = ""
+```
+
+## Setup for Curation
+
+We will first add a `curation_id` consisting of study name and sample ID (`study_name:sample_id`) to avoid confusion due to duplicated samples. Then we will set up a Google Sheet to export our mapping table to.
+
+```{r curation_setup}
+# add curation ID
+sampleMetadata$curation_id <- paste(sampleMetadata$study_name, sampleMetadata$sample_id, sep = ":")
+
+# setup google sheets link to mapping table
+url <- "https://docs.google.com/spreadsheets/d/1QSbB_b1DkfqOc7q5eHE0IDHSiGqNUyTE8d4GzbSEzjM/edit?usp=sharing"
+
+ss <- googledrive::as_id(url)
+
+```
+
+# Exploratory Data Analysis
+
+## Manual Data Corrections
+
+Next, we will go ahead and make some manual corrections to the data.
+It was found that some treatment values were converted incorrectly from the source information and also that some source treatment values were particularly generalized, so we will adjust those values to eliminate confusion. Original values will be retained in the `original_antibiotics_family` and `original_treatment` columns in the interest of data retention, but we will move forward with the corrected values.
+
+```{r corrections}
+# create new table with original columns for incorrect data 
+adj_meta <- sampleMetadata
+adj_meta$original_antibiotics_family <- adj_meta$antibiotics_family
+adj_meta$original_treatment <- adj_meta$treatment
+
+# correct specific records that were incorrectly converted
+split_treatments_1 <- grep("YSZC12003_37287", sampleMetadata$subject_id)
+adj_meta$treatment[split_treatments_1] <- "sitagliptin;metformin;lantus_solostar;novorapid"
+
+split_treatments_2 <- grep("YSZC12003_36697", sampleMetadata$subject_id)
+adj_meta$treatment[split_treatments_2] <- "metformin_hydrochloride;isophane"
+
+# since "bolus" only occurs in the middle or at the end of treatment strings, we can remove the pattern ";bolus"
+remove_bolus <- grep("bolus", sampleMetadata$treatment)
+adj_meta$treatment[remove_bolus] <- gsub(";bolus", "", adj_meta$treatment[remove_bolus])
+
+# overnight_feeds refers specifically to EN in all cases
+overnight_feeds_to_EN <- grep("overnight_feeds", sampleMetadata$treatment)
+adj_meta$treatment[overnight_feeds_to_EN] <- gsub("overnight_feeds", "EN", adj_meta$treatment[overnight_feeds_to_EN])
+```
+
+## Antibiotic Consistency
+
+We will now double-check for samples where `antibiotics_current_use` does not agree with the presence or absence of values for `antibiotics_family`.
+
+```{r check_for_family}
+# select antibiotics columns
+antibiotics_cols <- sampleMetadata[,c("antibiotics_current_use", "antibiotics_family")]
+
+# antibiotics_current_use == "yes", antibiotics_family = "no"/NA
+no_family <- filter(antibiotics_cols, antibiotics_current_use == "yes" & (antibiotics_family == "no" | is.na(antibiotics_family)))
+
+# antibiotics_current_use == "no"/NA, antibiotics_family = "yes"
+just_family <- filter(antibiotics_cols, (antibiotics_current_use == "no" | is.na(antibiotics_current_use)) & !is.na(antibiotics_family))
+
+# get rows with misplaced information
+wrong_records <- which((sampleMetadata$antibiotics_current_use == "no" | is.na(sampleMetadata$antibiotics_current_use)) & !is.na(sampleMetadata$antibiotics_family))
+
+# get undetected rows with misplaced information
+undetected_wrong_records <- grep("thienobenzodiazepines|dopamine_antagonists|phenylpiperidines|blood_pressure_medication|diabetes_oral_medication",
+                              sampleMetadata$antibiotics_family)
+```
+
+`r nrow(no_family)` rows don't have information on 
+`antibiotics_family` even though they are currently exposed to antibiotics.
+
+`r nrow(just_family)` rows with `antibiotics_current_use = no`, which are supposed
+to have no information on `antibiotics_family` , still have the values. All
+of them are wrong information - anti-viral and beta-blocker (treating abnormal 
+heart rhythms) medications.
+
+This wrong `antibiotics_family` information is all from
+one study, `r unique(sampleMetadata$study_name[wrong_records])`, and is supposed to be 
+entered under the `treatment` column. The affected records will be manually adjusted for the curation process, though the original values of the `antibiotics_family` and `treatment` columns will be kept in the final table for the sake of original data retention.
+
+We also have `r nrow(undetected_wrong_records)` records where there is treatment data incorrectly entered into the `antibiotics_family` column, though they were not discovered above due to the fact that `antibiotics_current_use = yes`. The two studies, Castro-NallarE_2015 and Heitz-BuschartA_2016, list antipsychotic medications as well as generic blood pressure and diabetes medications as antibitiotics though they are not. As above, these records will be manually adjusted for the curation process and the `antibiotics_current_use` value will be changed to `NA`, but the original values of the `antibiotics_family` and `treatment` columns will be kept in the final table for the sake of original data retention.
+
+```{r adjust_wrong_families}
+# move incorrect data to correct columns, leaving original data in original_ columns
+for (i in wrong_records) {
+    adj_meta$treatment[i] <- adj_meta$original_antibiotics_family[i]
+    adj_meta$antibiotics_family[i] <- NA
+}
+
+for (i in undetected_wrong_records) {
+    adj_meta$treatment[i] <- adj_meta$original_antibiotics_family[i]
+    adj_meta$antibiotics_family[i] <- NA
+    adj_meta$antibiotics_current_use[i] <- NA
+}
+```
+
+## Unique Value Collection
+
+Now we will get some data about the different values in `treatment` and `antibiotics_family` and collect all unique treatments and antibiotics into two master lists.
+
+```{r review_treatments}
+# find number of NA "treatment" values
+naTrt <- sum(is.na(adj_meta$treatment))
+naTrt
+
+# find number of unique treatment combinations
+uniqueTrt <- length(unique(adj_meta$treatment))
+uniqueTrt
+
+# view treatment value frequency table
+head(sort(table(adj_meta$treatment, useNA = "ifany"), decreasing = TRUE))
+
+# get all unique non-NA treatment values and store
+nonNaTrt <- adj_meta$treatment[!is.na(adj_meta$treatment)]
+allTrts <- strsplit(nonNaTrt, split = ";") %>% unlist %>% unique
+length(allTrts)
+
+# find number of NA "antibiotics_family" values
+naAbx <- sum(is.na(adj_meta$antibiotics_family))
+naAbx
+
+# find number of unique antibiotic family combinations
+uniqueAbx <- length(unique(adj_meta$antibiotics_family))
+uniqueAbx
+
+# view antibiotic family value frequency table
+head(sort(table(adj_meta$antibiotics_family, useNA = "ifany"), decreasing = TRUE))
+
+# get all unique non-NA antibiotic family values and store
+nonNaAbx <- adj_meta$antibiotics_family[!is.na(adj_meta$antibiotics_family)]
+allAbx <- strsplit(nonNaAbx, split = ";") %>% unlist %>% unique
+length(allAbx)
+```
+
+`r round(naTrt/nrow(sampleMetadata)*100)`% of samples have no treatment 
+information. `r nrow(sampleMetadata)-naTrt` samples show `r uniqueTrt` unique
+treatment options, which are the combinations of `r length(allTrts)` unique 
+treatments.
+
+`r round(naAbx/nrow(sampleMetadata)*100)`% of samples have no antibiotic family 
+information. `r nrow(sampleMetadata)-naAbx` samples show `r uniqueAbx` unique
+antibiotic options, which are the combinations of `r length(allAbx)` unique 
+antibiotic families.
+
+## Antibiotic Auto-Classification and Treatment Screening
+
+We will now use the AMR package to generate assumed names and classes for the antibiotics for curation. We will do the same for the `treatment` values and manually double-check any treatments for which antibiotic data was generated in order to assure that none of the `treatment` values are actually antibiotics.
+
+```{r check_antibiotics, eval=FALSE}
+# check if any treatments are antibiotics and get generated names and classes
+trt_abx_name <- ab_name(allTrts)
+trt_abx_synonyms <- ab_synonyms(allTrts)
+trt_abx_class <- ab_group(allTrts)
+trt_as_abx <- data.frame(treatment = allTrts,
+                         generated_name = trt_abx_name,
+                         generated_class = trt_abx_class)
+
+# get generated antibiotics names and classes
+abx_name <- ab_name(allAbx)
+abx_synonyms <- ab_synonyms(allAbx)
+abx_class <- ab_group(allAbx)
+abx_as_abx <- data.frame(abx = allAbx,
+                         generated_name = abx_name,
+                         generated_class = abx_class)
+```
+
+A number of treatments were identified as possible antibiotics, but after manual review none were confirmed. This high false identification rate is due to the AMR package's mistake tolerance and simply indicates that the flagged treatment values appear similar to antibiotic names.
+
+# Data Curation
+
+## Export
+
+We will now export the tables of unique treatments to Google Sheets for manual curation. 
+The curated tables will be used as maps for curation of the given treatments and antibiotics.
+
+```{r export_for_curation, eval=FALSE}
+# create empty mapping table with treatments
+curated_treatment <- data.frame(original_value = allTrts,
+                                curated_ontology_term = NA,
+                                curated_ontology_term_id = NA)
+
+# write to Google Sheet for manual curation
+sheet_write(curated_treatment, ss = ss, sheet ="treatment_ontology")
+
+# create empty mapping table with antibiotic families
+curated_abx <- data.frame(original_value = abx_as_abx$abx,
+                          generated_name = abx_as_abx$generated_name,
+                          generated_class = abx_as_abx$generated_class,
+                          curated_class_value = NA,
+                          curated_ontology_term = NA,
+                          curated_ontology_term_id = NA)
+
+# write to Google Sheet for manual curation
+sheet_write(curated_abx, ss = ss, sheet ="antibiotic_ontology")
+```
+
+## Validation
+
+Once the maps have been manually curated, we can double-check that they are correct before saving them to GitHub.
+Any curated ontology terms returned with `correct == FALSE` in `validation_tb` are reviewed.
+
+```{r validate_map, eval=FALSE}
+# import treatment map for validation
+treatment_map <- read_sheet(ss, sheet = "treatment_ontology")
+
+# create validation table for curation statuses
+trt_validation_tb <- data.frame(matrix(NA, nrow = nrow(treatment_map), ncol = 4))
+colnames(trt_validation_tb) <- c("curated_onto_term", "curated_onto_id", 
+                             "query_onto_term", "correct")
+
+# check each ontology term and indicate incorrect values
+for (i in seq_len(nrow(treatment_map))) {
+    onto_term <- treatment_map$curated_ontology_term[i]
+    onto_id <- basename(treatment_map$curated_ontology_term_id[i])
+    qry <- OlsSearch(q = onto_id, exact = TRUE)
+    qry <- olsSearch(qry)
+    qdrf <- as(qry, "data.frame")
+    
+    trt_validation_tb$curated_onto_term[i] <- onto_term
+    trt_validation_tb$curated_onto_id[i] <- onto_id
+    trt_validation_tb$query_onto_term[i] <- unique(qdrf$label)
+    trt_validation_tb$correct[i] <- identical(trt_validation_tb$curated_onto_term[i], trt_validation_tb$query_onto_term[i])
+}
+
+# get all incorrect rows for review
+trt_validation_tb[!trt_validation_tb$correct,]
+```
+
+```{r validate_abx, eval=FALSE}
+# import antibiotics map for validation
+antibiotics_map <- read_sheet(ss, sheet = "antibiotic_ontology")
+
+# create validation table for curation statuses
+abx_validation_tb <- data.frame(matrix(NA, nrow = nrow(antibiotics_map), ncol = 4))
+colnames(abx_validation_tb) <- c("curated_onto_term", "curated_onto_id", 
+                             "query_onto_term", "correct")
+
+# check each ontology term and indicate incorrect values
+for (i in seq_len(nrow(antibiotics_map))) {
+    onto_term <- antibiotics_map$curated_ontology_term[i]
+    onto_id <- basename(antibiotics_map$curated_ontology_term_id[i])
+    qry <- OlsSearch(q = onto_id, exact = TRUE)
+    qry <- olsSearch(qry)
+    qdrf <- as(qry, "data.frame")
+    
+    abx_validation_tb$curated_onto_term[i] <- onto_term
+    abx_validation_tb$curated_onto_id[i] <- onto_id
+    abx_validation_tb$query_onto_term[i] <- unique(qdrf$label)
+    abx_validation_tb$correct[i] <- identical(abx_validation_tb$curated_onto_term[i], abx_validation_tb$query_onto_term[i])
+}
+
+# get all incorrect rows for review
+abx_validation_tb[!abx_validation_tb$correct,]
+```
+
+## Storage
+
+Once everything has been reviewed and the Google Sheets maps have been updated as needed, we can save the maps to GitHub.
+
+```{r save_maps_to_github, eval=FALSE}
+# load map from Google Sheets
+curated_treatment <- read_sheet(ss, sheet = "treatment_ontology")
+
+# save map to GitHub
+write.csv(curated_treatment,
+          file = file.path(proj_dir, "maps/cMD_treatment_ontology.csv"),
+          row.names = FALSE)
+
+# load map from Google Sheets
+curated_abx <- read_sheet(ss, sheet = "antibiotic_ontology") %>%
+  select(-c(generated_name, generated_class))
+
+# save map to GitHub
+write.csv(curated_abx,
+          file = file.path(proj_dir, "maps/cMD_antibiotic_ontology.csv"),
+          row.names = FALSE)
+```
+
+# Mapping
+
+## Import Maps
+
+Now we will import the curated maps. We will first convert the `curated_ontology_term_id` values from the URLs into the actual IDs.
+
+```{r import_maps, eval=FALSE}
+# import the treatment map
+trt_map <- read.csv(file = file.path(proj_dir, "maps/cMD_treatment_ontology.csv"),
+                          sep = ",", header = TRUE)
+
+# convert curated_ontology_term_id from url to ID
+trt_map$curated_ontology_term_id <- basename(trt_map$curated_ontology_term_id)
+
+# import the antibiotic family map
+abx_map <- read.csv(file = file.path(proj_dir, "maps/cMD_antibiotic_ontology.csv"),
+                          sep = ",", header = TRUE)
+
+# convert curated_ontology_term_id from url to ID
+abx_map$curated_ontology_term_id <- basename(abx_map$curated_ontology_term_id)
+```
+
+## Custom Mapping Functions
+
+Now we will define four functions to map the given terms to our curated ontology terms and IDs.
+
+```{r mapping_functions, eval=FALSE}
+# assign treatment ontology terms
+combine_treatment <- function(x) { # x is a character vector from each row (e.g. treatment_tb[2374,])
+  
+  if (is.na(x["treatment"])) {
+    # if "treatment" = NA, can fill curated_treatment with either NA or "None"
+    return(NA)
+    #return("None")
+  
+  } else {
+    y <- strsplit(x["treatment"], ";") %>% unlist
+    y[!(y %in% trt_map$original_value) & !is.na(y)] <- "review_required" # leave a "review_required" note if the value is not in the map
+    z <- plyr::mapvalues(unlist(y), 
+                         from = trt_map$original_value,
+                         to = trt_map$curated_ontology_term,
+                         warn_missing = FALSE)
+    term <- unique(z[!is.na(z)], na.rm = TRUE) %>% paste(., collapse = ";")
+    return(term)
+  }
+}
+
+# assign treatment ontology term IDs
+combine_treatment_ontology <- function(x) {
+  
+  if (is.na(x["treatment"])) {
+    # if "treatment" = NA, can fill curated_treatment_ontology_term_id with either NA or "NCIT_C41132"
+    return(NA)
+    #return("NCIT_C41132")
+    
+  } else {
+    y <- strsplit(x["treatment"], ";") %>% unlist
+    y[!(y %in% trt_map$original_value) & !is.na(y)] <- "review_required"
+    z <- plyr::mapvalues(unlist(y), 
+                         from = trt_map$original_value,
+                         to = basename(trt_map$curated_ontology_term_id),
+                         warn_missing = FALSE)
+    onto <- unique(z[!is.na(z)], na.rm = TRUE) %>% paste(., collapse = ";")
+    return(onto)
+  }
+}
+
+# assign antibiotic class ontology terms
+combine_abx <- function(x) { # x is a character vector from each row (e.g. treatment_tb[2374,])
+  
+  if (is.na(x["antibiotics_family"])) {
+    # if "antibiotics_family" = NA, can fill curated_antibiotics_family with either NA or "None"
+    return(NA)
+    #return("None")
+  
+  } else {
+    y <- strsplit(x["antibiotics_family"], ";") %>% unlist
+    y[!(y %in% abx_map$original_value) & !is.na(y)] <- "review_required" # leave a "review_required" note if the value is not in the map
+    z <- plyr::mapvalues(unlist(y), 
+                         from = abx_map$original_value,
+                         to = abx_map$curated_ontology_term,
+                         warn_missing = FALSE)
+    term <- unique(z[!is.na(z)], na.rm = TRUE) %>% paste(., collapse = ";")
+    return(term)
+  }
+}
+
+# assign antibiotic class ontology term IDs
+combine_abx_ontology <- function(x) {
+  
+  if (is.na(x["antibiotics_family"])) {
+    # if "antibiotics_family" = NA, can fill curated_antibiotics_family_ontology_term_id with either NA or "NCIT_C41132"
+    return(NA)
+    #return("NCIT_C41132")
+    
+  } else {
+    y <- strsplit(x["antibiotics_family"], ";") %>% unlist
+    y[!(y %in% abx_map$original_value) & !is.na(y)] <- "review_required"
+    z <- plyr::mapvalues(unlist(y), 
+                         from = abx_map$original_value,
+                         to = basename(abx_map$curated_ontology_term_id),
+                         warn_missing = FALSE)
+    onto <- unique(z[!is.na(z)], na.rm = TRUE) %>% paste(., collapse = ";")
+    return(onto)
+  }
+}
+```
+
+## Curated Table Creation
+
+Then we will create our table of curated treatment data preserving original, adjusted, and curated data. Two final tables are created for review; one with given values as well as curated values, and the other with only curated values. The table 
+
+```{r create_curated_table, eval=FALSE}
+# subset to the treatment-related columns
+treatment_abx_tb <- adj_meta[,c("curation_id", "antibiotics_current_use", "original_antibiotics_family", "antibiotics_family", "original_treatment", "treatment")]
+
+# map treatment data to curated terms and IDs
+curated_treatment_abx <- treatment_abx_tb %>%
+    transmute(curation_id = curation_id,
+              antibiotics_current_use = antibiotics_current_use,
+              original_antibiotics_family = original_antibiotics_family,
+              antibiotics_family = antibiotics_family,
+              antibiotics_family_ontology_term = apply(., 1, combine_abx),
+              antibiotics_family_ontology_term_id = apply(., 1, combine_abx_ontology),
+              original_treatment = original_treatment,
+              treatment = treatment,
+              treatment_ontology_term = apply(., 1, combine_treatment),
+              treatment_ontology_term_id = apply(., 1, combine_treatment_ontology))
+
+# combine treatment and antibiotic ontology terms and IDs into final curated columns
+combined_curated <- curated_treatment_abx %>%
+  unite("curated_treatment",
+        c(treatment_ontology_term, antibiotics_family_ontology_term),
+        sep = ";",
+        remove = FALSE,
+        na.rm = TRUE) %>%
+unite("curated_treatment_ontology_term_id",
+      c(treatment_ontology_term_id, antibiotics_family_ontology_term_id),
+      sep = ";",
+      remove = FALSE,
+      na.rm = TRUE) %>%
+  mutate(curated_treatment = na_if(curated_treatment, "")) %>%
+  mutate(curated_treatment_ontology_term_id = na_if(curated_treatment_ontology_term_id, ""))
+
+# select columns for final complete table
+final_complete <- combined_curated %>%
+  select(curation_id,
+         antibiotics_current_use,
+         antibiotics_family,
+         treatment,
+         curated_treatment,
+         curated_treatment_ontology_term_id)
+
+# select columns for final curated table
+final_curated <- combined_curated %>%
+  select(curation_id,
+         antibiotics_current_use,
+         curated_treatment,
+         curated_treatment_ontology_term_id)
+```
+
+## Export
+
+Finally, we will export our completed table to GitHub.
+
+```{r export_curated_table, eval=FALSE}
+# export to GitHub
+write.csv(final_curated, 
+          file = file.path(proj_dir, "data/curated_antibiotics_treatment.csv"),
+          row.names = FALSE)
+```
