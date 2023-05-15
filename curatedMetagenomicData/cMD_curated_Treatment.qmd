@@ -429,13 +429,14 @@ combine_abx_ontology <- function(x) {
 
 ## Curated Table Creation
 
-Then we will create our table of curated treatment data preserving original, adjusted, and curated data. Two final tables are created for review; one with given values as well as curated values, and the other with only curated values. The table 
+Then we will create our table of curated treatment data preserving original, adjusted, and curated data. Two final tables are created for review; one with given values as well as curated values, and the other with only curated values.
+We will also add a `treatment_source` column to indicate whether treatment data was found in `antibiotics_family`, `treatment`, or both. 
 
 ```{r create_curated_table, eval=FALSE}
 # subset to the treatment-related columns
 treatment_abx_tb <- adj_meta[,c("curation_id", "antibiotics_current_use", "original_antibiotics_family", "antibiotics_family", "original_treatment", "treatment")]
 
-# map treatment data to curated terms and IDs
+# map treatment data to curated terms and IDs, create source column
 curated_treatment_abx <- treatment_abx_tb %>%
     transmute(curation_id = curation_id,
               antibiotics_current_use = antibiotics_current_use,
@@ -446,8 +447,13 @@ curated_treatment_abx <- treatment_abx_tb %>%
               original_treatment = original_treatment,
               treatment = treatment,
               treatment_ontology_term = apply(., 1, combine_treatment),
-              treatment_ontology_term_id = apply(., 1, combine_treatment_ontology))
-
+              treatment_ontology_term_id = apply(., 1, combine_treatment_ontology),
+              treatment_source = case_when(
+                is.na(antibiotics_family) & is.na(treatment) ~ NA,
+                !is.na(antibiotics_family) & !is.na(treatment) ~ "antibiotics_family;treatment",
+                is.na(antibiotics_family) & !is.na(treatment) ~ "treatment",
+                !is.na(antibiotics_family) & is.na(treatment) ~ "antibiotics_family"))
+    
 # combine treatment and antibiotic ontology terms and IDs into final curated columns
 combined_curated <- curated_treatment_abx %>%
   unite("curated_treatment",
@@ -463,19 +469,11 @@ unite("curated_treatment_ontology_term_id",
   mutate(curated_treatment = na_if(curated_treatment, "")) %>%
   mutate(curated_treatment_ontology_term_id = na_if(curated_treatment_ontology_term_id, ""))
 
-# select columns for final complete table
-final_complete <- combined_curated %>%
-  select(curation_id,
-         antibiotics_current_use,
-         antibiotics_family,
-         treatment,
-         curated_treatment,
-         curated_treatment_ontology_term_id)
-
 # select columns for final curated table
 final_curated <- combined_curated %>%
   select(curation_id,
          antibiotics_current_use,
+         treatment_source,
          curated_treatment,
          curated_treatment_ontology_term_id)
 ```
@@ -487,6 +485,6 @@ Finally, we will export our completed table to GitHub.
 ```{r export_curated_table, eval=FALSE}
 # export to GitHub
 write.csv(final_curated, 
-          file = file.path(proj_dir, "data/curated_antibiotics_treatment.csv"),
+          file = file.path(proj_dir, "data/curated_treatment.csv"),
           row.names = FALSE)
 ```
