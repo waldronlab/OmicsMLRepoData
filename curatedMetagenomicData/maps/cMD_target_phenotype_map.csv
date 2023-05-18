@@ -1,0 +1,94 @@
+study_name,target_phenotype,target_phenotype_term_id
+AsnicarF_2017,human gut microbiome,OHMI_0000020
+AsnicarF_2021,human gut microbiome,OHMI_0000020
+BackhedF_2015,human gut microbiome,OHMI_0000020
+BedarfJR_2017,Parkinson disease,MONDO_0005180
+Bengtsson-PalmeJ_2015,human gut microbiome,OHMI_0000020
+BritoIL_2016,human gut microbiome;Oral Microbiome,OHMI_0000020;NCIT_C125208
+BrooksB_2017,premature birth,EFO_0003917
+Castro-NallarE_2015,Schizophrenia,NCIT_C3362
+ChengpingW_2017,rheumatoid arthritis;ankylosing spondylitis,EFO_0000685;EFO_0003898
+ChngKR_2016,Alzheimer's disease,EFO_0000249
+ChuDM_2017,gestational diabetes;chorioamnionitis;preeclampsia,EFO_0004593;EFO_0009948;EFO_0000668
+CosteaPI_2017,human gut microbiome,OHMI_0000020
+DavidLA_2015,acute diarrhea;Cholera,DOID_0050140;NCIT_C157812
+DeFilippisF_2019,Prevotella copri,NCBITaxon_165179
+DhakanDB_2019,human gut microbiome,OHMI_0000020
+FengQ_2015,colorectal cancer;carcinoma;Adenoma,EFO_0005842;EFO_0000313;NCIT_C2855
+FerrettiP_2018,human gut microbiome,OHMI_0000020
+FrankelAE_2017,melanoma;Metastases status (attribute),EFO_0000756;260874000
+GhensiP_2019,Peri-Implantitis;Mucositis,OMIT_0027030;NCIT_C115965
+GopalakrishnanV_2018,melanoma;Metastases status (attribute),EFO_0000756;260874000
+GuptaA_2019,colorectal cancer;adenocarcinoma,EFO_0005842;EFO_0000228
+HallAB_2017,Inflammatory Bowel Disease,NCIT_C3138
+HanniganGD_2017,colorectal cancer;Adenoma,EFO_0005842;NCIT_C2855
+HansenLBS_2018,Intestinal Flora,NCIT_C93019
+Heitz-BuschartA_2016,Type 1 Diabetes Mellitus,NCIT_C2986
+HMP_2012,human microbiome,OHMI_0000002
+HMP_2019_ibdmdb,Inflammatory Bowel Disease,NCIT_C3138
+HMP_2019_t2d,abnormal glucose tolerance;Type 2 Diabetes Mellitus,EFO_0002546;NCIT_C26747
+IaniroG_2022,diarrhea;clostridium difficile infection;Multidrug-resistant bacteria (organism);Inflammatory Bowel Disease,MP_0005036;EFO_0009130;713351000;NCIT_C3138
+IjazUZ_2017,Inflammatory Bowel Disease;Crohn's disease,NCIT_C3138;EFO_0000384
+JieZ_2017,atherosclerosis,EFO_0003914
+KarlssonFH_2013,abnormal glucose tolerance;Type 2 Diabetes Mellitus,EFO_0002546;NCIT_C26747
+KaurK_2020,human gut microbiome,OHMI_0000020
+KeohaneDM_2020,human gut microbiome,OHMI_0000020
+KieserS_2018,acute diarrhea,DOID_0050140
+KosticAD_2015,Type 1 Diabetes Mellitus,NCIT_C2986
+LassalleF_2017,Oral Microbiome,NCIT_C125208
+LeChatelierE_2013,human gut microbiome,OHMI_0000020
+LeeKA_2022,melanoma,EFO_0000756
+LifeLinesDeep_2016,human gut microbiome,OHMI_0000020
+LiJ_2014,Type 2 Diabetes Mellitus;Type 1 Diabetes Mellitus;Inflammatory Bowel Disease,NCIT_C26747;NCIT_C2986;NCIT_C3138
+LiJ_2017,hypertension,EFO_0000537
+LiSS_2016,metabolic syndrome,EFO_0000195
+LiuW_2016,human gut microbiome,OHMI_0000020
+LokmerA_2019,human gut microbiome,OHMI_0000020
+LomanNJ_2013,Shiga Toxin-producing Escherichia coli,NCIT_C184689
+LoombaR_2017,Non-alcoholic Fatty Liver Disease,OMIT_0028679
+LouisS_2016,human gut microbiome;Weight loss,OHMI_0000020;HP_0001824
+MatsonV_2018,melanoma;Metastases status (attribute),EFO_0000756;260874000
+MehtaRS_2018,human gut microbiome,OHMI_0000020
+MetaCardis_2020_a,abnormal glucose tolerance;Metabolic Syndrome;control;Type 2 Diabetes Mellitus;Heart Failure,EFO_0002546;NCIT_C84442;EFO_0001461;NCIT_C26747;NCIT_C50577
+NagySzakalD_2017,myalgic encephalomeyelitis/chronic fatigue syndrome,MONDO_0005404
+NielsenHB_2014,Inflammatory Bowel Disease,NCIT_C3138
+Obregon-TitoAJ_2015,human gut microbiome,OHMI_0000020
+OhJ_2014,human skin microbiome interaction,OHMI_0000121
+OlmMR_2017,premature birth,EFO_0003917
+PasolliE_2019,human microbiome,OHMI_0000002
+PehrssonE_2016,human gut microbiome,OHMI_0000020
+PetersBA_2019,melanoma;Metastases status (attribute),EFO_0000756;260874000
+QinJ_2012,Type 2 Diabetes Mellitus,NCIT_C26747
+QinN_2014,cirrhosis of liver,EFO_0001422
+RampelliS_2015,human gut microbiome,OHMI_0000020
+RaymondF_2016,Cephalosporin Antibiotic,NCIT_C357
+RosaBA_2018,"Helminth,Transmitted,soil",NCIT_C125642;ENVO_00001998
+RubelMA_2020,"Helminth,Transmitted,soil",NCIT_C125642;ENVO_00001998
+SankaranarayananK_2015,Type 2 Diabetes Mellitus,NCIT_C26747
+SchirmerM_2016,human gut microbiome,OHMI_0000020
+ShaoY_2019,human gut microbiome,OHMI_0000020
+ShiB_2015,periodontitis,EFO_0000649
+SmitsSA_2017,human gut microbiome,OHMI_0000020
+TettAJ_2016,arthritis;psoriasis,EFO_0005856;EFO_0000676
+TettAJ_2019_a,Prevotella copri,NCBITaxon_165179
+TettAJ_2019_b,Prevotella copri,NCBITaxon_165179
+TettAJ_2019_c,Prevotella copri,NCBITaxon_165179
+ThomasAM_2018a,colorectal cancer;Adenoma;adenocarcinoma,EFO_0005842;NCIT_C2855;EFO_0000228
+ThomasAM_2018b,colorectal cancer,EFO_0005842
+ThomasAM_2019_c,colorectal cancer,EFO_0005842
+VatanenT_2016,"otitis;pneumonia;bronchitis;Respiratory tract infection;sepsis;Skin Infection;Cough;gastroenteritis;Tonsillitis;pyelonephritis;cystitis;Fever;Infection,Suspected;stomatitis;salmonellosis",SYMP_0000873;EFO_0003106;EFO_0009661;HP_0011947;MP_0005044;NCIT_C35025;HP_0012735;EFO_1001463;NCIT_C116006;EFO_1001141;EFO_1000025;HP_0001945;NCIT_C128320;NCIT_C71458;EFO_0009688;MONDO_0000827
+VilaAV_2018,Inflammatory Bowel Disease,NCIT_C3138
+VincentC_2016,clostridium difficile infection,EFO_0009130
+VogtmannE_2016,colorectal cancer,EFO_0005842
+WampachL_2018,human gut microbiome,OHMI_0000020
+WindTT_2020,melanoma;Metastases status (attribute),EFO_0000756;260874000
+WirbelJ_2018,colorectal cancer,EFO_0005842
+XieH_2016,Migraine;Asthma,NCIT_C89715;NCIT_C28397
+YachidaS_2019,"colorectal cancer;carcinoma,History of surgery (situation);Adenoma",EFO_0005842;EFO_0000313;161615003;NCIT_C2855
+YassourM_2016,human gut microbiome,OHMI_0000020
+YassourM_2018,human gut microbiome,OHMI_0000020
+YeZ_2018,Behcet's syndrome,EFO_0003780
+YuJ_2015,colorectal cancer,EFO_0005842
+ZeeviD_2015,human gut microbiome,OHMI_0000020
+ZellerG_2014,colorectal cancer;carcinoma;Adenoma,EFO_0005842;EFO_0000313;NCIT_C2855
+ZhuF_2020,Schizophrenia,NCIT_C3362
