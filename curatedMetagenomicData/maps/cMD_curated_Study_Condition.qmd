@@ -44,7 +44,9 @@ suppressPackageStartupMessages({
 
 ## Setup for Curation
 
-We will first add a `curation_id` consisting of study name and sample ID (`study_name:sample_id`) to avoid confusion due to duplicated samples. Then we will set up a Google Sheet to export our mapping table to.
+We will first add a `curation_id` consisting of study name and sample ID 
+(`study_name:sample_id`) to avoid confusion due to duplicated samples. 
+Then we will set up a Google Sheet to export our mapping table to.
 
 ```{r curation_setup}
 # Add curation ID
@@ -158,7 +160,9 @@ target_phenotype_map <- read.csv(file = file.path(proj_dir, "maps/cMD_target_phe
 
 ## Curating "control" Column
 
-Using the "study_condition" column as a guide, identify whether each sample was part of the "control" group or the "case" group for its corresponding study. Samples that were not utilized in the study receive the label "Not Used".
+Using the "study_condition" column as a guide, identify whether each sample was part 
+of the "control" group or the "case" group for its corresponding study. Samples that 
+were not utilized in the study receive the label "Not Used".
 ```{r}
 # Label patient data to indicate control or treatment group
 for (i in 1:nrow(disease_data)){
@@ -177,7 +181,9 @@ for (i in 1:nrow(disease_data)){
 }
 ```
 
-Now we can clean up the "study_condition" column by replacing any instances of the term "control" with an "NA" value, which will prevent redundant data when we combine this column with the "disease" column.
+Now we can clean up the "study_condition" column by replacing any instances of the term 
+"control" with an "NA" value, which will prevent redundant data when we combine this 
+column with the "disease" column.
 
 ```{r}
 # Replace "control" values with NA in study_condition column
