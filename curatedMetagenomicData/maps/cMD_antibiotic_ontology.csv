@@ -1,4 +1,4 @@
-"original_value","curated_class_value","curated_ontology_term","curated_ontology_term_id"
+"original_value","curated_value","curated_ontology_term","curated_ontology_term_id"
 "penicillins","Penicillins","Penicillin Antibiotic","http://purl.obolibrary.org/obo/NCIT_C1500"
 "aminoglycosides","Aminoglycosides","Aminoglycoside Antibiotic","http://purl.obolibrary.org/obo/NCIT_C2363"
 "lincomycins","Lincosamides","Lincosamide Antibiotic","http://purl.obolibrary.org/obo/NCIT_C82922"
