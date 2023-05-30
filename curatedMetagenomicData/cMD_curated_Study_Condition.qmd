@@ -284,7 +284,7 @@ target_phenotype data:
 ```{r}
 # Iterate through all data in sampleMetadata to create target_phenotype columns
 for (i in 1:length(sampleMetadata$study_name)){
-  disease_data$curated_target_phenotype[i] <- target_phenotype_map$target_phenotype[which(target_phenotype_map$study_name == sampleMetadata$study_name[1])]
+  disease_data$curated_target_phenotype[i] <- target_phenotype_map$target_phenotype[which(target_phenotype_map$study_name == sampleMetadata$study_name[i])]
   disease_data$curated_target_phenotype_ontology_term_id[i] <- target_phenotype_map$target_phenotype_term_id[which(target_phenotype_map$study_name == sampleMetadata$study_name[i])]
 }
 ```
