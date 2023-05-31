@@ -1,4 +1,4 @@
-"original_value","curated_value","curated_ontology_term_id","curated_age_min","curated_age_max"
+"original_age_value","curated_age","curated_age_ontology_term_id","curated_age_min","curated_age_max"
 "schoolage","Adolescent","http://purl.obolibrary.org/obo/NCIT_C27954",11,18
 "adult","Adult","http://purl.obolibrary.org/obo/NCIT_C49685",18,65
 "child","Children 2-11 Years Old","http://purl.obolibrary.org/obo/NCIT_C49683",2,11
