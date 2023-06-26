@@ -78,10 +78,11 @@ rownames(current_study) <- NULL
 
 current_reference_frame <- current_study %>%
   left_join(relevant_col_mappings, by = "colname") %>%
+  mutate(column_id = 1:nrow(.), .before = colname) %>%
   mutate(group = NA, .before = colname) %>%
-  mutate(link_id = 1:nrow(.), .before = colname) %>%
   mutate(link_map = NA, .before = colname) %>%
-  mutate(split_pattern= NA, .before = colname)
+  mutate(match_col = NA, .before = colname) %>%
+  mutate(split_pattern = NA, .before = colname)
 
 sheet_write(current_reference_frame, ss = vv, sheet = current_study_name)
 

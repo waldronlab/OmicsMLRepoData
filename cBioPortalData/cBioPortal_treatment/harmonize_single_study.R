@@ -61,10 +61,11 @@ harmonized_value <- function(name, value, harmonized_type, parsed_value) {
 # 1. Get template study map
 original_harmonization_map <- completed_harmonization_mappings %>%
   select(-unique_values) %>%
-  mutate(colvalue = NA, .after = colname)
+  mutate(colvalue = NA, .after = colname) %>%
+  rename(link_id = column_id) %>%
+  mutate(match_id = link_id, .after = link_id)
 
 # 2. Get study from study_list and set up final frame
-
 current_study_data <- study_list[[study_name]]
 harmonized_study <- data.frame(matrix(nrow = nrow(current_study_data),
                                       ncol = 7,
@@ -334,6 +335,7 @@ for (h in 1:nrow(current_study_data)) { # loop through records
       current_cell <- unlist(strsplit(as.character(harmonization_map[i,j]), split = "::"))
       print(current_cell)
       if(!is.na(harmonization_map[i,j])) {
+        print(!is.na(harmonization_map[i,j]))
         potential_merges$exists[j] <- TRUE
         cellwise_merges <- c()
         for (k in 1:nrow(harmonization_map)) {
@@ -358,7 +360,7 @@ for (h in 1:nrow(current_study_data)) { # loop through records
     }
     if (!all(is.na(potential_merges$cellwise_merges))) {
       final_merges_frame <- potential_merges %>%
-        filter(exists == TRUE & !is.na(cellwise_merges))
+        filter(exists == TRUE)
       final_merges <- Reduce(intersect, final_merges_frame$cellwise_merges)
       
       merged_row <- as.data.frame(harmonization_map) %>%
