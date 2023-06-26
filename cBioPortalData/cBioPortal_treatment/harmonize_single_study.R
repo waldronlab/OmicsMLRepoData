@@ -22,7 +22,7 @@ url_4 <- ""
 vv <- googledrive::as_id(url_4)
 
 # choose study
-study_name <- "acc_tcga"
+study_name <- "angs_project_painter_2018"
 
 # get completed harmonization mappings and parsed column names
 completed_harmonization_mappings <- read_sheet(vv, sheet = study_name)
@@ -137,7 +137,6 @@ for (h in 1:nrow(current_study_data)) { # loop through records
   }
   
   # 7. For each row with a condition, set its link_id to its target link_id and save in merge_links
-  
   merge_links <- c()
   for (i in 1:nrow(harmonization_map)) { # loop through rows
     current_row <- harmonization_map[i,]
@@ -146,8 +145,12 @@ for (h in 1:nrow(current_study_data)) { # loop through records
       named_vector <- eval(parse(text = link_map))
       value <- current_row$colvalue
       for (j in 1:length(named_vector)) { # loop through values that map to links
+        print(j)
+        print(grepl(names(named_vector)[j], value, ignore.case = TRUE))
         if (grepl(names(named_vector)[j], value, ignore.case = TRUE)) { # if the current mapping value is found in the actual column value
-          target <- unname(named_vector[grep(names(named_vector)[j], value, ignore.case = TRUE)])
+          #target <- unname(named_vector[grep(names(named_vector)[j], value, ignore.case = TRUE)])
+          target <- unname(named_vector[j])
+          print(target)
           #target <- unname(named_vector[value])
           harmonization_map$link_id[i] <- target
           merge_links <- unique(c(merge_links, target))
@@ -220,7 +223,6 @@ for (h in 1:nrow(current_study_data)) { # loop through records
   harmonization_map[harmonization_map == ""] <- NA
   
   # 9. Collapse frame by group and split_index
-  
   harmonization_map <- harmonization_map %>%
     mutate(row_index = rownames(harmonization_map), .before = group)
   
@@ -235,40 +237,27 @@ for (h in 1:nrow(current_study_data)) { # loop through records
     mutate(group = strsplit(group, split = "::")) %>%
     mutate(current_bool = NA, .before = group)
   
-  merge_groups <- unique(unlist(rows_to_group$group))
-  merge_groups <- merge_groups[!is.na(merge_groups)]
-  
-  for (i in 1:length(merge_groups)) {
-    current_group <- merge_groups[i]
-    print(paste0("current group: ", current_group))
-    for (j in 1:length(rows_to_group$group)) {
-      print(current_group)
-      print(rows_to_group$group[[j]])
-      print(current_group %in% rows_to_group$group[[j]])
-      rows_to_group$current_bool[j] <- current_group %in% rows_to_group$group[[j]]
-    }
-    group_rows <- filter(rows_to_group, current_bool == TRUE)
-    merge_split_indices <- unique(filter(rows_to_group, current_bool == TRUE & !is.na(split_index))$split_index)
-    print(paste0("unique indices: ", paste(merge_split_indices, collapse = "::")))
-    if (length(merge_split_indices) == 0) {
-      print("0 unique non-NA indices")
-      merged_rows <- group_rows %>%
-        #filter(!is.na(group) & current_group %in% group) %>%
-        #group_by(group) %>%
-        summarise(across(everything(), ~paste(na.omit(.), collapse = "::"))) %>%
-        select(-current_bool)
-      print(paste0("adding ", nrow(merged_rows), " row(s) to rows_without_groups"))
-      print(paste0("rows_without_groups rows before rbind: ", nrow(rows_without_groups)))
-      rows_without_groups <- rbind(rows_without_groups, merged_rows)
-      print(paste0("rows_without_groups rows after rbind: ", nrow(rows_without_groups)))
-    } else {
-      print("some unique non-NA indices found")
-      for (j in 1:length(merge_split_indices)) {
-        current_index <- merge_split_indices[j]
-        print(paste0("current index: ", current_index))
+  if (nrow(rows_to_group) > 0) {
+    
+    merge_groups <- unique(unlist(rows_to_group$group))
+    merge_groups <- merge_groups[!is.na(merge_groups)]
+    
+    for (i in 1:length(merge_groups)) {
+      current_group <- merge_groups[i]
+      print(paste0("current group: ", current_group))
+      for (j in 1:length(rows_to_group$group)) {
+        print(current_group)
+        print(rows_to_group$group[[j]])
+        print(current_group %in% rows_to_group$group[[j]])
+        rows_to_group$current_bool[j] <- current_group %in% rows_to_group$group[[j]]
+      }
+      group_rows <- filter(rows_to_group, current_bool == TRUE)
+      merge_split_indices <- unique(filter(rows_to_group, current_bool == TRUE & !is.na(split_index))$split_index)
+      print(paste0("unique indices: ", paste(merge_split_indices, collapse = "::")))
+      if (length(merge_split_indices) == 0) {
+        print("0 unique non-NA indices")
         merged_rows <- group_rows %>%
           #filter(!is.na(group) & current_group %in% group) %>%
-          filter((split_index == current_index)|(is.na(split_index))) %>%
           #group_by(group) %>%
           summarise(across(everything(), ~paste(na.omit(.), collapse = "::"))) %>%
           select(-current_bool)
@@ -276,6 +265,22 @@ for (h in 1:nrow(current_study_data)) { # loop through records
         print(paste0("rows_without_groups rows before rbind: ", nrow(rows_without_groups)))
         rows_without_groups <- rbind(rows_without_groups, merged_rows)
         print(paste0("rows_without_groups rows after rbind: ", nrow(rows_without_groups)))
+      } else {
+        print("some unique non-NA indices found")
+        for (j in 1:length(merge_split_indices)) {
+          current_index <- merge_split_indices[j]
+          print(paste0("current index: ", current_index))
+          merged_rows <- group_rows %>%
+            #filter(!is.na(group) & current_group %in% group) %>%
+            filter((split_index == current_index)|(is.na(split_index))) %>%
+            #group_by(group) %>%
+            summarise(across(everything(), ~paste(na.omit(.), collapse = "::"))) %>%
+            select(-current_bool)
+          print(paste0("adding ", nrow(merged_rows), " row(s) to rows_without_groups"))
+          print(paste0("rows_without_groups rows before rbind: ", nrow(rows_without_groups)))
+          rows_without_groups <- rbind(rows_without_groups, merged_rows)
+          print(paste0("rows_without_groups rows after rbind: ", nrow(rows_without_groups)))
+        }
       }
     }
   }
@@ -317,11 +322,10 @@ for (h in 1:nrow(current_study_data)) { # loop through records
   }
   
   # 10. Combine rows with the same values
-  
   harmonization_map <- harmonization_map %>%
     select(treatment_name:treatment_notes) %>%
     rowwise() %>%
-    mutate(across(everything(), ~paste(unique(unlist(strsplit(., split = "::"))), collapse = "::")))
+    mutate(across(everything(), ~paste(unique(unlist(strsplit(as.character(.), split = "::"))), collapse = "::")))
   
   harmonization_map[harmonization_map == "" | harmonization_map == "NA"] <- NA
   
