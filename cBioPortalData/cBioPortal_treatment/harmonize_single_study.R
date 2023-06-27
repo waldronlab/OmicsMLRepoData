@@ -22,7 +22,7 @@ url_4 <- ""
 vv <- googledrive::as_id(url_4)
 
 # choose study
-study_name <- "angs_project_painter_2018"
+study_name <- "aml_ohsu_2018"
 
 # get completed harmonization mappings and parsed column names
 completed_harmonization_mappings <- read_sheet(vv, sheet = study_name)
@@ -53,6 +53,20 @@ harmonized_value <- function(name, value, harmonized_type, parsed_value) {
     return(paste(value, parsed_value, sep = "/&/"))
   } else {
     return("!!UNRECOGNIZED_MAPPING_VALUE!!")
+  }
+}
+
+harmonized_value <- function(name, value, harmonized_type, parsed_value) {
+  if (is.na(harmonized_type)) {
+    return(NA)
+  } else if (harmonized_type == "value") {
+    return(value)
+  } else if (startsWith(harmonized_type, "value + ")) {
+    return(str_replace(harmonized_type, "value \\+ ", value))
+  } else if (endsWith(harmonized_type, " + value")) {
+    return(str_replace(harmonized_type, " \\+ value", value))
+  } else {
+    return(harmonized_type)
   }
 }
 
@@ -251,7 +265,10 @@ for (h in 1:nrow(current_study_data)) { # loop through records
         print(current_group %in% rows_to_group$group[[j]])
         rows_to_group$current_bool[j] <- current_group %in% rows_to_group$group[[j]]
       }
-      group_rows <- filter(rows_to_group, current_bool == TRUE)
+      group_rows <- filter(rows_to_group, current_bool == TRUE) %>%
+        rowwise() %>%
+        mutate(group = list(paste(group, collapse = "::"))) %>%
+        ungroup()
       merge_split_indices <- unique(filter(rows_to_group, current_bool == TRUE & !is.na(split_index))$split_index)
       print(paste0("unique indices: ", paste(merge_split_indices, collapse = "::")))
       if (length(merge_split_indices) == 0) {
@@ -287,39 +304,54 @@ for (h in 1:nrow(current_study_data)) { # loop through records
   
   harmonization_map <- rows_without_groups
   harmonization_map[harmonization_map == ""] <- NA
+  harmonization_map <- harmonization_map %>%
+    rowwise() %>%
+    mutate(across(everything(), ~paste(sort(unique(unlist(strsplit(as.character(.), split = "::")))), collapse = "::"))) %>%
+    ungroup()
+  harmonization_map[harmonization_map == "" | harmonization_map == "NA"] <- NA
   
-  index_frequencies <- as.data.frame(table(unlist(strsplit(harmonization_map$row_index, split = "::"))))
-  need_to_merge <- as.character(index_frequencies$Var1[index_frequencies$Freq > 1])
+  new_rows_without_groups <- harmonization_map %>%
+    filter(is.na(group))
   
-  if (length(need_to_merge) > 0) {
-    group_by_index <- harmonization_map %>%
-      mutate(row_index = strsplit(row_index, split = "::")) %>%
-      mutate(current_bool = NA, .before = row_index)
+  new_rows_to_group <- harmonization_map %>%
+    filter(!is.na(group)) %>%
+    summarise(across(everything(), ~paste(na.omit(.), collapse = "::")), .by = c(group, split_index))
+  
+  harmonization_map <- rbind(new_rows_without_groups, new_rows_to_group)
+  harmonization_map[harmonization_map == "" | harmonization_map == "NA"] <- NA
+  
+  #index_frequencies <- as.data.frame(table(unlist(strsplit(harmonization_map$row_index, split = "::"))))
+  #need_to_merge <- as.character(index_frequencies$Var1[index_frequencies$Freq > 1])
+  
+  #if (length(need_to_merge) > 0) {
+  #  group_by_index <- harmonization_map %>%
+  #    mutate(row_index = strsplit(row_index, split = "::")) %>%
+  #    mutate(current_bool = NA, .before = row_index)
+  #  
+  #  for (i in 1:length(need_to_merge)) {
+  #    print(i)
+  #    current_row_index <- need_to_merge[i]
+  #    print(current_row_index)
+  #    for (j in 1:length(group_by_index$row_index)) {
+  #      print(current_row_index)
+  #      print(group_by_index$row_index[[j]])
+  #      print(current_row_index %in% group_by_index$row_index[[j]])
+  #      group_by_index$current_bool[j] <- current_row_index %in% group_by_index$row_index[[j]]
+  #    }
+  #    single_index_row <- group_by_index %>%
+  #      filter(current_bool == TRUE) %>%
+  #      summarise(across(everything(), ~paste(na.omit(.), collapse = "::")))
+  #    
+  #    ungrouped_rows <- group_by_index %>%
+  #      filter(current_bool == FALSE)
+  #    
+  #    group_by_index <- rbind(ungrouped_rows, single_index_row)
+  #  }
     
-    for (i in 1:length(need_to_merge)) {
-      print(i)
-      current_row_index <- need_to_merge[i]
-      print(current_row_index)
-      for (j in 1:length(group_by_index$row_index)) {
-        print(current_row_index)
-        print(group_by_index$row_index[[j]])
-        print(current_row_index %in% group_by_index$row_index[[j]])
-        group_by_index$current_bool[j] <- current_row_index %in% group_by_index$row_index[[j]]
-      }
-      single_index_row <- group_by_index %>%
-        filter(current_bool == TRUE) %>%
-        summarise(across(everything(), ~paste(na.omit(.), collapse = "::")))
-      
-      ungrouped_rows <- group_by_index %>%
-        filter(current_bool == FALSE)
-      
-      group_by_index <- rbind(ungrouped_rows, single_index_row)
-    }
-    
-    harmonization_map <- group_by_index %>%
-      select(-current_bool)
-    harmonization_map[harmonization_map == ""] <- NA  
-  }
+  #  harmonization_map <- group_by_index %>%
+  #    select(-current_bool)
+  #  harmonization_map[harmonization_map == ""] <- NA  
+  #}
   
   # 10. Combine rows with the same values
   harmonization_map <- harmonization_map %>%
@@ -357,22 +389,30 @@ for (h in 1:nrow(current_study_data)) { # loop through records
         } 
         if(length(cellwise_merges) > 0) {
           potential_merges$cellwise_merges[j] <- list(cellwise_merges)
+        } else {
+          potential_merges$cellwise_merges[j] <- list(c(0))
         }
       } else {
         potential_merges$exists[j] <- FALSE
       }
     }
     if (!all(is.na(potential_merges$cellwise_merges))) {
+      merged_rows <- list()
       final_merges_frame <- potential_merges %>%
         filter(exists == TRUE)
       final_merges <- Reduce(intersect, final_merges_frame$cellwise_merges)
-      
-      merged_row <- as.data.frame(harmonization_map) %>%
-        slice(c(i, final_merges)) %>%
-        summarise(across(everything(), ~paste(na.omit(.), collapse = "::")))
-      harmonization_map <- as.data.frame(harmonization_map) %>%
-        slice(-c(i, final_merges)) %>%
-        bind_rows(merged_row) 
+      if (length(final_merges) > 0) {
+        for (l in 1:length(final_merges)) {
+          current_fmerge <- final_merges[l]
+          merged_row <- as.data.frame(harmonization_map) %>%
+            slice(c(i, current_fmerge)) %>%
+            summarise(across(everything(), ~paste(na.omit(.), collapse = "::")))
+          merged_rows[[l]] <- merged_row
+        }
+        harmonization_map <- as.data.frame(harmonization_map) %>%
+          slice(-c(i, final_merges)) %>%
+          bind_rows(merged_rows)
+      }
     }
   }
   

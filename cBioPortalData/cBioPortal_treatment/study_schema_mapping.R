@@ -49,14 +49,14 @@ for(i in 1:length(study_list)){
   for(j in 1:ncol(study)){
     if(colnames(study[,j]) %in% relevant_colnames){
       relevant_names <- append(relevant_names, colnames(study[,j]))
-      unique_values <- append(unique_values, unlist(lapply(study[,j], function(x) paste(unique(na.omit(x)), collapse = ";"))))
+      unique_values <- append(unique_values, unlist(lapply(study[,j], function(x) paste(unique(na.omit(x)), collapse = "<;>"))))
     }
   }
   relevant_names <- unname(relevant_names)
   unique_values <- unname(unique_values)
   study_cols <- study[, relevant_names]
   study_treat_vals[[i]] <- data.frame(colname = relevant_names,
-                                      unique_values = str_trunc(unique_values, 500, "right"),
+                                      unique_values = str_trunc(unique_values, 25000, "right"),
                                       study_completeness = colSums(!is.na(study_cols))/nrow(study_cols))
 }
 names(study_treat_vals) <- names(study_list)
@@ -70,8 +70,10 @@ rownames(study_treat_frame) <- NULL
 # write for manual group assignment
 sheet_write(study_treat_frame, ss = vv, sheet = "study_col_groupings")
 
+################ MAIN SECTION ###################
 # merge mappings with unique values
-current_study_number <- 10
+last_study_name <- "blca_msk_tcga_2020"
+current_study_number <- grep(last_study_name, names(study_treat_vals)) + 1
 current_study_name <- names(study_treat_vals)[current_study_number]
 current_study <- study_treat_vals[[current_study_number]][,-3]
 rownames(current_study) <- NULL
@@ -85,6 +87,8 @@ current_reference_frame <- current_study %>%
   mutate(split_pattern = NA, .before = colname)
 
 sheet_write(current_reference_frame, ss = vv, sheet = current_study_name)
+################################################
+
 
 # harmonize from filtered_study_list and maps
 current_study_number <- 3
