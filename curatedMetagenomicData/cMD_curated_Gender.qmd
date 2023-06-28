@@ -132,13 +132,22 @@ curated_gender <- select(samplemd, curation_id, gender, curated_sex)
 colnames(curated_gender)[2] <- c("original_gender")
 ```
 
+## Format
+```{r}
+curated_gender$curated_sex <- stringr::str_to_title(curated_gender$curated_sex)
+curated_gender$curated_sex_ontology_term_id <- NA
+
+femaleInd <- which(curated_gender$curated_sex == "Female")
+curated_gender$curated_sex_ontology_term_id[femaleInd] <- "NCIT_C16576"
+maleInd <- which(curated_gender$curated_sex == "Male")
+curated_gender$curated_sex_ontology_term_id[maleInd] <- "NCIT_C16576"
+```
+
 
 ## Export
 
 Finally, we will export our completed table to GitHub.
 ```{r export_curated_table, eval=FALSE}
 # export to GitHub
-write.csv(curated_gender, 
-          file = file.path(proj_dir, "data/curated_gender.csv"),
-          row.names = FALSE)
+write.csv(curated_gender, "data/curated_gender.csv", row.names = FALSE)
 ```
