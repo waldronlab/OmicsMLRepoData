@@ -2,7 +2,15 @@ library(tidyverse)
 library(googlesheets4)
 library(utile.tools)
 
-# Note: ~1 min/100 records
+# Load list of harmonized studies
+harmonized_studies <- readRDS("cBP_harmonized_studies_2023-05-18.rds")
+
+# Save harmonized study to list of harmonized studies and backup
+harmonized_studies[[current_study_number]] <- harmonized_study
+names(harmonized_studies)[current_study_number] <- study_name
+saveRDS(harmonized_studies, file = "cBP_harmonized_studies_2023-05-18.rds")
+
+# Note: ~30 seconds/100 records
 
 # establish urls
 # sheet = Potential Treatment Columns
@@ -21,12 +29,19 @@ uu <- googledrive::as_id(url_3)
 url_4 <- ""
 vv <- googledrive::as_id(url_4)
 
-# choose study
-study_name <- "aml_ohsu_2018"
 
-# get completed harmonization mappings and parsed column names
-completed_harmonization_mappings <- read_sheet(vv, sheet = study_name)
-parsed_colnames <- read_sheet(tt, sheet = "colname_parsing")
+# list of relevant names
+relevant_col_sheet <- read_sheet(tt, sheet = "harmonization_mappings")
+relevant_colnames <- relevant_col_sheet$colname
+relevant_col_mappings <- relevant_col_sheet[, -c(1, 3)]
+
+# get relevant studies
+study_treat_cols <- list()
+for(i in 1:length(study_list)){
+  study_treat_cols[[i]] <- colnames(study_list[[i]])[colnames(study_list[[i]]) %in% relevant_colnames]
+}
+names(study_treat_cols) <- names(study_list)
+study_treat_cols <- compact(study_treat_cols)
 
 # get list of studies
 study_list <- readRDS("cBioPortal_all_clinicalData_2023-05-18.rds")
@@ -42,6 +57,7 @@ for (i in 1:length(no_data_values)) {
 no_data_search_term <- paste(no_data_values, collapse = "|")
 
 # function to return correct value based on map
+### NO LONGER USING THIS ONE #####
 harmonized_value <- function(name, value, harmonized_type, parsed_value) {
   if (is.na(harmonized_type)) {
     return(NA)
@@ -55,7 +71,9 @@ harmonized_value <- function(name, value, harmonized_type, parsed_value) {
     return("!!UNRECOGNIZED_MAPPING_VALUE!!")
   }
 }
+#####
 
+### USE THIS ONE ####
 harmonized_value <- function(name, value, harmonized_type, parsed_value) {
   if (is.na(harmonized_type)) {
     return(NA)
@@ -71,6 +89,13 @@ harmonized_value <- function(name, value, harmonized_type, parsed_value) {
 }
 
 ####### ABOVE IS GENERAL SETUP: BELOW TAKES SINGLE STUDY ################
+# 0. Select study and load map
+study_name <- "coadread_tcga"
+current_study_number <- grep(paste0("^", study_name, "$"), names(study_treat_cols))
+
+# get completed harmonization mappings and parsed column names
+completed_harmonization_mappings <- read_sheet(vv, sheet = study_name)
+parsed_colnames <- read_sheet(tt, sheet = "colname_parsing")
 
 # 1. Get template study map
 original_harmonization_map <- completed_harmonization_mappings %>%
@@ -82,9 +107,10 @@ original_harmonization_map <- completed_harmonization_mappings %>%
 # 2. Get study from study_list and set up final frame
 current_study_data <- study_list[[study_name]]
 harmonized_study <- data.frame(matrix(nrow = nrow(current_study_data),
-                                      ncol = 7,
+                                      ncol = 8,
                                       dimnames = list(c(),
                                                       c("patientId",
+                                                        "sampleId",
                                                         "treatment_name",
                                                         "treatment_type",
                                                         "treatment_amount",
@@ -99,6 +125,7 @@ for (h in 1:nrow(current_study_data)) { # loop through records
   harmonization_map <- original_harmonization_map
   original_record <- current_study_data[h,]
   patient_ID <- original_record$patientId
+  sample_ID <- original_record$sampleId
   
   # 3. For each row in map, populate column value
   for (i in 1:nrow(harmonization_map)) {
@@ -121,7 +148,7 @@ for (h in 1:nrow(current_study_data)) { # loop through records
   }
   harmonization_map <- harmonization_map[rowSums(is.na(harmonization_map)) != ncol(harmonization_map),]
   if (nrow(harmonization_map) == 0) {
-    harmonized_row <- c(patient_ID, NA, NA, NA, NA, NA, NA)
+    harmonized_row <- c(patient_ID, sample_ID, NA, NA, NA, NA, NA, NA)
     harmonized_study[h,] <- harmonized_row
     next
   }
@@ -427,7 +454,8 @@ for (h in 1:nrow(current_study_data)) { # loop through records
   harmonized_row <- harmonization_map %>%
     ungroup() %>%
     summarise(across(everything(), ~paste(., collapse = "<;>"))) %>%
-    mutate(patientId = patient_ID, .before = treatment_name)
+    mutate(patientId = patient_ID, .before = treatment_name) %>%
+    mutate(sampleId = sample_ID, .before = treatment_name)
   
   harmonized_study[h,] <- harmonized_row
   

@@ -72,8 +72,8 @@ sheet_write(study_treat_frame, ss = vv, sheet = "study_col_groupings")
 
 ################ MAIN SECTION ###################
 # merge mappings with unique values
-last_study_name <- "blca_msk_tcga_2020"
-current_study_number <- grep(last_study_name, names(study_treat_vals)) + 1
+last_study_name <- "brca_mapk_hp_msk_2021"
+current_study_number <- grep(paste0("^", last_study_name, "$"), names(study_treat_vals)) + 1
 current_study_name <- names(study_treat_vals)[current_study_number]
 current_study <- study_treat_vals[[current_study_number]][,-3]
 rownames(current_study) <- NULL
