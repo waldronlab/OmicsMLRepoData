@@ -35,7 +35,7 @@ suppressPackageStartupMessages({
 
 ```{r echo=FALSE}
 ## Add the `curation_id` column
-proj_dir <- "~/Packages/OmicsMLRepoData/curatedMetagenomicData/"
+proj_dir <- "~/OmicsMLRepo/OmicsMLRepoData/curatedMetagenomicData/"
 sampleMetadata$curation_id <- paste(sampleMetadata$study_name,
                                     sampleMetadata$sample_id,
                                     sep = ":")
@@ -44,340 +44,6 @@ sampleMetadata$curation_id <- paste(sampleMetadata$study_name,
 url <- "https://docs.google.com/spreadsheets/d/1QSbB_b1DkfqOc7q5eHE0IDHSiGqNUyTE8d4GzbSEzjM/edit?usp=sharing"
 ss <- googledrive::as_id(url)
 ```
-
-# Disease 
-Manual curation efforts for curatedMetagenomicData `sampleMetadata` are 
-happening in a several GitHub repositories. We will first collect the most
-up-to-date versions of them. For 'disease' curation, data inputs include: 
-
-1. Curated metagenomic data curation tables ([link](https://github.com/waldronlab/curatedMetagenomicDataCuration/tree/master/inst/extdata)) 
-2. Hand-curated disease ontology table ([link](https://github.com/Ethan-Loo/Bioinformatics_Data_Curation_Collaboration)) 
-3. Our curation work under OmicsMLRepoData GitHub repo.
-
-## Sources
-### curatedMetagenomicDataCuration
-```{r}
-file_url <- "https://raw.githubusercontent.com/waldronlab/curatedMetagenomicDataCuration/master/inst/extdata/updated-disease-ontology.csv"
-cmd_disease <- read.csv(file_url, sep = ",", header = TRUE)
-head(cmd_disease, 3)
-```
-
-### Disease ontology curation
-```{r}
-file_url <- "https://raw.githubusercontent.com/Ethan-Loo/Bioinformatics_Data_Curation_Collaboration/main/disease_ontology.yaml"
-x <- yaml::yaml.load_file(file_url)
-disease_ontology <- as.data.frame(do.call(rbind, x)) %>%
-    tibble::rownames_to_column(., "Original.Abbreviation.Name")
-
-colnames(disease_ontology)[2:3] <- c("Full.Name", "Ontology.link")
-disease_ontology$Full.Name <- as.character(disease_ontology$Full.Name)
-disease_ontology$Ontology.link <- as.character(disease_ontology$Ontology.link)
-
-head(disease_ontology, 3)
-```
-
-### OmicsMLRepo
-This is currently stored under the private repo.
-```{r}
-## Our curation file
-file_url <- "https://raw.githubusercontent.com/waldronlab/OmicsMLRepoData/master/curatedMetagenomicData/maps/cMD_condition_ontology.csv?token=GHSAT0AAAAAAB7ODWEIMK4WXDXWGC3BTVDIZATQQKA"
-mlRepo_disease_all <- read.csv(file_url, sep = ",", header = TRUE)
-head(mlRepo_disease_all, 3)
-
-colnames(mlRepo_disease) <- c("Original.Abbreviation.Name",
-                              "Full.Name",
-                              "Ontology.link") # To merge with the other tables
-```
-
-### sampleMetadata
-This is the target metadata file to be updated through our curation.
-```{r}
-file_url <- "https://github.com/waldronlab/curatedMetagenomicData/raw/master/data/sampleMetadata.rda"
-download.file(file_url, "sampleMetadata.rda")
-load("sampleMetadata.rda")
-```
-
-#### Duplicated samples
-FYI, there are duplicated samples in cMD, so need to be careful when we split
-and merge metadata table during the harmonization process.
-
-```{r}
-table(is.na(sampleMetadata$age), is.na(sampleMetadata$infant_age))
-
-## There are duplicated samples
-apply(sampleMetadata, 2, function(x) {length(unique(x))}) %>% 
-    sort(decreasing = TRUE) %>% 
-    head
-
-dup_samples <- sampleMetadata$sample_id[duplicated(sampleMetadata$sample_id)]
-dup_samples_tb <- sampleMetadata %>% filter(sample_id %in% dup_samples)
-table(dup_samples_tb$study_name)
-```
-
-To handle these duplicated samples, we provide `curation_id` which is the 
-combination of study name and sample id (`study_name:sample_id`).
-```{r eval=FALSE}
-sampleMetadata$curation_id <- paste(sampleMetadata$study_name,
-                                    sampleMetadata$sample_id,
-                                    sep = ":")
-```
-
-
-#### Columns to be merged
-```{r}
-colnames(sampleMetadata)[grep("disease", colnames(sampleMetadata))]
-colnames(sampleMetadata)[grep("condition", colnames(sampleMetadata))]
-```
-
-```{r}
-a <- unique(sampleMetadata$disease)
-b <- unique(sampleMetadata$disease_subtype)
-c <- unique(sampleMetadata$study_condition)
-
-sum(grepl(";", a)) # multiple values combined with semicolon
-sum(grepl(";", b)) # multiple values combined with semicolon
-sum(grepl(";", c)) 
-```
-
-There is one entry under `disease` column that multiple values are separated
-by comma(`,`) instead of semicolon(`;`). Manually fix this.
-```{r}
-fix_ind <- grep("metastases_lung,metastases_nodes", sampleMetadata$disease)
-sampleMetadata$disease[fix_ind]
-sampleMetadata$disease[fix_ind] <- "melanoma;metastases_lung;metastases_nodes"
-```
-
-Merge `disease`, `disease_subtype`, and `study_condition` columns of 
-the `sampleMetadata` table. 
-```{r}
-unique_disease <- unique(sampleMetadata$disease)
-disease_all <- c() # collect all the diseases
-for (i in seq_along(unique_disease)) {
-    disease <- strsplit(unique_disease[i], split = ";") # split semicolon-separated values
-    disease_all <- c(disease_all, unlist(disease))
-}
-
-unique_subtype <- unique(sampleMetadata$disease_subtype)
-subtype_all <- c() # collect all the subtypes
-for (i in seq_along(unique_subtype)) {
-    subtype <- strsplit(unique_subtype[i], split = ";") # split semicolon-separated values
-    subtype_all <- c(subtype_all, unlist(subtype))
-}
-    
-## All the unique study_condition and disease_subtypes
-all_conditions <- unique(c(disease_all, subtype_all,
-                           sampleMetadata$study_condition)) 
-
-## Format it as same as cmd_disease table
-all_conditions_tb <- data.frame(Original.Abbreviation.Name = sort(all_conditions), 
-                                Full.Name = NA,
-                                Ontology.link = NA)
-```
-
-Next, we combine `all_conditions_tb`, `cmd_disease`, `disease_ontology`, 
-and `mlRepo_disease` tables.
-```{r}
-cmd_all_conditions <- rbind(all_conditions_tb, cmd_disease) %>%
-    rbind(., disease_ontology) %>%
-    rbind(mlRepo_disease)
-
-## Assign NA to all empty string for the convenient of downstream data cleaning
-cmd_all_conditions[cmd_all_conditions == ""] <- NA
-```
-
-## Values need to be curated
-We check whether all the existing curations are agreeing and which need
-a further curation. First, we subset the curated values as `ont_complete` 
-when they satisfy the following conditions: 1) Have `Ontology.link` value,
-2) If curated multiple times, all curation results are same.    
- 
-We subset `cmd_all_conditions` with the unique original values that have the 
-`Ontology.link` value. This table is named `ont_complete`. 
-
-```{r}
-names_all <- cmd_all_conditions$Original.Abbreviation.Name
-duplicates <- names_all[which(duplicated(names_all))] 
-
-check_duplicates <- c() # collect whether multiple `Ontology.link` assigned to one value are all identical
-for (duplicate in duplicates) {
-    ind <- which(ont_complete$Original.Abbreviation.Name == duplicate)
-    res <- unique(ont_complete$Ontology.link[ind])
-    check_duplicates <- c(check_duplicates, length(res))
-}
-all(check_duplicates == 1) # Make this as a sanity check point for reviewing curation discrepancy
-
-ont_complete <- cmd_all_conditions %>% 
-    filter(!is.na(Ontology.link)) %>%
-    distinct(Original.Abbreviation.Name, .keep_all = TRUE) 
-```
-
-Any unique value without `Ontology.link` information is subjected for the 
-further manual curation and exported to Google Sheet.
-```{r}
-# Filter rows where manual curation is needed
-manual_curation <- cmd_all_conditions %>% 
-    filter(!Original.Abbreviation.Name %in% ont_complete$Original.Abbreviation.Name) %>%
-    add_column(Revision_Required = "") # explains observations that require clarification
-```
-
-```{r}
-length(unique(cmd_all_conditions$Original.Abbreviation.Name))
-nrow(ont_complete)
-nrow(manual_curation)
-```
-
-
-## Curation
-### Google Sheet for manual curation
-Export the merged mapping table to Google Sheet for manual curation.
-```{r create_gs, eval=FALSE}
-gs4_create("cMD_curation")
-```
-
-```{r export_gs, eval=FALSE}
-url <- "https://docs.google.com/spreadsheets/d/1QSbB_b1DkfqOc7q5eHE0IDHSiGqNUyTE8d4GzbSEzjM/edit?usp=sharing"
-ss <- googledrive::as_id(url)
-sheet_write(manual_curation, ss = ss, sheet = "disease_ontology")
-```
-
-### Save manually curated mapping table 
-After the manual curation, update the target mapping table in GitHub. 
-```{r import_gs}
-url <- "https://docs.google.com/spreadsheets/d/1QSbB_b1DkfqOc7q5eHE0IDHSiGqNUyTE8d4GzbSEzjM/edit?usp=sharing"
-ss <- googledrive::as_id(url)
-manual_curated <- read_sheet(ss, sheet = "disease_ontology")
-```
-
-### Final curation file
-```{r}
-condition_map <- rbind(ont_complete, manual_curated[,c("Original.Abbreviation.Name",
-                                                       "Full.Name",
-                                                       "Ontology.link")])
-condition_map <- rename(cMD_disease, Full.Name.Curated = Full.Name)
-condition_map <- condition_map[order(condition_map$Original.Abbreviation.Name),]
-```
-
-```{r echo=FALSE, eval=FALSE}
-dup_names <- condition_map$Full.Name.Curated[duplicated(tolower(condition_map$Full.Name.Curated))]
-unique(dup_names)
-```
-
-Export the complete condition map to Google Sheet for manual inspection.
-```{r eval=FALSE}
-url <- "https://docs.google.com/spreadsheets/d/1QSbB_b1DkfqOc7q5eHE0IDHSiGqNUyTE8d4GzbSEzjM/edit?usp=sharing"
-ss <- googledrive::as_id(url)
-sheet_write(condition_map, ss = ss, sheet = "disease_ontology_all")
-```
-
-After manual fixes, import the final condition_ontology_map.
-```{r}
-condition_map <- read_sheet(ss, sheet = "disease_ontology_all")
-```
-
-Double-check whether the curation is correct. Any curated ontology terms
-returned with `corret == FLASE` in `validation_tb` are reviewed.
-
-```{r}
-validation_tb <- data.frame(matrix(NA, nrow = nrow(condition_map), ncol = 4))
-colnames(validation_tb) <- c("curated_onto_term", "curated_onto_id", 
-                             "query_onto_term", "correct")
-
-for (i in seq_len(nrow(condition_map))) {
-    onto_term <- condition_map$curated_ontology_term[i]
-    onto_id <- basename(condition_map$curated_ontology_term_id[i])
-    qry <- OlsSearch(q = onto_id, exact = TRUE)
-    qry <- olsSearch(qry)
-    qdrf <- as(qry, "data.frame")
-    
-    validation_tb$curated_onto_term[i] <- onto_term
-    validation_tb$curated_onto_id[i] <- onto_id
-    validation_tb$query_onto_term[i] <- unique(qdrf$label)
-    validation_tb$correct[i] <- identical(validation_tb$curated_onto_term[i],
-                                          validation_tb$query_onto_term[i])
-}
-
-## 11 need-a-review entries
-## 5 yet un-mapped + 6 with multiple mapped
-validation_tb$correct[!validation_tb$correct,]
-```
-
-```{r update_the_condition_map, eval=FALSE}
-colnames(condition_map) <- c("original_value",
-                             "curated_ontology_term",
-                             "curated_ontology_term_id")
-
-## Save
-write.csv(condition_map, "maps/cMD_condition_ontology.csv", row.names = FALSE)
-```
-
-### Update sampleMetadata
-Assign disease ontology terms to sampleMetadata
-```{r}
-## Import the condition map
-condition_map <- read.csv(file.path(proj_dir, "maps/cMD_condition_ontology.csv"), 
-                          sep = ",", header = TRUE)
-condition_map$curated_ontology_term_id <- basename(condition_map$curated_ontology_term_id)
-```
-
-```{r prepare_condition_mapping}
-## A function to combine multiple values from multiple columns, separated by semicolon
-combine_condition <- function(x) { # x is a character vector from each row (e.g. condition_tb[2374,])
-    y <- strsplit(x[c("disease", "disease_subtype", "study_condition")], ";") %>% unlist
-    y[!(y %in% condition_map$original_value)] <- "review_required" # leave a "missing_map" note if the value is not in the map
-    z <- plyr::mapvalues(unlist(y), 
-                         from = condition_map$original_value,
-                         to = condition_map$curated_ontology_term,
-                         warn_missing = FALSE)
-    term <- unique(z[!is.na(z)], na.rm = TRUE) %>% paste(., collapse = ";")
-    return(term)
-}
-
-## A function to assign ontology term id to combined values, separated by semicolon
-combine_condition_ontology <- function(x) {
-    y <- strsplit(x[c("disease", "disease_subtype", "study_condition")], ";") %>% unlist
-    y[!(y %in% condition_map$original_value)] <- "review_required"
-    z <- plyr::mapvalues(unlist(y), 
-                         from = condition_map$original_value,
-                         to = basename(condition_map$curated_ontology_term_id),
-                         warn_missing = FALSE)
-    onto <- unique(z[!is.na(z)], na.rm = TRUE) %>% paste(., collapse = ";")
-    return(onto)
-}
-```
-
-```{r}
-## Subset to the condition/disease-related columns
-condition_tb <- sampleMetadata[,c("curation_id", "disease", 
-                                  "disease_subtype", "study_condition")]
-
-## Keep only 'contol' in the study_condition column
-control_ind <- which(condition_tb$study_condition == "control")
-condition_tb$curated_study_condition <- NA
-condition_tb$curated_study_condition_ontology_term_id <- NA
-condition_tb$curated_study_condition[control_ind] <- "Study Control"
-condition_tb$curated_study_condition_ontology_term_id[control_ind] <- "NCIT_C142703"
-
-## Combine all disease-related information in one column
-condition_tb$study_condition[control_ind] <- NA
-curated_condition <- condition_tb %>%
-    transmute(curation_id = curation_id,
-              curated_study_condition = curated_study_condition,
-              curated_study_condition_ontology_term_id = curated_study_condition_ontology_term_id,
-              curated_disease = apply(., 1, combine_condition),
-              curated_disease_ontology_term_id = apply(., 1, combine_condition_ontology))
-head(curated_condition)
-tail(curated_condition)
-```
-
-```{r eval=FALSE}
-## Save
-write.csv(curated_condition, 
-          file = file.path(proj_dir, "data/curated_condition.csv"),
-          row.names = FALSE)
-```
-
-
-
 
 
 # Age
@@ -552,20 +218,20 @@ age_group_map <- read_sheet(ss, sheet = "age_group_ontology")
 age_group_map
 
 ## Save
-write.csv(age_group_map, "maps/cMD_age_ontology.csv", row.names = FALSE)
+write.csv(age_group_map, "maps/cMD_age_category_ontology.csv", row.names = FALSE)
 ```
 
 
 ### Update sampleMetadata
 ```{r load_age_map, echo=FALSE}
-age_group_map <- read.table("maps/cMD_age_ontology.csv", sep = ",", header = TRUE)
+age_group_map <- read.csv("maps/cMD_age_category_ontology.csv", header = TRUE)
 ```
 
 ```{r age_group_for_no_numeric_age}
 ## age_group ontology
 curated_age_group <- plyr::mapvalues(x = age_group_only$age_category, 
                                      from = age_group_map$original_value, 
-                                     to = age_group_map$curated_age_group, 
+                                     to = age_group_map$curated_ontology, 
                                      warn_missing = TRUE)
 
 ## age_group min
@@ -582,8 +248,8 @@ curated_age_max <- plyr::mapvalues(x = age_group_only$age_category,
 
 ## Add the curated values
 age_group_only$curated_age_group <- curated_age_group
-age_group_only$curated_age_min <- curated_age_min
-age_group_only$curated_age_max <- curated_age_max
+age_group_only$curated_age_min <- as.numeric(curated_age_min)
+age_group_only$curated_age_max <- as.numeric(curated_age_max)
 
 age_group_only <- age_group_only[,-which(colnames(age_group_only) == "age_category")]
 ```
@@ -592,17 +258,17 @@ age_group_only <- age_group_only[,-which(colnames(age_group_only) == "age_catego
 curated_numeric_age <- rbind(curated_infant_age, curated_age) 
 
 ## Assign age_group based on the numeric age info
-res_pool <- age_group_map$curated_age_group[order(age_group_map$curated_age_min)]
+res_pool <- age_group_map$curated_ontology[order(age_group_map$curated_age_min)]
 res_ind <- findInterval(curated_numeric_age$curated_age_years, vec = sort(age_group_map$curated_age_min))
 curated_numeric_age$curated_age_group <- res_pool[res_ind]
 
 curated_age_all <- rbind(curated_numeric_age, age_group_only)
-nrow(curated_age_all) == nrow(age_tb) ## Check all 22,588 samples are there
+nrow(curated_age_all) == nrow(age_tb) ## Check all 22,588 samples are there = Should be `TRUE`
 
 ## Assign ontology to all
 age_onto <- plyr::mapvalues(x = curated_age_all$curated_age_group, 
-                            from = age_group_map$curated_age_group, 
-                            to = basename(age_group_map$curated_age_group_ontology_term_id), 
+                            from = age_group_map$curated_ontology, 
+                            to = basename(age_group_map$curated_ontology_term_id), 
                             warn_missing = TRUE)
 curated_age_all$curated_age_group_ontology_term_id <- age_onto
 ```
@@ -615,6 +281,9 @@ write.csv(curated_age_all,
           row.names = FALSE)
 ```
 
+```{r}
+x <- read.csv(file.path(proj_dir, "data/curated_age.csv"))
+```
 
 
 
@@ -670,6 +339,8 @@ for (i in seq_len(nrow(bodysite_map))) {
     validation_tb$correct[i] <- identical(validation_tb$curated_onto_term[i],
                                        validation_tb$query_onto_term[i])
 }
+
+table(validation_tb$correct, useNA = "ifany")
 ```
 
 ```{r eval=FALSE}
