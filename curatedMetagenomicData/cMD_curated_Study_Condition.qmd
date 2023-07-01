@@ -148,7 +148,7 @@ To access the necessary disease ontology terms we will load the
 `disease_ontology_map`. To access the manually-curated target phenotype(s) 
 associated with each study we will load the `target_condition_map`.
 
-```{r import_maps, eval=FALSE}
+```{r import_maps}
 # import the disease ontology map
 disease_ontology_map <- read.csv(file = file.path(proj_dir, "maps/cMD_study_condition_ontology.csv"),
                           sep = ",", header = TRUE)
@@ -305,6 +305,22 @@ curated_study_condition <- dplyr::right_join(
 
 # Rename the columns for accuracy & specificity
 colnames(curated_study_condition)[2:6] <- c("original_study_condition_value", "original_disease_value", "original_disease_subtype_value", "curated_control", "curated_control_ontology_term_id")
+```
+
+```{r echo=FALSE, eval=FALSE}
+## Double-check whether the 'one-to-one' mapping update in study_condition map
+## is properly applied during the mapping step. 
+val <- sapply(curated_study_condition$curated_target_condition, 
+              function(x) {
+                  strsplit(x, split = ";") %>% unlist %>% length
+              }) %>% as.numeric()
+onto <- sapply(curated_study_condition$curated_target_condition_ontology_term_id, 
+               function(x) {
+                   strsplit(x, split = ";") %>% unlist %>% length
+               }) %>% as.numeric()
+
+## This should return `integer(0)`
+which(val != onto)
 ```
 
 
