@@ -76,7 +76,7 @@
 "ThomasAM_2018a","colorectal cancer;Adenoma;adenocarcinoma","EFO:0005842;NCIT:C2855;EFO:0000228","EFO;NCIT;EFO"
 "ThomasAM_2018b","colorectal cancer","EFO:0005842","EFO"
 "ThomasAM_2019_c","colorectal cancer","EFO:0005842","EFO"
-"VatanenT_2016","otitis;pneumonia;bronchitis;Respiratory tract infection;sepsis;Skin Infection;Cough;gastroenteritis;Tonsillitis;pyelonephritis;cystitis;Fever;Infection;stomatitis;salmonellosis","SYMP:0000873;EFO:0003106;EFO:0009661;HP:0011947;MP:0005044;Skin Infection;HP:0012735;EFO:1001463;NCIT:C116006;EFO:1001141;EFO:1000025;HP:0001945;NCIT:C128320;EFO:0009688;MONDO:0000827","SYMP;EFO;EFO;HP;MP;NA;HP;EFO;NCIT;EFO;EFO;HP;NCIT;EFO;MONDO"
+"VatanenT_2016","otitis;pneumonia;bronchitis;Respiratory tract infection;sepsis;Skin Infection;Cough;gastroenteritis;Tonsillitis;pyelonephritis;cystitis;Fever;Infection;stomatitis;salmonellosis","SYMP:0000873;EFO:0003106;EFO:0009661;HP:0011947;MP:0005044;NCIT:C35025;HP:0012735;EFO:1001463;NCIT:C116006;EFO:1001141;EFO:1000025;HP:0001945;NCIT:C128320;EFO:0009688;MONDO:0000827","SYMP;EFO;EFO;HP;MP;NCIT;HP;EFO;NCIT;EFO;EFO;HP;NCIT;EFO;MONDO"
 "VilaAV_2018","Inflammatory Bowel Disease","NCIT:C3138","NCIT"
 "VincentC_2016","clostridium difficile infection","EFO:0009130","EFO"
 "VogtmannE_2016","colorectal cancer","EFO:0005842","EFO"

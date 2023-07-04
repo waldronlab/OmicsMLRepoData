@@ -230,7 +230,7 @@ for (i in 1:nrow(disease_data)){
 
 We can then append the non-redundant "disease_subtype" values onto the 
 "condensed" column values in a new "merged" column:
-```{R}
+```{r}
 # Append disease_subtype information if it is not redundant
 for (i in 1:nrow(disease_data)){
   if (is.na(disease_data$disease_subtype[i]) | 
@@ -307,7 +307,7 @@ curated_study_condition <- dplyr::right_join(
 colnames(curated_study_condition)[2:6] <- c("original_study_condition_value", "original_disease_value", "original_disease_subtype_value", "curated_control", "curated_control_ontology_term_id")
 ```
 
-```{r echo=FALSE, eval=FALSE}
+```{r}
 ## Double-check whether the 'one-to-one' mapping update in study_condition map
 ## is properly applied during the mapping step. 
 val <- sapply(curated_study_condition$curated_target_condition, 
