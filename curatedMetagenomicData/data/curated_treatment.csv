@@ -1,4 +1,4 @@
-"curation_id","antibiotics_current_use","treatment_source","curated_treatment","curated_treatment_ontology_term_id"
+"curation_id","curated_antibiotics_current_use","treatment_source","curated_treatment","curated_treatment_ontology_term_id"
 "AsnicarF_2017:MV_FEI1_t1Q14",NA,NA,NA,NA
 "AsnicarF_2017:MV_FEI2_t1Q14",NA,NA,NA,NA
 "AsnicarF_2017:MV_FEI3_t1Q14",NA,NA,NA,NA
@@ -2634,8 +2634,8 @@
 "ChuDM_2017:NCS-044-Stool-infant_microbiome",NA,NA,NA,NA
 "ChuDM_2017:NCS-044-I-ORAL1_microbiome",NA,NA,NA,NA
 "ChuDM_2017:NCS-045-I-ORAL1_microbiome",NA,NA,NA,NA
-"ChuDM_2017:NCS-047-I-ORAL1_microbiome","yes","antibiotics_family","Penicillin Antibiotic;Lincosamide Antibiotic","NCIT:C1500;NCIT:C82922"
-"ChuDM_2017:NCS-047-Stool-infant_microbiome","yes","antibiotics_family","Penicillin Antibiotic;Lincosamide Antibiotic","NCIT:C1500;NCIT:C82922"
+"ChuDM_2017:NCS-047-I-ORAL1_microbiome","yes","antibiotics_family","Penicillin Antibiotic;Lincomycin","NCIT:C1500;NCIT:C61811"
+"ChuDM_2017:NCS-047-Stool-infant_microbiome","yes","antibiotics_family","Penicillin Antibiotic;Lincomycin","NCIT:C1500;NCIT:C61811"
 "ChuDM_2017:NCS-049-Meconium1_microbiome",NA,NA,NA,NA
 "ChuDM_2017:NCS-049-I-ORAL3_microbiome",NA,NA,NA,NA
 "ChuDM_2017:NCS-049-Stool-maternal3_microbiome",NA,NA,NA,NA
@@ -18312,17 +18312,17 @@
 "VatanenT_2016:G80490","no",NA,NA,NA
 "VatanenT_2016:G78823","no",NA,NA,NA
 "VatanenT_2016:G80322","no",NA,NA,NA
-"VatanenT_2016:G80537","yes","antibiotics_family","Cephalosporin Antibiotic;Penicillin Antibiotic;Trimethoprim","NCIT:C357;NCIT:C1500;NCIT:C908"
-"VatanenT_2016:G80513","yes","antibiotics_family","Cephalosporin Antibiotic;Penicillin Antibiotic;Trimethoprim","NCIT:C357;NCIT:C1500;NCIT:C908"
+"VatanenT_2016:G80537","yes","antibiotics_family","Cephalosporin Antibiotic;Penicillin Antibiotic;sulfonamide antibiotic","NCIT:C357;NCIT:C1500;CHEBI:87228"
+"VatanenT_2016:G80513","yes","antibiotics_family","Cephalosporin Antibiotic;Penicillin Antibiotic;sulfonamide antibiotic","NCIT:C357;NCIT:C1500;CHEBI:87228"
 "VatanenT_2016:G80455","no",NA,NA,NA
 "VatanenT_2016:G80498","no",NA,NA,NA
 "VatanenT_2016:G80482","no",NA,NA,NA
 "VatanenT_2016:G80387","no",NA,NA,NA
 "VatanenT_2016:G78579","yes","antibiotics_family","Cephalosporin Antibiotic","NCIT:C357"
 "VatanenT_2016:G80461","no",NA,NA,NA
-"VatanenT_2016:G80621","yes","antibiotics_family","Antibacterial Agent;Penicillin Antibiotic","NCIT:C52588;NCIT:C1500"
-"VatanenT_2016:G80527","yes","antibiotics_family","Antibacterial Agent;Penicillin Antibiotic","NCIT:C52588;NCIT:C1500"
-"VatanenT_2016:G80533","yes","antibiotics_family","Trimethoprim","NCIT:C908"
+"VatanenT_2016:G80621","yes","antibiotics_family","Beta-lactamase Inhibitor;Penicillin Antibiotic","NCIT:C183118;NCIT:C1500"
+"VatanenT_2016:G80527","yes","antibiotics_family","Beta-lactamase Inhibitor;Penicillin Antibiotic","NCIT:C183118;NCIT:C1500"
+"VatanenT_2016:G80533","yes","antibiotics_family","sulfonamide antibiotic","CHEBI:87228"
 "VatanenT_2016:G80580","no",NA,NA,NA
 "VatanenT_2016:G80506","no",NA,NA,NA
 "VatanenT_2016:G80548","no",NA,NA,NA
@@ -18334,16 +18334,16 @@
 "VatanenT_2016:G80331","no",NA,NA,NA
 "VatanenT_2016:G78826","no",NA,NA,NA
 "VatanenT_2016:G80574","yes","antibiotics_family","Penicillin Antibiotic","NCIT:C1500"
-"VatanenT_2016:G80477","yes","antibiotics_family","Penicillin Antibiotic;Trimethoprim","NCIT:C1500;NCIT:C908"
-"VatanenT_2016:G80469","yes","antibiotics_family","Penicillin Antibiotic;Trimethoprim","NCIT:C1500;NCIT:C908"
+"VatanenT_2016:G80477","yes","antibiotics_family","Penicillin Antibiotic;sulfonamide antibiotic","NCIT:C1500;CHEBI:87228"
+"VatanenT_2016:G80469","yes","antibiotics_family","Penicillin Antibiotic;sulfonamide antibiotic","NCIT:C1500;CHEBI:87228"
 "VatanenT_2016:G80514","no",NA,NA,NA
 "VatanenT_2016:G80485","no",NA,NA,NA
 "VatanenT_2016:G78580","yes","antibiotics_family","Cephalosporin Antibiotic","NCIT:C357"
 "VatanenT_2016:G80562","yes","antibiotics_family","Penicillin Antibiotic","NCIT:C1500"
-"VatanenT_2016:G78827","yes","antibiotics_family","Trimethoprim","NCIT:C908"
+"VatanenT_2016:G78827","yes","antibiotics_family","sulfonamide antibiotic","CHEBI:87228"
 "VatanenT_2016:G80535","no",NA,NA,NA
 "VatanenT_2016:G80530","no",NA,NA,NA
-"VatanenT_2016:G80446","yes","antibiotics_family","Penicillin Antibiotic;Trimethoprim","NCIT:C1500;NCIT:C908"
+"VatanenT_2016:G80446","yes","antibiotics_family","Penicillin Antibiotic;sulfonamide antibiotic","NCIT:C1500;CHEBI:87228"
 "VatanenT_2016:G80520","no",NA,NA,NA
 "VatanenT_2016:G80302","no",NA,NA,NA
 "VatanenT_2016:G78523","no",NA,NA,NA
@@ -18376,8 +18376,8 @@
 "VatanenT_2016:G78833","yes","antibiotics_family","Penicillin Antibiotic","NCIT:C1500"
 "VatanenT_2016:G80567","no",NA,NA,NA
 "VatanenT_2016:G69225","no",NA,NA,NA
-"VatanenT_2016:G69174","yes","antibiotics_family","Penicillin Antibiotic;Trimethoprim","NCIT:C1500;NCIT:C908"
-"VatanenT_2016:G69173","yes","antibiotics_family","Penicillin Antibiotic;Trimethoprim","NCIT:C1500;NCIT:C908"
+"VatanenT_2016:G69174","yes","antibiotics_family","Penicillin Antibiotic;sulfonamide antibiotic","NCIT:C1500;CHEBI:87228"
+"VatanenT_2016:G69173","yes","antibiotics_family","Penicillin Antibiotic;sulfonamide antibiotic","NCIT:C1500;CHEBI:87228"
 "VatanenT_2016:G80545","no",NA,NA,NA
 "VatanenT_2016:G80437","yes","antibiotics_family","Macrolide Antibiotic","NCIT:C261"
 "VatanenT_2016:G78835","yes","antibiotics_family","Macrolide Antibiotic","NCIT:C261"
@@ -18415,7 +18415,7 @@
 "VatanenT_2016:G78804","no",NA,NA,NA
 "VatanenT_2016:G78676","no",NA,NA,NA
 "VatanenT_2016:G80612","no",NA,NA,NA
-"VatanenT_2016:G80298","yes","antibiotics_family","Antibacterial Agent;Penicillin Antibiotic;Trimethoprim","NCIT:C52588;NCIT:C1500;NCIT:C908"
+"VatanenT_2016:G80298","yes","antibiotics_family","Beta-lactamase Inhibitor;Penicillin Antibiotic;sulfonamide antibiotic","NCIT:C183118;NCIT:C1500;CHEBI:87228"
 "VatanenT_2016:G78876","yes","antibiotics_family","Penicillin Antibiotic","NCIT:C1500"
 "VatanenT_2016:G78623","yes","antibiotics_family","Penicillin Antibiotic","NCIT:C1500"
 "VatanenT_2016:G80360","yes","antibiotics_family","Penicillin Antibiotic","NCIT:C1500"
@@ -18431,11 +18431,11 @@
 "VatanenT_2016:G78870","no",NA,NA,NA
 "VatanenT_2016:G78871","no",NA,NA,NA
 "VatanenT_2016:G69178","no",NA,NA,NA
-"VatanenT_2016:G69192","yes","antibiotics_family","Antibacterial Agent;Penicillin Antibiotic","NCIT:C52588;NCIT:C1500"
-"VatanenT_2016:G69193","yes","antibiotics_family","Antibacterial Agent;Penicillin Antibiotic","NCIT:C52588;NCIT:C1500"
+"VatanenT_2016:G69192","yes","antibiotics_family","Beta-lactamase Inhibitor;Penicillin Antibiotic","NCIT:C183118;NCIT:C1500"
+"VatanenT_2016:G69193","yes","antibiotics_family","Beta-lactamase Inhibitor;Penicillin Antibiotic","NCIT:C183118;NCIT:C1500"
 "VatanenT_2016:G80491","yes","antibiotics_family","Penicillin Antibiotic","NCIT:C1500"
 "VatanenT_2016:G78681","no",NA,NA,NA
-"VatanenT_2016:G78521","yes","antibiotics_family","Antibacterial Agent;Penicillin Antibiotic","NCIT:C52588;NCIT:C1500"
+"VatanenT_2016:G78521","yes","antibiotics_family","Beta-lactamase Inhibitor;Penicillin Antibiotic","NCIT:C183118;NCIT:C1500"
 "VatanenT_2016:G78527","yes","antibiotics_family","Macrolide Antibiotic;Penicillin Antibiotic","NCIT:C261;NCIT:C1500"
 "VatanenT_2016:G78684","no",NA,NA,NA
 "VatanenT_2016:G80374","yes","antibiotics_family","Penicillin Antibiotic","NCIT:C1500"
@@ -18447,7 +18447,7 @@
 "VatanenT_2016:G80587","no",NA,NA,NA
 "VatanenT_2016:G78605","no",NA,NA,NA
 "VatanenT_2016:G78604","no",NA,NA,NA
-"VatanenT_2016:G80539","yes","antibiotics_family","Antibacterial Agent;Penicillin Antibiotic","NCIT:C52588;NCIT:C1500"
+"VatanenT_2016:G80539","yes","antibiotics_family","Beta-lactamase Inhibitor;Penicillin Antibiotic","NCIT:C183118;NCIT:C1500"
 "VatanenT_2016:G78583","yes","antibiotics_family","Penicillin Antibiotic","NCIT:C1500"
 "VatanenT_2016:G78582","yes","antibiotics_family","Penicillin Antibiotic","NCIT:C1500"
 "VatanenT_2016:G78613","yes","antibiotics_family","Penicillin Antibiotic","NCIT:C1500"
@@ -18461,7 +18461,7 @@
 "VatanenT_2016:G80309","no",NA,NA,NA
 "VatanenT_2016:G69188","no",NA,NA,NA
 "VatanenT_2016:G80420","no",NA,NA,NA
-"VatanenT_2016:G78601","yes","antibiotics_family","Antibacterial Agent;Penicillin Antibiotic","NCIT:C52588;NCIT:C1500"
+"VatanenT_2016:G78601","yes","antibiotics_family","Beta-lactamase Inhibitor;Penicillin Antibiotic","NCIT:C183118;NCIT:C1500"
 "VatanenT_2016:G78775","yes","antibiotics_family","Macrolide Antibiotic;Penicillin Antibiotic","NCIT:C261;NCIT:C1500"
 "VatanenT_2016:G69207","yes","antibiotics_family","Macrolide Antibiotic;Penicillin Antibiotic","NCIT:C261;NCIT:C1500"
 "VatanenT_2016:G80553","no",NA,NA,NA
@@ -18499,11 +18499,11 @@
 "VatanenT_2016:G80297","no",NA,NA,NA
 "VatanenT_2016:G78807","yes","antibiotics_family","Penicillin Antibiotic","NCIT:C1500"
 "VatanenT_2016:G80555","no",NA,NA,NA
-"VatanenT_2016:G78859","yes","antibiotics_family","Antibacterial Agent;Macrolide Antibiotic;Penicillin Antibiotic","NCIT:C52588;NCIT:C261;NCIT:C1500"
+"VatanenT_2016:G78859","yes","antibiotics_family","Beta-lactamase Inhibitor;Macrolide Antibiotic;Penicillin Antibiotic","NCIT:C183118;NCIT:C261;NCIT:C1500"
 "VatanenT_2016:G80320","yes","antibiotics_family","Cephalosporin Antibiotic;Penicillin Antibiotic","NCIT:C357;NCIT:C1500"
 "VatanenT_2016:G80518","yes","antibiotics_family","Cephalosporin Antibiotic;Penicillin Antibiotic","NCIT:C357;NCIT:C1500"
-"VatanenT_2016:G80284","yes","antibiotics_family","Penicillin Antibiotic;Trimethoprim","NCIT:C1500;NCIT:C908"
-"VatanenT_2016:G69172","yes","antibiotics_family","Penicillin Antibiotic;Trimethoprim","NCIT:C1500;NCIT:C908"
+"VatanenT_2016:G80284","yes","antibiotics_family","Penicillin Antibiotic;sulfonamide antibiotic","NCIT:C1500;CHEBI:87228"
+"VatanenT_2016:G69172","yes","antibiotics_family","Penicillin Antibiotic;sulfonamide antibiotic","NCIT:C1500;CHEBI:87228"
 "VatanenT_2016:G80465","no",NA,NA,NA
 "VatanenT_2016:G80505","no",NA,NA,NA
 "VatanenT_2016:G78598","no",NA,NA,NA
@@ -18515,8 +18515,8 @@
 "VatanenT_2016:G80352","no",NA,NA,NA
 "VatanenT_2016:G80288","no",NA,NA,NA
 "VatanenT_2016:G80296","no",NA,NA,NA
-"VatanenT_2016:G80335","yes","antibiotics_family","Cephalosporin Antibiotic;Macrolide Antibiotic;Penicillin Antibiotic;Trimethoprim","NCIT:C357;NCIT:C261;NCIT:C1500;NCIT:C908"
-"VatanenT_2016:G80314","yes","antibiotics_family","Cephalosporin Antibiotic;Macrolide Antibiotic;Penicillin Antibiotic;Trimethoprim","NCIT:C357;NCIT:C261;NCIT:C1500;NCIT:C908"
+"VatanenT_2016:G80335","yes","antibiotics_family","Cephalosporin Antibiotic;Macrolide Antibiotic;Penicillin Antibiotic;sulfonamide antibiotic","NCIT:C357;NCIT:C261;NCIT:C1500;CHEBI:87228"
+"VatanenT_2016:G80314","yes","antibiotics_family","Cephalosporin Antibiotic;Macrolide Antibiotic;Penicillin Antibiotic;sulfonamide antibiotic","NCIT:C357;NCIT:C261;NCIT:C1500;CHEBI:87228"
 "VatanenT_2016:G78769","yes","antibiotics_family","Cephalosporin Antibiotic","NCIT:C357"
 "VatanenT_2016:G78768","yes","antibiotics_family","Cephalosporin Antibiotic","NCIT:C357"
 "VatanenT_2016:G80474","no",NA,NA,NA
@@ -18531,15 +18531,15 @@
 "VatanenT_2016:G78770","no",NA,NA,NA
 "VatanenT_2016:G78772","yes","antibiotics_family","Penicillin Antibiotic","NCIT:C1500"
 "VatanenT_2016:G80402","no",NA,NA,NA
-"VatanenT_2016:G80581","yes","antibiotics_family","Antibacterial Agent;Penicillin Antibiotic","NCIT:C52588;NCIT:C1500"
+"VatanenT_2016:G80581","yes","antibiotics_family","Beta-lactamase Inhibitor;Penicillin Antibiotic","NCIT:C183118;NCIT:C1500"
 "VatanenT_2016:G78806","no",NA,NA,NA
 "VatanenT_2016:G78573","yes","antibiotics_family","Penicillin Antibiotic","NCIT:C1500"
 "VatanenT_2016:G78574","yes","antibiotics_family","Penicillin Antibiotic","NCIT:C1500"
 "VatanenT_2016:G80566","no",NA,NA,NA
-"VatanenT_2016:G80430","yes","antibiotics_family","Antibacterial Agent;Penicillin Antibiotic","NCIT:C52588;NCIT:C1500"
+"VatanenT_2016:G80430","yes","antibiotics_family","Beta-lactamase Inhibitor;Penicillin Antibiotic","NCIT:C183118;NCIT:C1500"
 "VatanenT_2016:G78617","yes","antibiotics_family","Cephalosporin Antibiotic;Macrolide Antibiotic","NCIT:C357;NCIT:C261"
 "VatanenT_2016:G80499","no",NA,NA,NA
-"VatanenT_2016:G80273","yes","antibiotics_family","Antibacterial Agent;Macrolide Antibiotic;Penicillin Antibiotic;Trimethoprim","NCIT:C52588;NCIT:C261;NCIT:C1500;NCIT:C908"
+"VatanenT_2016:G80273","yes","antibiotics_family","Beta-lactamase Inhibitor;Macrolide Antibiotic;Penicillin Antibiotic;sulfonamide antibiotic","NCIT:C183118;NCIT:C261;NCIT:C1500;CHEBI:87228"
 "VatanenT_2016:G78619","yes","antibiotics_family","Cephalosporin Antibiotic;Penicillin Antibiotic","NCIT:C357;NCIT:C1500"
 "VatanenT_2016:G80556","no",NA,NA,NA
 "VatanenT_2016:G80572","no",NA,NA,NA
@@ -18563,14 +18563,14 @@
 "VatanenT_2016:G80427","no",NA,NA,NA
 "VatanenT_2016:G80274","no",NA,NA,NA
 "VatanenT_2016:G80444","yes","antibiotics_family","Cephalosporin Antibiotic","NCIT:C357"
-"VatanenT_2016:G78525","yes","antibiotics_family","Penicillin Antibiotic;Trimethoprim","NCIT:C1500;NCIT:C908"
-"VatanenT_2016:G78524","yes","antibiotics_family","Penicillin Antibiotic;Trimethoprim","NCIT:C1500;NCIT:C908"
+"VatanenT_2016:G78525","yes","antibiotics_family","Penicillin Antibiotic;sulfonamide antibiotic","NCIT:C1500;CHEBI:87228"
+"VatanenT_2016:G78524","yes","antibiotics_family","Penicillin Antibiotic;sulfonamide antibiotic","NCIT:C1500;CHEBI:87228"
 "VatanenT_2016:G78606","no",NA,NA,NA
 "VatanenT_2016:G78608","no",NA,NA,NA
-"VatanenT_2016:G78651","yes","antibiotics_family","Antibacterial Agent;Macrolide Antibiotic;Penicillin Antibiotic","NCIT:C52588;NCIT:C261;NCIT:C1500"
+"VatanenT_2016:G78651","yes","antibiotics_family","Beta-lactamase Inhibitor;Macrolide Antibiotic;Penicillin Antibiotic","NCIT:C183118;NCIT:C261;NCIT:C1500"
 "VatanenT_2016:G78589","no",NA,NA,NA
 "VatanenT_2016:G80266","no",NA,NA,NA
-"VatanenT_2016:G78686","yes","antibiotics_family","Antibacterial Agent;Macrolide Antibiotic;Penicillin Antibiotic","NCIT:C52588;NCIT:C261;NCIT:C1500"
+"VatanenT_2016:G78686","yes","antibiotics_family","Beta-lactamase Inhibitor;Macrolide Antibiotic;Penicillin Antibiotic","NCIT:C183118;NCIT:C261;NCIT:C1500"
 "VatanenT_2016:G78585","no",NA,NA,NA
 "VatanenT_2016:G78652","no",NA,NA,NA
 "VatanenT_2016:G78854","no",NA,NA,NA
@@ -18587,7 +18587,7 @@
 "VatanenT_2016:G78716","no",NA,NA,NA
 "VatanenT_2016:G78776","no",NA,NA,NA
 "VatanenT_2016:G80448","yes","antibiotics_family","Macrolide Antibiotic","NCIT:C261"
-"VatanenT_2016:G78633","yes","antibiotics_family","Penicillin Antibiotic;Trimethoprim","NCIT:C1500;NCIT:C908"
+"VatanenT_2016:G78633","yes","antibiotics_family","Penicillin Antibiotic;sulfonamide antibiotic","NCIT:C1500;CHEBI:87228"
 "VatanenT_2016:G78783","no",NA,NA,NA
 "VatanenT_2016:G80624","no",NA,NA,NA
 "VatanenT_2016:G69157","no",NA,NA,NA
@@ -18595,8 +18595,8 @@
 "VatanenT_2016:G80363","no",NA,NA,NA
 "VatanenT_2016:G69204","no",NA,NA,NA
 "VatanenT_2016:G80293","no",NA,NA,NA
-"VatanenT_2016:G78784","yes","antibiotics_family","Antibacterial Agent","NCIT:C52588"
-"VatanenT_2016:G80577","yes","antibiotics_family","Antibacterial Agent","NCIT:C52588"
+"VatanenT_2016:G78784","yes","antibiotics_family","nitrofuran antibiotic","CHEBI:87230"
+"VatanenT_2016:G80577","yes","antibiotics_family","nitrofuran antibiotic","CHEBI:87230"
 "VatanenT_2016:G78897","no",NA,NA,NA
 "VatanenT_2016:G78903","no",NA,NA,NA
 "VatanenT_2016:G78658","no",NA,NA,NA
@@ -18642,8 +18642,8 @@
 "VatanenT_2016:G78697","no",NA,NA,NA
 "VatanenT_2016:G69210","no",NA,NA,NA
 "VatanenT_2016:G80417","no",NA,NA,NA
-"VatanenT_2016:G78778","yes","antibiotics_family","Antibacterial Agent;Penicillin Antibiotic","NCIT:C52588;NCIT:C1500"
-"VatanenT_2016:G69209","yes","antibiotics_family","Antibacterial Agent;Penicillin Antibiotic","NCIT:C52588;NCIT:C1500"
+"VatanenT_2016:G78778","yes","antibiotics_family","Beta-lactamase Inhibitor;Penicillin Antibiotic","NCIT:C183118;NCIT:C1500"
+"VatanenT_2016:G69209","yes","antibiotics_family","Beta-lactamase Inhibitor;Penicillin Antibiotic","NCIT:C183118;NCIT:C1500"
 "VatanenT_2016:G80462","no",NA,NA,NA
 "VatanenT_2016:G80358","no",NA,NA,NA
 "VatanenT_2016:G80418","no",NA,NA,NA
@@ -18780,7 +18780,7 @@
 "VatanenT_2016:G69158","no",NA,NA,NA
 "VatanenT_2016:G78734","no",NA,NA,NA
 "VatanenT_2016:G69196","no",NA,NA,NA
-"VatanenT_2016:G80310","yes","antibiotics_family","Antibacterial Agent","NCIT:C52588"
+"VatanenT_2016:G80310","yes","antibiotics_family","nitrofuran antibiotic","CHEBI:87230"
 "VatanenT_2016:G78905","no",NA,NA,NA
 "VatanenT_2016:G69181","no",NA,NA,NA
 "VatanenT_2016:G78647","no",NA,NA,NA
@@ -18814,9 +18814,9 @@
 "VatanenT_2016:G78798","no",NA,NA,NA
 "VatanenT_2016:G78810","no",NA,NA,NA
 "VatanenT_2016:G80305","yes","antibiotics_family","Cephalosporin Antibiotic;Macrolide Antibiotic;Penicillin Antibiotic","NCIT:C357;NCIT:C261;NCIT:C1500"
-"VatanenT_2016:G78540","yes","antibiotics_family","Antibacterial Agent","NCIT:C52588"
-"VatanenT_2016:G80150","yes","antibiotics_family","Antibacterial Agent","NCIT:C52588"
-"VatanenT_2016:G80323","yes","antibiotics_family","Antibacterial Agent","NCIT:C52588"
+"VatanenT_2016:G78540","yes","antibiotics_family","nitrofuran antibiotic","CHEBI:87230"
+"VatanenT_2016:G80150","yes","antibiotics_family","nitrofuran antibiotic","CHEBI:87230"
+"VatanenT_2016:G80323","yes","antibiotics_family","nitrofuran antibiotic","CHEBI:87230"
 "VatanenT_2016:G69147","no",NA,NA,NA
 "VatanenT_2016:G69198","no",NA,NA,NA
 "VatanenT_2016:G80317","no",NA,NA,NA
@@ -18941,10 +18941,10 @@
 "VatanenT_2016:G80495","no",NA,NA,NA
 "VatanenT_2016:G69153","no",NA,NA,NA
 "VatanenT_2016:G80521","yes","antibiotics_family","Penicillin Antibiotic","NCIT:C1500"
-"VatanenT_2016:G80377","yes","antibiotics_family","Antibacterial Agent;Penicillin Antibiotic","NCIT:C52588;NCIT:C1500"
+"VatanenT_2016:G80377","yes","antibiotics_family","nitrofuran antibiotic;Penicillin Antibiotic","CHEBI:87230;NCIT:C1500"
 "VatanenT_2016:G80497","no",NA,NA,NA
 "VatanenT_2016:G80529","no",NA,NA,NA
-"VatanenT_2016:G80472","yes","antibiotics_family","Cephalosporin Antibiotic;Penicillin Antibiotic;Trimethoprim","NCIT:C357;NCIT:C1500;NCIT:C908"
+"VatanenT_2016:G80472","yes","antibiotics_family","Cephalosporin Antibiotic;Penicillin Antibiotic;sulfonamide antibiotic","NCIT:C357;NCIT:C1500;CHEBI:87228"
 "VatanenT_2016:G80517","no",NA,NA,NA
 "VatanenT_2016:G78511","no",NA,NA,NA
 "VatanenT_2016:G80543","no",NA,NA,NA
@@ -18986,9 +18986,9 @@
 "VatanenT_2016:G78514","yes","antibiotics_family","Penicillin Antibiotic","NCIT:C1500"
 "VatanenT_2016:G78508","yes","antibiotics_family","Penicillin Antibiotic","NCIT:C1500"
 "VatanenT_2016:G80330","no",NA,NA,NA
-"VatanenT_2016:G80367","yes","antibiotics_family","Antibacterial Agent;Penicillin Antibiotic","NCIT:C52588;NCIT:C1500"
-"VatanenT_2016:G80403","yes","antibiotics_family","Antibacterial Agent;Penicillin Antibiotic","NCIT:C52588;NCIT:C1500"
-"VatanenT_2016:G69171","yes","antibiotics_family","Antibacterial Agent;Penicillin Antibiotic","NCIT:C52588;NCIT:C1500"
+"VatanenT_2016:G80367","yes","antibiotics_family","Beta-lactamase Inhibitor;Penicillin Antibiotic","NCIT:C183118;NCIT:C1500"
+"VatanenT_2016:G80403","yes","antibiotics_family","Beta-lactamase Inhibitor;Penicillin Antibiotic","NCIT:C183118;NCIT:C1500"
+"VatanenT_2016:G69171","yes","antibiotics_family","Beta-lactamase Inhibitor;Penicillin Antibiotic","NCIT:C183118;NCIT:C1500"
 "VatanenT_2016:G78515","no",NA,NA,NA
 "VatanenT_2016:G80588","no",NA,NA,NA
 "VatanenT_2016:G80373","no",NA,NA,NA
@@ -19062,7 +19062,7 @@
 "VatanenT_2016:G78556","no",NA,NA,NA
 "VatanenT_2016:G78712","no",NA,NA,NA
 "VatanenT_2016:G80481","no",NA,NA,NA
-"VatanenT_2016:G80425","yes","antibiotics_family","Trimethoprim","NCIT:C908"
+"VatanenT_2016:G80425","yes","antibiotics_family","sulfonamide antibiotic","CHEBI:87228"
 "VatanenT_2016:G80453","no",NA,NA,NA
 "VatanenT_2016:G78507","no",NA,NA,NA
 "VatanenT_2016:G69152","no",NA,NA,NA
@@ -19466,8 +19466,8 @@
 "VincentC_2016:MM008.1","yes","antibiotics_family;treatment","Nonsteroidal Antiinflammatory Drug;Cephalosporin Antibiotic","NCIT:C257;NCIT:C357"
 "VincentC_2016:MM008.2","yes","antibiotics_family;treatment","Nonsteroidal Antiinflammatory Drug;Cephalosporin Antibiotic","NCIT:C257;NCIT:C357"
 "VincentC_2016:MM008.3","yes","antibiotics_family;treatment","Nonsteroidal Antiinflammatory Drug;Cephalosporin Antibiotic","NCIT:C257;NCIT:C357"
-"VincentC_2016:MM009.1","yes","antibiotics_family;treatment","Nonsteroidal Antiinflammatory Drug;Opioid;Penicillin Antibiotic;Quinolone Antibiotic;Aminoglycoside Antibiotic","NCIT:C257;NCIT:C1506;NCIT:C1500;NCIT:C795;NCIT:C2363"
-"VincentC_2016:MM009.2","yes","antibiotics_family;treatment","Nonsteroidal Antiinflammatory Drug;Opioid;Penicillin Antibiotic;Quinolone Antibiotic;Aminoglycoside Antibiotic;Antibacterial Agent","NCIT:C257;NCIT:C1506;NCIT:C1500;NCIT:C795;NCIT:C2363;NCIT:C52588"
+"VincentC_2016:MM009.1","yes","antibiotics_family;treatment","Nonsteroidal Antiinflammatory Drug;Opioid;Penicillin Antibiotic;fluoroquinolone antibiotic;Gentamicin","NCIT:C257;NCIT:C1506;NCIT:C1500;CHEBI:87211;NCIT:C519"
+"VincentC_2016:MM009.2","yes","antibiotics_family;treatment","Nonsteroidal Antiinflammatory Drug;Opioid;Penicillin Antibiotic;fluoroquinolone antibiotic;Gentamicin;Beta-lactamase Inhibitor","NCIT:C257;NCIT:C1506;NCIT:C1500;CHEBI:87211;NCIT:C519;NCIT:C183118"
 "VincentC_2016:MM010","yes","antibiotics_family;treatment","Opioid;Laxative;Cephalosporin Antibiotic","NCIT:C1506;NCIT:C29697;NCIT:C357"
 "VincentC_2016:MM011","yes","antibiotics_family;treatment","Nonsteroidal Antiinflammatory Drug;Opioid;Laxative;Cephalosporin Antibiotic","NCIT:C257;NCIT:C1506;NCIT:C29697;NCIT:C357"
 "VincentC_2016:MM012.1","yes","antibiotics_family;treatment","None;Cephalosporin Antibiotic","NCIT:C41132;NCIT:C357"
@@ -19475,12 +19475,12 @@
 "VincentC_2016:MM013.1","yes","antibiotics_family;treatment","None;Cephalosporin Antibiotic","NCIT:C41132;NCIT:C357"
 "VincentC_2016:MM013.2","yes","antibiotics_family;treatment","None;Cephalosporin Antibiotic","NCIT:C41132;NCIT:C357"
 "VincentC_2016:MM013.3","yes","antibiotics_family;treatment","None;Cephalosporin Antibiotic","NCIT:C41132;NCIT:C357"
-"VincentC_2016:MM014","yes","antibiotics_family;treatment","None;Penicillin Antibiotic;Glycopeptide Antibiotic;Quinolone Antibiotic","NCIT:C41132;NCIT:C1500;NCIT:C61101;NCIT:C795"
+"VincentC_2016:MM014","yes","antibiotics_family;treatment","None;Penicillin Antibiotic;Vancomycin;fluoroquinolone antibiotic","NCIT:C41132;NCIT:C1500;NCIT:C925;CHEBI:87211"
 "VincentC_2016:MM015.1","no","treatment","None","NCIT:C41132"
 "VincentC_2016:MM015.2","yes","antibiotics_family;treatment","None;Cephalosporin Antibiotic","NCIT:C41132;NCIT:C357"
-"VincentC_2016:MM016.1","yes","antibiotics_family;treatment","Proton Pump Inhibitor;Cephalosporin Antibiotic;Penicillin Antibiotic;Antibacterial Agent","NCIT:C29723;NCIT:C357;NCIT:C1500;NCIT:C52588"
-"VincentC_2016:MM016.2","yes","antibiotics_family;treatment","Proton Pump Inhibitor;Penicillin Antibiotic;Antibacterial Agent;Cephalosporin Antibiotic;Carbapenems;Glycopeptide Antibiotic","NCIT:C29723;NCIT:C1500;NCIT:C52588;NCIT:C357;OMIT:0016422;NCIT:C61101"
-"VincentC_2016:MM016.3","yes","antibiotics_family;treatment","Proton Pump Inhibitor;Penicillin Antibiotic;Antibacterial Agent;Cephalosporin Antibiotic;Carbapenems;Glycopeptide Antibiotic","NCIT:C29723;NCIT:C1500;NCIT:C52588;NCIT:C357;OMIT:0016422;NCIT:C61101"
+"VincentC_2016:MM016.1","yes","antibiotics_family;treatment","Proton Pump Inhibitor;Cephalosporin Antibiotic;Penicillin Antibiotic;Beta-lactamase Inhibitor","NCIT:C29723;NCIT:C357;NCIT:C1500;NCIT:C183118"
+"VincentC_2016:MM016.2","yes","antibiotics_family;treatment","Proton Pump Inhibitor;Penicillin Antibiotic;Beta-lactamase Inhibitor;Cephalosporin Antibiotic;Carbapenems;Vancomycin","NCIT:C29723;NCIT:C1500;NCIT:C183118;NCIT:C357;OMIT:0016422;NCIT:C925"
+"VincentC_2016:MM016.3","yes","antibiotics_family;treatment","Proton Pump Inhibitor;Penicillin Antibiotic;Beta-lactamase Inhibitor;Cephalosporin Antibiotic;Carbapenems;Vancomycin","NCIT:C29723;NCIT:C1500;NCIT:C183118;NCIT:C357;OMIT:0016422;NCIT:C925"
 "VincentC_2016:MM017","yes","antibiotics_family;treatment","Opioid;Proton Pump Inhibitor;Cephalosporin Antibiotic","NCIT:C1506;NCIT:C29723;NCIT:C357"
 "VincentC_2016:MM018","yes","antibiotics_family;treatment","None;Cephalosporin Antibiotic","NCIT:C41132;NCIT:C357"
 "VincentC_2016:MM019.1","yes","antibiotics_family;treatment","Nonsteroidal Antiinflammatory Drug;Cephalosporin Antibiotic","NCIT:C257;NCIT:C357"
@@ -19491,8 +19491,8 @@
 "VincentC_2016:MM020.3","yes","antibiotics_family;treatment","Opioid;Corticosteroid;Laxative;Cephalosporin Antibiotic","NCIT:C1506;NCIT:C2322;NCIT:C29697;NCIT:C357"
 "VincentC_2016:MM021.1","yes","antibiotics_family;treatment","Proton Pump Inhibitor;Cephalosporin Antibiotic","NCIT:C29723;NCIT:C357"
 "VincentC_2016:MM021.2","yes","antibiotics_family;treatment","Proton Pump Inhibitor;Cephalosporin Antibiotic","NCIT:C29723;NCIT:C357"
-"VincentC_2016:MM021.3","yes","antibiotics_family;treatment","Proton Pump Inhibitor;Cephalosporin Antibiotic;Quinolone Antibiotic","NCIT:C29723;NCIT:C357;NCIT:C795"
-"VincentC_2016:MM021.4","yes","antibiotics_family;treatment","Opioid;Laxative;Proton Pump Inhibitor;Cephalosporin Antibiotic;Quinolone Antibiotic","NCIT:C1506;NCIT:C29697;NCIT:C29723;NCIT:C357;NCIT:C795"
+"VincentC_2016:MM021.3","yes","antibiotics_family;treatment","Proton Pump Inhibitor;Cephalosporin Antibiotic;fluoroquinolone antibiotic","NCIT:C29723;NCIT:C357;CHEBI:87211"
+"VincentC_2016:MM021.4","yes","antibiotics_family;treatment","Opioid;Laxative;Proton Pump Inhibitor;Cephalosporin Antibiotic;fluoroquinolone antibiotic","NCIT:C1506;NCIT:C29697;NCIT:C29723;NCIT:C357;CHEBI:87211"
 "VincentC_2016:MM022.1","no","treatment","None","NCIT:C41132"
 "VincentC_2016:MM022.2","yes","antibiotics_family;treatment","None;Cephalosporin Antibiotic","NCIT:C41132;NCIT:C357"
 "VincentC_2016:MM022.3","yes","antibiotics_family;treatment","None;Cephalosporin Antibiotic","NCIT:C41132;NCIT:C357"
@@ -19526,13 +19526,13 @@
 "VincentC_2016:MM034.1","yes","antibiotics_family;treatment","Nonsteroidal Antiinflammatory Drug;Opioid;Cephalosporin Antibiotic","NCIT:C257;NCIT:C1506;NCIT:C357"
 "VincentC_2016:MM034.2","yes","antibiotics_family;treatment","Nonsteroidal Antiinflammatory Drug;Opioid;Laxative;Cephalosporin Antibiotic","NCIT:C257;NCIT:C1506;NCIT:C29697;NCIT:C357"
 "VincentC_2016:MM034.3","yes","antibiotics_family;treatment","Nonsteroidal Antiinflammatory Drug;Opioid;Laxative;Cephalosporin Antibiotic","NCIT:C257;NCIT:C1506;NCIT:C29697;NCIT:C357"
-"VincentC_2016:MM035.1","yes","antibiotics_family;treatment","Nonsteroidal Antiinflammatory Drug;Opioid;Penicillin Antibiotic;Antibacterial Agent","NCIT:C257;NCIT:C1506;NCIT:C1500;NCIT:C52588"
-"VincentC_2016:MM035.2","yes","antibiotics_family;treatment","Nonsteroidal Antiinflammatory Drug;Opioid;Penicillin Antibiotic;Antibacterial Agent","NCIT:C257;NCIT:C1506;NCIT:C1500;NCIT:C52588"
-"VincentC_2016:MM036","yes","antibiotics_family;treatment","Nonsteroidal Antiinflammatory Drug;Opioid;Laxative;Aminoglycoside Antibiotic;Penicillin Antibiotic;Antibacterial Agent","NCIT:C257;NCIT:C1506;NCIT:C29697;NCIT:C2363;NCIT:C1500;NCIT:C52588"
+"VincentC_2016:MM035.1","yes","antibiotics_family;treatment","Nonsteroidal Antiinflammatory Drug;Opioid;Penicillin Antibiotic;Beta-lactamase Inhibitor","NCIT:C257;NCIT:C1506;NCIT:C1500;NCIT:C183118"
+"VincentC_2016:MM035.2","yes","antibiotics_family;treatment","Nonsteroidal Antiinflammatory Drug;Opioid;Penicillin Antibiotic;Beta-lactamase Inhibitor","NCIT:C257;NCIT:C1506;NCIT:C1500;NCIT:C183118"
+"VincentC_2016:MM036","yes","antibiotics_family;treatment","Nonsteroidal Antiinflammatory Drug;Opioid;Laxative;Gentamicin;Penicillin Antibiotic;Beta-lactamase Inhibitor","NCIT:C257;NCIT:C1506;NCIT:C29697;NCIT:C519;NCIT:C1500;NCIT:C183118"
 "VincentC_2016:MM037.1","yes","antibiotics_family;treatment","Opioid;Cephalosporin Antibiotic","NCIT:C1506;NCIT:C357"
 "VincentC_2016:MM037.2","yes","antibiotics_family;treatment","Opioid;Cephalosporin Antibiotic","NCIT:C1506;NCIT:C357"
 "VincentC_2016:MM038","yes","antibiotics_family;treatment","None;Cephalosporin Antibiotic","NCIT:C41132;NCIT:C357"
-"VincentC_2016:MM039","yes","antibiotics_family;treatment","Nonsteroidal Antiinflammatory Drug;Opioid;Antibacterial Agent","NCIT:C257;NCIT:C1506;NCIT:C52588"
+"VincentC_2016:MM039","yes","antibiotics_family;treatment","Nonsteroidal Antiinflammatory Drug;Opioid;Metronidazole","NCIT:C257;NCIT:C1506;NCIT:C651"
 "VincentC_2016:MM040.1","yes","antibiotics_family;treatment","None;Cephalosporin Antibiotic","NCIT:C41132;NCIT:C357"
 "VincentC_2016:MM040.2","yes","antibiotics_family;treatment","None;Cephalosporin Antibiotic","NCIT:C41132;NCIT:C357"
 "VincentC_2016:MM041.1","yes","antibiotics_family;treatment","Nonsteroidal Antiinflammatory Drug;Cephalosporin Antibiotic","NCIT:C257;NCIT:C357"
@@ -19545,9 +19545,9 @@
 "VincentC_2016:MM044.2","yes","antibiotics_family;treatment","Proton Pump Inhibitor;Cephalosporin Antibiotic","NCIT:C29723;NCIT:C357"
 "VincentC_2016:MM045.1","yes","antibiotics_family;treatment","None;Cephalosporin Antibiotic","NCIT:C41132;NCIT:C357"
 "VincentC_2016:MM045.2","yes","antibiotics_family;treatment","None;Cephalosporin Antibiotic","NCIT:C41132;NCIT:C357"
-"VincentC_2016:MM046.1","yes","antibiotics_family;treatment","Laxative;Glycopeptide Antibiotic;Antibacterial Agent;Quinolone Antibiotic","NCIT:C29697;NCIT:C61101;NCIT:C52588;NCIT:C795"
-"VincentC_2016:MM046.2","yes","antibiotics_family;treatment","Laxative;Glycopeptide Antibiotic;Antibacterial Agent;Quinolone Antibiotic","NCIT:C29697;NCIT:C61101;NCIT:C52588;NCIT:C795"
-"VincentC_2016:MM046.3","yes","antibiotics_family;treatment","Laxative;Glycopeptide Antibiotic;Antibacterial Agent;Quinolone Antibiotic","NCIT:C29697;NCIT:C61101;NCIT:C52588;NCIT:C795"
+"VincentC_2016:MM046.1","yes","antibiotics_family;treatment","Laxative;Vancomycin;Metronidazole;fluoroquinolone antibiotic","NCIT:C29697;NCIT:C925;NCIT:C651;CHEBI:87211"
+"VincentC_2016:MM046.2","yes","antibiotics_family;treatment","Laxative;Vancomycin;Metronidazole;fluoroquinolone antibiotic","NCIT:C29697;NCIT:C925;NCIT:C651;CHEBI:87211"
+"VincentC_2016:MM046.3","yes","antibiotics_family;treatment","Laxative;Vancomycin;Metronidazole;fluoroquinolone antibiotic","NCIT:C29697;NCIT:C925;NCIT:C651;CHEBI:87211"
 "VincentC_2016:MM047.1","yes","antibiotics_family;treatment","Nonsteroidal Antiinflammatory Drug;Proton Pump Inhibitor;Cephalosporin Antibiotic","NCIT:C257;NCIT:C29723;NCIT:C357"
 "VincentC_2016:MM047.2","yes","antibiotics_family;treatment","Nonsteroidal Antiinflammatory Drug;Proton Pump Inhibitor;Cephalosporin Antibiotic","NCIT:C257;NCIT:C29723;NCIT:C357"
 "VincentC_2016:MM047.3","yes","antibiotics_family;treatment","Nonsteroidal Antiinflammatory Drug;Opioid;Proton Pump Inhibitor;Cephalosporin Antibiotic","NCIT:C257;NCIT:C1506;NCIT:C29723;NCIT:C357"
@@ -19565,24 +19565,24 @@
 "VincentC_2016:MM053","yes","antibiotics_family;treatment","Corticosteroid;Proton Pump Inhibitor;Cephalosporin Antibiotic","NCIT:C2322;NCIT:C29723;NCIT:C357"
 "VincentC_2016:MM054.1","yes","antibiotics_family;treatment","None;Cephalosporin Antibiotic","NCIT:C41132;NCIT:C357"
 "VincentC_2016:MM054.2","yes","antibiotics_family;treatment","None;Cephalosporin Antibiotic","NCIT:C41132;NCIT:C357"
-"VincentC_2016:MM055.1","yes","antibiotics_family;treatment","Nonsteroidal Antiinflammatory Drug;Proton Pump Inhibitor;Lincosamide Antibiotic;Glycopeptide Antibiotic","NCIT:C257;NCIT:C29723;NCIT:C82922;NCIT:C61101"
-"VincentC_2016:MM055.3","yes","antibiotics_family;treatment","Nonsteroidal Antiinflammatory Drug;Proton Pump Inhibitor;Lincosamide Antibiotic;Glycopeptide Antibiotic","NCIT:C257;NCIT:C29723;NCIT:C82922;NCIT:C61101"
-"VincentC_2016:MM055.4","yes","antibiotics_family;treatment","Nonsteroidal Antiinflammatory Drug;Corticosteroid;Proton Pump Inhibitor;Carbapenems;Glycopeptide Antibiotic;Quinolone Antibiotic;Lincosamide Antibiotic","NCIT:C257;NCIT:C2322;NCIT:C29723;OMIT:0016422;NCIT:C61101;NCIT:C795;NCIT:C82922"
-"VincentC_2016:MM055.5","yes","antibiotics_family;treatment","Nonsteroidal Antiinflammatory Drug;Corticosteroid;Proton Pump Inhibitor;Carbapenems;Glycopeptide Antibiotic;Quinolone Antibiotic;Lincosamide Antibiotic","NCIT:C257;NCIT:C2322;NCIT:C29723;OMIT:0016422;NCIT:C61101;NCIT:C795;NCIT:C82922"
-"VincentC_2016:MM055.6","yes","antibiotics_family;treatment","Nonsteroidal Antiinflammatory Drug;Corticosteroid;Proton Pump Inhibitor;Carbapenems;Glycopeptide Antibiotic;Quinolone Antibiotic;Lincosamide Antibiotic","NCIT:C257;NCIT:C2322;NCIT:C29723;OMIT:0016422;NCIT:C61101;NCIT:C795;NCIT:C82922"
-"VincentC_2016:MM055.7","yes","antibiotics_family;treatment","Nonsteroidal Antiinflammatory Drug;Corticosteroid;Laxative;Proton Pump Inhibitor;Carbapenems;Glycopeptide Antibiotic;Quinolone Antibiotic","NCIT:C257;NCIT:C2322;NCIT:C29697;NCIT:C29723;OMIT:0016422;NCIT:C61101;NCIT:C795"
-"VincentC_2016:MM056.1","yes","antibiotics_family;treatment","None;Penicillin Antibiotic;Antibacterial Agent","NCIT:C41132;NCIT:C1500;NCIT:C52588"
-"VincentC_2016:MM056.2","yes","antibiotics_family;treatment","None;Trimethoprim;Penicillin Antibiotic;Antibacterial Agent","NCIT:C41132;NCIT:C908;NCIT:C1500;NCIT:C52588"
-"VincentC_2016:MM057.1","yes","antibiotics_family;treatment","Laxative;Proton Pump Inhibitor;Carbapenems;Penicillin Antibiotic;Quinolone Antibiotic;Antibacterial Agent","NCIT:C29697;NCIT:C29723;OMIT:0016422;NCIT:C1500;NCIT:C795;NCIT:C52588"
+"VincentC_2016:MM055.1","yes","antibiotics_family;treatment","Nonsteroidal Antiinflammatory Drug;Proton Pump Inhibitor;Clindamycin;Vancomycin","NCIT:C257;NCIT:C29723;NCIT:C377;NCIT:C925"
+"VincentC_2016:MM055.3","yes","antibiotics_family;treatment","Nonsteroidal Antiinflammatory Drug;Proton Pump Inhibitor;Clindamycin;Vancomycin","NCIT:C257;NCIT:C29723;NCIT:C377;NCIT:C925"
+"VincentC_2016:MM055.4","yes","antibiotics_family;treatment","Nonsteroidal Antiinflammatory Drug;Corticosteroid;Proton Pump Inhibitor;Carbapenems;Vancomycin;fluoroquinolone antibiotic;Clindamycin","NCIT:C257;NCIT:C2322;NCIT:C29723;OMIT:0016422;NCIT:C925;CHEBI:87211;NCIT:C377"
+"VincentC_2016:MM055.5","yes","antibiotics_family;treatment","Nonsteroidal Antiinflammatory Drug;Corticosteroid;Proton Pump Inhibitor;Carbapenems;Vancomycin;fluoroquinolone antibiotic;Clindamycin","NCIT:C257;NCIT:C2322;NCIT:C29723;OMIT:0016422;NCIT:C925;CHEBI:87211;NCIT:C377"
+"VincentC_2016:MM055.6","yes","antibiotics_family;treatment","Nonsteroidal Antiinflammatory Drug;Corticosteroid;Proton Pump Inhibitor;Carbapenems;Vancomycin;fluoroquinolone antibiotic;Clindamycin","NCIT:C257;NCIT:C2322;NCIT:C29723;OMIT:0016422;NCIT:C925;CHEBI:87211;NCIT:C377"
+"VincentC_2016:MM055.7","yes","antibiotics_family;treatment","Nonsteroidal Antiinflammatory Drug;Corticosteroid;Laxative;Proton Pump Inhibitor;Carbapenems;Vancomycin;fluoroquinolone antibiotic","NCIT:C257;NCIT:C2322;NCIT:C29697;NCIT:C29723;OMIT:0016422;NCIT:C925;CHEBI:87211"
+"VincentC_2016:MM056.1","yes","antibiotics_family;treatment","None;Penicillin Antibiotic;Beta-lactamase Inhibitor","NCIT:C41132;NCIT:C1500;NCIT:C183118"
+"VincentC_2016:MM056.2","yes","antibiotics_family;treatment","None;Trimethoprim-Sulfamethoxazole;Penicillin Antibiotic;Beta-lactamase Inhibitor","NCIT:C41132;NCIT:C909;NCIT:C1500;NCIT:C183118"
+"VincentC_2016:MM057.1","yes","antibiotics_family;treatment","Laxative;Proton Pump Inhibitor;Carbapenems;Penicillin Antibiotic;fluoroquinolone antibiotic;Beta-lactamase Inhibitor","NCIT:C29697;NCIT:C29723;OMIT:0016422;NCIT:C1500;CHEBI:87211;NCIT:C183118"
 "VincentC_2016:MM057.10","no","treatment","Proton Pump Inhibitor","NCIT:C29723"
 "VincentC_2016:MM057.11","yes","antibiotics_family;treatment","Proton Pump Inhibitor;Penicillin Antibiotic","NCIT:C29723;NCIT:C1500"
 "VincentC_2016:MM057.12","yes","antibiotics_family;treatment","Proton Pump Inhibitor;Penicillin Antibiotic","NCIT:C29723;NCIT:C1500"
-"VincentC_2016:MM057.2","yes","antibiotics_family;treatment","Laxative;Proton Pump Inhibitor;Penicillin Antibiotic;Quinolone Antibiotic;Antibacterial Agent;Carbapenems;Glycopeptide Antibiotic;Macrolide Antibiotic","NCIT:C29697;NCIT:C29723;NCIT:C1500;NCIT:C795;NCIT:C52588;OMIT:0016422;NCIT:C61101;NCIT:C261"
-"VincentC_2016:MM057.3","yes","antibiotics_family;treatment","Proton Pump Inhibitor;Quinolone Antibiotic","NCIT:C29723;NCIT:C795"
-"VincentC_2016:MM057.4","yes","antibiotics_family;treatment","Laxative;Proton Pump Inhibitor;Penicillin Antibiotic;Quinolone Antibiotic;Antibacterial Agent;Carbapenems;Glycopeptide Antibiotic;Macrolide Antibiotic","NCIT:C29697;NCIT:C29723;NCIT:C1500;NCIT:C795;NCIT:C52588;OMIT:0016422;NCIT:C61101;NCIT:C261"
-"VincentC_2016:MM057.5","yes","antibiotics_family;treatment","Laxative;Proton Pump Inhibitor;Penicillin Antibiotic;Quinolone Antibiotic;Antibacterial Agent;Carbapenems;Glycopeptide Antibiotic;Macrolide Antibiotic","NCIT:C29697;NCIT:C29723;NCIT:C1500;NCIT:C795;NCIT:C52588;OMIT:0016422;NCIT:C61101;NCIT:C261"
-"VincentC_2016:MM057.6","yes","antibiotics_family;treatment","Proton Pump Inhibitor;Quinolone Antibiotic;Carbapenems;Glycopeptide Antibiotic;Macrolide Antibiotic;Antibacterial Agent","NCIT:C29723;NCIT:C795;OMIT:0016422;NCIT:C61101;NCIT:C261;NCIT:C52588"
-"VincentC_2016:MM057.7","yes","antibiotics_family;treatment","Proton Pump Inhibitor;Quinolone Antibiotic","NCIT:C29723;NCIT:C795"
+"VincentC_2016:MM057.2","yes","antibiotics_family;treatment","Laxative;Proton Pump Inhibitor;Penicillin Antibiotic;fluoroquinolone antibiotic;Beta-lactamase Inhibitor;Carbapenems;Vancomycin;Azithromycin;Metronidazole","NCIT:C29697;NCIT:C29723;NCIT:C1500;CHEBI:87211;NCIT:C183118;OMIT:0016422;NCIT:C925;NCIT:C28844;NCIT:C651"
+"VincentC_2016:MM057.3","yes","antibiotics_family;treatment","Proton Pump Inhibitor;fluoroquinolone antibiotic","NCIT:C29723;CHEBI:87211"
+"VincentC_2016:MM057.4","yes","antibiotics_family;treatment","Laxative;Proton Pump Inhibitor;Penicillin Antibiotic;fluoroquinolone antibiotic;Beta-lactamase Inhibitor;Carbapenems;Vancomycin;Azithromycin;Metronidazole","NCIT:C29697;NCIT:C29723;NCIT:C1500;CHEBI:87211;NCIT:C183118;OMIT:0016422;NCIT:C925;NCIT:C28844;NCIT:C651"
+"VincentC_2016:MM057.5","yes","antibiotics_family;treatment","Laxative;Proton Pump Inhibitor;Penicillin Antibiotic;fluoroquinolone antibiotic;Beta-lactamase Inhibitor;Carbapenems;Vancomycin;Azithromycin;Metronidazole","NCIT:C29697;NCIT:C29723;NCIT:C1500;CHEBI:87211;NCIT:C183118;OMIT:0016422;NCIT:C925;NCIT:C28844;NCIT:C651"
+"VincentC_2016:MM057.6","yes","antibiotics_family;treatment","Proton Pump Inhibitor;fluoroquinolone antibiotic;Carbapenems;Vancomycin;Azithromycin;Metronidazole","NCIT:C29723;CHEBI:87211;OMIT:0016422;NCIT:C925;NCIT:C28844;NCIT:C651"
+"VincentC_2016:MM057.7","yes","antibiotics_family;treatment","Proton Pump Inhibitor;fluoroquinolone antibiotic","NCIT:C29723;CHEBI:87211"
 "VincentC_2016:MM057.8","no","treatment","Proton Pump Inhibitor","NCIT:C29723"
 "VincentC_2016:MM057.9","no","treatment","Proton Pump Inhibitor","NCIT:C29723"
 "VincentC_2016:MM058.1","no","treatment","Nonsteroidal Antiinflammatory Drug;Opioid","NCIT:C257;NCIT:C1506"
@@ -19592,19 +19592,19 @@
 "VincentC_2016:MM060.1","yes","antibiotics_family;treatment","Proton Pump Inhibitor;Cephalosporin Antibiotic","NCIT:C29723;NCIT:C357"
 "VincentC_2016:MM060.2","yes","antibiotics_family;treatment","Proton Pump Inhibitor;Cephalosporin Antibiotic","NCIT:C29723;NCIT:C357"
 "VincentC_2016:MM061","no","treatment","Nonsteroidal Antiinflammatory Drug;Opioid","NCIT:C257;NCIT:C1506"
-"VincentC_2016:MM062.1","yes","antibiotics_family;treatment","None;Carbapenems;Quinolone Antibiotic","NCIT:C41132;OMIT:0016422;NCIT:C795"
-"VincentC_2016:MM062.2","yes","antibiotics_family;treatment","None;Carbapenems;Quinolone Antibiotic","NCIT:C41132;OMIT:0016422;NCIT:C795"
+"VincentC_2016:MM062.1","yes","antibiotics_family;treatment","None;Carbapenems;fluoroquinolone antibiotic","NCIT:C41132;OMIT:0016422;CHEBI:87211"
+"VincentC_2016:MM062.2","yes","antibiotics_family;treatment","None;Carbapenems;fluoroquinolone antibiotic","NCIT:C41132;OMIT:0016422;CHEBI:87211"
 "VincentC_2016:MM063","yes","antibiotics_family;treatment","None;Carbapenems","NCIT:C41132;OMIT:0016422"
 "VincentC_2016:MM064.1","no","treatment","Opioid;Laxative;Proton Pump Inhibitor","NCIT:C1506;NCIT:C29697;NCIT:C29723"
-"VincentC_2016:MM064.2","yes","antibiotics_family;treatment","Opioid;Laxative;Proton Pump Inhibitor;Quinolone Antibiotic","NCIT:C1506;NCIT:C29697;NCIT:C29723;NCIT:C795"
+"VincentC_2016:MM064.2","yes","antibiotics_family;treatment","Opioid;Laxative;Proton Pump Inhibitor;fluoroquinolone antibiotic","NCIT:C1506;NCIT:C29697;NCIT:C29723;CHEBI:87211"
 "VincentC_2016:MM065","yes","antibiotics_family;treatment","None;Cephalosporin Antibiotic","NCIT:C41132;NCIT:C357"
 "VincentC_2016:MM066","no","treatment","Nonsteroidal Antiinflammatory Drug;Opioid","NCIT:C257;NCIT:C1506"
 "VincentC_2016:MM068.1","yes","antibiotics_family;treatment","Opioid;Cephalosporin Antibiotic","NCIT:C1506;NCIT:C357"
 "VincentC_2016:MM068.2","yes","antibiotics_family;treatment","Opioid;Laxative;Cephalosporin Antibiotic","NCIT:C1506;NCIT:C29697;NCIT:C357"
 "VincentC_2016:MM069","yes","antibiotics_family;treatment","None;Cephalosporin Antibiotic","NCIT:C41132;NCIT:C357"
-"VincentC_2016:MM070.1","yes","antibiotics_family;treatment","None;Glycopeptide Antibiotic;Penicillin Antibiotic;Macrolide Antibiotic;Antibacterial Agent","NCIT:C41132;NCIT:C61101;NCIT:C1500;NCIT:C261;NCIT:C52588"
-"VincentC_2016:MM070.2","yes","antibiotics_family;treatment","None;Glycopeptide Antibiotic;Penicillin Antibiotic;Macrolide Antibiotic;Antibacterial Agent","NCIT:C41132;NCIT:C61101;NCIT:C1500;NCIT:C261;NCIT:C52588"
-"VincentC_2016:MM070.3","yes","antibiotics_family;treatment","None;Penicillin Antibiotic;Antibacterial Agent;Carbapenems;Glycopeptide Antibiotic;Macrolide Antibiotic","NCIT:C41132;NCIT:C1500;NCIT:C52588;OMIT:0016422;NCIT:C61101;NCIT:C261"
+"VincentC_2016:MM070.1","yes","antibiotics_family;treatment","None;Vancomycin;Penicillin Antibiotic;Azithromycin;Beta-lactamase Inhibitor","NCIT:C41132;NCIT:C925;NCIT:C1500;NCIT:C28844;NCIT:C183118"
+"VincentC_2016:MM070.2","yes","antibiotics_family;treatment","None;Vancomycin;Penicillin Antibiotic;Azithromycin;Beta-lactamase Inhibitor","NCIT:C41132;NCIT:C925;NCIT:C1500;NCIT:C28844;NCIT:C183118"
+"VincentC_2016:MM070.3","yes","antibiotics_family;treatment","None;Penicillin Antibiotic;Beta-lactamase Inhibitor;Carbapenems;Vancomycin;Azithromycin","NCIT:C41132;NCIT:C1500;NCIT:C183118;OMIT:0016422;NCIT:C925;NCIT:C28844"
 "VincentC_2016:MM071.2","yes","antibiotics_family;treatment","Proton Pump Inhibitor;Cephalosporin Antibiotic","NCIT:C29723;NCIT:C357"
 "VincentC_2016:MM071.3","yes","antibiotics_family;treatment","Proton Pump Inhibitor;Cephalosporin Antibiotic","NCIT:C29723;NCIT:C357"
 "VincentC_2016:MM072.1","yes","antibiotics_family;treatment","Opioid;Cephalosporin Antibiotic","NCIT:C1506;NCIT:C357"
@@ -19631,7 +19631,7 @@
 "VincentC_2016:MM086.2","no","treatment","None","NCIT:C41132"
 "VincentC_2016:MM086.3","no","treatment","None","NCIT:C41132"
 "VincentC_2016:MM086.5","no","treatment","Nonsteroidal Antiinflammatory Drug","NCIT:C257"
-"VincentC_2016:MM086.6","yes","antibiotics_family;treatment","Nonsteroidal Antiinflammatory Drug;Trimethoprim","NCIT:C257;NCIT:C908"
+"VincentC_2016:MM086.6","yes","antibiotics_family;treatment","Nonsteroidal Antiinflammatory Drug;Trimethoprim-Sulfamethoxazole","NCIT:C257;NCIT:C909"
 "VincentC_2016:MM087.1","yes","antibiotics_family;treatment","Nonsteroidal Antiinflammatory Drug;Carbapenems","NCIT:C257;OMIT:0016422"
 "VincentC_2016:MM087.2","yes","antibiotics_family;treatment","Nonsteroidal Antiinflammatory Drug;Opioid;Carbapenems","NCIT:C257;NCIT:C1506;OMIT:0016422"
 "VincentC_2016:MM088","no","treatment","None","NCIT:C41132"
@@ -19641,33 +19641,33 @@
 "VincentC_2016:MM090.2","yes","antibiotics_family;treatment","Nonsteroidal Antiinflammatory Drug;Corticosteroid;Proton Pump Inhibitor;Cephalosporin Antibiotic","NCIT:C257;NCIT:C2322;NCIT:C29723;NCIT:C357"
 "VincentC_2016:MM090.3","yes","antibiotics_family;treatment","Nonsteroidal Antiinflammatory Drug;Corticosteroid;Proton Pump Inhibitor;Cephalosporin Antibiotic","NCIT:C257;NCIT:C2322;NCIT:C29723;NCIT:C357"
 "VincentC_2016:MM091.1","no","treatment","None","NCIT:C41132"
-"VincentC_2016:MM091.2","yes","antibiotics_family;treatment","Corticosteroid;Proton Pump Inhibitor;Glycopeptide Antibiotic;Penicillin Antibiotic;Macrolide Antibiotic;Antibacterial Agent","NCIT:C2322;NCIT:C29723;NCIT:C61101;NCIT:C1500;NCIT:C261;NCIT:C52588"
-"VincentC_2016:MM091.3","yes","antibiotics_family;treatment","Corticosteroid;Laxative;Proton Pump Inhibitor;Glycopeptide Antibiotic;Penicillin Antibiotic;Macrolide Antibiotic;Antibacterial Agent","NCIT:C2322;NCIT:C29697;NCIT:C29723;NCIT:C61101;NCIT:C1500;NCIT:C261;NCIT:C52588"
-"VincentC_2016:MM091.4","yes","antibiotics_family;treatment","Corticosteroid;Laxative;Proton Pump Inhibitor;Glycopeptide Antibiotic;Penicillin Antibiotic;Macrolide Antibiotic;Antibacterial Agent","NCIT:C2322;NCIT:C29697;NCIT:C29723;NCIT:C61101;NCIT:C1500;NCIT:C261;NCIT:C52588"
+"VincentC_2016:MM091.2","yes","antibiotics_family;treatment","Corticosteroid;Proton Pump Inhibitor;Vancomycin;Penicillin Antibiotic;Azithromycin;Beta-lactamase Inhibitor","NCIT:C2322;NCIT:C29723;NCIT:C925;NCIT:C1500;NCIT:C28844;NCIT:C183118"
+"VincentC_2016:MM091.3","yes","antibiotics_family;treatment","Corticosteroid;Laxative;Proton Pump Inhibitor;Vancomycin;Penicillin Antibiotic;Azithromycin;Beta-lactamase Inhibitor","NCIT:C2322;NCIT:C29697;NCIT:C29723;NCIT:C925;NCIT:C1500;NCIT:C28844;NCIT:C183118"
+"VincentC_2016:MM091.4","yes","antibiotics_family;treatment","Corticosteroid;Laxative;Proton Pump Inhibitor;Vancomycin;Penicillin Antibiotic;Azithromycin;Beta-lactamase Inhibitor","NCIT:C2322;NCIT:C29697;NCIT:C29723;NCIT:C925;NCIT:C1500;NCIT:C28844;NCIT:C183118"
 "VincentC_2016:MM092","no","treatment","None","NCIT:C41132"
 "VincentC_2016:MM093","no","treatment","None","NCIT:C41132"
 "VincentC_2016:MM094.1","no","treatment","None","NCIT:C41132"
-"VincentC_2016:MM094.2","yes","antibiotics_family;treatment","Nonsteroidal Antiinflammatory Drug;Corticosteroid;Penicillin Antibiotic;Macrolide Antibiotic;Antibacterial Agent","NCIT:C257;NCIT:C2322;NCIT:C1500;NCIT:C261;NCIT:C52588"
-"VincentC_2016:MM096","yes","antibiotics_family;treatment","None;Quinolone Antibiotic","NCIT:C41132;NCIT:C795"
-"VincentC_2016:MM098.1","yes","antibiotics_family;treatment","Nonsteroidal Antiinflammatory Drug;Glycopeptide Antibiotic;Penicillin Antibiotic;Macrolide Antibiotic;Antibacterial Agent","NCIT:C257;NCIT:C61101;NCIT:C1500;NCIT:C261;NCIT:C52588"
-"VincentC_2016:MM098.10","yes","antibiotics_family;treatment","Nonsteroidal Antiinflammatory Drug;Opioid;Proton Pump Inhibitor;Penicillin Antibiotic;Quinolone Antibiotic;Antibacterial Agent;Glycopeptide Antibiotic;Cephalosporin Antibiotic;Carbapenems","NCIT:C257;NCIT:C1506;NCIT:C29723;NCIT:C1500;NCIT:C795;NCIT:C52588;NCIT:C61101;NCIT:C357;OMIT:0016422"
-"VincentC_2016:MM098.11","yes","antibiotics_family;treatment","Nonsteroidal Antiinflammatory Drug;Opioid;Corticosteroid;Proton Pump Inhibitor;Penicillin Antibiotic;Quinolone Antibiotic;Antibacterial Agent;Glycopeptide Antibiotic;Carbapenems","NCIT:C257;NCIT:C1506;NCIT:C2322;NCIT:C29723;NCIT:C1500;NCIT:C795;NCIT:C52588;NCIT:C61101;OMIT:0016422"
-"VincentC_2016:MM098.12","yes","antibiotics_family;treatment","Nonsteroidal Antiinflammatory Drug;Opioid;Corticosteroid;Proton Pump Inhibitor;Quinolone Antibiotic;Glycopeptide Antibiotic;Carbapenems;Antibacterial Agent","NCIT:C257;NCIT:C1506;NCIT:C2322;NCIT:C29723;NCIT:C795;NCIT:C61101;OMIT:0016422;NCIT:C52588"
-"VincentC_2016:MM098.13","yes","antibiotics_family;treatment","Nonsteroidal Antiinflammatory Drug;Opioid;Corticosteroid;Proton Pump Inhibitor;Quinolone Antibiotic;Glycopeptide Antibiotic;Carbapenems;Antibacterial Agent","NCIT:C257;NCIT:C1506;NCIT:C2322;NCIT:C29723;NCIT:C795;NCIT:C61101;OMIT:0016422;NCIT:C52588"
-"VincentC_2016:MM098.14","yes","antibiotics_family;treatment","Nonsteroidal Antiinflammatory Drug;Opioid;Corticosteroid;Laxative;Proton Pump Inhibitor;Quinolone Antibiotic;Glycopeptide Antibiotic;Carbapenems;Antibacterial Agent","NCIT:C257;NCIT:C1506;NCIT:C2322;NCIT:C29697;NCIT:C29723;NCIT:C795;NCIT:C61101;OMIT:0016422;NCIT:C52588"
-"VincentC_2016:MM098.15","yes","antibiotics_family;treatment","Nonsteroidal Antiinflammatory Drug;Opioid;Corticosteroid;Laxative;Proton Pump Inhibitor;Quinolone Antibiotic;Glycopeptide Antibiotic;Carbapenems;Antibacterial Agent","NCIT:C257;NCIT:C1506;NCIT:C2322;NCIT:C29697;NCIT:C29723;NCIT:C795;NCIT:C61101;OMIT:0016422;NCIT:C52588"
-"VincentC_2016:MM098.2","yes","antibiotics_family;treatment","Nonsteroidal Antiinflammatory Drug;Glycopeptide Antibiotic;Penicillin Antibiotic;Macrolide Antibiotic;Antibacterial Agent","NCIT:C257;NCIT:C61101;NCIT:C1500;NCIT:C261;NCIT:C52588"
-"VincentC_2016:MM098.3","yes","antibiotics_family;treatment","Nonsteroidal Antiinflammatory Drug;Penicillin Antibiotic;Antibacterial Agent;Cephalosporin Antibiotic;Glycopeptide Antibiotic;Macrolide Antibiotic","NCIT:C257;NCIT:C1500;NCIT:C52588;NCIT:C357;NCIT:C61101;NCIT:C261"
-"VincentC_2016:MM098.4","yes","antibiotics_family;treatment","Nonsteroidal Antiinflammatory Drug;Opioid;Penicillin Antibiotic;Quinolone Antibiotic;Antibacterial Agent;Glycopeptide Antibiotic;Cephalosporin Antibiotic;Carbapenems;Macrolide Antibiotic","NCIT:C257;NCIT:C1506;NCIT:C1500;NCIT:C795;NCIT:C52588;NCIT:C61101;NCIT:C357;OMIT:0016422;NCIT:C261"
-"VincentC_2016:MM098.5","yes","antibiotics_family;treatment","Nonsteroidal Antiinflammatory Drug;Opioid;Penicillin Antibiotic;Quinolone Antibiotic;Antibacterial Agent;Glycopeptide Antibiotic;Cephalosporin Antibiotic;Carbapenems;Macrolide Antibiotic","NCIT:C257;NCIT:C1506;NCIT:C1500;NCIT:C795;NCIT:C52588;NCIT:C61101;NCIT:C357;OMIT:0016422;NCIT:C261"
-"VincentC_2016:MM098.6","yes","antibiotics_family;treatment","Nonsteroidal Antiinflammatory Drug;Opioid;Proton Pump Inhibitor;Penicillin Antibiotic;Quinolone Antibiotic;Antibacterial Agent;Glycopeptide Antibiotic;Cephalosporin Antibiotic;Carbapenems","NCIT:C257;NCIT:C1506;NCIT:C29723;NCIT:C1500;NCIT:C795;NCIT:C52588;NCIT:C61101;NCIT:C357;OMIT:0016422"
-"VincentC_2016:MM098.7","yes","antibiotics_family;treatment","Nonsteroidal Antiinflammatory Drug;Opioid;Proton Pump Inhibitor;Penicillin Antibiotic;Quinolone Antibiotic;Antibacterial Agent;Glycopeptide Antibiotic;Cephalosporin Antibiotic;Carbapenems","NCIT:C257;NCIT:C1506;NCIT:C29723;NCIT:C1500;NCIT:C795;NCIT:C52588;NCIT:C61101;NCIT:C357;OMIT:0016422"
-"VincentC_2016:MM098.8","yes","antibiotics_family;treatment","Nonsteroidal Antiinflammatory Drug;Opioid;Proton Pump Inhibitor;Penicillin Antibiotic;Quinolone Antibiotic;Antibacterial Agent;Glycopeptide Antibiotic;Cephalosporin Antibiotic;Carbapenems","NCIT:C257;NCIT:C1506;NCIT:C29723;NCIT:C1500;NCIT:C795;NCIT:C52588;NCIT:C61101;NCIT:C357;OMIT:0016422"
-"VincentC_2016:MM098.9","yes","antibiotics_family;treatment","Nonsteroidal Antiinflammatory Drug;Opioid;Proton Pump Inhibitor;Penicillin Antibiotic;Quinolone Antibiotic;Antibacterial Agent;Glycopeptide Antibiotic;Cephalosporin Antibiotic;Carbapenems","NCIT:C257;NCIT:C1506;NCIT:C29723;NCIT:C1500;NCIT:C795;NCIT:C52588;NCIT:C61101;NCIT:C357;OMIT:0016422"
+"VincentC_2016:MM094.2","yes","antibiotics_family;treatment","Nonsteroidal Antiinflammatory Drug;Corticosteroid;Penicillin Antibiotic;Azithromycin;Beta-lactamase Inhibitor","NCIT:C257;NCIT:C2322;NCIT:C1500;NCIT:C28844;NCIT:C183118"
+"VincentC_2016:MM096","yes","antibiotics_family;treatment","None;fluoroquinolone antibiotic","NCIT:C41132;CHEBI:87211"
+"VincentC_2016:MM098.1","yes","antibiotics_family;treatment","Nonsteroidal Antiinflammatory Drug;Vancomycin;Penicillin Antibiotic;Azithromycin;Beta-lactamase Inhibitor","NCIT:C257;NCIT:C925;NCIT:C1500;NCIT:C28844;NCIT:C183118"
+"VincentC_2016:MM098.10","yes","antibiotics_family;treatment","Nonsteroidal Antiinflammatory Drug;Opioid;Proton Pump Inhibitor;Penicillin Antibiotic;fluoroquinolone antibiotic;Beta-lactamase Inhibitor;Vancomycin;Cephalosporin Antibiotic;Carbapenems;Metronidazole","NCIT:C257;NCIT:C1506;NCIT:C29723;NCIT:C1500;CHEBI:87211;NCIT:C183118;NCIT:C925;NCIT:C357;OMIT:0016422;NCIT:C651"
+"VincentC_2016:MM098.11","yes","antibiotics_family;treatment","Nonsteroidal Antiinflammatory Drug;Opioid;Corticosteroid;Proton Pump Inhibitor;Penicillin Antibiotic;fluoroquinolone antibiotic;Beta-lactamase Inhibitor;Vancomycin;Carbapenems;Metronidazole;Daptomycin","NCIT:C257;NCIT:C1506;NCIT:C2322;NCIT:C29723;NCIT:C1500;CHEBI:87211;NCIT:C183118;NCIT:C925;OMIT:0016422;NCIT:C651;NCIT:C47470"
+"VincentC_2016:MM098.12","yes","antibiotics_family;treatment","Nonsteroidal Antiinflammatory Drug;Opioid;Corticosteroid;Proton Pump Inhibitor;fluoroquinolone antibiotic;Vancomycin;Carbapenems;Metronidazole;Daptomycin","NCIT:C257;NCIT:C1506;NCIT:C2322;NCIT:C29723;CHEBI:87211;NCIT:C925;OMIT:0016422;NCIT:C651;NCIT:C47470"
+"VincentC_2016:MM098.13","yes","antibiotics_family;treatment","Nonsteroidal Antiinflammatory Drug;Opioid;Corticosteroid;Proton Pump Inhibitor;fluoroquinolone antibiotic;Vancomycin;Carbapenems;Metronidazole;Daptomycin","NCIT:C257;NCIT:C1506;NCIT:C2322;NCIT:C29723;CHEBI:87211;NCIT:C925;OMIT:0016422;NCIT:C651;NCIT:C47470"
+"VincentC_2016:MM098.14","yes","antibiotics_family;treatment","Nonsteroidal Antiinflammatory Drug;Opioid;Corticosteroid;Laxative;Proton Pump Inhibitor;fluoroquinolone antibiotic;Vancomycin;Carbapenems;Metronidazole;Daptomycin","NCIT:C257;NCIT:C1506;NCIT:C2322;NCIT:C29697;NCIT:C29723;CHEBI:87211;NCIT:C925;OMIT:0016422;NCIT:C651;NCIT:C47470"
+"VincentC_2016:MM098.15","yes","antibiotics_family;treatment","Nonsteroidal Antiinflammatory Drug;Opioid;Corticosteroid;Laxative;Proton Pump Inhibitor;fluoroquinolone antibiotic;Vancomycin;Carbapenems;Metronidazole;Daptomycin","NCIT:C257;NCIT:C1506;NCIT:C2322;NCIT:C29697;NCIT:C29723;CHEBI:87211;NCIT:C925;OMIT:0016422;NCIT:C651;NCIT:C47470"
+"VincentC_2016:MM098.2","yes","antibiotics_family;treatment","Nonsteroidal Antiinflammatory Drug;Vancomycin;Penicillin Antibiotic;Azithromycin;Beta-lactamase Inhibitor","NCIT:C257;NCIT:C925;NCIT:C1500;NCIT:C28844;NCIT:C183118"
+"VincentC_2016:MM098.3","yes","antibiotics_family;treatment","Nonsteroidal Antiinflammatory Drug;Penicillin Antibiotic;Beta-lactamase Inhibitor;Cephalosporin Antibiotic;Vancomycin;Azithromycin","NCIT:C257;NCIT:C1500;NCIT:C183118;NCIT:C357;NCIT:C925;NCIT:C28844"
+"VincentC_2016:MM098.4","yes","antibiotics_family;treatment","Nonsteroidal Antiinflammatory Drug;Opioid;Penicillin Antibiotic;fluoroquinolone antibiotic;Beta-lactamase Inhibitor;Vancomycin;Cephalosporin Antibiotic;Carbapenems;Azithromycin","NCIT:C257;NCIT:C1506;NCIT:C1500;CHEBI:87211;NCIT:C183118;NCIT:C925;NCIT:C357;OMIT:0016422;NCIT:C28844"
+"VincentC_2016:MM098.5","yes","antibiotics_family;treatment","Nonsteroidal Antiinflammatory Drug;Opioid;Penicillin Antibiotic;fluoroquinolone antibiotic;Beta-lactamase Inhibitor;Vancomycin;Cephalosporin Antibiotic;Carbapenems;Azithromycin;Metronidazole","NCIT:C257;NCIT:C1506;NCIT:C1500;CHEBI:87211;NCIT:C183118;NCIT:C925;NCIT:C357;OMIT:0016422;NCIT:C28844;NCIT:C651"
+"VincentC_2016:MM098.6","yes","antibiotics_family;treatment","Nonsteroidal Antiinflammatory Drug;Opioid;Proton Pump Inhibitor;Penicillin Antibiotic;fluoroquinolone antibiotic;Beta-lactamase Inhibitor;Vancomycin;Cephalosporin Antibiotic;Carbapenems;Metronidazole","NCIT:C257;NCIT:C1506;NCIT:C29723;NCIT:C1500;CHEBI:87211;NCIT:C183118;NCIT:C925;NCIT:C357;OMIT:0016422;NCIT:C651"
+"VincentC_2016:MM098.7","yes","antibiotics_family;treatment","Nonsteroidal Antiinflammatory Drug;Opioid;Proton Pump Inhibitor;Penicillin Antibiotic;fluoroquinolone antibiotic;Beta-lactamase Inhibitor;Vancomycin;Cephalosporin Antibiotic;Carbapenems;Metronidazole","NCIT:C257;NCIT:C1506;NCIT:C29723;NCIT:C1500;CHEBI:87211;NCIT:C183118;NCIT:C925;NCIT:C357;OMIT:0016422;NCIT:C651"
+"VincentC_2016:MM098.8","yes","antibiotics_family;treatment","Nonsteroidal Antiinflammatory Drug;Opioid;Proton Pump Inhibitor;Penicillin Antibiotic;fluoroquinolone antibiotic;Beta-lactamase Inhibitor;Vancomycin;Cephalosporin Antibiotic;Carbapenems;Metronidazole","NCIT:C257;NCIT:C1506;NCIT:C29723;NCIT:C1500;CHEBI:87211;NCIT:C183118;NCIT:C925;NCIT:C357;OMIT:0016422;NCIT:C651"
+"VincentC_2016:MM098.9","yes","antibiotics_family;treatment","Nonsteroidal Antiinflammatory Drug;Opioid;Proton Pump Inhibitor;Penicillin Antibiotic;fluoroquinolone antibiotic;Beta-lactamase Inhibitor;Vancomycin;Cephalosporin Antibiotic;Carbapenems;Metronidazole","NCIT:C257;NCIT:C1506;NCIT:C29723;NCIT:C1500;CHEBI:87211;NCIT:C183118;NCIT:C925;NCIT:C357;OMIT:0016422;NCIT:C651"
 "VincentC_2016:MM099.1","no","treatment","Antineoplastic Agent","NCIT:C274"
-"VincentC_2016:MM099.2","yes","antibiotics_family;treatment","Antineoplastic Agent;Penicillin Antibiotic;Antibacterial Agent","NCIT:C274;NCIT:C1500;NCIT:C52588"
-"VincentC_2016:MM099.3","yes","antibiotics_family;treatment","Antineoplastic Agent;Penicillin Antibiotic;Antibacterial Agent","NCIT:C274;NCIT:C1500;NCIT:C52588"
-"VincentC_2016:MM099.4","yes","antibiotics_family;treatment","Nonsteroidal Antiinflammatory Drug;Antineoplastic Agent;Corticosteroid;Proton Pump Inhibitor;Penicillin Antibiotic;Antibacterial Agent","NCIT:C257;NCIT:C274;NCIT:C2322;NCIT:C29723;NCIT:C1500;NCIT:C52588"
+"VincentC_2016:MM099.2","yes","antibiotics_family;treatment","Antineoplastic Agent;Penicillin Antibiotic;Beta-lactamase Inhibitor","NCIT:C274;NCIT:C1500;NCIT:C183118"
+"VincentC_2016:MM099.3","yes","antibiotics_family;treatment","Antineoplastic Agent;Penicillin Antibiotic;Beta-lactamase Inhibitor","NCIT:C274;NCIT:C1500;NCIT:C183118"
+"VincentC_2016:MM099.4","yes","antibiotics_family;treatment","Nonsteroidal Antiinflammatory Drug;Antineoplastic Agent;Corticosteroid;Proton Pump Inhibitor;Penicillin Antibiotic;Beta-lactamase Inhibitor","NCIT:C257;NCIT:C274;NCIT:C2322;NCIT:C29723;NCIT:C1500;NCIT:C183118"
 "VincentC_2016:MM100.1","yes","antibiotics_family;treatment","None;Cephalosporin Antibiotic","NCIT:C41132;NCIT:C357"
 "VincentC_2016:MM100.2","yes","antibiotics_family;treatment","None;Cephalosporin Antibiotic","NCIT:C41132;NCIT:C357"
 "VincentC_2016:MM101.1","yes","antibiotics_family;treatment","Nonsteroidal Antiinflammatory Drug;Proton Pump Inhibitor;Cephalosporin Antibiotic","NCIT:C257;NCIT:C29723;NCIT:C357"
@@ -19675,7 +19675,7 @@
 "VincentC_2016:MM103.1","yes","antibiotics_family;treatment","None;Cephalosporin Antibiotic","NCIT:C41132;NCIT:C357"
 "VincentC_2016:MM103.2","yes","antibiotics_family;treatment","None;Cephalosporin Antibiotic","NCIT:C41132;NCIT:C357"
 "VincentC_2016:MM103.3","yes","antibiotics_family;treatment","None;Cephalosporin Antibiotic","NCIT:C41132;NCIT:C357"
-"VincentC_2016:MM104","yes","antibiotics_family;treatment","Nonsteroidal Antiinflammatory Drug;Penicillin Antibiotic;Antibacterial Agent","NCIT:C257;NCIT:C1500;NCIT:C52588"
+"VincentC_2016:MM104","yes","antibiotics_family;treatment","Nonsteroidal Antiinflammatory Drug;Penicillin Antibiotic;Beta-lactamase Inhibitor","NCIT:C257;NCIT:C1500;NCIT:C183118"
 "VogtmannE_2016:MMRS11288076ST-27-0-0",NA,NA,NA,NA
 "VogtmannE_2016:MMRS11664448ST-27-0-0",NA,NA,NA,NA
 "VogtmannE_2016:MMRS11932626ST-27-0-0",NA,NA,NA,NA
