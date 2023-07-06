@@ -185,9 +185,9 @@ information. `r nrow(sampleMetadata)-naAbx` samples show `r uniqueAbx` unique
 antibiotic options, which are the combinations of `r length(allAbx)` unique 
 antibiotic families.
 
-## Antibiotic Auto-Classification and Treatment Screening
+## Antibiotic and Treatment Screening
 
-We will now use the AMR package to generate assumed names and classes for the antibiotics for curation. We will do the same for the `treatment` values and manually double-check any treatments for which antibiotic data was generated in order to assure that none of the `treatment` values are actually antibiotics.
+We will now use the AMR package to generate assumed names and classes for the `antibiotics_family` and `treatment` values. This allows us to double-check the generated antibiotic values in order to assure that none of the `treatment` values are actually antibiotics or vice versa.
 
 ```{r check_antibiotics, eval=FALSE}
 # check if any treatments are antibiotics and get generated names and classes
@@ -207,7 +207,7 @@ abx_as_abx <- data.frame(abx = allAbx,
                          generated_class = abx_class)
 ```
 
-A number of treatments were identified as possible antibiotics, but after manual review none were confirmed. This high false identification rate is due to the AMR package's mistake tolerance and simply indicates that the flagged treatment values appear similar to antibiotic names.
+A number of treatments were identified as possible antibiotics, but after manual review none were confirmed. This high false identification rate is due to the AMR package's mistake tolerance and simply indicates that the flagged treatment values appear similar to antibiotic names. Additionally, all `antibiotics_family` values were accurately identified as antibiotics.
 
 # Data Curation
 
@@ -220,18 +220,17 @@ The curated tables will be used as maps for curation of the given treatments and
 # create empty mapping table with treatments
 curated_treatment <- data.frame(original_value = allTrts,
                                 curated_ontology_term = NA,
-                                curated_ontology_term_id = NA)
+                                curated_ontology_term_id = NA,
+                                curated_ontology_term_db = NA)
 
 # write to Google Sheet for manual curation
 sheet_write(curated_treatment, ss = ss, sheet ="treatment_ontology")
 
-# create empty mapping table with antibiotic families
-curated_abx <- data.frame(original_value = abx_as_abx$abx,
-                          generated_name = abx_as_abx$generated_name,
-                          generated_class = abx_as_abx$generated_class,
-                          curated_class_value = NA,
+# create empty mapping table with antibiotic family values
+curated_abx <- data.frame(original_value = allAbx,
                           curated_ontology_term = NA,
-                          curated_ontology_term_id = NA)
+                          curated_ontology_term_id = NA,
+                          curated_ontology_term_db = NA)
 
 # write to Google Sheet for manual curation
 sheet_write(curated_abx, ss = ss, sheet ="antibiotic_ontology")
@@ -310,8 +309,7 @@ write.csv(curated_treatment,
           row.names = FALSE)
 
 # load map from Google Sheets
-curated_abx <- read_sheet(ss, sheet = "antibiotic_ontology") %>%
-  select(-c(generated_name, generated_class))
+curated_abx <- read_sheet(ss, sheet = "antibiotic_ontology")
 
 # save map to GitHub
 write.csv(curated_abx,
@@ -330,15 +328,9 @@ Now we will import the curated maps. We will first convert the `curated_ontology
 trt_map <- read.csv(file = file.path(proj_dir, "maps/cMD_treatment_ontology.csv"),
                           sep = ",", header = TRUE)
 
-# convert curated_ontology_term_id from url to ID
-trt_map$curated_ontology_term_id <- basename(trt_map$curated_ontology_term_id)
-
 # import the antibiotic family map
 abx_map <- read.csv(file = file.path(proj_dir, "maps/cMD_antibiotic_ontology.csv"),
                           sep = ",", header = TRUE)
-
-# convert curated_ontology_term_id from url to ID
-abx_map$curated_ontology_term_id <- basename(abx_map$curated_ontology_term_id)
 ```
 
 ## Custom Mapping Functions
@@ -456,6 +448,7 @@ curated_treatment_abx <- treatment_abx_tb %>%
     
 # combine treatment and antibiotic ontology terms and IDs into final curated columns
 combined_curated <- curated_treatment_abx %>%
+  rename(curated_antibiotics_current_use = antibiotics_current_use) %>%
   unite("curated_treatment",
         c(treatment_ontology_term, antibiotics_family_ontology_term),
         sep = ";",
@@ -472,7 +465,7 @@ unite("curated_treatment_ontology_term_id",
 # select columns for final curated table
 final_curated <- combined_curated %>%
   select(curation_id,
-         antibiotics_current_use,
+         curated_antibiotics_current_use,
          treatment_source,
          curated_treatment,
          curated_treatment_ontology_term_id)
