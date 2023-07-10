@@ -40,7 +40,7 @@ NH/AA,http://purl.obolibrary.org/obo/NCIT_C128937;http://purl.obolibrary.org/obo
 SLAVIC,http://purl.obolibrary.org/obo/NCIT_C77819;http://purl.obolibrary.org/obo/NCIT_C43851;http://purl.obolibrary.org/obo/NCIT_C41261,NCIT,Eastern European;European;White,NCIT_C77819;NCIT_C43851;NCIT_C41261
 WHITE,http://purl.obolibrary.org/obo/NCIT_C41261,NCIT,White,NCIT_C41261
 HISPANIC OR LATINO,http://purl.obolibrary.org/obo/NCIT_C17459,NCIT,Hispanic or Latino,NCIT_C17459
-BLACK OR AFRICAN AMERICAN,http://purl.obolibrary.org/obo/NCIT_C16352,NCIT,Black or African American,NCIT_C16352
+BLACK OR AFRICAN AMERICAN,http://purl.obolibrary.org/obo/NCIT_C128937;http://purl.obolibrary.org/obo/NCIT_C128938,NCIT,African American;Black,NCIT_C128937;NCIT_C128938
 NOT HISPANIC OR LATINO,http://purl.obolibrary.org/obo/NCIT_C41222,NCIT,Not Hispanic or Latino,NCIT_C41222
 ASIAN,http://purl.obolibrary.org/obo/NCIT_C41260,NCIT,Asian,NCIT_C41260
 NON-HISPANIC,http://purl.obolibrary.org/obo/NCIT_C41222,NCIT,Not Hispanic or Latino,NCIT_C41222
@@ -124,7 +124,7 @@ UNK/B,http://purl.obolibrary.org/obo/NCIT_C128938,NCIT,Black,NCIT_C128938
 OTHER HISPANIC,http://purl.obolibrary.org/obo/NCIT_C17459,NCIT,Hispanic or Latino,NCIT_C17459
 MIXED OR UNKNOWN,,,,
 NOS HISPANIC,http://purl.obolibrary.org/obo/NCIT_C17459,NCIT,Hispanic or Latino,NCIT_C17459
-BLACK/AA,http://purl.obolibrary.org/obo/NCIT_C16352,NCIT,Black or African American,NCIT_C16352
+BLACK/AA,http://purl.obolibrary.org/obo/NCIT_C128937;http://purl.obolibrary.org/obo/NCIT_C128938,NCIT,African American;Black,NCIT_C128937;NCIT_C128938
 "OTHER ASIAN, ASIAN, NOS",http://purl.obolibrary.org/obo/NCIT_C41260,NCIT,Asian,NCIT_C41260
 "SPANISH, NOS HISPANIC, NOS LATINO, ",http://purl.obolibrary.org/obo/NCIT_C17459,NCIT,Hispanic or Latino,NCIT_C17459
 " WHITE, OTHER ",http://purl.obolibrary.org/obo/NCIT_C41261,NCIT,White,NCIT_C41261
