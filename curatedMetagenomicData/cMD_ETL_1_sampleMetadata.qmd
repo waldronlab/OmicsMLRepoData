@@ -1,0 +1,152 @@
+---
+title: "ETL: cMD sampleMetadata datable"
+author:
+  - Sehyun Oh
+date: "`r format(Sys.time(), '%B %d, %Y')`"
+format:
+    html:
+        fontsize: 14pxs
+        toc: true
+        top-depth: 3
+abstract: "Extract, Transform, and Load (ETL) cMD metadata"
+---
+
+```{r setup, include=FALSE}
+knitr::opts_chunk$set(echo = TRUE, 
+                      warning = FALSE,
+                      message = FALSE,
+                      collapse = TRUE)
+```
+
+```{r echo=FALSE}
+suppressPackageStartupMessages({
+    library(dplyr)
+    library(googlesheets4)
+})
+```
+
+```{r echo=FALSE}
+## [Update needed] to get data files directly from the GH repo
+dir <- "~/OmicsMLRepo/OmicsMLRepoData"
+ori <- read.csv(file.path(dir, "inst/extdata/cMD_sampleMetadata.csv"))
+```
+
+# Update curation map
+Since the initial curation map is established, any additional updates are
+directly applied to the map and the data files. 
+
+```{r}
+url <- "https://docs.google.com/spreadsheets/d/1QSbB_b1DkfqOc7q5eHE0IDHSiGqNUyTE8d4GzbSEzjM/edit?usp=sharing"
+ss <- googledrive::as_id(url)
+
+## Import the curation map from Google Sheet to update GitHub repo version
+map <- read_sheet(ss, sheet = "disease_ontology_all")
+```
+
+```{r eval=FALSE}
+## Save for GitHub repo
+write.csv(map, file = "maps/cMD_study_condition_ontology.csv", row.names = FALSE)
+```
+
+# Update curated data
+Run proper script for a given attribute in `.qmd` files under `curatedMetagenomicData/` folder.
+
+# Update curated sampleMetadata
+## Import curated/harmonized attributes
+```{r}
+dataDir <- file.path(dir, "curatedMetagenomicData/data")
+curated <- list.files(dataDir)
+curatedDatObj <- gsub(".csv", "", curated)
+
+for (i in seq_along(curated)) {
+    res <- read.csv(file.path(dataDir, curated[i]))
+    assign(curatedDatObj[i], res)
+}
+
+## column names of the curated sample metadata per attributes
+# sapply(gsub(".csv", "", curated), function(x) {colnames(get(x))})
+```
+
+Combine all the curated sample metadata
+```{r}
+curated_all <- get(curatedDatObj[1])
+for (i in 2:length(curatedDatObj)) { # assuming there are >= 2 tables to be combined
+    dat <- get(curatedDatObj[i])
+    curated_all <- left_join(curated_all, dat, by = "curation_id")
+}
+```
+
+Combine the original sampleMetadata and curated columns
+```{r}
+allSampleMetadata <- ori %>%
+    mutate(curation_id = paste(study_name, sample_id, sep = ":")) %>%
+    dplyr::left_join(., curated_all, by = "curation_id")
+```
+
+```{r save, eval=FALSE}
+fpath <- file.path(dir, "inst/extdata/cMD_curated_sampleMetadata.csv")
+write.csv(allSampleMetadata, 
+          fpath,
+          row.names = FALSE)
+```
+
+
+
+# Update parquet for DuckDB
+```{r eval=FALSE}
+allSampleMetadata <- read.csv(fpath)
+parquet <- gsub(".csv$", ".parquet", fpath)
+arrow::write_parquet(allSampleMetadata, 
+                     sink = parquet)
+AnVIL::gsutil_cp(parquet,
+                 dest = "gs://omics_ml_repo/cMD_curated_sampleMetadta.parquet")
+```
+
+
+
+
+# Completeness update
+```{r}
+dir <- "~/OmicsMLRepo/OmicsMLRepoData"
+fpath <- file.path(dir, "inst/extdata/cMD_curated_sampleMetadata.csv")
+allSampleMetadata <- read.csv(fpath)
+```
+
+```{r import_gs, eval=FALSE}
+url <- "https://docs.google.com/spreadsheets/d/1xziFB_zBl32BjNarcyEN4GupTYpPtq5aDz0GbRbWvtk/edit?usp=sharing"
+ss <- googledrive::as_id(url)
+merging_schema <- googlesheets4::read_sheet(ss = ss, sheet = "merging_schema")
+```
+
+From the harmonization/curation merging_schema table, which contains the original
+fields and their curated versions as listed in their column names.
+
+```{r cal_completness_and_report, eval=FALSE}
+library(OmicsMLRepoCuration)
+original_fields_completeness <- calCompleteness(fields_list = merging_schema$original_fields,
+                                                DB = "cMD")
+
+x <- merging_schema$curated_fields 
+curated_fields_name <- sapply(x, function(x) {
+    strsplit(x, split = ";") %>% 
+        unlist %>% 
+        paste0("curated_", .) %>% 
+        paste0(., collapse = ";")
+}) %>% as.vector
+
+curated_fields_completeness <- calCompleteness(fields_list = curated_fields_name,
+                                               DB = "cMD")
+```
+
+```{r eval=FALSE}
+merging_schema$original_fields_completeness <- original_fields_completeness
+merging_schema$curated_fields_completeness <- curated_fields_completeness
+merging_schema %>% 
+    dplyr::relocate(original_fields_completeness, .after = original_fields) %>%
+    dplyr::relocate(curated_fields_completeness, .after = curated_fields) 
+```
+
+```{r save_as_Google_Sheets, echo=FALSE, eval=FALSE}
+googlesheets4::write_sheet(merging_schema, ss = ss, sheet = "merging_schema")
+```
+
