@@ -40,34 +40,41 @@ Explain treatment_ harmonized columns
 
 ## Setting up Mapping Tables
 
+Now we will generate a mapping table for each study that describes how that study's treatment-related columns may be harmonized into our main "treatment_" columns.
+
 ## Manual Study Mapping
 
-Note on assumptions: when mapping a study, do so based on the assumption that each original value indicates that treatment was undergone. All records with values indicating that a specific treatment was not undergone or no data for that treatment exists will be detected and handled separately. For example, consider the following frame:
+Note on assumptions:
+
+When mapping a study, do so based on the assumption that each original value indicates that treatment was undergone. All records with values indicating that a specific treatment was not undergone or no data for that treatment exists will be detected and handled separately. For example, consider the following frame:
 
 | colname | unique_values | treatment_name | treatment_type | treatment_amount | treatment_time | treatment_case | treatment_notes |
 |-|-|-|-|-|-|-|-|
 | RADIATION_TREATMENT_ADJUVANT |	NO<;>YES |  |	RADIATION	|		|  | ADJUVANT |  |
 | TARGETED_MOLECULAR_THERAPY |	NO<;>YES |	 | TARGETED_MOLECULAR_THERAPY |  |  |  |  |
 
+: {.table-bordered .table-sm .table-responsive}
+
 The placeholder values of "RADIATION", "ADJUVANT", and "TARGETED_MOLECULAR_THERAPY" would of course only be entered into the final harmonized dataframe if the values for each of the two original columns were "YES". If the original values were "NO", or even missing altogether, we would not want the placeholder values of "RADIATION", "ADJUVANT", or "TARGETED_MOLECULAR_THERAPY" saved. When creating this map, however, we assumed that all original values would be "YES" and entered our placeholder values as we would want them in that case.
 
 Note on the use of separators:
+
  * The separators "::" and "<;>" are used here instead of more common separators such as "," and ";" due to the prevalence of these common separators in the data values themselves.
- * The separator "::" signals that the values on either side are likely to refer to the same concept, such as in "Chemotherapy::CHEMO". This concept verification will be carried out during the curation process.
- * The separator "<;>" is used both as a multipurpose separator when examining unique column values and in the final dataframe to separate multiple "subrecords," each referencing an individual treatment, that have been combined into the same dataframe row for ease of manipulation. For example, the two subrecords
-
-| Vincristine | Chemotherapy |
-| Protons | Radiation |
-
-each represent individual treatments that were undergone by the same patient. In the final dataframe, they would be represented in a single row as such:
-
-| Vincristine<;>Protons | Chemotherapy<;>Radiation |
-
+ * The separator "::" signals that the values on either side belong to the same individual treatment, such as in "PRIOR::ADJUVANT" or "Chemotherapy::CHEMO". After curation, any values that are converted to the same curated value will be collapsed.
+ * The separator "<;>" is used both as a multipurpose separator when examining unique column values and in the final dataframe to separate multiple "subrecords," each referencing an individual treatment, that have been combined into the same dataframe row for ease of manipulation. For example, the two subrecords<br><br>
+| Vincristine | Chemotherapy |<br>
+| Protons | Radiation |<br><br>
+each represent individual treatments that were undergone by the same patient. In the final dataframe, they would be represented in a single row as such:<br><br>
+| Vincristine<;>Protons | Chemotherapy<;>Radiation |<br><br>
 Notice that this compressed format retains the connection between values that shared an original row through positioning. The value "Vincristine" is the first position in its cell, as is the value "Chemotherapy".
+
+Note on column positioning:
+
+The rows within the mapping table, each of which represents an original column, may be repositioned freely. This can be useful for visualizing column grouping or when chaining specific linking operations, as described later.
 
 ### Value Assignment
 
-The first step in mapping a study's harmonization scheme is to determine what type of information each column gives you and how it should be represented in the final harmonized record. In order to do this, we place representative values in each of the harmonized "treatment_" columns. "value" represents the original column value. Portions of the column name, such as "MOST_RECENT" in the table below, may also be entered. These will be entered exactly as they are written. A combination may also be entered, such as with "DURATION_ + value". In these cases, the portion replaced by the original column value includes the word "value" as well as the plus sign and two surrounding spaces: " + ". The value can be placed either before or after the name portion, such as with "value + NAME" or "NAME + value". At the moment, placing the value in between two column name portions, such as in "NAME + value + NAME" as not been found to be necessary, and as such is not supported. The final version may include this functionality.
+The first step in mapping a study's harmonization scheme is to determine what type of information each column gives you and how it should be represented in the final harmonized record. In order to do this, we place representative values in each of the harmonized "treatment_" columns. "value" represents the original column value. Portions of the column name, such as "MOST_RECENT" in the table below, may also be entered. These will be entered exactly as they are written. A combination may also be entered, such as with "DURATION_ + value". In these cases, the portion replaced by the original column value includes the word "value" as well as the plus sign and two surrounding spaces: " + ". The value can be placed either before or after the name portion, such as with "value + NAME" or "NAME + value". At the moment, placing the value in between two column name portions, such as in "NAME + value + NAME" as not been found to be necessary, and as such is not supported. The final version may include this functionality. It is also worth noting that some values will include multiple types of information, such as "Vincristine (3 cycles)". In these cases, we would include "value" in both the "treatment_name" and "treatment_amount" columns. During curation, the specific information relevant to each harmonized column will be parsed out.
 
 Mapping table:
 
@@ -76,6 +83,8 @@ Mapping table:
 | MOST_RECENT_TREATMENT_DURATION | 30<;>3<;>4<;>5<;>105 |  |  |  | DURATION_ + value | MOST_RECENT |  |
 | SURGERY | Excision<;>Mastectomy | value | SURGERY |  |  |  |  |
 
+: {.table-bordered .table-sm .table-responsive}
+
 Value populated rows:
 
 | treatment_name | treatment_type | treatment_amount | treatment_time | treatment_case | treatment_notes |
@@ -83,7 +92,11 @@ Value populated rows:
 |  |  |  | DURATION_**30** | MOST_RECENT |  |
 | **Excision** | SURGERY |  |  |  |  |
 
-### Name-to-Name Grouping
+: {.table-bordered .table-sm .table-responsive}
+
+### Merging Columns
+
+#### Name-to-Name Grouping
 
 In the following scenario, we are interested in merging the two columns that refer to radiation, but we want to keep the chemotherapy information separate. In order to do this, we will place the two radiation-related columns into a group, group 1, while leaving the chemotherapy-related column ungrouped.
 
@@ -93,6 +106,8 @@ In the following scenario, we are interested in merging the two columns that ref
 | 2 | 1 |  |  |  | RADIATION_TYPE | Protons<;>Photons |
 | 3 |  |  |  |  | CHEMOTHERAPY_AGENTS | Vincristine<;>Cisplatin<;>Doxorubicin |
 
+: {.table-bordered .table-sm .table-responsive}
+
 Before grouping:
 
 | treatment_name | treatment_type | treatment_amount | treatment_time | treatment_case | treatment_notes |
@@ -101,6 +116,8 @@ Before grouping:
 | Protons | RADIATION |  |  |  |  |
 | Vincristine | CHEMOTHERAPY |  |  |  |  |
 
+: {.table-bordered .table-sm .table-responsive}
+
 After grouping:
 
 | treatment_name | treatment_type | treatment_amount | treatment_time | treatment_case | treatment_notes |
@@ -108,9 +125,11 @@ After grouping:
 | Protons | RADIATION |  |  |  | Focal/Tumor bed |
 | Vincristine | CHEMOTHERAPY |  |  |  |  |
 
-### Value-to-Name Grouping
+: {.table-bordered .table-sm .table-responsive}
 
-In this scenario, we want to bring the detailed chemotherapy information from CHEMO over and merge it into our ADJUVANT_TX information only if the treatment described in ADJUVANT_TX is chemotherapy. To do this, we specify a named vector of specific values, as the vector names, and other columns to merge with upon detecting those values, as the vector value.
+#### Value-to-Name Grouping
+
+In this scenario, we want to bring the detailed chemotherapy information from CHEMO over and merge it into our ADJUVANT_TX information only if the treatment described in ADJUVANT_TX is chemotherapy. To do this, we specify a named vector of specific values, as the vector names, and other columns to merge with upon detecting those values, as the vector value. Note that the vector names are not actually the specific values we wish to detect, but regular expressions that will match them. This is useful for detecting multiple similar values. As a result, special characters such as "^" and "$" will be interpreted according to their function within a regular expression, and should be escaped with "\\" if the literal characters are to be matched.
 
 | column_id | group | link_map | match_col | split_pattern | colname | unique_values |
 |-|-|-|-|-|-|-|
@@ -118,6 +137,8 @@ In this scenario, we want to bring the detailed chemotherapy information from CH
 | 2 |  | c("Chemotherapy" = 3, "Radiation" = 4) |  |  | NEOADJUVANT_TX | Chemotherapy<;>Radiation Therapy |
 | 3 |  |  |  |  | CHEMO | FEC 100 + taxanes<;>Adriamycine |
 | 4 |  |  |  |  | RADIATION | Protons<;>Photons |
+
+: {.table-bordered .table-sm .table-responsive}
 
 Before grouping:
 
@@ -128,6 +149,8 @@ Before grouping:
 | FEC 100 + taxanes | CHEMO |  |  |  |  |
 | Protons | RADIATION |  |  |  |  |
 
+: {.table-bordered .table-sm .table-responsive}
+
 After grouping:
 
 | treatment_name | treatment_type | treatment_amount | treatment_time | treatment_case | treatment_notes |
@@ -135,14 +158,18 @@ After grouping:
 | FEC 100 + taxanes | Chemotherapy::CHEMO |  |  | ADJUVANT |  |
 | Protons | Radiation::RADIATION |  |  | NEOADJUVANT |  |
 
-### Value-to-Value Grouping
+: {.table-bordered .table-sm .table-responsive}
 
-In this scenario, we want to only merge columns if their values match. This allows us to maintain separation between the most recent and induction treatments if they are different, but combine them into a single treatment regimen if they are the same. In order to do this, we group the columns much like in Name-to-Name grouping. Both the CHEMOTHERAPY and CURRENT_REGIMEN columns are placed into group 1, indicating that any matching values within that group should signal merging.
+#### Value-to-Value Grouping
+
+In this scenario, we want to only merge columns if their values match. In order to do this, we create a reference in "match_col" from one column to the column we want to merge it with. Here, the CHEMOTHERAPY column has the number "2." The column CURRENT_REGIMEN has the column_id of 2, so the columns will be merged together. This directed approach is done to speed up the merging process.
 
 | column_id | group | link_map | match_col | split_pattern | colname | unique_values |
 |-|-|-|-|-|-|-|
-| 1 |  |  | 1 |  | CHEMOTHERAPY | Vincristine<;>Capecitabine |
-| 2 |  |  | 1 |  | CURRENT_REGIMEN | Vincristine<;>Total Body Irradiation<;>Capecitabine |
+| 1 |  |  | 2 |  | CHEMOTHERAPY | Vincristine<;>Capecitabine |
+| 2 |  |  |  |  | CURRENT_REGIMEN | Vincristine<;>Total Body Irradiation<;>Capecitabine |
+
+: {.table-bordered .table-sm .table-responsive}
 
 Before grouping:
 
@@ -151,19 +178,27 @@ Before grouping:
 | Vincristine | CHEMOTHERAPY |  |  |  |  |
 | Vincristine |  |  |  | CURRENT |  |
 
+: {.table-bordered .table-sm .table-responsive}
+
 After grouping:
 
 | treatment_name | treatment_type | treatment_amount | treatment_time | treatment_case | treatment_notes |
 |-|-|-|-|-|-|
 | Vincristine | CHEMOTHERAPY |  |  | CURRENT |  |
 
-### Working with Multi-Value Columns
+: {.table-bordered .table-sm .table-responsive}
+
+#### Working with Multi-Value Columns
+
+Some original study columns contain multiple different treatment values separated by a custom delimiter. In these cases, we can specify a regular expression to match the delimiter in "split_pattern". A regular expression is useful in situations where we want to match very specific delimiters and instances, such as with "(,|and)(?=[^)]+$)", which matches "," or "and" only if they are not enclosed within a parenthetical. As a result, characters which have a special function within regular expression evaluation, such as "|", must be preceded with the escape character "\\", as seen below. 
 
 | column_id | group | link_map | match_col | split_pattern | colname | unique_values |
 |-|-|-|-|-|-|-|
 | 1 |  | c("induction" = 3) |  | \\\| | CUMULATIVE_TREATMENT_STAGES | Consolidation \| Induction \| Experimental |
 | 2 |  |  | 3 | \\\| | CUMULATIVE_TREATMENT_TYPES | Standard Chemotherapy \| Bone Marrow Transplant |
 | 3 |  |  |  |  | TYPE_INDUCTION_TREATMENT | Standard Chemotherapy |
+
+: {.table-bordered .table-sm .table-responsive}
 
 
 | column_id | group | link_map | match_col | split_pattern | split_id | colname | unique_values |
@@ -175,8 +210,106 @@ After grouping:
 | 2 |  |  | 3 | \\\| | 2 | CUMULATIVE_TREATMENT_TYPES | Bone Marrow Transplant |
 | 3 |  |  |  |  |  | TYPE_INDUCTION_TREATMENT | Standard Chemotherapy |
 
+: {.table-bordered .table-sm .table-responsive}
+
+Additionally, some multi-value columns may be associated with other multi-value columns in a way that requires merging based on each individual value's order within the column. In these cases, simply group the columns to be merged together, and the value order will be preserved.
+
+| column_id | group | link_map | match_col | split_pattern | colname | unique_values |
+|-|-|-|-|-|-|-|
+| 1 | 1 |  |  | \\\| | CHEMO_CONCURRENT_TYPE | Cisplatin\|Carboplatin |
+| 2 | 1 |  |  | \\\| | CHEMO_CONCURRENT_DOSE | 70 mg/m2\|750 mg/m2 |
+
+: {.table-bordered .table-sm .table-responsive}
+
+| column_id | group | link_map | match_col | split_pattern | colname | unique_values |
+|-|-|-|-|-|-|-|
+| 1 | 1 |  |  | \\\| | CHEMO_CONCURRENT_TYPE | Cisplatin |
+| 1 | 1 |  |  | \\\| | CHEMO_CONCURRENT_TYPE | Carboplatin |
+| 2 | 1 |  |  | \\\| | CHEMO_CONCURRENT_DOSE | 70 mg/m2 |
+| 2 | 1 |  |  | \\\| | CHEMO_CONCURRENT_DOSE | 750 mg/m2 |
+
+: {.table-bordered .table-sm .table-responsive}
+
+Before grouping:
+
+| treatment_name | treatment_type | treatment_amount | treatment_time | treatment_case | treatment_notes |
+|-|-|-|-|-|-|
+| Cisplatin | CHEMO |  |  | CONCURRENT |  |
+| Carboplatin | CHEMO |  |  | CONCURRENT |  |
+|  | CHEMO | 70 mg/m2 |  | CONCURRENT |  |
+|  | CHEMO | 750 mg/m2 |  | CONCURRENT |  |
+
+: {.table-bordered .table-sm .table-responsive}
+
+After grouping:
+
+| treatment_name | treatment_type | treatment_amount | treatment_time | treatment_case | treatment_notes |
+|-|-|-|-|-|-|
+| Cisplatin | CHEMO | 70 mg/m2 |  | CONCURRENT |  |
+| Carboplatin | CHEMO | 750 mg/m2 |  | CONCURRENT |  |
+
+: {.table-bordered .table-sm .table-responsive}
+
+### Chaining link_map and match_col
+In the majority of cases, there will be no need to chain match_col and link_map actions together in order to properly group columns. In some cases, however, this can be useful. There are some basic rules that govern these chaining operations.
+
+Firstly, as a general rule, match_col operations are much more flexible and able to create more involved chains without getting lost. This is largely due to the fact that the actual value match is confirmed between the merging columns.
+
+Basic rules:
+
+1. Match_col may target any column. If it targets a column with a match_col, the target column must be placed above the targeting column.
+2. Link_map may target any column without a link_map or match_col
+3. If needed, link_map may target a column with a match_col, but under the following constraints:
+  * The target column must not be split
+  * The link_map may not be a target
+
+It is also important to stress that circular referencing is avoided when chaining these linking operations. As the operations are evaluated one by one, the last operation to be evaluated will likely break the chain in an undesirable location.
+
 ### Example Map
-aml_ohsu_2018
+The following map was used for the harmonization of the study "aml_ohsu_2022". It demonstrates the use of all of the covered operations as well as various forms of chaining.
+
+Splitting:
+
+* "CUMULATIVE_TREATMENT_TYPES", "CUMULATIVE_TREATMENT_REGIMENS", and "CUMULATIVE_TREATMENT_STAGES" will all be split based on a "|" delimiter defined by the regular expression "\\|". The resultant new rows will retain their assigned group, link_map, and match_col operations and will each be evaluated separately.
+
+Grouping:
+
+* The "_COUNT" columns were all grouped together and the value "OVERALL_TX" was placed in "treatment_notes". This is because these columns describe the overall treatment and cannot be assigned to a single treatment regimen. They will be merged together.
+* The "MOST_RECENT_TREATMENT_" columns were grouped together because they both describe the same treatment regimen, the most recent one. They will be merged together.
+
+Link_map:
+
+* "CUMULATIVE_TREAMENT_TYPES" will merge with "CUMULATIVE_CHEMO" if the "CUMULATIVE_TREATMENT_TYPES" value is detected as chemotherapy. The pattern "chemotherapy" is used, and the target id is 1, which is the column_id of "CUMULATIVE_CHEMO".
+* "CUMULATIVE_TREATMENT_STAGES" will merge with "TYPE_INDUCTION_TX" if the "CUMULATIVE_TREATMENT_STAGES" value is detected as induction. The pattern "^induction$" is used in order to exclude the value "Re-induction", and the target id is 6, which is the column_id of "TYPE_INDUCTION_TX".
+
+Match_col:
+
+* "MOST_RECENT_TREATMENT_TYPE" will merge with "CUMULATIVE_TREATMENT_TYPES" if their values match.
+* "TYPE_INDUCTION_TREATMENT" will also merge with "CUMULATIVE_TREATMENT_TYPES" if their values match.
+* "CUMULATIVE_TREATMENT_REGIMENTS" will merge with "CURRENT_REGIMEN" if their values match.
+
+Chaining:
+
+* "CUMULATIVE_TREATMENT_STAGES" (link_map) -> "TYPE_INDUCTION_TX" (match_col): the **targeting link_map** is not targeted by any other column, and the **target match_col** is not split.
+* "TYPE_INDUCTION_TX" (match_col) -> "CUMULATIVE_TREATMENT_TYPES" (link_map): a match_col may target any column.
+* "MOST_RECENT_TREATMENT_TYPE" (match_col) -> "CUMULATIVE_TREATMENT_TYPES" (link_map): a match_col may target any column.
+
+| column_id |	group |	link_map | match_col | split_pattern | colname | unique_values | treatment_name | treatment_type | treatment_amount | treatment_time | treatment_case | treatment_notes |
+|-|-|-|-|-|-|-|-|-|-|-|-|-|
+| 1 |  |  |  |  | CUMULATIVE_CHEMO | Yes<;>No |  | CHEMO |  |  |  | CUMULATIVE
+| 2 |  | c("chemotherapy" = 1) |  | \\\| | CUMULATIVE_TREATMENT_TYPES | Standard Chemotherapy\|Bone Marrow Transplant\|Targeted Therapy - Kinase Inhibitor(s)<;>Standard Chemotherapy |  |  value |  |  |  |  |
+| 3 | 1 |  |  |  | CUMULATIVE_TREATMENT_TYPE_COUNT | 3<;>1 |  |  | value + _TYPE |  |  |  | OVERALL_TX |
+| 4 |	2 |	 | 2 |	 | MOST_RECENT_TREATMENT_TYPE | Targeted Therapy - Kinase Inhibitor(s)<;>Standard Chemotherapy |	 | value |	 |  |	MOST_RECENT |	 |	
+| 5 |	 |  |  |  |	PRIOR_MALIGNANCY_RADIATION_TX | No<;>Yes |	 | RADIATION |  |  |	PRIOR_MALIGNANCY |  |
+| 6 |	 |  | 2 |  | TYPE_INDUCTION_TX | Standard Chemotherapy<;>Targeted Therapy - Kinase Inhibitor(s) |  | value |  |  | INDUCTION |  |
+| 7 |	 |  | 11 | \\\|	| CUMULATIVE_TREATMENT_REGIMENS | 7+3 (Cytarabine, Idarubicin)\|HiDAC\|Fludarabine, TBI\|Sorafenib\|Hydroxyurea\|Decitabine<;>7+3 (Cytarabine, Idarubicin)\|HiDAC\|FLAG-IDA (Cytarabine, Filgrastim, Fludarabine, Idarubicin)\|MEC (Cytarabine, Etoposide, Mitoxantrone) |	value |	 | value |  |	 |  |
+| 8 |	1 |	 |  |	 | CUMULATIVE_TREATMENT_REGIMEN_COUNT | 6<;>4 |	 |  |	value + _REGIMEN |  |	 | OVERALL_TX |
+| 9 |	 | c("^induction$" = 6) |	 | \\\| | CUMULATIVE_TREATMENT_STAGES | Consolidation\|Induction\|Experimental\|Re-induction\|Allogeneic - Matched Unrelated Donor<;>Consolidation\|Salvage\|Induction\|Re-induction |	 |  |	 |  |	value |	 |
+| 10 | 1 |  |  |  | CUMULATIVE_TREATMENT_STAGE_COUNT | 5<;>4 |  |  | value + _STAGE |	 |  | OVERALL_TX |
+| 11 |  |	 |  |  | CURRENT_REGIMEN | Sorafenib<;>FLAG-IDA (Cytarabine, Filgrastim, Fludarabine, Idarubicin) | value |  |  |  | CURRENT |	 |
+| 12 | 2 |  |  |  | MOST_RECENT_TREATMENT_DURATION | 99<;>43 |  |  |  | DURATION_ + value | MOST_RECENT |	 |	
+
+: {.table-bordered .table-sm .table-responsive}
 
 ## Harmonization
 
