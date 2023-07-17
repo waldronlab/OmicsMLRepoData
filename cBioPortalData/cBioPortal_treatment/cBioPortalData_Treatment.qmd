@@ -17,9 +17,26 @@ knitr::opts_chunk$set(echo = TRUE, eval = FALSE)
 ```{r dependencies}
 suppressPackageStartupMessages({
     library(cBioPortalData)
-    library(dplyr)
+    library(tidyverse)
+    library(googlesheets4)
+    library(googledrive)
+    library(readxl)
+    library(utile.tools)
     library(tableone)
+    library(beepr)
 })
+```
+
+# *Set up Google Sheets URLs
+
+```{r sheets_urls}
+# sheet = sheet to view/manage relevant columns
+url_1 <- ""
+ss <- googledrive::as_id(url_1)
+
+# sheet = sheet to categorize relevant columns (need to consolidate with above)
+url_2 <- ""
+tt <- googledrive::as_id(url_2)
 ```
 
 # *Retrieve Up-to-Date Data
@@ -36,11 +53,78 @@ mapping and harmonization.
 Number of studies containing treatment-related information.
 Explain treatment_ harmonized columns
 
+Creation of study_treat_cols and study_treat_vals
+``` {r cols_vals}
+# get list of studies
+study_list <- readRDS("cBioPortal_all_clinicalData_2023-05-18.rds")
+
+# list of relevant names
+relevant_col_sheet <- read_sheet(tt, sheet = "harmonization_mappings")
+relevant_colnames <- relevant_col_sheet$colname
+
+study_treat_cols <- list()
+for(i in 1:length(study_list)){
+  study_treat_cols[[i]] <- colnames(study_list[[i]])[colnames(study_list[[i]]) %in% relevant_colnames]
+}
+names(study_treat_cols) <- names(study_list)
+study_treat_cols <- compact(study_treat_cols)
+
+# list of frames with relevant names and unique values
+study_treat_vals <- list()
+for(i in 1:length(study_list)){
+  study <- study_list[[i]]
+  relevant_names <- c()
+  unique_values <- c()
+  for(j in 1:ncol(study)){
+    if(colnames(study[,j]) %in% relevant_colnames){
+      relevant_names <- append(relevant_names, colnames(study[,j]))
+      unique_values <- append(unique_values, unlist(lapply(study[,j], function(x) paste(unique(na.omit(x)), collapse = "<;>"))))
+    }
+  }
+  relevant_names <- unname(relevant_names)
+  unique_values <- unname(unique_values)
+  study_cols <- study[, relevant_names]
+  study_treat_vals[[i]] <- data.frame(colname = relevant_names,
+                                      unique_values = str_trunc(unique_values, 25000, "right"),
+                                      study_completeness = colSums(!is.na(study_cols))/nrow(study_cols))
+}
+names(study_treat_vals) <- names(study_list)
+study_treat_vals <- study_treat_vals[lengths(study_treat_vals) > 1]
+```
+
 # *Study Mapping and Harmonization
 
 ## Setting up Mapping Tables
 
-Now we will generate a mapping table for each study that describes how that study's treatment-related columns may be harmonized into our main "treatment_" columns.
+Now we will generate a mapping table for each study that allows us to describe how that study's treatment-related columns may be harmonized into our main "treatment_" columns. These tables will be stored as individual sheets within a Google Sheets spreadsheet/workbook. It should also be noted that Google Sheets files have limit of 200 sheets, so a new file should be created for sheets over that number.
+
+``` {r map_setup}
+mapping_frames <- list()
+for (i in 1:length(study_treat_vals)) {
+  current_study <- study_treat_vals[[i]][,-3]
+  rownames(current_study) <- NULL
+  
+  current_mapping_frame <- current_study %>%
+    mutate(column_id = 1:nrow(.), .before = colname) %>%
+    mutate(group = NA, .before = colname) %>%
+    mutate(link_map = NA, .before = colname) %>%
+    mutate(match_col = NA, .before = colname) %>%
+    mutate(split_pattern = NA, .before = colname) %>%
+    mutate(treatment_name = NA,
+           treatment_type = NA,
+           treatment_amount = NA,
+           treatment_time = NA,
+           treatment_case = NA,
+           treatment_notes = NA)
+  
+  mapping_frames[[i]] <- current_mapping_frame
+  names(mapping_frames)[i] <- names(study_treat_vals)[i]
+}
+# create sheet
+gs4_create(name = "mapping_frames", sheets = mapping_frames)
+# get id for future reference
+vv <- gs4_find("mapping_frames")$id
+```
 
 ## Manual Study Mapping
 
@@ -85,6 +169,7 @@ Mapping table:
 
 : {.table-bordered .table-sm .table-responsive}
 
+<br>
 Value populated rows:
 
 | treatment_name | treatment_type | treatment_amount | treatment_time | treatment_case | treatment_notes |
@@ -108,6 +193,7 @@ In the following scenario, we are interested in merging the two columns that ref
 
 : {.table-bordered .table-sm .table-responsive}
 
+<br>
 Before grouping:
 
 | treatment_name | treatment_type | treatment_amount | treatment_time | treatment_case | treatment_notes |
@@ -140,6 +226,7 @@ In this scenario, we want to bring the detailed chemotherapy information from CH
 
 : {.table-bordered .table-sm .table-responsive}
 
+<br>
 Before grouping:
 
 | treatment_name | treatment_type | treatment_amount | treatment_time | treatment_case | treatment_notes |
@@ -265,7 +352,60 @@ Basic rules:
 
 It is also important to stress that circular referencing is avoided when chaining these linking operations. As the operations are evaluated one by one, the last operation to be evaluated will likely break the chain in an undesirable location.
 
-### Example Map
+
+### Example Map - Simple
+The following map was used for the harmonization of the study "acc_tcga". It is representative of the majority of studies and demonstrates value assignment as well as group-based merging.
+
+Grouping:
+
+* The "PHARM_TX_MITOTANE_" columns were all grouped together because they describe the same treatment regimen.
+
+Study Map:
+
+| column_id |	group |	link_map | match_col | split_pattern | colname | unique_values | treatment_name | treatment_type | treatment_amount | treatment_time | treatment_case | treatment_notes |
+|-|-|-|-|-|-|-|-|-|-|-|-|-|
+| 1 |  |  |  |  | HISTORY_NEOADJUVANT_TRTYN | Yes<;>No |  |  |  |  |  | HISTORY_NEOADJUVANT |
+| 2 | 2 |  |  |  | PHARMACEUTICAL_TX_ADJUVANT | NO<;>YES |  | PHARMACEUTICAL |  |  | ADJUVANT |  |
+| 3 | 2 |  |  |  | PHARM_TX_MITOTANE_INDICATOR | NO<;>YES | MITOTANE | PHARM |  |  |  |  |  |
+| 4 |	 |	 |  |	 | RADIATION_TREATMENT_ADJUVANT | NO<;>YES |	 | RADIATION |	 |  |	ADJUVANT |	 |	
+| 5 |	2 |  |  |  | PHARM_TX_MITOTANE_FOR_MACRO_DISEASE | YES<;>NO |	MITOTANE |  PHARM |  |  |	FOR_MACRO_DISEASE |  |
+| 6 |	2 |  |  |  | PHARM_TX_MITOTANE_ADJUVANT | YES<;>NO |  MITOTANE |  PHARM |  |  | ADJUVANT |  |
+| 7 |	2 |  |  |  | PHARM_TX_MITOTANE_THERAPUTIC_AT_REC | YES<;>NO |	MITOTANE |	PHARM |  |  |	THERAPUTIC_AT_REC |  |
+| 8 |	2 |	 |  |	 | PHARM_TX_MITOTANE_THERAPUTIC_LEVELS | YES<;>NO |	MITOTANE | PHARM  |	THERAPUTIC_LEVELS |  |	 |  |
+| 9 |	2 |  |	|  | PHARM_TX_MITOTANE_THERAPUTIC_MACRO | NO<;>YES |	MITOTANE |  PHARM |	 |  |	THERAPUTIC_MACRO |	 |
+| 10 | 2 |  |  |  | PHARM_TX_MITOTANE_THERAPUTIC_AT_PROG | YES<;>NO | MITOTANE |  PHARM |  |	 | THERAPUTIC_AT_PROG |  |
+
+: {.table-bordered .table-sm .table-responsive}
+
+<br>
+Single Record:
+
+| column_id |	group |	link_map | match_col | split_pattern | colname | unique_values | treatment_name | treatment_type | treatment_amount | treatment_time | treatment_case | treatment_notes |
+|-|-|-|-|-|-|-|-|-|-|-|-|-|
+| 1 |  |  |  |  | HISTORY_NEOADJUVANT_TRTYN | No |  |  |  |  |  | HISTORY_NEOADJUVANT |
+| 2 | 2 |  |  |  | PHARMACEUTICAL_TX_ADJUVANT | YES |  | PHARMACEUTICAL |  |  | ADJUVANT |  |
+| 3 | 2 |  |  |  | PHARM_TX_MITOTANE_INDICATOR | YES | MITOTANE | PHARM |  |  |  |  |  |
+| 4 |	 |	 |  |	 | RADIATION_TREATMENT_ADJUVANT | NO |	 | RADIATION |	 |  |	ADJUVANT |	 |	
+| 5 |	2 |  |  |  | PHARM_TX_MITOTANE_FOR_MACRO_DISEASE | YES |	MITOTANE |  PHARM |  |  |	FOR_MACRO_DISEASE |  |
+| 6 |	2 |  |  |  | PHARM_TX_MITOTANE_ADJUVANT | NA |  MITOTANE |  PHARM |  |  | ADJUVANT |  |
+| 7 |	2 |  |  |  | PHARM_TX_MITOTANE_THERAPUTIC_AT_REC | NA |	MITOTANE |	PHARM |  |  |	THERAPUTIC_AT_REC |  |
+| 8 |	2 |	 |  |	 | PHARM_TX_MITOTANE_THERAPUTIC_LEVELS | NA |	MITOTANE | PHARM  |	THERAPUTIC_LEVELS |  |	 |  |
+| 9 |	2 |  |	|  | PHARM_TX_MITOTANE_THERAPUTIC_MACRO | NA |	MITOTANE |  PHARM |	 |  |	THERAPUTIC_MACRO |	 |
+| 10 | 2 |  |  |  | PHARM_TX_MITOTANE_THERAPUTIC_AT_PROG | NA | MITOTANE |  PHARM |  |	 | THERAPUTIC_AT_PROG |  |
+
+: {.table-bordered .table-sm .table-responsive}
+
+<br>
+Merged Record:
+
+| treatment_name | treatment_type |treatment_amount | treatment_time | treatment_case | treatment_notes |
+|-|-|-|-|-|-|
+| MITOTANE | PHARM::PHARMACEUTICAL | NA | NA | ADJUVANT::FOR_MACRO_DISEASE | NA |
+
+: {.table-bordered .table-sm .table-responsive}
+
+
+### Example Map - Complex
 The following map was used for the harmonization of the study "aml_ohsu_2022". It demonstrates the use of all of the covered operations as well as various forms of chaining.
 
 Splitting:
@@ -294,6 +434,8 @@ Chaining:
 * "TYPE_INDUCTION_TX" (match_col) -> "CUMULATIVE_TREATMENT_TYPES" (link_map): a match_col may target any column.
 * "MOST_RECENT_TREATMENT_TYPE" (match_col) -> "CUMULATIVE_TREATMENT_TYPES" (link_map): a match_col may target any column.
 
+Study Map:
+
 | column_id |	group |	link_map | match_col | split_pattern | colname | unique_values | treatment_name | treatment_type | treatment_amount | treatment_time | treatment_case | treatment_notes |
 |-|-|-|-|-|-|-|-|-|-|-|-|-|
 | 1 |  |  |  |  | CUMULATIVE_CHEMO | Yes<;>No |  | CHEMO |  |  |  | CUMULATIVE
@@ -311,6 +453,547 @@ Chaining:
 
 : {.table-bordered .table-sm .table-responsive}
 
+<br>
+Single Record:
+
+| column_id |	group |	link_map | match_col | split_pattern | colname | colvalue | treatment_name | treatment_type | treatment_amount | treatment_time | treatment_case | treatment_notes |
+|-|-|-|-|-|-|-|-|-|-|-|-|-|
+| 1 |  |  |  |  | CUMULATIVE_CHEMO | No |  | CHEMO |  |  |  | CUMULATIVE
+| 2 |  | c("chemotherapy" = 1) |  | \\\| | CUMULATIVE_TREATMENT_TYPES | Standard Chemotherapy\|Bone Marrow Transplant\|Targeted Therapy - Kinase Inhibitor(s) |  |  value |  |  |  |  |
+| 3 | 1 |  |  |  | CUMULATIVE_TREATMENT_TYPE_COUNT | 3 |  |  | value + _TYPE |  |  |  | OVERALL_TX |
+| 4 |	2 |	 | 2 |	 | MOST_RECENT_TREATMENT_TYPE | Targeted Therapy - Kinase Inhibitor(s) |	 | value |	 |  |	MOST_RECENT |	 |	
+| 5 |	 |  |  |  |	PRIOR_MALIGNANCY_RADIATION_TX | No |	 | RADIATION |  |  |	PRIOR_MALIGNANCY |  |
+| 6 |	 |  | 2 |  | TYPE_INDUCTION_TX | Standard Chemotherapy |  | value |  |  | INDUCTION |  |
+| 7 |	 |  | 11 | \\\|	| CUMULATIVE_TREATMENT_REGIMENS | 7+3 (Cytarabine, Idarubicin)\|HiDAC\|Fludarabine, TBI\|Sorafenib\|Hydroxyurea\|Decitabine |	value |	 | value |  |	 |  |
+| 8 |	1 |	 |  |	 | CUMULATIVE_TREATMENT_REGIMEN_COUNT | 6 |	 |  |	value + _REGIMEN |  |	 | OVERALL_TX |
+| 9 |	 | c("^induction$" = 6) |	 | \\\| | CUMULATIVE_TREATMENT_STAGES | Consolidation\|Induction\|Experimental\|Re-induction\|Allogeneic - Matched Unrelated Donor |	 |  |	 |  |	value |	 |
+| 10 | 1 |  |  |  | CUMULATIVE_TREATMENT_STAGE_COUNT | 5 |  |  | value + _STAGE |	 |  | OVERALL_TX |
+| 11 |  |	 |  |  | CURRENT_REGIMEN | Sorafenib | value |  |  |  | CURRENT |	 |
+| 12 | 2 |  |  |  | MOST_RECENT_TREATMENT_DURATION | 99 |  |  |  | DURATION_ + value | MOST_RECENT |	 |	
+
+: {.table-bordered .table-sm .table-responsive}
+
+<br>
+Merged Record (Expanded):
+
+| treatment_name | treatment_type |treatment_amount | treatment_time | treatment_case | treatment_notes |
+|-|-|-|-|-|-|
+| 7+3 (Cytarabine, Idarubicin) | NA | 7+3 (Cytarabine, Idarubicin) | NA | NA | NA |
+| HiDAC | NA | HiDAC | NA | NA | NA |
+| Fludarabine, TBI | NA | Fludarabine, TBI  | NA | NA | NA |
+| Hydroxyurea | NA  | Hydroxyurea | NA | NA | NA  |
+| Decitabine  | NA  | Decitabine  | NA  | NA  | NA  |
+| NA  | NA  | NA  | NA  | Consolidation | NA  |
+| NA  | NA  | NA  | NA  | Experimental  | NA  |
+| NA  | NA  | NA  | NA  | Re-induction  | NA  |
+| NA  | NA  | NA  | NA  | Allogeneic - Matched Unrelated Donor | NA |
+| NA  | Bone Marrow Transplant | NA | NA  | NA  | NA  |
+| NA  | CHEMO::Standard Chemotherapy  | NA  | NA  | Induction::INDUCTION  | CUMULATIVE  |
+| Sorafenib | NA  | Sorafenib | NA  | CURRENT | NA  |
+| NA  | NA  | 3_TYPE::5_STAGE::6_REGIMEN  | NA  | NA  | OVERALL_TX  |
+| NA  | Targeted Therapy - Kinase Inhibitor(s) | NA | DURATION_99 | MOST_RECENT | NA |
+
+: {.table-bordered .table-sm .table-responsive}
+
 ## Harmonization
 
+``` {r harmonization_setup}
+map_sheet <- drive_get(id = vv)
+map_sheet_file <- drive_download(map_sheet, type = "xlsx", overwrite = TRUE)
+map_sheet_path <- paste0(map_sheet$name, ".xlsx")
+
+# Separate "no_data" values into different ontology definitions and get negative columns
+no_data_values_frame <- read_sheet(ss, sheet = "no_data_values")
+no_vals <- na.omit(no_data_values_frame$No)
+na_vals <- na.omit(no_data_values_frame$Not_Applicable)
+nc_vals <- na.omit(no_data_values_frame$Not_Collected)
+np_vals <- na.omit(no_data_values_frame$Not_Provided)
+negative_cols <- na.omit(no_data_values_frame$Negative_Columns)
+ymn_vals <- na.omit(no_data_values_frame$yes_means_no)
+
+for (i in 1:length(no_vals)) {
+  no_vals[i] <- paste0("^", no_vals[i], "$")
+}
+no_vals_search_term <- paste(no_vals, collapse = "|")
+
+for (i in 1:length(na_vals)) {
+  na_vals[i] <- paste0("^", na_vals[i], "$")
+}
+na_vals_search_term <- paste(na_vals, collapse = "|")
+
+for (i in 1:length(nc_vals)) {
+  nc_vals[i] <- paste0("^", nc_vals[i], "$")
+}
+nc_vals_search_term <- paste(nc_vals, collapse = "|")
+
+for (i in 1:length(np_vals)) {
+  np_vals[i] <- paste0("^", np_vals[i], "$")
+}
+np_vals_search_term <- paste(np_vals, collapse = "|")
+
+for (i in 1:length(ymn_vals)) {
+  ymn_vals[i] <- paste0("^", ymn_vals[i], "$")
+}
+ymn_vals_search_term <- paste(ymn_vals, collapse = "|")
+
+# function to return correct value based on map
+harmonized_value <- function(value, harmonized_type) {
+  if (is.na(harmonized_type)) {
+    return(NA)
+  } else if (harmonized_type == "value") {
+    return(value)
+  } else if (startsWith(harmonized_type, "value + ")) {
+    return(str_replace(harmonized_type, "value \\+ ", value))
+  } else if (endsWith(harmonized_type, " + value")) {
+    return(str_replace(harmonized_type, " \\+ value", value))
+  } else {
+    return(harmonized_type)
+  }
+}
+```
+
+``` {r harmonize_batch}
+# vector of study names to harmonize
+batch_names <- names(study_treat_cols)[c()]
+
+# list to save harmonized studies
+new_harmonized_studies <- list()
+
+# save stats
+elapsed_times <- c()
+rates <- c()
+batch_start_time <- Sys.time()
+
+# save errors
+all_errors <- c()
+
+for (g in 1:length(batch_names)) {
+  tryCatch({
+    ####### Loop through batch list ################
+    ### 0. Select study and load map
+    step <- 0
+    start_time <- Sys.time()
+    
+    study_name <- batch_names[g]
+    current_study_number <- grep(paste0("^", study_name, "$"), names(study_treat_cols))
+    
+    # get completed harmonization mappings and parsed column names
+    completed_harmonization_mappings <- try(read_excel(map_sheet_path, sheet = study_name))
+      if ("try-error" %in% class(completed_harmonization_mappings)) {
+        print("Error in .xlsx file, pulling from Google Sheet")
+        completed_harmonization_mappings <- read_sheet(vv, sheet = study_name)
+      }
+    
+    ### 1. Get template study map
+    step <- 1
+    original_harmonization_map <- completed_harmonization_mappings %>%
+      select(-unique_values) %>%
+      mutate(colvalue = NA, .after = colname) %>%
+      rename(link_id = column_id) %>%
+      mutate(match_id = link_id, .after = link_id)
+    
+    ### 2. Get study from study_list and set up final frame
+    step <- 2
+    current_study_data <- study_list[[study_name]]
+    harmonized_study <- data.frame(matrix(nrow = nrow(current_study_data),
+                                          ncol = 12,
+                                          dimnames = list(c(),
+                                                          c("patientId",
+                                                            "sampleId",
+                                                            "treatment_name",
+                                                            "treatment_type",
+                                                            "treatment_amount",
+                                                            "treatment_time",
+                                                            "treatment_case",
+                                                            "treatment_notes",
+                                                            "treatment_no",
+                                                            "treatment_not_applicable",
+                                                            "treatment_not_collected",
+                                                            "treatment_not_provided"))))
+    
+    ######## Loop through current study ####################################
+    
+    for (h in 1:nrow(current_study_data)) { # loop through records
+      print(paste0(study_name, " (study ", g, " of ", length(batch_names), "): ", nrow(original_harmonization_map), " column(s), record ", h, "/", nrow(current_study_data)))
+      
+      # get original data including patient/sample IDs
+      harmonization_map <- original_harmonization_map
+      original_record <- current_study_data[h,]
+      patient_ID <- original_record$patientId
+      sample_ID <- original_record$sampleId
+      
+      ### 3. For each row in map, populate column value
+      step <- 3
+      for (i in 1:nrow(harmonization_map)) {
+        harmonization_map$colvalue[i] <- original_record[1, harmonization_map$colname[i]]
+      }
+      harmonization_map$colvalue <- as.character(harmonization_map$colvalue)
+      
+      ### 4. Split any columns with multiple values and save split order when relevant
+      step <- 4
+      harmonization_map <- harmonization_map %>%
+        mutate(colvalue = strsplit(as.character(colvalue), split_pattern, perl = TRUE)) %>%
+        mutate(colvalue = map(colvalue, ~ data.frame(colvalue = .x, split_index = seq_along(.x)))) %>%
+        unnest(colvalue) %>%
+        relocate(split_index, .after = split_pattern) %>%
+        mutate(colvalue = str_trim(colvalue))
+      
+      harmonization_map$split_index[is.na(harmonization_map$split_pattern)] <- NA
+      
+      # save split order when the column is grouped (this pattern specified in documentation)
+      harmonization_map <- harmonization_map %>%
+        mutate(split_order = case_when(!is.na(group) & !is.na(split_index) ~split_index), .after = split_index)
+      
+      ### 5. Filter out any columns with no/NA values and save names for later storage
+      step <- 5
+      no_names_values <- c()
+      na_names_values <- c()
+      nc_names_values <- c()
+      np_names_values <- c()
+      
+      for (i in 1:nrow(harmonization_map)) {
+        if (harmonization_map$colname[i] %in% negative_cols) { # some columns indicate "no treatment" with a "yes" value
+          definitive_vals_search_term <- ymn_vals_search_term
+          if (grepl(definitive_vals_search_term, harmonization_map$colvalue[i], ignore.case = TRUE)) {
+            saved_name <- paste0(harmonization_map$colname[i], "-", harmonization_map$colvalue[i])
+          } else {
+            saved_name <- harmonization_map$colname[i]
+          }
+        } else {
+          definitive_vals_search_term <- no_vals_search_term
+          saved_name <- harmonization_map$colname[i]
+        }
+        if (grepl(definitive_vals_search_term, harmonization_map$colvalue[i], ignore.case = TRUE)) {
+          no_names_values <- c(no_names_values, saved_name)
+          harmonization_map[i, ] <- NA
+        } else if (grepl(na_vals_search_term, harmonization_map$colvalue[i], ignore.case = TRUE) | is.na(harmonization_map$colvalue[i]) | is.null(harmonization_map$colvalue[i])) {
+          na_names_values <- c(na_names_values, saved_name)
+          harmonization_map[i, ] <- NA
+        } else if (grepl(nc_vals_search_term, harmonization_map$colvalue[i], ignore.case = TRUE)) {
+          nc_names_values <- c(nc_names_values, saved_name)
+          harmonization_map[i, ] <- NA
+        } else if (grepl(np_vals_search_term, harmonization_map$colvalue[i], ignore.case = TRUE)) {
+          np_names_values <- c(np_names_values, saved_name)
+          harmonization_map[i, ] <- NA
+        }
+      }
+      no_names_values <- paste(no_names_values, collapse = "<;>")
+      na_names_values <- paste(na_names_values, collapse = "<;>")
+      nc_names_values <- paste(nc_names_values, collapse = "<;>")
+      np_names_values <- paste(np_names_values, collapse = "<;>")
+      
+      # filter out columns
+      harmonization_map <- harmonization_map[rowSums(is.na(harmonization_map)) != ncol(harmonization_map),]
+      if (nrow(harmonization_map) == 0) { # if all columns are no/NAs, fill out record and go to next
+        harmonized_row <- c(patient_ID, sample_ID, NA, NA, NA, NA, NA, NA, no_names_values, na_names_values, nc_names_values, np_names_values)
+        harmonized_study[h,] <- harmonized_row
+        next
+      }
+      
+      ### 6. Use placeholder values and map names/values to treatment_ columns
+      step <- 6
+      for (i in 1:nrow(harmonization_map)) {
+        current_row <- harmonization_map[i,]
+        value <- current_row$colvalue
+        harmonization_map$treatment_name[i] <- harmonized_value(value, current_row$treatment_name)
+        harmonization_map$treatment_type[i] <- harmonized_value(value, current_row$treatment_type)
+        harmonization_map$treatment_amount[i] <- harmonized_value(value, current_row$treatment_amount)
+        harmonization_map$treatment_time[i] <- harmonized_value(value, current_row$treatment_time)
+        harmonization_map$treatment_case[i] <- harmonized_value(value, current_row$treatment_case)
+        harmonization_map$treatment_notes[i] <- harmonized_value(value, current_row$treatment_notes)
+      }
+      
+      # remove "yes" values that are just indicators
+      harmonization_map[harmonization_map == "yes" | harmonization_map == "YES" | harmonization_map == "Yes"] <- NA
+      
+      ### 7. For each row with a link_map/match_col, set its link_id to its target link_id and save in merge_links for later reference
+      step <- 7
+      harmonization_map <- harmonization_map %>%
+        mutate(match_marker = NA, .after = match_id)
+      match_marker_counter <- 1
+      
+      # link_map
+      merge_links <- c()
+      for (i in 1:nrow(harmonization_map)) { # loop through rows
+        current_row <- harmonization_map[i,]
+        link_map <- current_row$link_map
+        if (!is.na(link_map)) { # if there is a link map
+          named_vector <- eval(parse(text = link_map))
+          value <- current_row$colvalue
+          for (j in 1:length(named_vector)) { # loop through values that map to links
+            if (grepl(names(named_vector)[j], value, ignore.case = TRUE)) { # if the current mapping value is found in the actual column value
+              target <- unname(named_vector[j])
+              harmonization_map$link_id[i] <- target
+            }
+          }
+        }
+      }
+      
+      # match_col
+      for (i in 1:nrow(harmonization_map)) { # loop through rows
+        current_row <- harmonization_map[i,]
+        match_col <- current_row$match_col
+        if (!is.na(match_col)) { # if there is a column to test matching
+          value <- current_row$colvalue
+          test_col_values <- harmonization_map$colvalue[harmonization_map$match_id == match_col]
+          if (length(test_col_values) > 0) {
+            for (j in 1:length(test_col_values)) {
+              if(!is.na(value) & !is.na(test_col_values[j])) {
+                if (value == test_col_values[j]) { # if the values match
+                  matched_row <- harmonization_map[(harmonization_map$match_id == match_col) & (harmonization_map$colvalue == test_col_values[j]),]
+                  final_id <- matched_row$link_id
+                  final_match_marker <- matched_row$match_marker
+                  if (is.na(final_match_marker)) {
+                    harmonization_map$match_marker[(harmonization_map$match_id == match_col) & (harmonization_map$colvalue == test_col_values[j])] <- match_marker_counter
+                    harmonization_map$match_marker[i] <- match_marker_counter
+                    match_marker_counter <- match_marker_counter + 1
+                  } else {
+                    harmonization_map$match_marker[i] <- final_match_marker
+                  }
+                  harmonization_map$link_id[i] <- final_id
+                  merge_links <- unique(c(merge_links, final_id))
+                }   
+              }
+            } 
+          }
+        }
+      }
+      
+      # follow up with link_maps with changed single match_col parents
+      # note: it is assumed that the link_map has no children and the parent does not circularly reference the link_map. This is specified in the documentation.
+      for (i in 1:nrow(harmonization_map)) {
+        current_row <- harmonization_map[i,]
+        if ((!is.na(current_row$link_map)) & (current_row$match_id != current_row$link_id)) {
+          link_to_follow <- current_row$link_id
+          if (link_to_follow %in% harmonization_map$match_id) {
+            parent_to_follow <- harmonization_map[harmonization_map$match_id == link_to_follow,]
+            if(nrow(parent_to_follow) == 1) {
+              if (parent_to_follow$match_id != parent_to_follow$link_id) {
+                harmonization_map$link_id[i] <- parent_to_follow$link_id
+              } 
+            }
+          }
+          merge_links <- unique(c(merge_links, harmonization_map$link_id[i]))
+        }
+      }
+      
+      ### 8. Collapse frame by link_id and split_index
+      step <- 8
+      rows_without_links <- harmonization_map %>%
+        filter(!link_id %in% merge_links)
+      
+      if (length(merge_links) > 0) {
+        for (i in 1:length(merge_links)) {
+          current_link <- merge_links[i]
+          group_rows <- harmonization_map %>%
+            filter(link_id == current_link)
+          
+          group_rows <- group_rows %>%
+            mutate(old_split_index = split_index, .after = split_index)
+          
+          original_col_ids <- unlist(strsplit(as.character(group_rows$match_id), split = "::"))
+          id_freq <- as.data.frame(table(original_col_ids))
+          
+          duplicate_ids <- as.character(id_freq$original_col_ids[id_freq$Freq > 1])
+          
+          if(length(duplicate_ids) > 0) {
+            for (i in 1:length(duplicate_ids)) {
+              duplicate_ids[i] <- paste0("(^|:)", duplicate_ids[i], "($|:)")
+            }
+            duplicate_ids <- paste(duplicate_ids, collapse = "|")
+            group_rows <- group_rows %>%
+              mutate(split_index = case_when(grepl(duplicate_ids, match_id) ~split_index,
+                                             !grepl(duplicate_ids, match_id) ~NA))
+            
+          } else {
+            group_rows$split_index <- NA
+          }
+          
+          merge_split_indices <- unique(filter(group_rows, !is.na(split_index))$split_index)
+          if (length(merge_split_indices) == 0) {
+            merged_rows <- group_rows %>%
+              filter(link_id == current_link) %>%
+              group_by(link_id) %>%
+              summarise(across(everything(), ~paste(na.omit(.), collapse = "::"))) %>%
+              mutate(split_index = old_split_index) %>%
+              select(-old_split_index)
+            rows_without_links <- rbind(rows_without_links, merged_rows)
+          } else {
+            for (j in 1:length(merge_split_indices)) {
+              current_index <- merge_split_indices[j]
+              merged_rows <- group_rows %>%
+                filter((split_index == current_index)|(is.na(split_index)))
+              if (any(is.na(merged_rows$match_marker)) & any(!is.na(merged_rows$match_marker))) {
+                merged_rows <- merged_rows %>%
+                  filter(is.na(match_marker))
+              }
+              merged_rows <- merged_rows %>%
+                summarise(across(everything(), ~paste(na.omit(.), collapse = "::"))) %>%
+                mutate(split_index = old_split_index) %>%
+                select(-old_split_index)
+              rows_without_links <- rbind(rows_without_links, merged_rows)
+            }
+          }
+        }
+      }
+      
+      harmonization_map <- rows_without_links
+      harmonization_map[harmonization_map == ""] <- NA
+      
+      ### 9. Collapse frame by group and split_index
+      step <- 9
+      
+      rows_without_groups <- harmonization_map %>%
+        filter(is.na(group))
+      
+      rows_to_group <- harmonization_map %>%
+        filter(!is.na(group)) %>%
+        mutate(group = as.character(group)) %>%
+        mutate(group = strsplit(group, split = "::")) %>%
+        mutate(current_bool = NA, .before = group)
+      
+      if (nrow(rows_to_group) > 0) {
+        
+        merge_groups <- unique(unlist(rows_to_group$group))
+        merge_groups <- merge_groups[!is.na(merge_groups)]
+        
+        for (i in 1:length(merge_groups)) {
+          current_group <- merge_groups[i]
+          for (j in 1:length(rows_to_group$group)) {
+            rows_to_group$current_bool[j] <- current_group %in% rows_to_group$group[[j]]
+          }
+          group_rows <- filter(rows_to_group, current_bool == TRUE) %>%
+            rowwise() %>%
+            mutate(group = list(paste(group, collapse = "::"))) %>%
+            ungroup()
+          
+          group_rows <- group_rows %>%
+            mutate(old_split_index = split_index, .after = split_index)
+          
+          original_col_ids <- unlist(strsplit(as.character(group_rows$match_id), split = "::"))
+          id_freq <- as.data.frame(table(original_col_ids))
+          
+          duplicate_ids <- as.character(id_freq$original_col_ids[id_freq$Freq > 1])
+          
+          if(length(duplicate_ids) > 0) {
+            for (i in 1:length(duplicate_ids)) {
+              duplicate_ids[i] <- paste0("(^|:)", duplicate_ids[i], "($|:)")
+            }
+            duplicate_ids <- paste(duplicate_ids, collapse = "|")
+            group_rows <- group_rows %>%
+              mutate(split_index = case_when(grepl(duplicate_ids, match_id) ~split_index,
+                                             !grepl(duplicate_ids, match_id) ~NA))
+          } else {
+            group_rows$split_index <- NA
+          }
+          
+          group_rows <- group_rows %>%
+            mutate(split_index = case_when(!is.na(split_order) ~split_order))
+          
+          merge_split_indices <- unique(filter(group_rows, current_bool == TRUE & !is.na(split_index))$split_index)
+          if (length(merge_split_indices) == 0) {
+            merged_rows <- group_rows %>%
+              summarise(across(everything(), ~paste(na.omit(.), collapse = "::"))) %>%
+              mutate(split_index = old_split_index) %>%
+              select(-current_bool, -old_split_index)
+            rows_without_groups <- rbind(rows_without_groups, merged_rows)
+          } else {
+            for (j in 1:length(merge_split_indices)) {
+              current_index <- merge_split_indices[j]
+              merged_rows <- group_rows %>%
+                filter((split_index == current_index)|(is.na(split_index))) %>%
+                summarise(across(everything(), ~paste(na.omit(.), collapse = "::"))) %>%
+                mutate(split_index = old_split_index) %>%
+                select(-current_bool, -old_split_index)
+              rows_without_groups <- rbind(rows_without_groups, merged_rows)
+            }
+          }
+        }
+      }
+      
+      harmonization_map <- rows_without_groups
+      harmonization_map[harmonization_map == ""] <- NA
+      harmonization_map <- harmonization_map %>%
+        rowwise() %>%
+        mutate(across(everything(), ~paste(sort(unique(unlist(strsplit(as.character(.), split = "::")))), collapse = "::"))) %>%
+        ungroup()
+      harmonization_map[harmonization_map == "" | harmonization_map == "NA"] <- NA
+      
+      ### 10. Select only treatment_ columns and standardize values
+      step <- 10
+      harmonization_map <- harmonization_map %>%
+        select(treatment_name:treatment_notes) %>%
+        rowwise() %>%
+        mutate(across(everything(), ~paste(unique(unlist(strsplit(as.character(.), split = "::"))), collapse = "::")))
+      
+      harmonization_map[harmonization_map == "" | harmonization_map == "NA"] <- NA
+      
+      ### 11. Collapse entire frame into <;> delimited row, fill no/na/nc/np columns, and add to harmonized_study
+      step <- 11
+      harmonization_map[is.na(harmonization_map)] <- "NA"
+      harmonized_row <- harmonization_map %>%
+        ungroup() %>%
+        summarise(across(everything(), ~paste(., collapse = "<;>"))) %>%
+        mutate(patientId = patient_ID, .before = treatment_name) %>%
+        mutate(sampleId = sample_ID, .before = treatment_name) %>%
+        mutate(treatment_no_values = no_names_values) %>%
+        mutate(treatment_na_values = na_names_values) %>%
+        mutate(treatment_nc_values = nc_names_values) %>%
+        mutate(treatment_np_values = np_names_values)
+      
+      harmonized_study[h,] <- harmonized_row
+    }
+    
+    harmonized_study[harmonized_study == ""] <- NA
+    
+    ### 12. Add "source_columns" column for all records in frame
+    step <- 12
+    harmonized_study <- harmonized_study %>%
+      mutate(treatment_source = paste(original_harmonization_map$colname, collapse = ";"))
+    
+    ### 13. Save harmonized study or error
+    step <- 13
+    new_harmonized_studies[[current_study_number]] <- harmonized_study
+    names(new_harmonized_studies)[current_study_number] <- study_name
+    
+    elapsed_time <- difftime(Sys.time(), start_time, units = "secs")
+    elapsed_times <- c(elapsed_times, elapsed_time)
+    print(paste0("elapsed time: ", elapsed_time, " ", attributes(elapsed_time)$units))
+    time_per_100_records <- elapsed_time / nrow(current_study_data) * 100
+    rates <- c(rates, time_per_100_records)
+    print(paste0("time/100 records: ", time_per_100_records, " ", attributes(time_per_100_records)$units)) 
+  }, error = function(e) {
+    error_message <- paste0("\nError in ", study_name, " (", current_study_number, ")",
+                            ", record ", h,
+                            ", step ", step, ":\n",
+                            "g = ", g, "\n",
+                            "h = ", h, "\n",
+                            "i = ", i, "\n",
+                            "j = ", j, "\n",
+                            "k = ", k, "\n",
+                            "l = ", l, "\n",
+                            e, "\n")
+    all_errors <<- c(all_errors, error_message)
+    print("ERROR: proceeding to next study")
+  })
+}
+
+### 14. Print batch stats/errors and play notification sound
+batch_total_time <- Sys.time() - batch_start_time
+cat(paste0("Batch Stats:\n",
+           "total batch time: ", batch_total_time, " ", attributes(batch_total_time)$units, "\n",
+           "average elapsed time: ", mean(elapsed_times), " secs\n",
+           "average time/100 records: ", mean(rates), " secs\n",
+           "longest time for single study: ", max(elapsed_times), " secs, ", batch_names[which.max(elapsed_times)], "\n",
+           "shortest time for single study: ", min(elapsed_times), " secs, ", batch_names[which.min(elapsed_times)], "\n",
+           "fastest study rate: ", min(rates), ", ", batch_names[which.min(rates)], " secs/100 records\n",
+           "slowest study rate: ", max(rates), ", ", batch_names[which.max(rates)], " secs/100 records\n"),
+    all_errors)
+
+beep("facebook")
+```
+
 # *Term Curation
+
+
+
