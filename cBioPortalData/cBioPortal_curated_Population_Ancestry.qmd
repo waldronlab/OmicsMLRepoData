@@ -162,9 +162,14 @@ race_eth_data <- data.frame(sapply(race_eth_data, function(x)gsub("NOS THERE IS 
 Next, we can merge these values into a single column with NA values removed and 
 each distinct value separated by a semicolon.
 ```{r}
-# Merge all relevant rows
+# Merge all relevant columns
 for (i in 1:nrow(race_eth_data)){
   race_eth_data$merged[i] <- paste(race_eth_data[i,1:11], collapse=";")
+}
+
+# Create a column of relevant source columns
+for (i in 1:nrow(race_eth_data)){
+  race_eth_data$source_columns[i] <- paste(colnames(race_eth_data[which(!is.na(race_eth_data[i,1:11]))]), collapse=";")
 }
 
 # Create a function to remove NA values from the merged column
@@ -199,8 +204,8 @@ To access the necessary population ancestry ontology terms we will load the
 pop_ontology_map <- read_sheet(ss, sheet = "population_ancestry_ontology_map")
 
 # import the pop ontology map
-# pop_ontology_map <- read.csv(file = file.path(proj_dir, "out_file_race_eth_onto_map.csv"),
-#                           sep = ",", header = TRUE)
+pop_ontology_map <- read.csv(file = file.path(proj_dir, "out_file_race_eth_onto_map.csv"),
+                           sep = ",", header = TRUE)
 ```
 
 
@@ -237,7 +242,7 @@ Then we will create our table of curated study condition data, including
 original values, curated values, and curated ontology term ids.
 ```{r}
 # Create a dataframe of the relevant columns
-curated_population_ancestry <- cbind(cbio$curation_id, race_eth_data[,12:14])
+curated_population_ancestry <- cbind(cbio$curation_id, race_eth_data[,12:15])
 
 # Rename the columns for accuracy & specificity
 colnames(curated_population_ancestry)[1:2] <- c("curation_id","original_pop_ancestry")
