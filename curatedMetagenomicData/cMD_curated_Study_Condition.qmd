@@ -44,9 +44,7 @@ suppressPackageStartupMessages({
 
 ## Setup for Curation
 
-We will first add a `curation_id` consisting of study name and sample ID 
-(`study_name:sample_id`) to avoid confusion due to duplicated samples. Then 
-we will set up a Google Sheet to export our mapping table to.
+We will first add a `curation_id` consisting of study name and sample ID (`study_name:sample_id`) to avoid confusion due to duplicated samples. Then we will set up a Google Sheet to export our mapping table to.
 
 ```{r curation_setup}
 # Add curation ID
@@ -160,9 +158,7 @@ target_phenotype_map <- read.csv(file = file.path(proj_dir, "maps/cMD_target_phe
 
 ## Curating "control" Column
 
-Using the "study_condition" column as a guide, identify whether each sample 
-was part of the "control" group or the "case" group for its corresponding study. 
-Samples that were not utilized in the study receive the label "Not Used".
+Using the "study_condition" column as a guide, identify whether each sample was part of the "control" group or the "case" group for its corresponding study. Samples that were not utilized in the study receive the label "Not Used".
 ```{r}
 # Label patient data to indicate control or treatment group
 for (i in 1:nrow(disease_data)){
@@ -181,9 +177,7 @@ for (i in 1:nrow(disease_data)){
 }
 ```
 
-Now we can clean up the "study_condition" column by replacing any instances 
-of the term "control" with an "NA" value, which will prevent redundant data 
-when we combine this column with the "disease" column.
+Now we can clean up the "study_condition" column by replacing any instances of the term "control" with an "NA" value, which will prevent redundant data when we combine this column with the "disease" column.
 
 ```{r}
 # Replace "control" values with NA in study_condition column
@@ -274,6 +268,12 @@ for (x in 1:length(disease_data$merged)){
   disease_data$curated_disease_ontology_term_id[x] <- paste(new_term_ids, collapse= ";")
   }
 }
+
+# Create a column of relevant source columns
+disease_sources <- disease_data[,3:5]
+for (i in 1:nrow(disease_sources)){
+  disease_data$source_columns[i] <- paste(colnames(disease_sources[which(!is.na(disease_sources[i,]))]), collapse=";")
+}
 ```
 
 
@@ -296,7 +296,7 @@ Then we will create our table of curated study condition data, including
 original values, curated values, and curated ontology term ids.
 ```{r}
 # Create a dataframe of the relevant columns
-curated_study_condition <- data.frame(sampleMetadata[,c("curation_id", "study_condition", "disease", "disease_subtype")], disease_data[,c("control", "control_ontology_term_id","curated_target_phenotype", "curated_target_phenotype_ontology_term_id", "curated_disease", "curated_disease_ontology_term_id")])
+curated_study_condition <- data.frame(sampleMetadata[,c("curation_id", "study_condition", "disease", "disease_subtype")], disease_data[,c("control", "control_ontology_term_id","curated_target_phenotype", "curated_target_phenotype_ontology_term_id", "curated_disease", "curated_disease_ontology_term_id", "source_columns")])
 
 # Rename the columns for accuracy & specificity
 colnames(curated_study_condition)[2:6] <- c("original_study_condition_value", "original_disease_value", "original_disease_subtype_value", "curated_control", "curated_control_ontology_term_id")
@@ -310,6 +310,6 @@ Finally, we will export our completed table to GitHub.
 ```{r export_curated_table, eval=FALSE}
 # export to GitHub
 write.csv(curated_study_condition, 
-          file = file.path(proj_dir, "data/curated_study_condition.csv"),
+          file = file.path(proj_dir, "data/curated_study_conditionA.csv"),
           row.names = FALSE)
 ```
