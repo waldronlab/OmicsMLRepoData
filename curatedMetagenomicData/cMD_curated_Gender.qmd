@@ -139,7 +139,7 @@ curated_gender$curated_sex_ontology_term_id <- NA
 femaleInd <- which(curated_gender$curated_sex == "Female")
 curated_gender$curated_sex_ontology_term_id[femaleInd] <- "NCIT:C16576"
 maleInd <- which(curated_gender$curated_sex == "Male")
-curated_gender$curated_sex_ontology_term_id[maleInd] <- "NCIT:C16576"
+curated_gender$curated_sex_ontology_term_id[maleInd] <- "NCIT:C20197"
 ```
 
 
