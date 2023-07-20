@@ -8,7 +8,7 @@ format:
         fontsize: 14pxs
         toc: true
         top-depth: 3
-abstract: "Extract, Transform, and Load (ETL) cMD metadata"
+abstract: "Extract, Transform, and Load (ETL): We create a map between original curation term and their corresponding ontology terms. This 'map' is applied to the sampleMetadata table to update the previously curated cMD sampleMetadata to follow the new, ontology-containing schema."
 ---
 
 ```{r setup, include=FALSE}
@@ -25,35 +25,35 @@ suppressPackageStartupMessages({
 })
 ```
 
-```{r echo=FALSE}
-## [Update needed] to get data files directly from the GH repo
-dir <- "~/OmicsMLRepo/OmicsMLRepoData"
-ori <- read.csv(file.path(dir, "inst/extdata/cMD_sampleMetadata.csv"))
-```
-
 # Update curation map
-Since the initial curation map is established, any additional updates are
-directly applied to the map and the data files. 
+Since the initial curation mapping (i.e., 'original term - ontology term' 
+mapping) is done, any additional updates are applied directly to the map 
+(the Google Sheet version) and the data files (the csv file version). 
 
-```{r}
+Here is the example of updating map:
+
+```{r eval=FALSE}
+## Connect to the cMD_curation table in Google Drive
 url <- "https://docs.google.com/spreadsheets/d/1QSbB_b1DkfqOc7q5eHE0IDHSiGqNUyTE8d4GzbSEzjM/edit?usp=sharing"
 ss <- googledrive::as_id(url)
 
 ## Import the curation map from Google Sheet to update GitHub repo version
 map <- read_sheet(ss, sheet = "disease_ontology_all")
-```
 
-```{r eval=FALSE}
-## Save for GitHub repo
+## Save the updated version in the local GitHub branch
 write.csv(map, file = "maps/cMD_study_condition_ontology.csv", row.names = FALSE)
-```
 
-# Update curated data
-Run proper script for a given attribute in `.qmd` files under `curatedMetagenomicData/` folder.
+## Push the change to the GitHub repo
+```
 
 # Update curated sampleMetadata
+Curation/mapping process of a given attributes are documented in the `.qmd`
+files under `curatedMetagenomicData/` directory. Please find and run proper
+qmd files to update the curation data.
+
 ## Import curated/harmonized attributes
 ```{r}
+dir <- "~/OmicsMLRepo/OmicsMLRepoData"
 dataDir <- file.path(dir, "curatedMetagenomicData/data")
 curated <- list.files(dataDir)
 curatedDatObj <- gsub(".csv", "", curated)
@@ -62,12 +62,14 @@ for (i in seq_along(curated)) {
     res <- read.csv(file.path(dataDir, curated[i]))
     assign(curatedDatObj[i], res)
 }
-
-## column names of the curated sample metadata per attributes
-# sapply(gsub(".csv", "", curated), function(x) {colnames(get(x))})
 ```
 
-Combine all the curated sample metadata
+All the column names of the curated sample metadata per attributes
+```{r colname_sanity_check, echo=FALSE}
+sapply(gsub(".csv", "", curated), function(x) {colnames(get(x))})
+```
+
+## Combine all the curated sample metadata
 ```{r}
 curated_all <- get(curatedDatObj[1])
 for (i in 2:length(curatedDatObj)) { # assuming there are >= 2 tables to be combined
@@ -76,25 +78,49 @@ for (i in 2:length(curatedDatObj)) { # assuming there are >= 2 tables to be comb
 }
 ```
 
+### Combine original and curated
 Combine the original sampleMetadata and curated columns
-```{r}
+```{r original_sampleMetadata}
+## [Update needed] to get data files directly from the GH repo
+dir <- "~/OmicsMLRepo/OmicsMLRepoData"
+ori <- read.csv(file.path(dir, "inst/extdata/cMD_sampleMetadata.csv"))
+
 allSampleMetadata <- ori %>%
     mutate(curation_id = paste(study_name, sample_id, sep = ":")) %>%
     dplyr::left_join(., curated_all, by = "curation_id")
+
+allSampleMetadata$last_modified <- Sys.Date() #<<< Can I check this at the sample-level?
 ```
 
+# Save
+## Full version
+The `cMD_curated_sampleMetadata.csv` will be a direct replacement of the 
+original `sampleMetadata.tsv` because it still contains all the original 
+columns. Currently new columns 
+
 ```{r save, eval=FALSE}
+dir <- "~/OmicsMLRepo/OmicsMLRepoData"
 fpath <- file.path(dir, "inst/extdata/cMD_curated_sampleMetadata.csv")
 write.csv(allSampleMetadata, 
           fpath,
           row.names = FALSE)
 ```
 
+## Compact version
+```{r}
+source("R/compact_metadata.R")
+dim(meta)
+```
 
+```{r}
+dir <- "~/OmicsMLRepo/OmicsMLRepoData"
+fpath_compact <- file.path(dir, "inst/extdata/cMD_curated_compact_sampleMetadata.csv")
+write.csv(meta, fpath_compact, row.names = FALSE)
+```
 
-# Update parquet for DuckDB
+## Parquet for DuckDB
 ```{r eval=FALSE}
-allSampleMetadata <- read.csv(fpath)
+allSampleMetadata <- read.csv(fpath) # For now, use complete, non-compact version of the sampleMetadata
 parquet <- gsub(".csv$", ".parquet", fpath)
 arrow::write_parquet(allSampleMetadata, 
                      sink = parquet)

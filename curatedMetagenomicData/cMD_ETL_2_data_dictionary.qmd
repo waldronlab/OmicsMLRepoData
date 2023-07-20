@@ -8,7 +8,7 @@ format:
         fontsize: 14pxs
         toc: true
         top-depth: 3
-abstract: "Extract, Transform, and Load (ETL) data dictionary of cMD metadata"
+abstract: "Extract, Transform, and Load (ETL): We introduce ontology terms into cMD sampleMetadata. This updated cMD sampleMetadata attributes are summarized here as cMD data dictionary"
 ---
 
 ```{r setup, include=FALSE}
@@ -25,19 +25,26 @@ suppressPackageStartupMessages({
 ```
 
 ```{r echo=FALSE}
-## Load cMD curation template
-ori <- read.csv("https://raw.githubusercontent.com/waldronlab/curatedMetagenomicDataCuration/master/inst/extdata/template.csv")
-
 ## [Update needed] to get data files directly from the GH repo
 dir <- "~/OmicsMLRepo/OmicsMLRepoData/curatedMetagenomicData"
 ```
 
+The `merging_schema` table shows the original and curated fields of cMD 
+sampleMetadata.
 
-```{r import_gs, echo=FALSE, eval=FALSE}
+```{r merging_schema}
+## Merging_schema table
 url <- "https://docs.google.com/spreadsheets/d/1xziFB_zBl32BjNarcyEN4GupTYpPtq5aDz0GbRbWvtk/edit?usp=sharing"
 ss <- googledrive::as_id(url)
 merging_schema <- googlesheets4::read_sheet(ss = ss, sheet = "merging_schema")
 
+## Names of the original fields
+old_fields <- sapply(merging_schema$original_fields, strsplit, split = ";") %>% 
+    unlist %>% 
+    as.character
+old_fields[!is.na(old_fields)]
+
+## Names of the new fields
 new_fields <- sapply(merging_schema$curated_fields, strsplit, split = ";") %>% 
     unlist %>% 
     as.character
@@ -45,200 +52,96 @@ new_fields
 ```
 
 
-# Curated columns as a template
+# Build a schema for curated fields
 ## Age
-- Conditional requirement?
-
-```{r echo=FALSE}
-age <- read.csv(file.path(dir, "maps/cMD_age_category_ontology.csv"))
-
-## age
-curated_age <- data.frame(
-    col.name = "age",
-    col.class = "integer",
-    uniqueness = "non-unique", 
-    requiredness = "optional",
-    multiplevalues = FALSE,
-    description = "Age of the subject using the unit specified under 'age_unit' column",
-    allowedvalues = "[0-9]+",
-    ontology = NA   
-)
-
-## age_unit
-curated_age_unit <- data.frame(
-    col.name = "age_unit",
-    col.class = "character",
-    uniqueness = "non-unique", 
-    requiredness = "optional", # required if 'curated_age' is entered?
-    multiplevalues = FALSE,
-    description = "Unit of the subject's age specified under 'age' column",
-    allowedvalues = "Day|Week|Month|Year",
-    ontology = "NCIT:C25301|NCIT:C29844|NCIT:C29846|NCIT:C29848"   
-)
-
-## age_group
-desc <- paste(age$curated_age_min, "<=", 
-              age$curated_ontology, "<", age$curated_age_max)
-
-curated_age_group <- data.frame(
-    col.name = "age_group",
-    col.class = "character",
-    uniqueness = "non-unique", 
-    requiredness = "optional",
-    multiplevalues = FALSE,
-    description = paste(desc, collapse = "|"),
-    allowedvalues = paste(age$curated_ontology, collapse = "|"),
-    ontology = paste(basename(age$curated_ontology_term_id), collapse = "|")
-)
-
-## curated_age_all
-curated_age_all <- do.call("rbind", list(curated_age, curated_age_unit, curated_age_group))
-```
-
+- [Feature Request] Conditional requirement?
+- Use dynamic enums for age_unit (NCIT:C50400)?
 ```{r}
+source(file.path(dir, "R/template_age.R"))
 curated_age_all
 ```
 
-```{r}
-## Example of updated age-related attributes
-age_dat <- read.csv(file.path(dir, "data/curated_age.csv"))
-head(age_dat)
-```
-
 ## study_condition
-- Make a map file for each column?   
 - [Todo] Compare 'disease_stage' column with that of cBioPortalData
-
-```{r echo=FALSE}
-disease_map <- read.csv(file.path(dir, "maps/cMD_study_condition_ontology.csv"))
-
-## control
-control <- data.frame(
-    col.name = "control",
-    col.class = "character",
-    uniqueness = "non-unique", 
-    requiredness = "required",
-    multiplevalues = FALSE,
-    description = "Whether the sample is control, case, or not used in the study",
-    allowedvalues = "Study Control|Case|Not Used",
-    ontology = "NCIT:C142703|NCIT:C49152|NCIT:C69062"   
-)
-
-## disease
-disease <- data.frame(
-    col.name = "disease",
-    col.class = "character",
-    uniqueness = "non-unique", 
-    requiredness = "optional",
-    multiplevalues = TRUE,
-    description = "Reported disease type(s) for a participant. 'Healthy' if no disease assessed under a given study is detected",
-    allowedvalues = paste(unique(disease_map$curated_ontology_term), collapse = "|"),
-    ontology = paste(unique(basename(disease_map$curated_ontology_term_id)), collapse = "|")     
-)
-
-## target_phenotype
-pheno_map <- read.csv(file.path(dir, "maps/cMD_target_condition_map.csv"))
-
-phenotype <- data.frame(
-    col.name = "target_condition",
-    col.class = "character",
-    uniqueness = "non-unique", 
-    requiredness = "required",
-    multiplevalues = TRUE,
-    description = "Main phenotype(s) of interest in a given study",
-    # Because target_condition can take multiple values
-    allowedvalues = paste(unique(pheno_map$target_condition), collapse = ";") %>% 
-        strsplit(., ";") %>% 
-        unlist %>% 
-        unique %>% 
-        paste(., collapse = "|"),
-    ontology = paste(unique(pheno_map$target_condition_term_id), collapse = ";") %>% 
-        strsplit(., ";") %>% 
-        unlist %>% 
-        unique %>% 
-        paste(., collapse = "|")     
-)
-
-## curated_disease_all
-curated_disease_all <- do.call("rbind", list(control, disease, phenotype))
-```
-
+- [Feature Request] Adopt dynamic enums?
 ```{r}
+source(file.path(dir, "R/template_condition.R"))
 curated_disease_all
 ```
 
-[Todo] Need additional clean-up for multi-values cases
-```{r}
-## Example of updated disease-related attributes
-disease_dat <- read.csv(file.path(dir, "data/curated_study_condition.csv"))
-head(disease_dat)
-```
-
 ## treatment
-```{r echo=FALSE}
-treatment_map <- read.csv(file.path(dir, "maps/cMD_treatment_ontology.csv"))
-abx_map <- read.csv(file.path(dir, "maps/cMD_antibiotic_ontology.csv"))
-
-treatment <- data.frame(
-    col.name = "treatment",
-    col.class = "character",
-    uniqueness = "non-unique", 
-    requiredness = "optional",
-    multiplevalues = TRUE,
-    description = "Medications or treatments against the diseases",
-    allowedvalues = paste(unique(treatment_map$curated_ontology_term,
-                                 abx_map$curated_ontology_term), 
-                          collapse = "|"),
-    ontology = paste(unique(basename(treatment_map$curated_ontology_term_id),
-                            basename(abx_map$curated_ontology_term_id)), 
-                          collapse = "|")     
-)
-```
-
 ```{r}
-treatment
+source(file.path(dir, "R/template_treatment.R"))
+curated_treatment
 ```
 
+## bodysite
+- [Feature Request] Use the same dictionary for both bodysite and bodysubsite?   
+- [Feature Request] Adopt dynamic enums?
 ```{r}
-## Example of updated entry
-insulin_ind <- grep("insulin", treatment_map$curated_ontology_term, ignore.case = TRUE)
-treatment_map[insulin_ind,]
+source(file.path(dir, "R/template_bodysite.R"))
+curated_bodysite
 ```
+
 
 ## Others
+`sex` and `antibiotics_current_use`
 ```{r}
-## sex
-## body_site
-## body_subsite
-## antibiotics_current_use
+source(file.path(dir, "R/template_others.R"))
+curated_sex
+curated_abx_current_use
 ```
 
 
 # Save
+Combine data schema for all the curated attributes
 ```{r}
-curated_all <- do.call("rbind", list(curated_age_all, curated_disease_all, treatment))
+curated_all <- do.call("rbind", list(curated_age_all, 
+                                     curated_disease_all, 
+                                     curated_treatment,
+                                     curated_bodysite,
+                                     curated_sex,
+                                     curated_abx_current_use))
 ```
 
-## Save for GitHub
 ```{r eval=FALSE}
+## Save for GitHub
 write.csv(curated_all, "~/OmicsMLRepo/OmicsMLRepoData/inst/extdata/cMD_data_dictionary.csv", row.names = FALSE)
-```
 
 ## Export to Google Sheet
-```{r export_gs, eval=FALSE}
 url <- "https://docs.google.com/spreadsheets/d/1xziFB_zBl32BjNarcyEN4GupTYpPtq5aDz0GbRbWvtk/edit?usp=sharing"
 ss <- googledrive::as_id(url)
 googlesheets4::sheet_write(curated_all, ss = ss, sheet = "data_dictionary")
 ```
 
 
-## Sucession plan
+# Sucession plan
+We will update original column names by adding prefix (e.g., `legacy_`) to them.
 ```{r}
+## Load cMD curation template
+ori <- read.csv("https://raw.githubusercontent.com/waldronlab/curatedMetagenomicDataCuration/master/inst/extdata/template.csv")
+# ori <- read.csv("~/OmicsMLRepo/OmicsMLRepoData/inst/extdata/template.csv")
+
+## Add empty ontology column and `legacy_` prefix
+legacy_ind <- which(ori$col.name %in% old_fields)
+ori$col.name[legacy_ind] <- paste0("legacy_", ori$col.name[legacy_ind])
 ori$ontology <- NA
-updated <- rbind(curated_all, ori)
+formated_ori <- rbind(ori[-legacy_ind,], ori[legacy_ind,]) # 'legacy_' fields at the end
+
+updated <- rbind(curated_all, formated_ori)
+id_row_ind <- which(updated$col.name %in% c("study_name", "sample_id", "subject_id"))
+updated <- rbind(updated[id_row_ind,], updated[-id_row_ind,])
+sum(duplicated(updated$col.name)) # should be 0
 ```
 
-After the transition period, switch the `col.name` by adding prefix 
-(e.g., `legacy_`) to the original column names and removing the `curated_` 
-prefix.
+```{r eval=FALSE}
+## Save for GitHub
+write.csv(updated, "~/OmicsMLRepo/OmicsMLRepoData/inst/extdata/cMD_data_dictionary_all.csv", row.names = FALSE)
+
+## Export to Google Sheet
+url <- "https://docs.google.com/spreadsheets/d/1xziFB_zBl32BjNarcyEN4GupTYpPtq5aDz0GbRbWvtk/edit?usp=sharing"
+ss <- googledrive::as_id(url)
+googlesheets4::sheet_write(updated, ss = ss, sheet = "data_dictionary_all")
+```
+
 
