@@ -1,0 +1,375 @@
+---
+title: "Harmonize disease/cancer information in cbio data"
+author:
+  - Sehyun Oh
+  - Kai Gravel-Pucillo
+date: "`r format(Sys.time(), '%B %d, %Y')`"
+format:
+    html:
+        fontsize: 14pxs
+        toc: true
+        top-depth: 3
+abstract: "Prepare U24 Supplement: AI/ML-ready"
+---
+
+```{r setup, include=FALSE}
+knitr::opts_chunk$set(echo = TRUE, 
+                    warning = FALSE,
+                    message = FALSE,
+                    collapse = TRUE,
+                    eval = TRUE)
+```
+
+
+# Overview
+
+This .qmd file demonstrates a workflow for curating and harmonizing 
+disease/cancer data with the cbioportal dataset.
+This file curates information from 75 original columns to produce the eight
+curated columns relating to patients' disease/cancer status and condition.
+
+
+# Setup
+
+## Load Packages
+
+```{r load}
+suppressPackageStartupMessages({
+ library(dplyr)
+library(tidyverse)
+library(stringr)
+library(rvest)
+library(rols)
+library(vctrs)
+library(hash)
+})
+```
+
+
+## Setup for Curation
+
+We will first add a `curation_id` consisting of study ID and patient ID (`studyId:patientId`) to avoid confusion due to duplicated samples.
+```{r curation_setup}
+# Load cbio data
+cbio <- readRDS("C:\\Users\\Owner\\Desktop\\CUNY Internship\\cBioPortal_all_clinicalData_combined_2022-10-14.rds")
+
+# Add curation ID
+cbio$curation_id <- paste(cbio$studyId, cbio$patientId, sep = ":")
+
+# Setup google sheets link to mapping table
+url <- "https://docs.google.com/spreadsheets/d/1IgrVEdgCZdvBmWrER21A57lSkfDjdRdV3RbK_yoqMl4/edit?usp=sharing"
+
+ss <- googledrive::as_id(url)
+
+# Define a project directory
+proj_dir <- "C:\\Users\\Owner\\Desktop\\CUNY Internship\\cbio\\"
+```
+
+
+# Exploratory Data Analysis & Data Curation
+
+## Identifying Relevant Columns & Completeness
+
+Next, we will identify the columns containing values relating to the disease and
+cancer type of the patients.
+Due to the large number of feature columns which contain a number of both broad
+and very specific column types, we will first query column names for relevant 
+terms and compile these results into a map of original columns and their
+potential curated columns.
+```{r}
+# Create a list of potentially relevant columns based on search terms
+disease_columns <- select(cbio, contains(c("disease", "cancer", "tumor", "type", "diagnosis", "ilc", "class"))) %>%
+  select(-contains(c("site", "radiation", "drug", "surgery", "treatment", "procedure")))
+
+potential_columns <- data.frame(colnames(disease_columns))
+
+# Iterate through these columns to create a dataframe of each column's unique values and completeness
+for (col in 1:length(disease_columns)){
+  potential_columns$unique_vals[col] <- paste(unlist(unique(disease_columns[,col]), use.names = F), collapse=" ")
+  potential_columns$completeness[col] <- (nrow(disease_columns) - length(which(is.na(disease_columns[,col]))))/nrow(disease_columns)
+}
+
+# Remove rows where unique_vals is NA
+potential_columns <- filter(potential_columns, unique_vals!="NA")
+
+# Sort by completeness
+potential_columns <- arrange(potential_columns, desc(completeness))
+
+# Export to csv file to manually remove irrelevant columns
+write.csv(potential_columns, 
+          file = file.path(proj_dir, "potential_columns_map.csv"),
+          row.names = FALSE)
+```
+
+After manually searching for character and boolean columns with titles pertaining 
+to specific diseases or cancers and adding them to the map, as well as manually
+removing and rearranging some columns which were irrelevant to this particular 
+curation, we can then create a tibble dataframe and import the map of columns
+to include in this curation:
+```{r}
+# Create tibble
+cbio <- tibble(cbio)
+
+# Load Potential columns map csv file
+pot_col_map <- read.csv(file=file.path(proj_dir, "cBioPortal_potential_columns_map.csv"))
+
+# Get list of all columns to combine into new Disease column
+original_cols <- unlist(strsplit(pot_col_map$Original.Columns[1], ";"))
+
+# Create a subset of cbio containing only relevant columns
+disease_cols_cbio <- cbio[,c("curation_id", original_cols)]
+```
+
+Then we will evaluate the completeness and unique values of each of the relevant
+columns, and export this dataframe to manually group columns into a smaller set
+of curated columns:
+```{r}
+# Create a summary dataframe of the relevant columns
+summary_disease_cols <- data.frame(colnames(disease_cols_cbio))
+
+# Iterate through these columns to create a summary of each column's completeness
+for (col in 1:nrow(summary_disease_cols)){
+  summary_disease_cols$completeness[col] <- (nrow(disease_cols_cbio) - length(which(is.na(disease_cols_cbio[,col]))))/nrow(disease_cols_cbio)
+  summary_disease_cols$num_na_vals[col] <- length(which(is.na(disease_cols_cbio[,col])))
+}
+
+# Create a csv file for manual curation
+write.csv(summary_disease_cols, 
+          file = file.path(proj_dir, "curated_columns_map.csv"),
+          row.names = FALSE)
+```
+
+Creating a table of each column's unique values and completeness reveals that
+across all data entries there is a minimum of approximately 97% completeness 
+prior to the removal of non-NA values indicating "no response" or "unknown".
+Before we condense these values into a single merged column, we will need to 
+convert some columns from binary values into descriptive values:
+```{r}
+# Convert Yes/No and T/F columns to descriptive values
+# Create a dataframe of the relevant columns
+binary_cols <- c("CNS_DISEASE", "RECURRENT_METASTATIC_DISEASE",
+                 "INCIDENTAL_PROSTATE_CANCER", "MDSMPN_DIAGNOSIS_AT_ACQUISITION",
+                 "NON_AML_MDSMPN_DIAGNOSIS_AT_ACQUISITION", "METASTATIC_DISEASE",
+                 "HYPERTENSION_DIAGNOSIS", "DIABETES_DIAGNOSIS_INDICATOR",
+                 "RESIDUAL_NODAL_DISEASE", "CANCER_IDENTIFICATION_IDC",
+                 "CANCER_IDENTIFICATION_MIDLC", "CANCER_IDENTIFICATION_ILC",
+                 "METASTATIC_DISEASE_CONFIRMED", "FATTY_LIVER_DISEASE")
+binary_value_cols <- select(disease_cols_cbio, all_of(c("curation_id", binary_cols)))
+
+# Create a summary dataframe of the relevant columns
+summary_binary_val_cols <- data.frame(colnames(binary_value_cols))
+# Iterate through columns to get unique vals
+for (col in 1:nrow(summary_binary_val_cols)){
+  summary_binary_val_cols$unique_vals[col] <- unique(binary_value_cols[,col])
+}
+
+binary_value_cols_og <- binary_value_cols
+
+# Replace logical values with character values
+binary_value_cols <- data.frame(lapply(binary_value_cols, function(x) gsub(TRUE, "TRUE", x)))
+binary_value_cols <- data.frame(lapply(binary_value_cols, function(x) gsub(FALSE, "FALSE", x)))
+
+# Update binary columns with descriptive values
+present_vals <- c("YES", "Yes", "y", "TRUE", "Positive")
+for(col in colnames(binary_value_cols[,2:15])){
+  for (val in 1:nrow(binary_value_cols)){
+    if (binary_value_cols[val,col] %in% present_vals){
+      binary_value_cols[val,col] <- col
+    }else{
+      binary_value_cols[val,col] <- NA
+    }
+  }
+}
+
+# Remove underscores
+binary_value_cols <- data.frame(lapply(binary_value_cols, function(x) gsub("_", " ", x)))
+
+# Replace values in disease_cols_cbio
+disease_cols_cbio[,binary_cols] <- binary_value_cols[,2:15]
+```
+
+Now that all columns include descriptive values, we can replace character values
+representing a lack of information with a unique character value ("8X8"), and 
+merge these values into a single column with each distinct value separated by a 
+special 3-character delimiter ("<;>"). This delimiter was implemented so as to
+preserve curated ontology terms containing semicolons, which are the main 
+delimiter utilized in the broader curation.
+```{r}
+# Convert NA values to unique character value (8X8)
+disease_cols_cbio <- disease_cols_cbio %>% replace(is.na(.), "8X8") %>% data.frame()
+
+# Merge all relevant rows
+for (i in 1:nrow(disease_cols_cbio)){
+  disease_cols_cbio$merged[i] <- toupper(paste(disease_cols_cbio[i,2:76], collapse="<;>"))
+}
+```
+
+Next, we can remove the unique character representing NA values from the merged
+column. Additionally we can remove the pipe delimiter from all values to 
+prevent interpretation of the pipe as a regex character during queries:
+```{r}
+# Take out NA values
+disease_cols_cbio$merged <- gsub("8X8<;>", "", disease_cols_cbio$merged)
+disease_cols_cbio$merged <- gsub("<;>8X8", "", disease_cols_cbio$merged)
+disease_cols_cbio$merged <- gsub("<;>+", "<;>", disease_cols_cbio$merged)
+disease_cols_cbio$merged <- gsub("^<;>", "", disease_cols_cbio$merged)
+disease_cols_cbio$merged <- gsub("<;>$", "", disease_cols_cbio$merged)
+
+# Remove pipes and parentheses
+disease_cols_cbio <- data.frame(lapply(disease_cols_cbio, function(x) gsub("\\|", "", x)))
+disease_cols_cbio <- data.frame(lapply(disease_cols_cbio, function(x) gsub("\\(", "", x)))
+disease_cols_cbio <- data.frame(lapply(disease_cols_cbio, function(x) gsub("\\)", "", x)))
+
+```
+
+Then we can create a list of all unique values included in the merged column,
+and export these values to a csv file to manually develop an ontology map:
+```{r}
+# Count the number of unique values in the merged column (2125 excluding icd codes)
+merged_vals <- list()
+for(r in 1:nrow(disease_cols_cbio)){
+  merged_vals <- append(merged_vals, str_split(disease_cols_cbio$merged[r], "<;>"))
+}
+unique_merged_vals <- unique(unlist(merged_vals))
+
+# Make a csv file of the unique values in the merged column
+write.csv(unique_merged_vals, 
+          file= file.path(proj_dir, "disease_cbio_unique_vals.csv"), 
+          row.names=F, col.names=F)
+```
+
+
+# Mapping
+
+## Import Maps
+
+To access the necessary population ancestry ontology terms we will load the 
+`disease_ontology_map`.
+```{r import_maps, eval=FALSE}
+# import disease ontology map
+pop_ontology_map <- read_sheet(ss, sheet = "disease_ontology_map")
+
+# import curated and source columns map
+curated_source_map <- read_sheet(ss, sheet = "curated_columns_map")
+
+# import disease ontology map
+mapped_terms <-read.csv(file = file.path(proj_dir, "cBioPortal_disease_ontology_map.csv"), header=T)
+
+# import curated and source columns map
+curated_columns_map <-read.csv(file = file.path(proj_dir, "cBioPortal_curated_columns_map.csv"), header=T)
+```
+
+Then we will create a dictionary of curated column keys with the list of their 
+corresponding original columns as the value:
+```{r}
+# Put cols into a list
+cols_to_curate <- hash()
+cols_to_curate[["specimen_type"]] <- curated_columns_map$original_column[which(curated_columns_map$curated_column=="specimen_type")]
+cols_to_curate[["disease"]] <- curated_columns_map$original_column[which(curated_columns_map$curated_column=="disease")]
+cols_to_curate[["cancer_type"]] <- curated_columns_map$original_column[which(curated_columns_map$curated_column=="cancer_type")]
+cols_to_curate[["cancer_type_detailed"]] <- curated_columns_map$original_column[which(curated_columns_map$curated_column=="cancer_type_detailed")]
+cols_to_curate[["cancer_subtype"]] <- curated_columns_map$original_column[which(curated_columns_map$curated_column=="cancer_subtype")]
+cols_to_curate[["metastasis"]] <- curated_columns_map$original_column[which(curated_columns_map$curated_column=="metastasis")]
+cols_to_curate[["acronym"]] <- curated_columns_map$original_column[which(curated_columns_map$curated_column=="acronym")]
+cols_to_curate[["cancer_status"]] <- curated_columns_map$original_column[which(curated_columns_map$curated_column=="cancer_status")]
+```
+
+
+# Curating Disease/Cancer Columns
+
+Next we will loop through each set of original columns and merge them into
+their corresponding curated column, after which we will remove the unique 
+character representing NA values from the merged column:
+```{r}
+# Initialize dataframe
+disease_curated_cols <- data.frame(disease_cols_cbio$curation_id)
+
+# Loop through curations to merge relevant columns
+for (curcol in keys(cols_to_curate)){
+  # Merge all relevant rows
+  for (i in 1:nrow(disease_curated_cols)){
+    disease_curated_cols[i,curcol] <- toupper(paste(disease_cols_cbio[i,cols_to_curate[[curcol]]], collapse="<;>"))
+  }
+  print(curcol)
+}
+
+# Take out NA values
+disease_curated_cols <- data.frame(lapply(disease_curated_cols, function(x) gsub("8X8<;>", "", x)))
+disease_curated_cols <- data.frame(lapply(disease_curated_cols, function(x) gsub("<;>8X8", "", x)))
+disease_curated_cols <- data.frame(lapply(disease_curated_cols, function(x) gsub("<;>+", "<;>", x)))
+disease_curated_cols <- data.frame(lapply(disease_curated_cols, function(x) gsub("^<;>", "", x)))
+disease_curated_cols <- data.frame(lapply(disease_curated_cols, function(x) gsub("<;>$", "", x)))
+```
+
+Then we will initialize the curated columns and their corresponding ontology
+term id columns:
+```{r}
+# Loop through curations to initialize curated columns
+for (curcol in keys(cols_to_curate)){
+  curated_curcol <- paste("curated", curcol, sep="_")
+  # Initialize all relevant rows
+  disease_curated_cols[i,curated_curcol] <- NA
+}
+for (curcol in keys(cols_to_curate)){
+  curated_curcol_onto <- paste("curated", curcol, "ontology_term_id", sep="_")
+  # Initialize all relevant rows
+  disease_curated_cols[i,curated_curcol_onto] <- NA
+}
+```
+
+Now we can map the values in the merged columns to their corresponding ontology
+terms and propagate these values into the curated columns: 
+```{r}
+# Make a function to remove excess semicolons
+rmv_xtra_semis <- function(x){
+  x <- ifelse(startsWith(x, "<;>"), sub("^<;>", "", x), x)
+  return(ifelse(endsWith(x, "<;>"), sub("<;>$", "", x), x))
+}
+
+# Iterate through merged column values
+for (col in 2:9){
+  for (x in 1:length(disease_curated_cols[,col])){
+    # Create a list of terms in the value
+    original_terms <- as.list(unlist(strsplit(disease_curated_cols[x,col], "<;>")))
+    new_terms <- list()
+    new_term_ids <- list()
+    # Search for replacement terms in the ontology map
+    new_terms <- lapply(original_terms, function(y) mapped_terms$curated_ontology[grep(paste("^",y,"$",sep=""), mapped_terms$original_value, fixed=F)])
+    new_term_ids <- lapply(original_terms, function(y) mapped_terms$curated_ontology_term_id[grep(paste("^",y,"$",sep=""), mapped_terms$original_value, fixed=F)])
+    new_terms <- as.list(unlist(strsplit(paste(list_drop_empty(new_terms), collapse="<;>"), "<;>")))
+    new_term_ids <- as.list(unlist(strsplit(paste(list_drop_empty(new_term_ids), collapse="<;>"), "<;>")))
+    # Concatenate new lists on "<;>" delimiter to create curated value
+    disease_curated_cols[x,col+8] <- rmv_xtra_semis(paste(as.list(unique(new_terms)), collapse= "<;>"))
+    disease_curated_cols[x,col+16] <- rmv_xtra_semis(paste(as.list(unique(new_term_ids)), collapse= "<;>"))
+    if(x %% 5000==0){print(x)}
+  }
+print(paste("finished: column", col))
+}
+```
+
+
+## Curated Table Creation
+
+Next, we can clean up the dataframe by replacing the unique character 
+representing NA values with "NA" and updating column names as needed:
+```{r}
+# Replace NA values from original columns with "NA"
+disease_curated_cols <- data.frame(lapply(disease_curated_cols, 
+                                          function(x) gsub("8X8", "NA", x)))
+
+# Rename the columns for accuracy & specificity
+colnames(disease_curated_cols)[1:9] <- c("curation_id", "original_acronym", 
+    "original_cancer_status", "original_cancer_subtype", "original_cancer_type", 
+    "original_cancer_type_detailed", "original_disease", "original_metastasis", 
+    "original_specimen_type")
+```
+
+
+## Export
+
+Finally, we will export our completed table to GitHub.
+```{r export_curated_table, eval=FALSE}
+# export to GitHub
+write.csv(disease_curated_cols, file = file.path(proj_dir, "curated_disease.csv"), 
+          row.names=F)
+```
