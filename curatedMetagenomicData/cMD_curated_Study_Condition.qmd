@@ -310,6 +310,6 @@ Finally, we will export our completed table to GitHub.
 ```{r export_curated_table, eval=FALSE}
 # export to GitHub
 write.csv(curated_study_condition, 
-          file = file.path(proj_dir, "data/curated_study_conditionA.csv"),
+          file = file.path(proj_dir, "data/curated_study_condition.csv"),
           row.names = FALSE)
 ```
