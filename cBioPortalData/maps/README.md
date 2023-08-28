@@ -1,4 +1,4 @@
-### `cBioPortal_curation_schema.csv`
+### `cBioPortal_disease_curation_schema.csv`
 This is the summary table including the different curation categories (`curation_category` column),
 the list of potential columns to contribute the given curation categories (`original_columns` column), 
 and the number of those original columns (`original_columns_num` column).

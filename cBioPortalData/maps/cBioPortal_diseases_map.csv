@@ -1,4 +1,3 @@
-<<<<<<< HEAD
 original_value,curated_ontology,curated_ontology_term_id,curated_ontology_term_db
 GCB,germinal center B cell,CL:0000844,NCIT
 FIBROBLAST_LUNG,fibroblast of lung,CL:0002553,CL
@@ -4265,4 +4264,3 @@ RESIDUAL NODAL DISEASE,Residual Nodal Disease,,
 "PAX3/FOXO1-FUSION","PAX3/FOXO1 Fusion Gene","NCIT:C99712","NCIT"
 "MANUBRIUM","Manubrium","OMIT:0009442","OMIT_0009442"
 "LOCAL RECURRENCE","Neoplasm Recurrence, Local","OMIT:0010392","OMIT"
->>>>>>> master
