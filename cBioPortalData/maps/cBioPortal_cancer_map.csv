@@ -1,0 +1,774 @@
+"original_value","curated_ontology","curated_ontology_term_id","curated_ontology_term_db"
+"Adrenocortical Carcinoma","Adrenocortical carcinoma","HP:0006744","HP"
+"Skin Cancer, Non-Melanoma","Skin Carcinoma","NCIT:C4914","NCIT"
+"Ampullary Carcinoma","Ampulla of Vater Carcinoma","NCIT:C3908","NCIT"
+"Bladder Urothelial Carcinoma","Bladder Urothelial Carcinoma","NCIT:C39851","NCIT"
+"B-Lymphoblastic Leukemia/Lymphoma","B Lymphoblastic Leukemia/Lymphoma","NCIT:C8936","NCIT"
+"Adenoid Cystic Carcinoma","Adenoid Cystic Carcinoma","NCIT:C2970","NCIT"
+"Acute Lymphoid Leukemia","Acute Lymphoblastic Leukemia","NCIT:C3167","NCIT"
+"Angiosarcoma","Angiosarcoma","NCIT:C3088","NCIT"
+"Acute Myeloid Leukemia","Acute Myeloid Leukemia","NCIT:C3171","NCIT"
+"Benign Phyllodes Tumor of the Breast","Benign Breast Phyllodes Tumor","NCIT:C5196","NCIT"
+"Borderline Phyllodes Tumor of the Breast","Borderline Breast Phyllodes Tumor","NCIT:C5316","NCIT"
+"Malignant Phyllodes Tumor of the Breast","Malignant Breast Phyllodes Tumor","NCIT:C4504","NCIT"
+"Bladder/Urinary Tract",NA,NA,NA
+"Breast Invasive Ductal Carcinoma","invasive breast ductal carcinoma","EFO:0000186","EFO"
+"Breast Mixed Ductal and Lobular Carcinoma","Breast Mixed Ductal and Lobular Carcinoma","NCIT:C5160","NCIT"
+"Breast","Breast","NCIT:C12971","NCIT"
+"Breast Invasive Mixed Mucinous Carcinoma","breast mucinous carcinoma","MONDO:0002707","MONDO"
+"Breast Invasive Lobular Carcinoma","invasive lobular carcinoma","EFO:0000553","EFO"
+"Paget Disease of the Nipple","Paget disease of the nipple","MONDO:0015873","MONDO"
+"Adenoid Cystic Breast Cancer","Adenoid Cystic Breast Carcinoma","EFO:1000071","EFO"
+"Invasive Breast Carcinoma","Invasive Breast Carcinoma","NCIT:C9245","NCIT"
+"Basal Cell Carcinoma","Basal Cell Carcinoma","NCIT:C156767","NCIT"
+NA,NA,NA,NA
+"Metaplastic Breast Cancer","metaplastic breast carcinoma","MONDO:0006043","MONDO"
+"Solid Papillary Carcinoma of the Breast","Breast Solid Papillary Carcinoma","NCIT:C6870","NCIT"
+"Breast Invasive Carcinoma, NOS",NA,NA,NA
+"Invasive Breast Cancer","Invasive Breast Carcinoma","NCIT:C9245","NCIT"
+"Infiltrating Ductal Carcinoma","invasive breast ductal carcinoma","EFO:0000186","EFO"
+"Ductal Carcinoma In Situ (DCIS)","Breast Ductal Carcinoma In Situ","NCIT:C2924","NCIT"
+"Mucinous Carcinoma","mucinous carcinoma","EFO:0000197","EFO"
+"Infiltrating Tubular Carcinoma",NA,NA,NA
+"Mixed Carcinoma","Mixed Carcinoma","NCIT:C165723","NCIT"
+"Infiltrating Lobular Carcinoma",NA,NA,NA
+"Medullary Breast Carcinoma","medullary breast carcinoma","EFO:0000580","EFO"
+"Glioblastoma Multiforme","Glioblastoma multiforme","HP:0012174","HP"
+"Osteosarcoma","Osteosarcoma","NCIT:C9145","NCIT"
+"Prostate Adenocarcinoma","Prostate Adenocarcinoma","NCIT:C2919","NCIT"
+"Esophageal Squamous Cell Carcinoma","Esophageal Squamous Cell Carcinoma","NCIT:C4024","NCIT"
+"Ovarian Carcinosarcoma/Malignant Mixed Mesodermal Tumor","Ovarian Carcinosarcoma","EFO:1000412","EFO"
+"Acute Undifferentiated Leukemia","Acute Undifferentiated Leukemia","NCIT:C9298","NCIT"
+"Renal Clear Cell Carcinoma","Clear Cell Renal Cell Carcinoma","NCIT:C4033","NCIT"
+"Poorly Differentiated Thyroid Cancer","Poorly Differentiated Thyroid Gland Carcinoma","EFO:1000489","EFO"
+"Cutaneous Melanoma","Cutaneous Melanoma","NCIT:C3510","NCIT"
+"Embryonal Rhabdomyosarcoma","Embryonal Rhabdomyosarcoma","NCIT:C8971","NCIT"
+"Mixed Cancer Types",NA,NA,NA
+"Diffuse Large B-Cell Lymphoma, NOS",NA,NA,NA
+"Non-Small Cell Lung Cancer","Non-Small Cell Lung Cancer Pathway","NCIT:C91445","NCIT"
+"Ewing Sarcoma","Ewing Sarcoma","NCIT:C4817","NCIT"
+"Pleural Mesothelioma, Epithelioid Type",NA,NA,NA
+"Hepatocellular Carcinoma","Hepatocellular Carcinoma","NCIT:C3099","NCIT"
+"Plasma Cell Myeloma","Plasma Cell Myeloma","NCIT:C3242","NCIT"
+"Endometrial Carcinoma","Endometrial Carcinoma","NCIT:C7558","NCIT"
+"Pancreatic Adenocarcinoma","Pancreatic Adenocarcinoma","NCIT:C8294","NCIT"
+"Esophageal Poorly Differentiated Carcinoma",NA,NA,NA
+"Burkitt Lymphoma","Burkitt Lymphoma","NCIT:C2912","NCIT"
+"Chronic Myelogenous Leukemia","Chronic myelogenous leukemia","HP:0005506","HP"
+"Colorectal Adenocarcinoma","Colorectal Adenocarcinoma","NCIT:C5105","NCIT"
+"Chondrosarcoma","Chondrosarcoma","NCIT:C2946","NCIT"
+"Peripheral Nervous System","Peripheral Nervous System","NCIT:C12465","NCIT"
+"Small Cell Lung Cancer","Small Cell Lung Cancer Pathway","NCIT:C91502","NCIT"
+"Esophageal Adenocarcinoma","Esophageal Adenocarcinoma","NCIT:C4025","NCIT"
+"Medulloblastoma","Medulloblastoma","NCIT:C3222","NCIT"
+"T-Lymphoblastic Leukemia/Lymphoma","T Lymphoblastic Leukemia/Lymphoma","NCIT:C8694","NCIT"
+"Hodgkin Lymphoma","Hodgkin Lymphoma","NCIT:C9357","NCIT"
+"Extrahepatic Cholangiocarcinoma",NA,NA,NA
+"Breast Angiosarcoma","Breast Angiosarcoma","NCIT:C5184","NCIT"
+"Breast Invasive Carcinoma",NA,NA,NA
+"Atypical Teratoid/Rhabdoid Tumor","Atypical Teratoid/Rhabdoid Tumor","NCIT:C6906","NCIT"
+"Craniopharyngioma, Adamantinomatous Type",NA,NA,NA
+"Ependymomal Tumor","ependymal tumor","MONDO:0003266","MONDO"
+"Ganglioglioma","Ganglioglioma","NCIT:C3788","NCIT"
+"Pediatric High Grade Gliomas",NA,NA,NA
+"Pediatric Low Grade Gliomas",NA,NA,NA
+"Cervical Squamous Cell Carcinoma","Cervical Squamous Cell Carcinoma","NCIT:C4028","NCIT"
+"Endocervical Adenocarcinoma","endocervical adenocarcinoma","MONDO:0000554","MONDO"
+"Cervical Adenosquamous Carcinoma","Cervical Adenosquamous Carcinoma","NCIT:C4519","NCIT"
+"Cervical Endometrioid Carcinoma","Cervical Endometrioid Adenocarcinoma","NCIT:C6343","NCIT"
+"Cervix","Cervix Uteri","NCIT:C12311","NCIT"
+"Colon Adenocarcinoma","Colon Adenocarcinoma","NCIT:C4349","NCIT"
+"Mucinous Adenocarcinoma of the Colon and Rectum",NA,NA,NA
+"Rectal Adenocarcinoma","Rectal Adenocarcinoma","NCIT:C9383","NCIT"
+"Intrahepatic Cholangiocarcinoma","Intrahepatic Cholangiocarcinoma","NCIT:C35417","NCIT"
+"Cholangiocarcinoma","Cholangiocarcinoma","NCIT:C4436","NCIT"
+"Cutaneous Squamous Cell Carcinoma","cutaneous squamous cell carcinoma","EFO:1001927","EFO"
+"Sezary Syndrome","Sezary Syndrome","NCIT:C3366","NCIT"
+"Primary Cutaneous CD8 Positive Aggressive Epidermotropic Cytotoxic T-Cell Lymphoma",NA,NA,NA
+"Mycosis Fungoides","Mycosis Fungoides","NCIT:C3246","NCIT"
+"Primary Cutaneous CD30 Positive T-Cell Lymphoproliferative Disorders",NA,NA,NA
+"Chronic Lymphocytic Leukemia/Small Lymphocytic Lymphoma","Chronic Lymphocytic Leukemia/Small Lymphocytic Lymphoma","NCIT:C27911","NCIT"
+"Monoclonal B-Cell Lymphocytosis","Monoclonal B-Cell Lymphocytosis","NCIT:C80310","NCIT"
+"Prostate","Prostate Gland","NCIT:C12410","NCIT"
+"Diffuse Large B-Cell Lymphoma","Diffuse Large B-Cell Lymphoma","NCIT:C8851","NCIT"
+"Mature B-Cell Neoplasms",NA,NA,NA
+"Esophagus/Stomach",NA,NA,NA
+"Desmoplastic Melanoma","Desmoplastic Melanoma","NCIT:C37257","NCIT"
+"Gallbladder Cancer","gallbladder cancer","MONDO:0005411","MONDO"
+"Glioblastoma","Glioblastoma","NCIT:C3058","NCIT"
+"Diffuse Glioma","Diffuse Glioma","NCIT:C129325","NCIT"
+"Diffuse Astrocytoma","Diffuse Astrocytoma","NCIT:C7173","NCIT"
+"Anaplastic Astrocytoma","Anaplastic Astrocytoma","NCIT:C9477","NCIT"
+"Oligodendroglioma","Oligodendroglioma","NCIT:C3288","NCIT"
+"Anaplastic Oligodendroglioma","Anaplastic Oligodendroglioma","NCIT:C4326","NCIT"
+"Chromophobe Renal Cell Carcinoma","Chromophobe Renal Cell Carcinoma","NCIT:C4146","NCIT"
+"Head and Neck Squamous Cell Carcinoma","Head and Neck Squamous Cell Carcinoma","NCIT:C34447","NCIT"
+"Papillary Renal Cell Carcinoma","Papillary Renal Cell Carcinoma","NCIT:C6975","NCIT"
+"Chromophobe Renal Cell CarcinomaÂ ",NA,NA,NA
+"Head and Neck Squamous Cell CarcinomaÃŠ",NA,NA,NA
+"Hepatocellular Adenoma","Hepatocellular Adenoma","NCIT:C3758","NCIT"
+"Histiocytic and Dendritic Cell Neoplasms","Histiocytic and Dendritic Cell Neoplasm","NCIT:C9294","NCIT"
+"Oligoastrocytoma","Oligoastrocytoma","NCIT:C4050","NCIT"
+"Anaplastic Oligoastrocytoma","Anaplastic Oligoastrocytoma","NCIT:C6959","NCIT"
+"Astrocytoma","Astrocytoma","NCIT:C60781","NCIT"
+"Hepatocellular Carcinoma plus Intrahepatic Cholangiocarcinoma","carcinoma of liver and intrahepatic biliary tract","MONDO:0018531","MONDO"
+"Fibrolamellar Carcinoma","Fibrolamellar Carcinoma","NCIT:C4131","NCIT"
+"Liver Cancer, NOS",NA,NA,NA
+"Lung Adenocarcinoma","Lung Adenocarcinoma","NCIT:C3512","NCIT"
+"Lung Squamous Cell Carcinoma","Lung Squamous Cell Carcinoma","NCIT:C3493","NCIT"
+"Heptocellular Carcinoma",NA,NA,NA
+"Non-Hodgkin Lymphoma","Non-Hodgkin Lymphoma","NCIT:C3211","NCIT"
+"Anaplastic Large Cell Lymphoma","Anaplastic Large Cell Lymphoma","NCIT:C3720","NCIT"
+"Lymphoid","Lymphoid","NCIT:C13810","NCIT"
+"Pleural Mesothelioma","Pleural Mesothelioma","NCIT:C9351","NCIT"
+"Pleural Mesothelioma, Biphasic Type",NA,NA,NA
+"Pleural Mesothelioma, Sarcomatoid Type",NA,NA,NA
+"Neuroblastoma","Neuroblastoma","NCIT:C3270","NCIT"
+"Mantle Cell Lymphoma","Mantle Cell Lymphoma","NCIT:C4337","NCIT"
+"Myelodysplastic Syndromes","Myelodysplastic Syndrome","NCIT:C3247","NCIT"
+"Chronic Myelomonocytic Leukemia","Chronic Myelomonocytic Leukemia","NCIT:C3178","NCIT"
+"Acral Melanoma","Acral Lentiginous Melanoma","NCIT:C4022","NCIT"
+"Melanoma","Melanoma","NCIT:C3224","NCIT"
+"Anal Squamous Cell Carcinoma","Anal Squamous Cell Carcinoma","NCIT:C9161","NCIT"
+"Oropharynx Squamous Cell Carcinoma","oropharynx squamous cell carcinoma","MONDO:0044704","MONDO"
+"Sinonasal Squamous Cell Carcinoma","Sinonasal Squamous Cell Carcinoma","NCIT:C68611","NCIT"
+"Oral Cavity Squamous Cell Carcinoma","Oral Cavity Squamous Cell Carcinoma","NCIT:C4833","NCIT"
+"Larynx Squamous Cell Carcinoma","Laryngeal Squamous Cell Carcinoma","NCIT:C4044","NCIT"
+"Melanoma of Unknown Primary","Melanoma of Unknown Primary","NCIT:C154473","NCIT"
+"Lentigo Maligna Melanoma","Lentigo Maligna Melanoma","NCIT:C9151","NCIT"
+"Uveal Melanoma","Uveal Melanoma","NCIT:C7712","NCIT"
+"Leiomyosarcoma","Leiomyosarcoma","NCIT:C3158","NCIT"
+"Myeloproliferative Neoplasms","myeloproliferative neoplasm","MONDO:0020076","MONDO"
+"Myeloid Neoplasm","Myeloid Neoplasm","NCIT:C9290","NCIT"
+"High-Grade B-Cell Lymphoma, with MYC and BCL2 and/or BCL6 Rearrangements",NA,NA,NA
+"Follicular Lymphoma","Follicular Lymphoma","NCIT:C3209","NCIT"
+"High-Grade B-Cell Lymphoma, NOS","High Grade B-Cell Lymphoma, Not Otherwise Specified","NCIT:C80291","NCIT"
+"Marginal Zone Lymphoma","Marginal Zone Lymphoma","NCIT:C4341","NCIT"
+"AML with mutated NPM1","Acute Myeloid Leukemia with Mutated NPM1","NCIT:C82431","NCIT"
+"Acute myelomonocytic leukemia","Acute myelomonocytic leukemia","HP:0004820","HP"
+"AML with minimal differentiation","Acute Myeloid Leukemia with Minimal Differentiation","NCIT:C8460","NCIT"
+"Mastocytosis","Mastocytosis","NCIT:C84269","NCIT"
+"AML, NOS","Acute Myeloid Leukemia Not Otherwise Specified","NCIT:C27753","NCIT"
+"AML with t(6;9)(p23;q34.1);DEK-NUP214","Acute Myeloid Leukemia with t(6;9) (p23;q34.1); DEK-NUP214","NCIT:C82423","NCIT"
+"AML with Biallelic Mutations of CEBPA","Acute Myeloid Leukemia with Biallelic Mutations of CEBPA","NCIT:C129782","NCIT"
+"AML with myelodysplasia-related changes","Acute Myeloid Leukemia with Myelodysplasia-Related Changes","NCIT:C7600","NCIT"
+"AML with inv(16)(p13.1q22) or t(16;16)(p13.1;q22); CBFB-MYH11","Acute Myeloid Leukemia with inv(16)(p13.1q22) or t(16;16)(p13.1;q22); CBFB-MYH11","NCIT:C9287","NCIT"
+"AML with maturation","Acute Myeloid Leukemia with Maturation","NCIT:C3250","NCIT"
+"APL with PML-RARA","Childhood Acute Promyelocytic Leukemia with PML-RARA","NCIT:C7968","NCIT"
+"AML with t(8;21)(q22;q22.1);RUNX1-RUNX1T1",NA,NA,NA
+"Therapy-related myeloid neoplasms","therapy-related myeloid neoplasm","MONDO:0006450","MONDO"
+"Acute monoblastic/monocytic leukemia","Acute Monoblastic and Monocytic Leukemia","NCIT:C7318","NCIT"
+"AML with t(9;11)(p22;q23); MLLT3-MLL","Acute Myeloid Leukemia with t(9;11)(p21.3;q23.3); MLLT3-MLL","NCIT:C82403","NCIT"
+"AML with inv(3)(q21.3q26.2) or t(3;3)(q21.3;q26.2); GATA2, MECOM","Acute Myeloid Leukemia with inv(3) (q21.3;q26.2) or t(3;3) (q21.3;q26.2); GATA2, MECOM","NCIT:C82426","NCIT"
+"MDS with Excess Blasts",NA,NA,NA
+"Pure Erythroid Leukemia","Pure Erythroid Leukemia","NCIT:C7467","NCIT"
+"MDS, Unclassifiable","myelodysplastic syndrome","EFO:0000198","EFO"
+"Mixed Phenotype Acute Leukemia, T/Myeloid, NOS","Mixed Phenotype Acute Leukemia, T/Myeloid, Not Otherwise Specified","NCIT:C82213","NCIT"
+"Atypical Chronic Myeloid Leukemia, BCR-ABL1-",NA,NA,NA
+"Acute undifferentiated leukaemia",NA,NA,NA
+"Blastic plasmacytoid dendritic cell neoplasm","blastic plasmacytoid dendritic cell neoplasm","EFO:0010580","EFO"
+"AML without maturation","Acute Myeloid Leukemia without Maturation","NCIT:C3249","NCIT"
+"Essential thrombocythemia","Essential Thrombocythemia","NCIT:C3407","NCIT"
+"Acute megakaryoblastic leukemia","acute megakaryoblastic leukemia","MONDO:0018872","MONDO"
+"MDS with Multilineage Dysplasia",NA,NA,NA
+"MDS with isolated del(5q)",NA,NA,NA
+"Myeloid sarcoma","Myeloid Sarcoma","NCIT:C3520","NCIT"
+"Myeloid Leukemia Associated with Down Syndrome","Myeloid Leukemia Associated with Down Syndrome","NCIT:C43223","NCIT"
+"Primary myelofibrosis","Primary Myelofibrosis","NCIT:C2862","NCIT"
+"AML with Myelodysplasia-Related Changes","Acute Myeloid Leukemia with Myelodysplasia-Related Changes","NCIT:C7600","NCIT"
+"Polycythemia Vera","Polycythemia Vera","NCIT:C3336","NCIT"
+"Mixed Phenotype Acute Leukemia, B/Myeloid, NOS","Mixed Phenotype Acute Leukemia, B/Myeloid, Not Otherwise Specified","NCIT:C82212","NCIT"
+"Therapy-Related Myelodysplastic Syndrome","Therapy-Related Myelodysplastic Syndrome","NCIT:C27722","NCIT"
+"Essential Thrombocythemia","Essential Thrombocythemia","NCIT:C3407","NCIT"
+"MDS with excess blasts-2",NA,NA,NA
+"Polycythaemia Vera Myelofibrosis",NA,NA,NA
+"Primary Myelofibrosis,Overt Fibrotic Stage",NA,NA,NA
+"MDS with Ring Sideroblasts and Multilineage Dysplasia",NA,NA,NA
+"MDS with excess blasts-1",NA,NA,NA
+"MDS with Single Lineage Dysplasia","refractory anemia","EFO:0003802","EFO"
+"MDS with Ring Sideroblasts and Single Lineage Dysplasia",NA,NA,NA
+"AML with inv(16)(p13.1q22) or t(16;16)(p13.1;q22);CBFB-MYH11",NA,NA,NA
+"MDS with Ring Sideroblasts","refractory anemia with ringed sideroblasts","EFO:0003812","EFO"
+"Chronic Myeloid Leukemia, BCR-ABL1+",NA,NA,NA
+"AML with Mutated RUNX1",NA,NA,NA
+"Essential Thrombocythemia Myelofibrosis",NA,NA,NA
+"Acute Leukemias of Ambiguous Lineage",NA,NA,NA
+"Myelodysplastic/Myeloproliferative Neoplasms","Myelodysplastic/Myeloproliferative Neoplasm","EFO:1000388","EFO"
+"MDS/MPN with Ring Sideroblasts and Thrombocytosis","Myelodysplastic/Myeloproliferative Neoplasm with Ring Sideroblasts and Thrombocytosis","NCIT:C82616","NCIT"
+"MDSMPN",NA,NA,NA
+"Peritoneal Mesothelioma","Peritoneal Mesothelioma","NCIT:C7633","NCIT"
+"Other Uterine Tumor",NA,NA,NA
+"Bladder Adenocarcinoma","Bladder Adenocarcinoma","NCIT:C4032","NCIT"
+"Esophagogastric Adenocarcinoma","gastroesophageal junction adenocarcinoma","MONDO:0003219","MONDO"
+"Clear Cell Borderline Ovarian Tumor",NA,NA,NA
+"Endometrial Stromal Sarcoma","endometrial stromal sarcoma","EFO:1000919","EFO"
+"Choriocarcinoma","Choriocarcinoma","NCIT:C2948","NCIT"
+"Atypical Lung Carcinoid",NA,NA,NA
+"Biliary Tract","Biliary Tract","NCIT:C12678","NCIT"
+"Fibrothecoma","fibrothecoma","MONDO:0700036","MONDO"
+"Colon Adenocarcinoma In Situ",NA,NA,NA
+"Combined Small Cell Lung Carcinoma","combined small cell lung carcinoma","MONDO:0003438","MONDO"
+"Gastrointestinal Stromal Tumor","Gastrointestinal Stromal Tumor","NCIT:C3868","NCIT"
+"Cervical Adenocarcinoma","Cervical Adenocarcinoma","NCIT:C4029","NCIT"
+"Intraductal Papillary Mucinous Neoplasm","pancreatic intraductal papillary-mucinous neoplasm","MONDO:0004286","MONDO"
+"Oncocytic Adenoma of the Thyroid","Thyroid Gland Oncocytic Adenoma","NCIT:C6042","NCIT"
+"Salivary Carcinoma","salivary gland carcinoma","MONDO:0000521","MONDO"
+"Anal Gland Adenocarcinoma","anal gland adenocarcinoma","MONDO:0004266","MONDO"
+"Head and Neck Carcinoma, Other",NA,NA,NA
+"Aggressive Digital Papillary Adenocarcinoma","aggressive digital papillary adenocarcinoma","MONDO:0003530","MONDO"
+"Clear Cell Papillary Renal Cell Carcinoma","clear cell papillary renal cell carcinoma","MONDO:0018448","MONDO"
+"Acinar Cell Carcinoma, NOS",NA,NA,NA
+"Epithelioid Trophoblastic Tumor","Epithelioid Trophoblastic Tumor","NCIT:C6900","NCIT"
+"Cellular Schwannoma","Cellular Schwannoma","NCIT:C4724","NCIT"
+"Chondroblastoma","Chondroblastoma","NCIT:C2945","NCIT"
+"Thymic Carcinoma","Thymic Carcinoma","NCIT:C7569","NCIT"
+"Appendiceal Adenocarcinoma","Appendix Adenocarcinoma","NCIT:C7718","NCIT"
+"Chordoma","Chordoma","NCIT:C2947","NCIT"
+"Duodenal Adenocarcinoma","Duodenal Adenocarcinoma","NCIT:C7889","NCIT"
+"Well-Differentiated Neuroendocrine Tumor of the Appendix","neuroendocrine tumor of the appendix, well differentiated, low or intermediate grade","MONDO:0015066","MONDO"
+"Meningothelial Tumor","meningeal neoplasm","EFO:0003851","EFO"
+"Basaloid Penile Squamous Cell Carcinoma","Basaloid Squamous Cell Carcinoma of the Penis","NCIT:C6980","NCIT"
+"Vaginal Adenocarcinoma","Vaginal Adenocarcinoma","NCIT:C7981","NCIT"
+"Large Cell/Anaplastic Medulloblastoma","Large Cell/Anaplastic Medulloblastoma","NCIT:C129436","NCIT"
+"Wilms' Tumor","Wilms Tumor","NCIT:C3267","NCIT"
+"Pheochromocytoma","Pheochromocytoma","HP:0002666","HP"
+"Pineoblastoma","Pineoblastoma","NCIT:C9344","NCIT"
+"High-Grade Neuroepithelial Tumor",NA,NA,NA
+"Angiocentric Glioma","Angiocentric Glioma","NCIT:C92552","NCIT"
+"Retinoblastoma","Retinoblastoma","NCIT:C7541","NCIT"
+"Renal Non-Clear Cell Carcinoma",NA,NA,NA
+"Atypical Choroid Plexus Papilloma","Atypical Choroid Plexus Papilloma","NCIT:C53686","NCIT"
+"High-Grade Serous Ovarian Cancer",NA,NA,NA
+"Unclassified Renal Cell Carcinoma","Unclassified Renal Cell Carcinoma","NCIT:C27892","NCIT"
+"High-Grade Neuroendocrine Carcinoma of the Colon and Rectum",NA,NA,NA
+"Adenocarcinoma of the Gastroesophageal Junction","Gastroesophageal Junction Adenocarcinoma","NCIT:C9296","NCIT"
+"Uterine Endometrioid Carcinoma","Endometrial Endometrioid Adenocarcinoma","EFO:1000233","EFO"
+"Stomach Adenocarcinoma","Gastric Adenocarcinoma","NCIT:C4004","NCIT"
+"Desmoplastic Small-Round-Cell Tumor","desmoplastic small round cell tumor","MONDO:0019373","MONDO"
+"CLEAR CELL ADENOCARCINOMA","Clear Cell Adenocarcinoma","NCIT:C3766","NCIT"
+"Spindle Cell/Sclerosing Rhabdomyosarcoma","Spindle Cell/Sclerosing Rhabdomyosarcoma","NCIT:C121654","NCIT"
+"Epithelioid Sarcoma","Epithelioid Sarcoma","NCIT:C3714","NCIT"
+"Wilms Tumor","Wilms Tumor","NCIT:C3267","NCIT"
+"RENAL CELL CARCINOMA","Renal Cell Carcinoma","NCIT:C9385","NCIT"
+"Yolk Sac Tumor","Yolk Sac Tumor","NCIT:C3011","NCIT"
+"SMALL ROUND BLUE CELL TUMOR",NA,NA,NA
+"GanglioNeuroblastoma","Ganglioneuroblastoma","NCIT:C3790","NCIT"
+"Myxopapillary Ependymoma","Myxopapillary Ependymoma","NCIT:C3697","NCIT"
+"Hepatoblastoma","Hepatoblastoma","NCIT:C3728","NCIT"
+"Anaplastic oligodendroglioma","Anaplastic Oligodendroglioma","NCIT:C4326","NCIT"
+"Sarcoma, NOS","Sarcoma","NCIT:C9118","NCIT"
+"Medullary Thyroid Cancer","medullary thyroid gland carcinoma","MONDO:0015277","MONDO"
+"Fibrolamellar Hepatocelluar Carcinoma",NA,NA,NA
+"Neuroendocrine tumor","Neuroendocrine Tumor","NCIT:C188218","NCIT"
+"SCC head and neck",NA,NA,NA
+"Undifferentiated Sarcoma","undifferentiated sarcoma","EFO:0000730","EFO"
+"Mesenchymal Chondrosarcoma","Mesenchymal Chondrosarcoma","NCIT:C3737","NCIT"
+"Acinar Cell Carcinoma","Acinar Cell Carcinoma","NCIT:C3768","NCIT"
+"Ependymoma","Ependymoma","NCIT:C3017","NCIT"
+"Papillary Thyroid Cancer","papillary thyroid carcinoma","EFO:0000641","EFO"
+"Neuroepithelial Tumor","Neuroepithelial Neoplasm","NCIT:C3787","NCIT"
+"Anaplastic Pleomorphic Xanthoastrocytoma","Anaplastic Pleomorphic Xanthoastrocytoma","NCIT:C129327","NCIT"
+"Malignant Peripheral Nerve Sheath Tumor","Malignant Peripheral Nerve Sheath Tumor","NCIT:C3798","NCIT"
+"Alveolar Rhabdomyosarcoma","Alveolar Rhabdomyosarcoma","NCIT:C3749","NCIT"
+"Immature Teratoma","Immature Teratoma","NCIT:C4286","NCIT"
+"Rosette-forming Glioneuronal Tumor of the Fourth Ventricle","Rosette-Forming Glioneuronal Tumor of the Fourth Ventricle","NCIT:C67559","NCIT"
+"Renal Cell Carcinoma","Renal Cell Carcinoma","NCIT:C9385","NCIT"
+"Infantile Myofibroma","Infantile Myofibroma","NCIT:C180887","NCIT"
+"Undifferentiated Carcinoma","Undifferentiated Carcinoma","NCIT:C3692","NCIT"
+"Diffuse Intrinsic Pontine Glioma","Diffuse Intrinsic Pontine Glioma","NCIT:C94764","NCIT"
+"Germ Cell Tumor","Germ Cell Tumor","NCIT:C3708","NCIT"
+"Inflammatory Myofibroblastic Tumor","Inflammatory Myofibroblastic Tumor","NCIT:C6481","NCIT"
+"Pilocytic Astrocytoma","Pilocytic Astrocytoma","NCIT:C4047","NCIT"
+"Pancreatoblastoma","Pancreatoblastoma","NCIT:C4265","NCIT"
+"SCHMINKE TUMOR/LYMPHOEPITHELIAL CARCINOMA",NA,NA,NA
+"Glioma","Glioma","NCIT:C3059","NCIT"
+"ROUND CELL SARCOMA, NOS",NA,NA,NA
+"Ovarian Fibrothecoma","ovarian fibrothecoma","MONDO:0017802","MONDO"
+"Rhabdomyosarcoma","Rhabdomyosarcoma","NCIT:C3359","NCIT"
+"SUPERFICIAL SPREADING MELANOMA","Low-CSD Melanoma","NCIT:C9152","NCIT"
+"Mature Teratoma","Mature Teratoma","NCIT:C9015","NCIT"
+"BREAST INVASIVE CARCINOMA (BRCA)",NA,NA,NA
+"Juvenile Granulosa Cell Tumor","juvenile type testicular granulosa cell tumor","MONDO:0003741","MONDO"
+"Infantile Fibrosarcoma","Infantile Fibrosarcoma","NCIT:C4244","NCIT"
+"Spindle cell sarcoma","spindle cell sarcoma","MONDO:0002927","MONDO"
+"cervicomedullary Hemangioblastoma",NA,NA,NA
+"Cancer of Unknown Primary",NA,NA,NA
+"RETINOBLASTOMA","Retinoblastoma","NCIT:C7541","NCIT"
+"OVARIAN EPITHELIAL CARCINOMA (OVCA)",NA,NA,NA
+"NEUROENDOCRINE CARCINOMA","Neuroendocrine Carcinoma","NCIT:C3773","NCIT"
+"Synovial Sarcoma","Synovial Sarcoma","NCIT:C3400","NCIT"
+"Craniopharyngioma","Craniopharyngioma","NCIT:C2964","NCIT"
+"Dysgerminoma","Dysgerminoma","HP:0100621","HP"
+"Optic Pathway Glioma","optic pathway glioma","MONDO:0016167","MONDO"
+"Ewing-like sarcoma","Round Cell Sarcoma with EWSR1-non-ETS Fusion","NCIT:C178459","NCIT"
+"Renal Medullary Carcinoma","Kidney Medullary Carcinoma","NCIT:C7572","NCIT"
+"Rhabdoid Tumor","Rhabdoid Tumor","NCIT:C3808","NCIT"
+"MESENCHYMAL NEOPLASM","Mesenchymal Cell Neoplasm","NCIT:C7059","NCIT"
+"HEMANGIOMA","Hemangioma","NCIT:C3085","NCIT"
+"PROXIMAL-TYPE EPITHELIOID SARCOMA (PTES)",NA,NA,NA
+"PLEUROPULMONARY BLASTOMA (PPB)",NA,NA,NA
+"Poorly Differentiated Carcinoma",NA,NA,NA
+"Central Neurocytoma","Central Neurocytoma","NCIT:C3791","NCIT"
+"Ganglioneuroma","Ganglioneuroma","NCIT:C3049","NCIT"
+"Wilms tumor","Wilms tumor","MONDO:0006058","MONDO"
+"MIXED GERM CELL TUMOR","Mixed Germ Cell Tumor","NCIT:C4290","NCIT"
+"Alveolar Soft Part Sarcoma","Alveolar Soft Part Sarcoma","NCIT:C3750","NCIT"
+"Sclerosing Rhabdomyosarcoma","Sclerosing Rhabdomyosarcoma","NCIT:C121655","NCIT"
+"Teratoma","Teratoma","NCIT:C3403","NCIT"
+"Germ cell tumor","germ cell tumor","EFO:0000514","EFO"
+"Desmoid Fibromatosis","Desmoid Fibromatosis","NCIT:C9182","NCIT"
+"Liposarcoma","Liposarcoma","NCIT:C3194","NCIT"
+"Dysembryoplastic Neuroepithelial Tumor","Dysembryoplastic Neuroepithelial Tumor","NCIT:C9505","NCIT"
+"Diffuse Midline Glioma","Diffuse Midline Glioma","NCIT:C182151","NCIT"
+"Myoepithelial Carcinoma","Malignant Myoepithelioma","NCIT:C7596","NCIT"
+"Epithelioid Mesothelioma","Epithelioid Mesothelioma","NCIT:C7985","NCIT"
+"Dermatofibrosarcoma Protuberans","Dermatofibrosarcoma Protuberans","NCIT:C4683","NCIT"
+"Sertoli-Leydig Cell Tumor","Sertoli-Leydig cell tumor","MONDO:0002479","MONDO"
+"Myxoid liposarcoma","Myxoid liposarcoma","HP:0012268","HP"
+"Carcinoid Tumor","Carcinoid Tumor","NCIT:C2915","NCIT"
+"Castleman's Disease","Castleman Disease","NCIT:C3056","NCIT"
+"Atypical Granular Cell Tumor",NA,NA,NA
+"Neurocutaneous Melanocytosis","neurocutaneous melanocytosis","MONDO:0009578","MONDO"
+"Anaplastic astrocytoma","anaplastic astrocytoma","EFO:0002499","EFO"
+"Lipofibromatosis-like Neural tumor","NTRK-Rearranged Spindle Cell Neoplasm","NCIT:C178426","NCIT"
+"Glioneuronal Tumor",NA,NA,NA
+"Atypical Spindled and Epithelioid Melanocytic Proliferation",NA,NA,NA
+"Peripheral Medulloepithelioma",NA,NA,NA
+"Epithelioid cell tumor",NA,NA,NA
+"Diffuse Leptomeningeal  Glioneuronal Tumor",NA,NA,NA
+"PERIPHERAL NEUROECTODERMAL TUMOR","Peripheral Primitive Neuroectodermal Tumor","NCIT:C9341","NCIT"
+"Epithelioid Fibrosarcoma",NA,NA,NA
+"Nasopharyngeal Carcinoma","Nasopharyngeal Carcinoma","NCIT:C3871","NCIT"
+"Adenocarcinoma","Adenocarcinoma","NCIT:C2852","NCIT"
+"CNS Embryonal tumor, NOS","Central Nervous System Embryonal Tumor, Not Otherwise Specified","NCIT:C5398","NCIT"
+"Meningioma","Meningioma","NCIT:C3230","NCIT"
+"Pilomyxoid astrocytoma","Pilomyxoid Astrocytoma","NCIT:C40315","NCIT"
+"Anaplastic ependymoma","Anaplastic Ependymoma","NCIT:C4049","NCIT"
+"Serous Ovarian Cancer","ovarian serous adenocarcinoma","MONDO:0005211","MONDO"
+"Pancreatic Neuroendocrine Tumor","Pancreatic Neuroendocrine Tumor","NCIT:C27720","NCIT"
+"Undifferentiated Carcinoma of the Pancreas","Undifferentiated Pancreatic Carcinoma","EFO:1000606","EFO"
+"Pancreas","Pancreas","NCIT:C12393","NCIT"
+"Acinar Cell Carcinoma of the Pancreas","Pancreatic Acinar Cell Carcinoma","NCIT:C7977","NCIT"
+"Prostate Neuroendocrine Carcinoma","Prostate Neuroendocrine Carcinoma","NCIT:C158912","NCIT"
+"Castration-Resistant Prostate Cancer","Castration-Resistant Prostate Carcinoma","NCIT:C130234","NCIT"
+"Serous Cystadenoma of the Pancreas","Pancreatic Serous Cystadenoma","NCIT:C5712","NCIT"
+"Mucinous Cystic Neoplasm","pancreatic mucinous-cystic neoplasm","MONDO:0044879","MONDO"
+"Solid Pseudopapillary Neoplasm of the Pancreas","Solid Pseudopapillary Neoplasm of the Pancreas","NCIT:C37212","NCIT"
+"Lung Adenosquamous Carcinoma","Lung Adenosquamous Carcinoma","NCIT:C9133","NCIT"
+"Large Cell Lung Carcinoma","Large cell lung carcinoma","HP:0030360","HP"
+"Large Cell Neuroendocrine Carcinoma","Large Cell Neuroendocrine Carcinoma","NCIT:C6875","NCIT"
+"Bladder Squamous Cell Carcinoma","Bladder Squamous Cell Carcinoma","NCIT:C4031","NCIT"
+"Ovarian Epithelial Tumor","Ovarian Epithelial Tumor","NCIT:C4381","NCIT"
+"Mucinous Stomach Adenocarcinoma","Mucinous Gastric Adenocarcinoma","EFO:1000386","EFO"
+"Papillary Stomach Adenocarcinoma","Gastric Papillary Adenocarcinoma","EFO:1000276","EFO"
+"Diffuse Type Stomach Adenocarcinoma","diffuse gastric adenocarcinoma","EFO:0000402","EFO"
+"Intestinal Type Stomach Adenocarcinoma","gastric intestinal type adenocarcinoma","EFO:0000504","EFO"
+"Tubular Stomach Adenocarcinoma","gastric tubular adenocarcinoma","EFO:1000030","EFO"
+"Follicular Thyroid Cancer","follicular thyroid carcinoma","EFO:0000501","EFO"
+"Desmoplastic/Nodular Medulloblastoma","Desmoplastic/Nodular Medulloblastoma","NCIT:C4956","NCIT"
+"Adenosquamous Carcinoma of the Pancreas","Pancreatic Adenosquamous Carcinoma","NCIT:C5721","NCIT"
+"Acute myeloid leukemia","Acute myeloid leukemia","HP:0004808","HP"
+"Adamantinoma","Adamantinoma","NCIT:C7644","NCIT"
+"Fibroblastic Osteosarcoma","Fibroblastic Osteosarcoma","NCIT:C4020","NCIT"
+"Osteoblastic Osteosarcoma","Osteoblastic Osteosarcoma","NCIT:C53953","NCIT"
+"Myxoid Chondrosarcoma","myxoid chondrosarcoma","MONDO:0003681","MONDO"
+"Follicular lymphoma","Follicular lymphoma","HP:0033125","HP"
+"Nodal Marginal Zone Lymphoma","Nodal Marginal Zone Lymphoma","NCIT:C8863","NCIT"
+"Burkitt lymphoma","Burkitt lymphoma","HP:0030080","HP"
+"Diffse large B-cell lymphoma",NA,NA,NA
+"Polycythemia vera","Polycythemia Vera","NCIT:C3336","NCIT"
+"Intracholecystic Papillary Neoplasm",NA,NA,NA
+"Lung Adenocarcinoma In Situ","Lung Adenocarcinoma In Situ","NCIT:C136486","NCIT"
+"Ciliated Muconodular Papillary Tumor of the Lung",NA,NA,NA
+"Posttransplant Lymphoproliferative Disorders",NA,NA,NA
+"Primary Mediastinal (Thymic) Large B-Cell Lymphoma","Primary Mediastinal (Thymic) Large B-Cell Lymphoma","NCIT:C9280","NCIT"
+"Uterine Serous Carcinoma/Uterine Papillary Serous Carcinoma","uterine corpus serous adenocarcinoma","MONDO:0003629","MONDO"
+"Hepatocellular carcinoma","Hepatocellular carcinoma","HP:0001402","HP"
+"Miscellaneous Neuroepithelial Tumor",NA,NA,NA
+"Paraganglioma","Paraganglioma","NCIT:C3308","NCIT"
+"Acute myeloid leukemias",NA,NA,NA
+"Atypical teratoid/rhabdoid tumor","atypical teratoid rhabdoid tumor","EFO:1002008","EFO"
+"High-Grade Glioma, NOS",NA,NA,NA
+"Ewing's sarcoma","Ewing sarcoma","EFO:0000174","EFO"
+"Wilms' tumors",NA,NA,NA
+"Adrenocortical carcinoma","Adrenocortical carcinoma","HP:0006744","HP"
+"Embryonal Tumor","Embryonal Neoplasm","NCIT:C3264","NCIT"
+"Pilocytic astrocytoma","Pilocytic astrocytoma","HP:0033680","HP"
+"Dedifferentiated Liposarcoma","Dedifferentiated Liposarcoma","NCIT:C3704","NCIT"
+"Undifferentiated Pleomorphic Sarcoma/Malignant Fibrous Histiocytoma/High-Grade Spindle Cell Sarcoma","undifferentiated pleomorphic sarcoma","EFO:1001972","EFO"
+"Soft Tissue","Soft Tissue","NCIT:C12471","NCIT"
+"Myxofibrosarcoma","Myxofibrosarcoma","NCIT:C6496","NCIT"
+"Pleomorphic Liposarcoma","Pleomorphic Liposarcoma","NCIT:C3705","NCIT"
+"Desmoid/Aggressive Fibromatosis","Desmoid-type fibromatosis","EFO:0009907","EFO"
+"Soft Tissue Sarcoma","Soft Tissue Sarcoma","NCIT:C9306","NCIT"
+"Signet Ring Cell Carcinoma of the Stomach","Signet Ring Cell Gastric Adenocarcinoma","EFO:1000524","EFO"
+"Non-Seminomatous Germ Cell Tumor","Nongerminomatous Germ Cell Tumor","NCIT:C121619","NCIT"
+"Seminoma","Seminoma","NCIT:C9309","NCIT"
+"Non-Seminomatous Germ Cell Tumo",NA,NA,NA
+"Embryonal Carcinoma","Embryonal Carcinoma","NCIT:C3752","NCIT"
+"Thymoma","Thymoma","NCIT:C3411","NCIT"
+"Thyroid Cancer, NOS","Thyroid Gland Carcinoma","NCIT:C4815","NCIT"
+"Well-Differentiated Thyroid Cancer","differentiated thyroid carcinoma","EFO:1002017","EFO"
+"Uterine Carcinosarcoma/Uterine Malignant Mixed Mullerian Tumor","Uterine Carcinosarcoma","EFO:1000613","EFO"
+"Small Cell Carcinoma of the Ovary","Ovarian Small Cell Carcinoma","EFO:1000431","EFO"
+"Esophagogastric Cancer",NA,NA,NA
+"Upper Tract Urothelial Carcinoma","upper tract urothelial carcinoma","MONDO:0020659","MONDO"
+"Uterine Leiomyosarcoma","Uterine leiomyosarcoma","HP:0002891","HP"
+"Rhabdoid Cancer","rhabdoid tumor","MONDO:0002728","MONDO"
+"Uterine Clear Cell Carcinoma",NA,NA,NA
+"Squamous Cell Carcinoma of the Vulva/Vagina","Vaginal Squamous Cell Carcinoma","EFO:1000620","EFO"
+"Histiocytic Sarcoma","Histiocytic Sarcoma","NCIT:C27349","NCIT"
+"Mature T and NK Neoplasms","neoplasm of mature T-cells or NK-cells","EFO:0002426","EFO"
+"Hemophagocytic Lymphohistiocytosis","Hemophagocytic Lymphohistiocytosis","NCIT:C34792","NCIT"
+"Perihilar Cholangiocarcinoma","Hilar Cholangiocarcinoma","NCIT:C36077","NCIT"
+"CNS/Brain",NA,NA,NA
+"Ovary/Fallopian Tube",NA,NA,NA
+"Fibrosarcoma","Fibrosarcoma","NCIT:C3043","NCIT"
+"Lung","Lung","NCIT:C12468","NCIT"
+"Giant Cell Tumor of Bone","Giant Cell Tumor of Bone","NCIT:C121932","NCIT"
+"Mucinous Ovarian Cancer","mucinous ovarian cancer","MONDO:0024282","MONDO"
+"Clear Cell Ovarian Cancer","ovarian clear cell tumor","MONDO:0021144","MONDO"
+"Small Cell Carcinoma of the Stomach","Gastric Small Cell Neuroendocrine Carcinoma","NCIT:C6764","NCIT"
+"Mucoepidermoid Carcinoma","Mucoepidermoid Carcinoma","NCIT:C3772","NCIT"
+"Endometrioid Ovarian Cancer","Ovarian Endometrioid Adenocarcinoma","EFO:1000416","EFO"
+"Mixed Ovarian Carcinoma","ovary mixed epithelial carcinoma","MONDO:0004031","MONDO"
+"Gliosarcoma","Gliosarcoma","NCIT:C3796","NCIT"
+"Adenosquamous Carcinoma of the Stomach","Gastric Adenosquamous Carcinoma","NCIT:C5474","NCIT"
+"Undifferentiated Stomach Adenocarcinoma","undifferentiated carcinoma of stomach","MONDO:0018504","MONDO"
+"Adult T-Cell Leukemia/Lymphoma","Adult T-Cell Leukemia/Lymphoma","NCIT:C3184","NCIT"
+"Uterine Sarcoma/Mesenchymal","uterine corpus sarcoma","MONDO:0005210","MONDO"
+"Hypopharynx Squamous Cell Carcinoma","hypopharynx squamous cell carcinoma","MONDO:0044638","MONDO"
+"Granulosa Cell Tumor","Granulosa Cell Tumor","NCIT:C3070","NCIT"
+"Mucoepidermoid Carcinoma of the Lung","pulmonary mucoepidermoid carcinoma","EFO:0006740","EFO"
+"Gallbladder Adenocarcinoma, NOS",NA,NA,NA
+"Brenner Tumor","Brenner Tumor","NCIT:C39954","NCIT"
+"Prostate Small Cell Carcinoma","Prostate Small Cell Carcinoma","EFO:1000499","EFO"
+"Small Intestinal Carcinoma","Small Intestinal Carcinoma","NCIT:C7724","NCIT"
+"Low-Grade Serous Ovarian Cancer",NA,NA,NA
+"Anaplastic Thyroid Cancer","Thyroid Gland Anaplastic Carcinoma","NCIT:C3878","NCIT"
+"Kidney","Kidney","NCIT:C12415","NCIT"
+"Thyroid","Thyroid Gland","NCIT:C12400","NCIT"
+"Peripheral T-Cell lymphoma, NOS","Peripheral T-Cell Lymphoma, Not Otherwise Specified","NCIT:C4340","NCIT"
+"T-Cell Large Granular Lymphocytic Leukemia","T-Cell Large Granular Lymphocyte Leukemia","NCIT:C4664","NCIT"
+"Lung Carcinoid","lung carcinoid tumor","EFO:1000037","EFO"
+"Merkel Cell Carcinoma","Merkel Cell Carcinoma","NCIT:C9231","NCIT"
+"Hairy Cell Leukemia","Hairy Cell Leukemia","NCIT:C7402","NCIT"
+"Natural Killer (NK) Cell Lymphoblastic Leukemia/Lymphoma",NA,NA,NA
+"Pleura","Pleura","NCIT:C12469","NCIT"
+"Primitive Neuroectodermal Tumor","Primitive Neuroectodermal Tumor","NCIT:C3716","NCIT"
+"Small Cell Carcinoma of the Cervix","Cervical Small Cell Carcinoma","EFO:1000171","EFO"
+"Ovarian Germ Cell Tumor","Ovarian Germ Cell Tumor","NCIT:C3873","NCIT"
+"Vulva/Vagina",NA,NA,NA
+"Well-Differentiated Liposarcoma","well-differentiated liposarcoma","EFO:0000736","EFO"
+"Lymphoid Neoplasm","lymphoid neoplasm","EFO:0001642","EFO"
+"Primary Effusion Lymphoma","Primary Effusion Lymphoma","NCIT:C6915","NCIT"
+"Thymic Epithelial Tumor","Thymic Epithelial Neoplasm","NCIT:C6450","NCIT"
+"Anaplastic Thyroid Carcinoma","Anaplastic thyroid carcinoma","HP:0011779","HP"
+"Poorly Differentiated Thyroid Carcinoma","Poorly Differentiated Thyroid Gland Carcinoma","EFO:1000489","EFO"
+"Urachal Carcinoma","Bladder Urachal Carcinoma","NCIT:C39842","NCIT"
+"Urethral Adenocarcinoma","Urethral Adenocarcinoma","NCIT:C6167","NCIT"
+"Small Bowel Well-Differentiated Neuroendocrine Tumor",NA,NA,NA
+"Small Bowel Cancer","Small Intestinal Carcinoma","NCIT:C7724","NCIT"
+"Urethral Urothelial Carcinoma","Urethral Urothelial Carcinoma","NCIT:C6166","NCIT"
+"Inflammatory Breast Cancer","inflammatory breast carcinoma","EFO:1000984","EFO"
+"Extramammary Paget Disease","Extramammary Paget Disease","EFO:1000249","EFO"
+"Salivary Duct Carcinoma","Salivary Duct Carcinoma","NCIT:C5904","NCIT"
+"Uterine Undifferentiated Carcinoma",NA,NA,NA
+"Mixed Germ Cell Tumor","Mixed Germ Cell Tumor","NCIT:C4290","NCIT"
+"Uterine Perivascular Epithelioid Cell Tumor","uterine corpus perivascular epithelioid cell tumor","MONDO:0004221","MONDO"
+"Gastric Type Mucinous Carcinoma",NA,NA,NA
+"Testicular Mesothelioma","Testicular mesothelioma","HP:0100005","HP"
+"Breast Invasive Cancer, NOS",NA,NA,NA
+"Uterine Mixed Endometrial Carcinoma",NA,NA,NA
+"Urethral Squamous Cell Carcinoma","Urethral Squamous Cell Carcinoma","NCIT:C6165","NCIT"
+"Clear Cell Odontogenic Carcinoma","Clear Cell Odontogenic Carcinoma","NCIT:C54300","NCIT"
+"Acinic Cell Carcinoma","Acinar Cell Carcinoma","NCIT:C3768","NCIT"
+"Ossifying Fibromyxoid Tumor","Ossifying Fibromyxoid Tumor","NCIT:C6582","NCIT"
+"Solitary Fibrous Tumor/Hemangiopericytoma","solitary fibrous tumor","MONDO:0016238","MONDO"
+"Skin Adnexal Carcinoma","skin appendage carcinoma","EFO:1001183","EFO"
+"Plasmacytoid/Signet Ring Cell Bladder Carcinoma","plasmacytoid variant infiltrating bladder urothelial carcinoma","MONDO:0004416","MONDO"
+"Anaplastic Ependymoma","Anaplastic Ependymoma","NCIT:C4049","NCIT"
+"Sweat Gland Carcinoma/Apocrine Eccrine Carcinoma","sweat gland carcinoma","EFO:0005591","EFO"
+"Follicular Dendritic Cell Sarcoma","Follicular Dendritic Cell Sarcoma","NCIT:C9281","NCIT"
+"Sex Cord Stromal Tumor","ovarian sex cord-stromal tumor","MONDO:0021657","MONDO"
+"Intimal Sarcoma","Intimal Sarcoma","EFO:1000305","EFO"
+"Myxoid/Round-Cell Liposarcoma","myxoid/round cell liposarcoma","MONDO:0020561","MONDO"
+"Chondroblastic Osteosarcoma","Chondroblastic Osteosarcoma","NCIT:C4021","NCIT"
+"Clear Cell Sarcoma","clear cell sarcoma","EFO:0008498","EFO"
+"Uterine Neuroendocrine Carcinoma",NA,NA,NA
+"Erdheim-Chester Disease","Erdheim-Chester Disease","NCIT:C53972","NCIT"
+"Hurthle Cell Thyroid Cancer",NA,NA,NA
+"Mucinous Adenocarcinoma of the Appendix","mucinous adenocarcinoma of the appendix","MONDO:0018330","MONDO"
+"Anorectal Mucosal Melanoma",NA,NA,NA
+"Gastrointestinal Neuroendocrine Tumors","digestive system neuroendocrine tumor, grade 1/2","MONDO:0000386","MONDO"
+"Well-Differentiated Neuroendocrine Tumors of the Stomach","gastric neuroendocrine tumor, well differentiated, low or intermediate grade","MONDO:0015062","MONDO"
+"Small Cell Osteosarcoma","Small Cell Osteosarcoma","NCIT:C4023","NCIT"
+"Penile Squamous Cell Carcinoma","squamous cell carcinoma of penis","MONDO:0018352","MONDO"
+"Translocation-Associated Renal Cell Carcinoma","Renal Cell Carcinoma Associated with Xp11.2 Translocations/TFE3 Gene Fusions","EFO:1000508","EFO"
+"Spindle Cell Rhabdomyosarcoma","Spindle Cell Rhabdomyosarcoma","NCIT:C6519","NCIT"
+"Uterine Smooth Muscle Tumor of Uncertain Malignant Potential",NA,NA,NA
+"High-Grade Endometrial Stromal Sarcoma",NA,NA,NA
+"Mucosal Melanoma of the Vulva/Vagina","Vaginal Melanoma","EFO:1000619","EFO"
+"Hemangiopericytoma of the Central Nervous System","meninges hemangiopericytoma","MONDO:0003223","MONDO"
+"Poorly Differentiated Non-Small Cell Lung Cancer",NA,NA,NA
+"Renal Angiomyolipoma","Renal angiomyolipoma","HP:0006772","HP"
+"Perivascular Epithelioid Cell Tumor","PEComa","EFO:1000464","EFO"
+"Sarcomatoid Carcinoma of the Lung","Lung Sarcomatoid Carcinoma","EFO:1000336","EFO"
+"Head and Neck Squamous Cell Carcinoma of Unknown Primary",NA,NA,NA
+"Low-Grade Fibromyxoid Sarcoma","Low Grade Fibromyxoid Sarcoma","NCIT:C45202","NCIT"
+"Extraskeletal Myxoid Chondrosarcoma","Extraskeletal Myxoid Chondrosarcoma","NCIT:C27502","NCIT"
+"Ovarian Seromucinous Carcinoma","Ovarian Seromucinous Carcinoma","NCIT:C40090","NCIT"
+"Anaplastic Meningioma","anaplastic meningioma","MONDO:0020635","MONDO"
+"Uterine Myxoid Leiomyosarcoma","uterine corpus myxoid leiomyosarcoma","MONDO:0003928","MONDO"
+"Sclerosing Epithelioid Fibrosarcoma","Sclerosing Epithelioid Fibrosarcoma","NCIT:C49027","NCIT"
+"Serous Borderline Ovarian Tumor, Micropapillary",NA,NA,NA
+"Renal Mucinous Tubular Spindle Cell Carcinoma","mucinous tubular and spindle renal cell carcinoma","MONDO:0003011","MONDO"
+"Neuroendocrine Tumor, NOS",NA,NA,NA
+"Uterine Epithelioid Leiomyosarcoma","uterine corpus epithelioid leiomyosarcoma","MONDO:0003782","MONDO"
+"Undifferentiated Uterine Sarcoma","Uterine Corpus Undifferentiated Sarcoma","NCIT:C8972","NCIT"
+"Mixed Cervical Carcinoma",NA,NA,NA
+"Neuroendocrine Carcinoma, NOS","Neuroendocrine Carcinoma","NCIT:C3773","NCIT"
+"Ovarian Cancer, Other",NA,NA,NA
+"Pineal Parenchymal Tumor of Intermediate Differentiation","Pineal Parenchymal Tumor of Intermediate Differentiation","NCIT:C6967","NCIT"
+"Schwannoma","Schwannoma","NCIT:C3269","NCIT"
+"Melanotic Schwannoma","Melanotic Schwannoma","NCIT:C6970","NCIT"
+"Uterine Dedifferentiated Carcinoma",NA,NA,NA
+"Hemangioblastoma","Hemangioblastoma","NCIT:C3801","NCIT"
+"Pleomorphic Rhabdomyosarcoma","Pleomorphic Rhabdomyosarcoma","NCIT:C4258","NCIT"
+"Epithelial-Myoepithelial Carcinoma","Epithelial-Myoepithelial Carcinoma","NCIT:C4199","NCIT"
+"Uterine Sarcoma, Other",NA,NA,NA
+"Low-Grade Glioma, NOS",NA,NA,NA
+"Dermatofibroma","Skin Fibrous Histiocytoma","NCIT:C6801","NCIT"
+"Goblet Cell Carcinoid of the Appendix","goblet cell carcinoma","MONDO:0018017","MONDO"
+"Head and Neck Neuroendocrine Carcinoma","Head and Neck Neuroendocrine Carcinoma","NCIT:C160980","NCIT"
+"Sweat Gland Adenocarcinoma",NA,NA,NA
+"Mucosal Melanoma of the Urethra",NA,NA,NA
+"Squamous Cell Carcinoma, NOS","Squamous Cell Carcinoma","NCIT:C2929","NCIT"
+"Head and Neck Mucosal Melanoma",NA,NA,NA
+"Well-Differentiated Neuroendocrine Tumor of the Rectum",NA,NA,NA
+"Signet Ring Cell Adenocarcinoma of the Colon and Rectum",NA,NA,NA
+"Soft Tissue Myoepithelial Carcinoma","malignant myoepithelioma","MONDO:0003158","MONDO"
+"Signet Ring Cell Type of the Appendix",NA,NA,NA
+"Salivary Adenocarcinoma",NA,NA,NA
+"Pancreatobiliary Ampullary Carcinoma",NA,NA,NA
+"Lymphoepithelioma-like Carcinoma of the Lung","Lymphoepithelioma-Like Lung Carcinoma","EFO:1000340","EFO"
+"Mammary Analogue Secretory Carcinoma of Salivary Gland Origin",NA,NA,NA
+"Systemic Mastocytosis","Systemic Mastocytosis","NCIT:C9235","NCIT"
+"Uterine Adenosarcoma","uterine corpus adenosarcoma","MONDO:0002878","MONDO"
+"Odontogenic Carcinoma","Odontogenic Carcinoma","NCIT:C173720","NCIT"
+"Langerhans Cell Histiocytosis","Langerhans Cell Histiocytosis","NCIT:C3107","NCIT"
+"Waldenstrom Macroglobulinemia","Waldenstrom Macroglobulinemia","NCIT:C80307","NCIT"
+"Olfactory Neuroblastoma","Olfactory Neuroblastoma","NCIT:C3789","NCIT"
+"Lung Neuroendocrine Tumor","pulmonary neuroendocrine tumor","EFO:0005220","EFO"
+"Granular Cell Tumor","Granular Cell Tumor","NCIT:C3474","NCIT"
+"Teratoma with Malignant Transformation","Teratoma with Malignant Transformation","EFO:1000563","EFO"
+"Pituicytoma","Pituicytoma","EFO:1000477","EFO"
+"Serous Borderline Ovarian Tumor",NA,NA,NA
+"Urachal Adenocarcinoma","bladder urachal adenocarcinoma","MONDO:0004331","MONDO"
+"Sarcomatoid Carcinoma of the Urinary Bladder","Infiltrating Bladder Urothelial Carcinoma Sarcomatoid Variant","EFO:1000303","EFO"
+"Epithelioid Hemangioendothelioma","Epithelioid Hemangioendothelioma","NCIT:C3800","NCIT"
+"Anaplastic Ganglioglioma","Anaplastic Ganglioglioma","NCIT:C4717","NCIT"
+"Solitary Fibrous Tumor of the Central Nervous System",NA,NA,NA
+"Collecting Duct Renal Cell Carcinoma","Collecting Duct Carcinoma","NCIT:C6194","NCIT"
+"Spindle Cell Carcinoma of the Lung",NA,NA,NA
+"Astroblastoma","astroblastoma","MONDO:0016707","MONDO"
+"Steroid Cell Tumor, NOS",NA,NA,NA
+"Sebaceous Carcinoma","Sebaceous Carcinoma","NCIT:C40310","NCIT"
+"Atypical Meningioma","Atypical Meningioma","NCIT:C4723","NCIT"
+"Angioimmunoblastic T-Cell Lymphoma","Angioimmunoblastic T-Cell Lymphoma","NCIT:C7528","NCIT"
+"Extraventricular Neurocytoma","Extraventricular Neurocytoma","NCIT:C92555","NCIT"
+"Low-Grade Endometrial Stromal Sarcoma",NA,NA,NA
+"Malignant Lymphoma","lymphoma","EFO:0000574","EFO"
+"Adenocarcinoma, NOS","Adenocarcinoma","NCIT:C2852","NCIT"
+"Adrenocortical Adenoma","Adrenocortical adenoma","HP:0008256","HP"
+"Secondary Osteosarcoma","Secondary Osteosarcoma","NCIT:C53704","NCIT"
+"Histiocytic Dendritic Cell Sarcoma",NA,NA,NA
+"Pleomorphic Xanthoastrocytoma","Pleomorphic Xanthoastrocytoma","NCIT:C4323","NCIT"
+"Renal Oncocytoma","Renal oncocytoma","HP:0011798","HP"
+"Poorly Differentiated Carcinoma of the Stomach",NA,NA,NA
+"Sinonasal Undifferentiated Carcinoma","Sinonasal Undifferentiated Carcinoma","NCIT:C54294","NCIT"
+"Pleomorphic Carcinoma of the Lung",NA,NA,NA
+"Cervical Clear Cell Carcinoma","Cervical Clear Cell Adenocarcinoma","EFO:1000163","EFO"
+"Mesonephric Carcinoma","Mesonephric Adenocarcinoma","NCIT:C4072","NCIT"
+"High-Grade Neuroendocrine Carcinoma of the Ovary",NA,NA,NA
+"Intestinal Type Mucinous Carcinoma","intestinal variant cervical mucinous adenocarcinoma","MONDO:0004537","MONDO"
+"Myofibroma","Myofibroma","NCIT:C7052","NCIT"
+"Small Cell Carcinoma of Unknown Primary",NA,NA,NA
+"Mucosal Melanoma of the Esophagus","esophageal melanoma","MONDO:0001192","MONDO"
+"Dedifferentiated Chondrosarcoma","Dedifferentiated Chondrosarcoma","NCIT:C6476","NCIT"
+"Basaloid Large Cell Carcinoma of the Lung","basaloid large cell lung carcinoma","MONDO:0004087","MONDO"
+"Small Cell Bladder Cancer","Bladder Small Cell Neuroendocrine Carcinoma","EFO:1000129","EFO"
+"Poorly Differentiated Carcinoma, NOS",NA,NA,NA
+"Glomangiosarcoma","malignant glomus tumor","MONDO:0003340","MONDO"
+"Salivary Carcinoma, Other",NA,NA,NA
+"Proximal-Type Epithelioid Sarcoma","Proximal-Type Epithelioid Sarcoma","NCIT:C27472","NCIT"
+"Classical Hodgkin Lymphoma","Classic Hodgkin Lymphoma","NCIT:C7164","NCIT"
+"Sinonasal Adenocarcinoma","Sinonasal Adenocarcinoma","NCIT:C160976","NCIT"
+"Breast Ductal Carcinoma In Situ","Breast Ductal Carcinoma In Situ","NCIT:C2924","NCIT"
+"Myxoma","Myxoma","NCIT:C6577","NCIT"
+"Medullary Carcinoma of the Colon","colon medullary carcinoma","MONDO:0000892","MONDO"
+"Renal Clear Cell Carcinoma with Sarcomatoid Features",NA,NA,NA
+"Pituitary Adenoma","Pituitary adenoma","HP:0002893","HP"
+"Extranodal Marginal Zone Lymphoma of Mucosa-Associated Lymphoid Tissue (MALT lymphoma)",NA,NA,NA
+"Primary Neuroepithelial Tumor","neuroepithelial neoplasm","MONDO:0021193","MONDO"
+"Inflammatory Myofibroblastic Lung Tumor","Lung Inflammatory Myofibroblastic Tumor","EFO:1000333","EFO"
+"Spitzoid Melanoma","Spitz Melanoma","NCIT:C165497","NCIT"
+"Low-Grade Neuroepithelial Tumor",NA,NA,NA
+"Primary CNS Melanoma",NA,NA,NA
+"FH-Deficient Renal Cell Carcinoma","Fumarate Hydratase-Deficient Renal Cell Carcinoma","NCIT:C164156","NCIT"
+"Cancer of Unknown Primary, NOS",NA,NA,NA
+"Undifferentiated Malignant Neoplasm","Undifferentiated Malignant Neoplasm","NCIT:C36051","NCIT"
+"Malignant Tumor","Malignant Neoplasm","NCIT:C9305","NCIT"
+"Breast Invasive Carcinoma (NOS)",NA,NA,NA
+"Endometrioid Carcinoma","endometrioid carcinoma","EFO:0000466","EFO"
+"Germ Cell Tumor with Somatic-Type Malignancy",NA,NA,NA
+"Round Cell Sarcoma, NOS",NA,NA,NA
+"Sarcomatoid Renal Cell Carcinoma","Sarcomatoid Renal Cell Carcinoma","NCIT:C27893","NCIT"
+"Periosteal Osteosarcoma","Periosteal Osteosarcoma","NCIT:C8970","NCIT"
+"Basal Cell Adenocarcinoma","Salivary Gland Basal Cell Adenocarcinoma","NCIT:C3678","NCIT"
+"Telangiectatic Osteosarcoma","Telangiectatic Osteosarcoma","NCIT:C3902","NCIT"
+"Pleuropulmonary Blastoma","Pleuropulmonary Blastoma","NCIT:C5669","NCIT"
+"Ganglioneuroblastoma","Ganglioneuroblastoma","NCIT:C3790","NCIT"
+"Low-Grade Glioma (NOS)",NA,NA,NA
+"Plasmacytoid/Signet Ring Cell Bladder CarcinomaÂ ",NA,NA,NA
+"B-Cell Acute Lymphoid Leukemia",NA,NA,NA
+"T-Cell Acute Lymphoid Leukemia",NA,NA,NA
+"Acute Lymphoblastic Leukemia","Acute Lymphoblastic Leukemia","NCIT:C3167","NCIT"
+"Leukemia","Leukemia","NCIT:C3161","NCIT"
+"AML with Mutated NPM1","Acute Myeloid Leukemia with Mutated NPM1","NCIT:C82431","NCIT"
+"AML with Minimal Differentiation","Acute Myeloid Leukemia with Minimal Differentiation","NCIT:C8460","NCIT"
+"Acute Monoblastic/Monocytic Leukemia","Acute Monoblastic and Monocytic Leukemia","NCIT:C7318","NCIT"
+"Therapy-Related Myeloid Neoplasms","Therapy-Related Myeloid Neoplasm","NCIT:C27912","NCIT"
+"AML with Maturation","Acute Myeloid Leukemia with Maturation","NCIT:C3250","NCIT"
+"AML with Recurrent Genetic Abnormalities","Acute Myeloid Leukemia with Recurrent Genetic Abnormalities","NCIT:C7175","NCIT"
+"Blastic Plasmacytoid Dendritic Cell Neoplasm","Blastic Plasmacytoid Dendritic Cell Neoplasm","NCIT:C7203","NCIT"
+"AML without Maturation","Acute Myeloid Leukemia without Maturation","NCIT:C3249","NCIT"
+"Myeloid Sarcoma","Myeloid Sarcoma","NCIT:C3520","NCIT"
+"Acute Megakaryoblastic Leukemia","Acute Megakaryoblastic Leukemia","NCIT:C3170","NCIT"
+"MDS with Isolated Del(5q)",NA,NA,NA
+"Primary Myelofibrosis","Primary Myelofibrosis","NCIT:C2862","NCIT"
+"MDS/MPN, Unclassifiable",NA,NA,NA
+"Endometrial Adenocarcinoma","Endometrial Adenocarcinoma","NCIT:C7359","NCIT"
+"Gastric Adenocarcinoma","Gastric Adenocarcinoma","NCIT:C4004","NCIT"
+"Liver Hepatocellular Carcinoma",NA,NA,NA
+"Myxoid Fibrosarcoma",NA,NA,NA
+"Melanoma Other",NA,NA,NA
+"Uterine Corpus Endometrial Carcinoma Other",NA,NA,NA
+"Gallbladder Adenocarcinoma","Gallbladder Adenocarcinoma","NCIT:C9166","NCIT"
+"Small Bowel Adenocarcinoma","Small Intestinal Adenocarcinoma","NCIT:C7888","NCIT"
+"Mucinous Liposarcoma",NA,NA,NA
+"Unclassified Sarcoma",NA,NA,NA
+"Soft Tissue Sarcoma Other",NA,NA,NA
+"Liver Hepatocellular Carcinoma plus Intrahepatic Cholangiocarcinoma",NA,NA,NA
+"Ovarian Adenocarcinoma","Ovarian Adenocarcinoma","NCIT:C7700","NCIT"
+"Head and Neck Carcinoma Other",NA,NA,NA
+"Ovarian Serous Carcinoma","ovarian serous carcinoma","EFO:1001516","EFO"
+"Urothelial Carcinoma Other",NA,NA,NA
+"Pancreatic Cancer Other",NA,NA,NA
+"Breast Carcinoma Other",NA,NA,NA
+"Uterine Serous Carcinoma","Endometrial Serous Adenocarcinoma","EFO:1000238","EFO"
+"Undifferentiated Pleomorphic Sarcoma Malignant Fibrous Histiocytoma",NA,NA,NA
+"Gallbladder Neuroendocrine Tumor","Gallbladder Neuroendocrine Tumor","NCIT:C96918","NCIT"
+"Gastric Neuroendocrine Tumor","Gastric Neuroendocrine Tumor","NCIT:C95871","NCIT"
+"Gallbladder Carcinoma Other",NA,NA,NA
+"Unclassified Kidney Renal Cell Carcinoma",NA,NA,NA
+"Esophageal Carcinoma Other",NA,NA,NA
+"Papillary Kidney Renal Cell Carcinoma",NA,NA,NA
+"Spindle Cell Sarcoma","Spindle Cell Sarcoma","NCIT:C27005","NCIT"
+"Fibromatosis","Fibromatosis","NCIT:C3042","NCIT"
+"Well Differentiated Liposarcoma","well-differentiated liposarcoma","EFO:0000736","EFO"
+"Breast Microinvasive Carcinoma",NA,NA,NA
+"Malignant Small Cell Tumor",NA,NA,NA
+"Colorectal Carcinoma Other",NA,NA,NA
+"Chromophobe Kidney Renal Cell Carcinoma",NA,NA,NA
+"Papillary Throid Carcinoma",NA,NA,NA
+"Non Small Cell Lung Cancer Other",NA,NA,NA
+"Colorectal Neuroendocrine Tumor","Colorectal Neuroendocrine Tumor","NCIT:C96159","NCIT"
+"Fibroblastic Myofibroblastic Tumor",NA,NA,NA
+"Kidney Renal Cell Carcinoma Other",NA,NA,NA
+"Ovarian Granulosa Cell Tumor","Ovarian Granulosa Cell Tumor","NCIT:C6261","NCIT"
+"Gallbladder Adenosquamous Carcinoma","Gallbladder Adenosquamous Carcinoma","NCIT:C7356","NCIT"
+"Bone Sarcoma Other",NA,NA,NA
+"Solitary Fibrous Tumor","Solitary Fibrous Tumor","NCIT:C7634","NCIT"
+"Esophageal Neuroendocrine Tumor","Esophageal Neuroendocrine Tumor","NCIT:C95616","NCIT"
+"Esophageal Adenosquamous Carcinoma","Esophageal Adenosquamous Carcinoma","NCIT:C27421","NCIT"
+"Gastric Carcinoma Other",NA,NA,NA
+"Nerve Sheath Tumor","Nerve Sheath Neoplasm","NCIT:C4972","NCIT"
+"Medullary Thyroid Carcinoma","Medullary thyroid carcinoma","HP:0002865","HP"
+"Small Bowel Neuroendocrine Tumor",NA,NA,NA
+"Ovarian Carcinoma Other",NA,NA,NA
+"Thyroid Carcinoma Other",NA,NA,NA
+"MiT family translocation renal cell carcinoma","MIT family translocation renal cell carcinoma","MONDO:0017886","MONDO"
+"Follicular Thyroid Carcinoma","Follicular thyroid carcinoma","HP:0006731","HP"
+"Intraductal Papillary Mucinous Neoplasm with an associated Invasive Carcinoma","Pancreatic Intraductal Papillary-Mucinous Neoplasm with an Associated Invasive Carcinoma","NCIT:C5726","NCIT"
+"Low grade Fibromyxoid Sarcoma","Low Grade Fibromyxoid Sarcoma","EFO:1000328","EFO"
+"Extrarenal Rhabdoid Tumor","Extrarenal Rhabdoid Tumor","NCIT:C6586","NCIT"
+"Adenoid Cystic Carcinoma of the Lung","Lung Adenoid Cystic Carcinoma","NCIT:C5666","NCIT"
+"Breast Neoplasm, NOS",NA,NA,NA
+"Breast Invasive Carcinosarcoma, NOS",NA,NA,NA
+"Juvenile Secretory Carcinoma of the Breast","Breast Secretory Carcinoma","NCIT:C4189","NCIT"
+"Salivary Adenocarcinoma NOS",NA,NA,NA
+"Activated B-cell Type",NA,NA,NA
+"Germinal Center B-Cell Type",NA,NA,NA
+"Congenital Fibrosarcoma","congenital fibrosarcoma","MONDO:0004557","MONDO"
+"Non-Seminomatous Germ Cell Tumor, predominantly yolk sac type",NA,NA,NA
+"Pleuropulmonary blastoma","Pleuropulmonary blastoma","EFO:0009052","EFO"
+"Choroid Plexus Papilloma","Choroid Plexus Papilloma","NCIT:C3698","NCIT"
+"Plexiform Schwannoma","Plexiform Schwannoma","NCIT:C6969","NCIT"
+"Glioblastoma multiforme","Glioblastoma multiforme","HP:0012174","HP"
+"Nephroblastomatosis","Nephroblastomatosis","HP:0008643","HP"
+"Nested stromal epithelial tumor of the liver",NA,NA,NA
+"Rhabdomyosarcoma, Alveolar subtype",NA,NA,NA
+"Hodgkin Lymphoma-like PTLD",NA,NA,NA
+"Inflammatory myofibroblastic tumor","inflammatory myofibroblastic tumor","MONDO:0015798","MONDO"
+"Plexiform fibrohistiocytic tumor","Plexiform Fibrohistiocytic Tumor","NCIT:C6493","NCIT"
+"Non-seminomatous Mixed Germ Cell Tumor",NA,NA,NA
+"Pilomatrix carcinoma","Pilomatrical Carcinoma","NCIT:C4114","NCIT"
+"Anaplastic pleomorphic xanthoastrocytoma","Anaplastic Pleomorphic Xanthoastrocytoma","NCIT:C129327","NCIT"
+"Anaplastic medulloblastoma","Anaplastic Medulloblastoma","NCIT:C92625","NCIT"
+"Mucoepidermoid carcinoma of the lung","pulmonary mucoepidermoid carcinoma","EFO:0006740","EFO"
+"Optic nerve glioma","Optic nerve glioma","HP:0009734","HP"
+"Pineal Germ Cell Tumor","Pineal Region Germ Cell Tumor","NCIT:C4659","NCIT"
+"Small round blue cell tumor/ Ewing Sarcoma",NA,NA,NA
+"Thymic Neuroendocrine Tumor","thymic neuroendocrine tumor","MONDO:0019964","MONDO"
+"Head and Neck","Head and Neck","NCIT:C12418","NCIT"
+"Mucinous Adenocarcinoma Lymph Node",NA,NA,NA
+"Clear Cell Carcinoma of the Lung","large cell lung carcinoma, clear cell variant","MONDO:0024386","MONDO"
+"Bowel","Intestine","NCIT:C12736","NCIT"
+"Sarcomatoid",NA,NA,NA
+"Adenosarcoma","Adenosarcoma","NCIT:C9474","NCIT"
+"Cervical Neuroendocrine Tumor","Cervical Neuroendocrine Tumor","NCIT:C188221","NCIT"
+"Seminal Vesicle Carcinoma",NA,NA,NA
+"B-Lymphoblastic Leukemia/Lymphoma with t(9;22)(q34.1;q11.2);BCR-ABL1",NA,NA,NA
+"B-Lymphoblastic Leukemia/Lymphoma, BCR-ABL1 Like",NA,NA,NA
+"Embryonal Tumor with Abundant Neuropil and True Rosettes","Embryonal Tumor with Multilayered Rosettes, C19MC-Altered","NCIT:C4915","NCIT"
+"Early T-Cell Precursor Lymphoblastic Leukemia","Early T Acute Lymphoblastic Leukemia","NCIT:C130043","NCIT"
+"Germinoma","Germinoma","HP:0100620","HP"
+"Rosai-Dorfman Disease","Rosai-Dorfman Disease","NCIT:C36075","NCIT"
+"Adenosquamous Carcinoma of the Gallbladder","Gallbladder Adenosquamous Carcinoma","NCIT:C7356","NCIT"
+"Extra Gonadal Germ Cell Tumor",NA,NA,NA
+"Atypical Nevus","Atypical nevus","HP:0001062","HP"
+"Ocular Melanoma","Ocular Melanoma","NCIT:C8562","NCIT"
+"Desmoplastic Small Round Cell Tumor","Desmoplastic Small Round Cell Tumor","NCIT:C8300","NCIT"
+"Extraskeletal Osteosarcoma","Extraskeletal Osteosarcoma","NCIT:C8810","NCIT"
+"Infantile Sarcoma",NA,NA,NA
+"Myxoinflammatory Fibroblastic Sarcoma","Myxoinflammatory Fibroblastic Sarcoma","NCIT:C49025","NCIT"
+"Paraosteal Osteosarcoma",NA,NA,NA
+"Pseudomyogenic Hemangioendothelioma","Pseudomyogenic Hemangioendothelioma","NCIT:C121668","NCIT"
+"Round Cell Sarcoma, Other",NA,NA,NA
+"Undifferentiated Pleomorphic Sarcoma/Maligant Fibrous Histiocytoma/High-Grade Spindle Cell Sarcoma",NA,NA,NA
+"Epithelial Type Metaplastic Breast Cancer",NA,NA,NA
+"Cervical Adenoid Cystic Carcinoma","Cervical Adenoid Cystic Carcinoma","NCIT:C6346","NCIT"
+"Cervical Adenocarcinoma In Situ","Cervical Adenocarcinoma In Situ","NCIT:C4520","NCIT"
+"Porocarcinoma/Spiroadenocarcinoma","eccrine porocarcinoma","MONDO:0006189","MONDO"
+"Carcinoma with Chondroid Metaplasia",NA,NA,NA
+"Carcinoma with Osseous Metaplasia",NA,NA,NA
+"Adenocarcinoma of Gallbladder","gallbladder adenocarcinoma","MONDO:0006215","MONDO"
+"Small Cell Neuroendocrine Carcinoma of Gallbladder",NA,NA,NA
+"Squamous Cell Carcinoma of Gallbladder","Gallbladder Squamous Cell Carcinoma","NCIT:C9170","NCIT"
+"Adenosquamous Carcinoma of Gallbladder","Gallbladder Adenosquamous Carcinoma","NCIT:C7356","NCIT"
+"Mixed Adenocarcinoma and Neuroendocrine Carcinoma",NA,NA,NA
+"Large Cell Neuroendocrine Carcinoma of Gallbladder",NA,NA,NA
+"Prostate Squamous Cell Carcinoma","Prostate Squamous Cell Carcinoma","NCIT:C5536","NCIT"
+"High-Grade Serous Fallopian Tube Cancer",NA,NA,NA
+"Peritoneal Serous Carcinoma",NA,NA,NA
