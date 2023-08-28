@@ -110,11 +110,14 @@ to include in this curation:
 # Create tibble
 cbio <- tibble(cbio)
 
+# Change "Cancer Type" column name
+cbio <- cbio %>% rename("CANCER.TYPE" = "CANCER TYPE")
+
 # Load Potential columns map csv file
-pot_col_map <- read.csv(file=file.path(proj_dir, "cBioPortal_potential_columns_map.csv"))
+pot_col_map <- read.csv(file=file.path(proj_dir, "cBioPortal_curation_schema.csv"))
 
 # Get list of all columns to combine into new Disease column
-original_cols <- unlist(strsplit(pot_col_map$Original.Columns[1], ";"))
+original_cols <- unlist(strsplit(pot_col_map$original_columns[1], ";"))
 
 # Create a subset of cbio containing only relevant columns
 disease_cols_cbio <- cbio[,c("curation_id", original_cols)]
@@ -243,35 +246,32 @@ write.csv(unique_merged_vals,
 
 ## Import Maps
 
-To access the necessary population ancestry ontology terms we will load the 
+To access the necessary disease ontology terms we will load the 
 `disease_ontology_map`.
 ```{r import_maps, eval=FALSE}
 # import disease ontology map
-pop_ontology_map <- read_sheet(ss, sheet = "disease_ontology_map")
+# mapped_terms <- read_sheet(ss, sheet = "disease_ontology_map")
 
 # import curated and source columns map
-curated_source_map <- read_sheet(ss, sheet = "curated_columns_map")
+# curation_summary <- read_sheet(ss, sheet = "curation_summary")
 
 # import disease ontology map
-mapped_terms <-read.csv(file = file.path(proj_dir, "cBioPortal_disease_ontology_map.csv"), header=T)
+mapped_terms <-read.csv(file = file.path(proj_dir, "cBioPortal_diseases_map.csv"), header=T)
 
 # import curated and source columns map
-curated_columns_map <-read.csv(file = file.path(proj_dir, "cBioPortal_curated_columns_map.csv"), header=T)
+curation_summary <-read.csv(file = file.path(proj_dir, "cBioPortal_disease_curation_summary.csv"), header=T)
 ```
+
 
 Then we will create a dictionary of curated column keys with the list of their 
 corresponding original columns as the value:
 ```{r}
 # Put cols into a list
 cols_to_curate <- hash()
-cols_to_curate[["specimen_type"]] <- curated_columns_map$original_column[which(curated_columns_map$curated_column=="specimen_type")]
-cols_to_curate[["disease"]] <- curated_columns_map$original_column[which(curated_columns_map$curated_column=="disease")]
-cols_to_curate[["cancer_type"]] <- curated_columns_map$original_column[which(curated_columns_map$curated_column=="cancer_type")]
-cols_to_curate[["cancer_type_detailed"]] <- curated_columns_map$original_column[which(curated_columns_map$curated_column=="cancer_type_detailed")]
-cols_to_curate[["cancer_subtype"]] <- curated_columns_map$original_column[which(curated_columns_map$curated_column=="cancer_subtype")]
-cols_to_curate[["metastasis"]] <- curated_columns_map$original_column[which(curated_columns_map$curated_column=="metastasis")]
-cols_to_curate[["acronym"]] <- curated_columns_map$original_column[which(curated_columns_map$curated_column=="acronym")]
-cols_to_curate[["cancer_status"]] <- curated_columns_map$original_column[which(curated_columns_map$curated_column=="cancer_status")]
+for (col in curation_summary$curated_column){
+  col_name <- paste(col)
+  cols_to_curate[[col_name]] <- unlist(str_split(curation_summary$original_columns[which(curation_summary$curated_column==col_name)], ";"))
+}
 ```
 
 
@@ -306,6 +306,11 @@ term id columns:
 ```{r}
 # Loop through curations to initialize curated columns
 for (curcol in keys(cols_to_curate)){
+  original_curcol_source <- paste("original", curcol, "source", sep="_")
+  # Initialize all relevant rows
+  disease_curated_cols[i,original_curcol_source] <- NA
+}
+for (curcol in keys(cols_to_curate)){
   curated_curcol <- paste("curated", curcol, sep="_")
   # Initialize all relevant rows
   disease_curated_cols[i,curated_curcol] <- NA
@@ -314,6 +319,22 @@ for (curcol in keys(cols_to_curate)){
   curated_curcol_onto <- paste("curated", curcol, "ontology_term_id", sep="_")
   # Initialize all relevant rows
   disease_curated_cols[i,curated_curcol_onto] <- NA
+}
+```
+
+Next we can create a "source column" for each of the eight new curated columns
+which details which of the original columns were the source of the curated 
+column's values:
+```{r}
+# Loop through curations to merge relevant columns
+col <- 0
+for (curcol in keys(cols_to_curate)){
+  # Create a column of relevant source columns
+  for (i in 1:nrow(disease_curated_cols)){
+    disease_curated_cols[i,10+col] <- paste(cols_to_curate[[curcol]][which(!is.na(cbio[i,cols_to_curate[[curcol]]]))], collapse=";")
+  }
+  print(curcol)
+  col <- col + 1
 }
 ```
 
@@ -339,8 +360,8 @@ for (col in 2:9){
     new_terms <- as.list(unlist(strsplit(paste(list_drop_empty(new_terms), collapse="<;>"), "<;>")))
     new_term_ids <- as.list(unlist(strsplit(paste(list_drop_empty(new_term_ids), collapse="<;>"), "<;>")))
     # Concatenate new lists on "<;>" delimiter to create curated value
-    disease_curated_cols[x,col+8] <- rmv_xtra_semis(paste(as.list(unique(new_terms)), collapse= "<;>"))
-    disease_curated_cols[x,col+16] <- rmv_xtra_semis(paste(as.list(unique(new_term_ids)), collapse= "<;>"))
+    disease_curated_cols[x,col+16] <- rmv_xtra_semis(paste(as.list(unique(new_terms)), collapse= "<;>"))
+    disease_curated_cols[x,col+24] <- rmv_xtra_semis(paste(as.list(unique(new_term_ids)), collapse= "<;>"))
     if(x %% 5000==0){print(x)}
   }
 print(paste("finished: column", col))
@@ -355,13 +376,18 @@ representing NA values with "NA" and updating column names as needed:
 ```{r}
 # Replace NA values from original columns with "NA"
 disease_curated_cols <- data.frame(lapply(disease_curated_cols, 
-                                          function(x) gsub("8X8", "NA", x)))
+                                          function(x) gsub("8X8", NA, x)))
+
+# Replace empty values from curated columns with "NA"
+disease_curated_cols <- data.frame(lapply(disease_curated_cols, 
+                                          function(x) gsub("^$", NA, x)))
 
 # Rename the columns for accuracy & specificity
-colnames(disease_curated_cols)[1:9] <- c("curation_id", "original_acronym", 
-    "original_cancer_status", "original_cancer_subtype", "original_cancer_type", 
-    "original_cancer_type_detailed", "original_disease", "original_metastasis", 
-    "original_specimen_type")
+colnames(disease_curated_cols)[1:9] <- c("curation_id", "original_acronym_value", 
+    "original_cancer_status_value", "original_cancer_subtype_value", 
+    "original_cancer_type_value", "original_cancer_type_detailed_value", 
+    "original_disease_value", "original_metastasis_value", 
+    "original_specimen_type_value")
 ```
 
 
