@@ -1,0 +1,680 @@
+original_value,curated_ontology_term_id_link,onto_source,curated_ontology,curated_ontology_term_id
+SALIVARY GLAND,http://purl.obolibrary.org/obo/NCIT_C12426,NCIT,Salivary Gland,NCIT_C12426
+LUNG,http://purl.obolibrary.org/obo/NCIT_C12468,NCIT,Lung,NCIT_C12468
+BUCCAL MUCOSA,http://purl.obolibrary.org/obo/NCIT_C12505,NCIT,Buccal Mucosa,NCIT_C12505
+ORBITAL CAVITY,http://purl.obolibrary.org/obo/NCIT_C12347,NCIT,Orbit,NCIT_C12347
+HARD PALATE,http://purl.obolibrary.org/obo/NCIT_C12230,NCIT,Hard Palate,NCIT_C12230
+LARYNX,http://purl.obolibrary.org/obo/NCIT_C12420,NCIT,Larynx,NCIT_C12420
+STERNUM,http://purl.obolibrary.org/obo/NCIT_C12793,NCIT,Sternum,NCIT_C12793
+LIVER,http://purl.obolibrary.org/obo/NCIT_C12392,NCIT,Liver,NCIT_C12392
+BRAIN,http://purl.obolibrary.org/obo/NCIT_C12439,NCIT,Brain,NCIT_C12439
+FLOOR OF MOUTH,http://purl.obolibrary.org/obo/NCIT_C54187,NCIT,Floor of Mouth,NCIT_C54187
+SOFT PALATE,http://purl.obolibrary.org/obo/NCIT_C12231,NCIT,Soft Palate,NCIT_C12231
+PAROTID GLAND,http://purl.obolibrary.org/obo/NCIT_C12427,NCIT,Parotid Gland,NCIT_C12427
+SUBMANDIBULAR GLAND,http://purl.obolibrary.org/obo/NCIT_C12233,NCIT,Submandibular Gland,NCIT_C12233
+MAXILLA,http://purl.obolibrary.org/obo/NCIT_C26470,NCIT,Maxilla,NCIT_C26470
+OROPHARYNX,http://purl.obolibrary.org/obo/NCIT_C12762,NCIT,Oropharynx,NCIT_C12762
+PALATE,http://purl.obolibrary.org/obo/NCIT_C12229,NCIT,Palate,NCIT_C12229
+LYMPH NODE,http://purl.obolibrary.org/obo/NCIT_C12745,NCIT,Lymph Node,NCIT_C12745
+TONGUE,http://purl.obolibrary.org/obo/NCIT_C12422,NCIT,Tongue,NCIT_C12422
+BASE OF TONGUE,http://purl.obolibrary.org/obo/NCIT_C12228,NCIT,Base of the Tongue,NCIT_C12228
+BREAST,http://purl.obolibrary.org/obo/NCIT_C12971,NCIT,Breast,NCIT_C12971
+METASTASIS,http://purl.obolibrary.org/obo/NCIT_C19151,NCIT,Metastasis,NCIT_C19151
+RENAL VEIN,http://purl.obolibrary.org/obo/NCIT_C33462,NCIT,Renal Vein,NCIT_C33462
+BLADDER,http://purl.obolibrary.org/obo/NCIT_C12414,NCIT,Bladder,NCIT_C12414
+FRONTAL LOBE,http://purl.obolibrary.org/obo/NCIT_C12352,NCIT,Frontal Lobe,NCIT_C12352
+SUPRATENTORIAL,http://purl.obolibrary.org/obo/NCIT_C12923,NCIT,Supratentorial,NCIT_C12923
+TEMPORAL LOBE,http://purl.obolibrary.org/obo/NCIT_C12353,NCIT,Temporal Lobe,NCIT_C12353
+SKULL,http://purl.obolibrary.org/obo/NCIT_C12789,NCIT,Skull,NCIT_C12789
+SPINE,http://purl.obolibrary.org/obo/NCIT_C12998,NCIT,Vertebral Column,NCIT_C12998
+OCCIPITAL LOBE,http://purl.obolibrary.org/obo/NCIT_C12355,NCIT,Occipital Lobe,NCIT_C12355
+PARIETAL LOBE,http://purl.obolibrary.org/obo/NCIT_C12354,NCIT,Parietal Lobe,NCIT_C12354
+THALAMUS,http://purl.obolibrary.org/obo/NCIT_C12459,NCIT,Thalamus,NCIT_C12459
+MIDLINE,http://purl.obolibrary.org/obo/NCIT_C81170,NCIT,Midline,NCIT_C81170
+CORTICAL,http://purl.obolibrary.org/obo/NCIT_C12443,NCIT,Cerebral Cortex,NCIT_C12443
+CEREBELLAR,http://purl.obolibrary.org/obo/NCIT_C12445,NCIT,Cerebellum,NCIT_C12445
+BASAL GANGLIA,http://purl.obolibrary.org/obo/NCIT_C12447,NCIT,Basal Ganglia,NCIT_C12447
+BRAIN STEM,http://purl.obolibrary.org/obo/NCIT_C12441,NCIT,Brain Stem,NCIT_C12441
+SPINAL,http://purl.obolibrary.org/obo/NCIT_C38026,NCIT,Spinal,NCIT_C38026
+EXTRAHEPATIC,http://purl.obolibrary.org/obo/NCIT_C28358,NCIT,Extrahepatic,NCIT_C28358
+INTRAHEPATIC,http://purl.obolibrary.org/obo/NCIT_C13808,NCIT,Intrahepatic,NCIT_C13808
+RECTUM,http://purl.obolibrary.org/obo/NCIT_C12390,NCIT,Rectum,NCIT_C12390
+CECUM,http://purl.obolibrary.org/obo/NCIT_C12381,NCIT,Cecum,NCIT_C12381
+SIGMOID COLON,http://purl.obolibrary.org/obo/NCIT_C12384,NCIT,Sigmoid Colon,NCIT_C12384
+ASCENDING COLON,http://purl.obolibrary.org/obo/NCIT_C12265,NCIT,Ascending Colon,NCIT_C12265
+DESCENDING COLON,http://purl.obolibrary.org/obo/NCIT_C12268,NCIT,Descending Colon,NCIT_C12268
+SPLENIC FLEXURE,http://purl.obolibrary.org/obo/NCIT_C12267,NCIT,Splenic Flexure,NCIT_C12267
+DISTAL,http://purl.obolibrary.org/obo/NCIT_C25237,NCIT,Distal,NCIT_C25237
+PROXIMAL,http://purl.obolibrary.org/obo/NCIT_C25236,NCIT,Proximal,NCIT_C25236
+LOWER,http://purl.obolibrary.org/obo/NCIT_C12255,NCIT,Lower Third of the Esophagus,NCIT_C12255
+CARDIA,http://purl.obolibrary.org/obo/NCIT_C12256,NCIT,Gastric Cardia,NCIT_C12256
+ESOPHAGUS,http://purl.obolibrary.org/obo/NCIT_C12389,NCIT,Esophagus,NCIT_C12389
+UPPER,http://purl.obolibrary.org/obo/NCIT_C25355,NCIT,Upper,NCIT_C25355
+METASTATIC,http://purl.obolibrary.org/obo/NCIT_C14174,NCIT,Metastatic,NCIT_C14174
+LOCALIZED,http://purl.obolibrary.org/obo/NCIT_C14146,NCIT,Localized,NCIT_C14146
+FRONTAL,http://purl.obolibrary.org/obo/NCIT_C161325,NCIT,Frontal,NCIT_C161325
+TEMPORAL,http://purl.obolibrary.org/obo/NCIT_C73990,NCIT,Temporal,NCIT_C73990
+PARIETAL,http://purl.obolibrary.org/obo/NCIT_C25312,NCIT,Parietal,NCIT_C25312
+PARIETO-OCCIPITAL,http://purl.obolibrary.org/obo/NCIT_C170564,NCIT,Parieto-Occipital,NCIT_C170564
+CEREBELLOPONTINE ANGLE,http://purl.obolibrary.org/obo/NCIT_C54057,NCIT,Cerebellopontine Angle,NCIT_C54057
+RIGHT,http://purl.obolibrary.org/obo/NCIT_C25228,NCIT,Right,NCIT_C25228
+LEFT,http://purl.obolibrary.org/obo/NCIT_C25229,NCIT,Left,NCIT_C25229
+CEREBELLUM,http://purl.obolibrary.org/obo/NCIT_C12445,NCIT,Cerebellum,NCIT_C12445
+CORPUS CALLOSUM,http://purl.obolibrary.org/obo/NCIT_C12446,NCIT,Corpus Callosum,NCIT_C12446
+BILATERAL,http://purl.obolibrary.org/obo/NCIT_C13332,NCIT,Bilateral,NCIT_C13332
+KIDNEY,http://purl.obolibrary.org/obo/NCIT_C12415,NCIT,Kidney,NCIT_C12415
+ORAL CAVITY,http://purl.obolibrary.org/obo/NCIT_C12421,NCIT,Oral Cavity,NCIT_C12421
+HYPOPHARYNX,http://purl.obolibrary.org/obo/NCIT_C12246,NCIT,Hypopharynx,NCIT_C12246
+BUCCAL,http://purl.obolibrary.org/obo/NCIT_C52589,NCIT,Buccal Surface,NCIT_C52589
+ALVEOLAR,http://purl.obolibrary.org/obo/NCIT_C14155,NCIT,Alveolar,NCIT_C14155
+PERIPHERAL BLOOD,http://purl.obolibrary.org/obo/NCIT_C173496,NCIT,Peripheral Blood,NCIT_C173496
+BONE MARROW,http://purl.obolibrary.org/obo/NCIT_C12431,NCIT,Bone Marrow,NCIT_C12431
+OVARY,http://purl.obolibrary.org/obo/NCIT_C12404,NCIT,Ovary,NCIT_C12404
+OMENTUM,http://purl.obolibrary.org/obo/NCIT_C33209,NCIT,Omentum,NCIT_C33209
+PELVIC MASS,http://purl.obolibrary.org/obo/NCIT_C151938,NCIT,Pelvic Mass,NCIT_C151938
+PROSTATE,http://purl.obolibrary.org/obo/NCIT_C12410,NCIT,Prostate Gland,NCIT_C12410
+BONE,http://purl.obolibrary.org/obo/NCIT_C12366,NCIT,Bone,NCIT_C12366
+ADRENAL,http://purl.obolibrary.org/obo/NCIT_C12666,NCIT,Adrenal Gland,NCIT_C12666
+EPIDURAL,http://purl.obolibrary.org/obo/NCIT_C41449,NCIT,Epidural Spinal Canal Space,NCIT_C41449
+SOFT TISSUE,http://purl.obolibrary.org/obo/NCIT_C12471,NCIT,Soft Tissue,NCIT_C12471
+DIFFUSE,http://purl.obolibrary.org/obo/NCIT_C14175,NCIT,Diffuse,NCIT_C14175
+LYMPHOID TISSUE,http://purl.obolibrary.org/obo/NCIT_C13049,NCIT,Lymphoid Tissue,NCIT_C13049
+ADRENAL GLAND,http://purl.obolibrary.org/obo/NCIT_C12666,NCIT,Adrenal Gland,NCIT_C12666
+BASE,http://purl.obolibrary.org/obo/NCIT_C13088,NCIT,Base of the Prostate,NCIT_C13088
+APEX,http://purl.obolibrary.org/obo/NCIT_C13087,NCIT,Apex of the Prostate,NCIT_C13087
+MIDDLE,http://purl.obolibrary.org/obo/NCIT_C13094,NCIT,Middle Lobe of the Prostate,NCIT_C13094
+LN,http://purl.obolibrary.org/obo/NCIT_C12745,NCIT,Lymph Node,NCIT_C12745
+SKIN,http://purl.obolibrary.org/obo/NCIT_C12470,NCIT,Skin,NCIT_C12470
+SCROTUM,http://purl.obolibrary.org/obo/NCIT_C12785,NCIT,Scrotum,NCIT_C12785
+RETROPERITONEAL,http://purl.obolibrary.org/obo/NCIT_C28256,NCIT,Retroperitoneal,NCIT_C28256
+SPLEEN,http://purl.obolibrary.org/obo/NCIT_C12432,NCIT,Spleen,NCIT_C12432
+PERITONEAL,http://purl.obolibrary.org/obo/NCIT_C25313,NCIT,Peritoneal,NCIT_C25313
+RENAL,http://purl.obolibrary.org/obo/NCIT_C25225,NCIT,Renal,NCIT_C25225
+APPENDIX,http://purl.obolibrary.org/obo/NCIT_C12380,NCIT,Appendix,NCIT_C12380
+PERITONEUM,http://purl.obolibrary.org/obo/NCIT_C12770,NCIT,Peritoneum,NCIT_C12770
+PELVIS,http://purl.obolibrary.org/obo/NCIT_C12767,NCIT,Pelvis,NCIT_C12767
+COLORECTAL CANCER,http://purl.obolibrary.org/obo/NCIT_C13363,NCIT,Colorectal,NCIT_C13363
+ACETABULUM,http://purl.obolibrary.org/obo/NCIT_C32042,NCIT,Acetabulum,NCIT_C32042
+RETROPERITONEAL LYMPH NODE,http://purl.obolibrary.org/obo/NCIT_C98189,NCIT,Retroperitoneal Lymph Node,NCIT_C98189
+PLEURAL EFFUSION,http://purl.obolibrary.org/obo/NCIT_C3331,NCIT,Pleural Effusion,NCIT_C3331
+CIRCULATING TUMOR CELLS,http://purl.obolibrary.org/obo/NCIT_C96593,NCIT,Circulating Tumor Cell Count,NCIT_C96593
+EXTREMITIES,http://purl.obolibrary.org/obo/NCIT_C12429,NCIT,Limb,NCIT_C12429
+TRUNK,http://purl.obolibrary.org/obo/NCIT_C33816,NCIT,Trunk,NCIT_C33816
+REGIONAL LYMPH NODE,http://purl.obolibrary.org/obo/NCIT_C49018,NCIT,Regional Lymph Node,NCIT_C49018
+DISTANT METASTASIS,http://purl.obolibrary.org/obo/NCIT_C18206,NCIT,Distant Metastasis,NCIT_C18206
+THYMUS,http://purl.obolibrary.org/obo/NCIT_C12433,NCIT,Thymus Gland,NCIT_C12433
+ANTERIOR MEDIASTINUM,http://purl.obolibrary.org/obo/NCIT_C32098,NCIT,Anterior Mediastinum,NCIT_C32098
+LEFT THIGH,http://purl.obolibrary.org/obo/NCIT_C105632,NCIT,Left Thigh,NCIT_C105632
+NASAL CAVITY,http://purl.obolibrary.org/obo/NCIT_C12424,NCIT,Nasal Cavity,NCIT_C12424
+ABDOMINAL WALL,http://purl.obolibrary.org/obo/NCIT_C77608,NCIT,Abdominal Wall,NCIT_C77608
+PARATESTICULAR,http://purl.obolibrary.org/obo/NCIT_C162491,NCIT,Paratesticular Region,NCIT_C162491
+RIGHT THIGH,http://purl.obolibrary.org/obo/NCIT_C105637,NCIT,Right Thigh,NCIT_C105637
+NASOPHARYNX,http://purl.obolibrary.org/obo/NCIT_C12423,NCIT,Nasopharynx,NCIT_C12423
+EXTREMITY,http://purl.obolibrary.org/obo/NCIT_C12429,NCIT,Limb,NCIT_C12429
+MANDIBLE,http://purl.obolibrary.org/obo/NCIT_C12290,NCIT,Mandible,NCIT_C12290
+HAND,http://purl.obolibrary.org/obo/NCIT_C32712,NCIT,Hand,NCIT_C32712
+VULVA,http://purl.obolibrary.org/obo/NCIT_C12408,NCIT,Vulva,NCIT_C12408
+ANTRUM,http://purl.obolibrary.org/obo/NCIT_C12259,NCIT,Antrum Pylori,NCIT_C12259
+RENAL PELVIS,http://purl.obolibrary.org/obo/NCIT_C12887,NCIT,Renal Pelvis,NCIT_C12887
+URETER,http://purl.obolibrary.org/obo/NCIT_C12416,NCIT,Ureter,NCIT_C12416
+PYLORUS,http://purl.obolibrary.org/obo/NCIT_C12260,NCIT,Pylorus,NCIT_C12260
+ANTERIOR ENDOMETRIUM,http://purl.obolibrary.org/obo/NCIT_C156431,NCIT,Anterior Endometrium,NCIT_C156431
+POSTERIOR ENDOMETRIUM,http://purl.obolibrary.org/obo/NCIT_C156432,NCIT,Posterior Endometrium,NCIT_C156432
+SKIN NODULE,http://purl.obolibrary.org/obo/NCIT_C3373,NCIT,Skin Nodule,NCIT_C3373
+AXILLARY LYMPH NODES,http://purl.obolibrary.org/obo/NCIT_C12904,NCIT,Axillary Lymph Node,NCIT_C12904
+SMALL BOWEL RESECTION,http://purl.obolibrary.org/obo/NCIT_C51510,NCIT,Small Intestine Resection,NCIT_C51510
+LYMPH NODES,http://purl.obolibrary.org/obo/NCIT_C12745,NCIT,Lymph Node,NCIT_C12745
+BILE DUCT,http://purl.obolibrary.org/obo/NCIT_C12376,NCIT,Bile Duct,NCIT_C12376
+"LUNG, RIGHT MIDDLE LOBE",http://purl.obolibrary.org/obo/NCIT_C12286,NCIT,Middle Lobe of the Right Lung,NCIT_C12286
+"LUNG, LEFT",http://purl.obolibrary.org/obo/NCIT_C32967,NCIT,Left Lung,NCIT_C32967
+"LUNG, LEFT UPPER LOBE",http://purl.obolibrary.org/obo/NCIT_C33021,NCIT,Upper Lobe of the Left Lung,NCIT_C33021
+PERICARDIAL EFFUSION,http://purl.obolibrary.org/obo/NCIT_C3319,NCIT,Pericardial Effusion,NCIT_C3319
+"LUNG, RIGHT",http://purl.obolibrary.org/obo/NCIT_C33483,NCIT,Right Lung,NCIT_C33483
+"LUNG, RIGHT UPPER LOBE",http://purl.obolibrary.org/obo/NCIT_C33023,NCIT,Upper Lobe of the Right Lung,NCIT_C33023
+PLEURAL FLUID,http://purl.obolibrary.org/obo/NCIT_C77613,NCIT,Pleural Fluid,NCIT_C77613
+"LUNG, RIGHT LOWER LOBE",http://purl.obolibrary.org/obo/NCIT_C33022,NCIT,Lower Lobe of the Right Lung,NCIT_C33022
+PANCREAS TAIL,http://purl.obolibrary.org/obo/NCIT_C12271,NCIT,Tail of the Pancreas,NCIT_C12271
+ASCITES,http://purl.obolibrary.org/obo/NCIT_C2885,NCIT,Ascites,NCIT_C2885
+"BRAIN, CEREBELLUM",http://purl.obolibrary.org/obo/NCIT_C12445,NCIT,Cerebellum,NCIT_C12445
+CHEST WALL,http://purl.obolibrary.org/obo/NCIT_C62484,NCIT,Chest Wall,NCIT_C62484
+"LUNG, LEFT LOWER LOBE",http://purl.obolibrary.org/obo/NCIT_C33020,NCIT,Lower Lobe of the Left Lung,NCIT_C33020
+BLOOD,http://purl.obolibrary.org/obo/NCIT_C12434,NCIT,Blood,NCIT_C12434
+PLEURA,http://purl.obolibrary.org/obo/NCIT_C12469,NCIT,Pleura,NCIT_C12469
+CHEST,http://purl.obolibrary.org/obo/NCIT_C25389,NCIT,Chest,NCIT_C25389
+DIAPHRAGM,http://purl.obolibrary.org/obo/NCIT_C12702,NCIT,Diaphragm,NCIT_C12702
+CERVICAL,http://purl.obolibrary.org/obo/NCIT_C12844,NCIT,Cervical,NCIT_C12844
+COLON,http://purl.obolibrary.org/obo/NCIT_C12382,NCIT,Colon,NCIT_C12382
+LEFT KIDNEY,http://purl.obolibrary.org/obo/NCIT_C34006,NCIT,Left Kidney,NCIT_C34006
+BONES,http://purl.obolibrary.org/obo/NCIT_C12366,NCIT,Bone,NCIT_C12366
+LEFT LEG,http://purl.obolibrary.org/obo/NCIT_C176864,NCIT,Left Leg,NCIT_C176864
+SMALL BOWEL,http://purl.obolibrary.org/obo/NCIT_C12386,NCIT,Small Intestine,NCIT_C12386
+ABDOMEN,http://purl.obolibrary.org/obo/NCIT_C12664,NCIT,Abdomen,NCIT_C12664
+LARYNGOPHARYNX,http://purl.obolibrary.org/obo/NCIT_C12246,NCIT,Hypopharynx,NCIT_C12246
+SUBLINGUAL GLAND,http://purl.obolibrary.org/obo/NCIT_C12234,NCIT,Sublingual Salivary Gland,NCIT_C12234
+PHARYNX,http://purl.obolibrary.org/obo/NCIT_C12425,NCIT,Pharynx,NCIT_C12425
+TRACHEA,http://purl.obolibrary.org/obo/NCIT_C12428,NCIT,Trachea,NCIT_C12428
+LIP,http://purl.obolibrary.org/obo/NCIT_C12220,NCIT,Lip,NCIT_C12220
+ETHMOID SINUS,http://purl.obolibrary.org/obo/NCIT_C12276,NCIT,Ethmoid Sinus,NCIT_C12276
+CNS,http://purl.obolibrary.org/obo/NCIT_C12438,NCIT,Central Nervous System,NCIT_C12438
+PANCREAS,http://purl.obolibrary.org/obo/NCIT_C12393,NCIT,Pancreas,NCIT_C12393
+EXTRA-ADRENAL,http://purl.obolibrary.org/obo/NCIT_C103852,NCIT,Extra-Adrenal,NCIT_C103852
+GROIN,http://purl.obolibrary.org/obo/NCIT_C12726,NCIT,Inguinal Region,NCIT_C12726
+RETROPERITONEUM,http://purl.obolibrary.org/obo/NCIT_C12298,NCIT,Retroperitoneum,NCIT_C12298
+INTRA-ABDOMINAL,http://purl.obolibrary.org/obo/NCIT_C12492,NCIT,Intra-abdominal,NCIT_C12492
+UTERUS,http://purl.obolibrary.org/obo/NCIT_C12405,NCIT,Uterus,NCIT_C12405
+MEDIASTINUM,http://purl.obolibrary.org/obo/NCIT_C12748,NCIT,Mediastinum,NCIT_C12748
+SPERMATIC CORD,http://purl.obolibrary.org/obo/NCIT_C12329,NCIT,Spermatic Cord,NCIT_C12329
+SMALL INTESTINE,http://purl.obolibrary.org/obo/NCIT_C12386,NCIT,Small Intestine,NCIT_C12386
+BACK,http://purl.obolibrary.org/obo/NCIT_C13062,NCIT,Back,NCIT_C13062
+LOWER EXTREMITY,http://purl.obolibrary.org/obo/NCIT_C12742,NCIT,Lower Extremity,NCIT_C12742
+FLANK,http://purl.obolibrary.org/obo/NCIT_C93028,NCIT,Flank,NCIT_C93028
+BUTTOCK,http://purl.obolibrary.org/obo/NCIT_C89806,NCIT,Buttock,NCIT_C89806
+GASTRIC,http://purl.obolibrary.org/obo/NCIT_C12391,NCIT,Stomach,NCIT_C12391
+PRIMARY,http://purl.obolibrary.org/obo/NCIT_C25251,NCIT,Primary,NCIT_C25251
+STOMACH,http://purl.obolibrary.org/obo/NCIT_C12391,NCIT,Stomach,NCIT_C12391
+TESTES,http://purl.obolibrary.org/obo/NCIT_C12412,NCIT,Testis,NCIT_C12412
+THYROID,http://purl.obolibrary.org/obo/NCIT_C12400,NCIT,Thyroid Gland,NCIT_C12400
+RIGHT COLON,http://purl.obolibrary.org/obo/NCIT_C12383,NCIT,Right Colon,NCIT_C12383
+TRANSVERSE COLON,http://purl.obolibrary.org/obo/NCIT_C12385,NCIT,Transverse Colon,NCIT_C12385
+LEFT COLON,http://purl.obolibrary.org/obo/NCIT_C33929,NCIT,Left Colon,NCIT_C33929
+CHIN,http://purl.obolibrary.org/obo/NCIT_C81169,NCIT,Mentum,NCIT_C81169
+LACRIMAL GLAND,http://purl.obolibrary.org/obo/NCIT_C12346,NCIT,Lacrimal Gland,NCIT_C12346
+RETROMOLAR TRIGONE,http://purl.obolibrary.org/obo/NCIT_C54223,NCIT,Retromolar Trigone,NCIT_C54223
+MAXILLARY SINUS,http://purl.obolibrary.org/obo/NCIT_C12275,NCIT,Maxillary Sinus,NCIT_C12275
+ETHMOID,http://purl.obolibrary.org/obo/NCIT_C12711,NCIT,Ethmoid Bone,NCIT_C12711
+EAR,http://purl.obolibrary.org/obo/NCIT_C12394,NCIT,Ear,NCIT_C12394
+NASAL SEPTUM,http://purl.obolibrary.org/obo/NCIT_C33160,NCIT,Nasal Septum,NCIT_C33160
+DISTANT,http://purl.obolibrary.org/obo/NCIT_C25321,NCIT,Distant,NCIT_C25321
+LOCOREGIONAL,http://purl.obolibrary.org/obo/NCIT_C25388,NCIT,Local-Regional,NCIT_C25388
+LOCOREGIONAL RECURRENCE,http://purl.obolibrary.org/obo/NCIT_C25388,NCIT,Local-Regional,NCIT_C25388
+GALLBLADDER,http://purl.obolibrary.org/obo/NCIT_C12377,NCIT,Gallbladder,NCIT_C12377
+FRESH FROZEN,http://purl.obolibrary.org/obo/NCIT_C84517,NCIT,Fresh Specimen,NCIT_C84517
+FFPE,http://purl.obolibrary.org/obo/NCIT_C143028,NCIT,Formalin-Fixed Paraffin-Embedded,NCIT_C143028
+LOCAL,http://purl.obolibrary.org/obo/NCIT_C67263,NCIT,Local,NCIT_C67263
+URETHRA,http://purl.obolibrary.org/obo/NCIT_C12417,NCIT,Urethra,NCIT_C12417
+TESTIS,http://purl.obolibrary.org/obo/NCIT_C12412,NCIT,Testis,NCIT_C12412
+PENIS,http://purl.obolibrary.org/obo/NCIT_C12409,NCIT,Penis,NCIT_C12409
+OPTIC CHIASM,http://purl.obolibrary.org/obo/NCIT_C90609,NCIT,Optic Chiasm,NCIT_C90609
+BRAINSTEM,http://purl.obolibrary.org/obo/NCIT_C12441,NCIT,Brain Stem,NCIT_C12441
+OPTIC NERVE,http://purl.obolibrary.org/obo/NCIT_C12761,NCIT,Optic Nerve,NCIT_C12761
+HYPOTHALAMUS,http://purl.obolibrary.org/obo/NCIT_C12458,NCIT,Hypothalamus,NCIT_C12458
+DURA,http://purl.obolibrary.org/obo/NCIT_C32488,NCIT,Dura Mater,NCIT_C32488
+THORACIC EPIDURAL,http://purl.obolibrary.org/obo/NCIT_C12799<;>http://purl.obolibrary.org/obo/NCIT_C41449,NCIT,Thorax<;>Epidural Spinal Canal Space,NCIT_C12799<;>NCIT_C41449
+MUSCLE,http://purl.obolibrary.org/obo/NCIT_C13056,NCIT,Muscle,NCIT_C13056
+GLANS PENIS,http://purl.obolibrary.org/obo/NCIT_C12324,NCIT,Glans Penis,NCIT_C12324
+TISSUE,http://purl.obolibrary.org/obo/NCIT_C12801,NCIT,Tissue,NCIT_C12801
+PLASMA,http://purl.obolibrary.org/obo/NCIT_C13356,NCIT,Plasma,NCIT_C13356
+RIGHT UPPER QUADRANT,http://purl.obolibrary.org/obo/NCIT_C151398,NCIT,Right Upper Quadrant of Abdomen,NCIT_C151398
+BOWEL,http://purl.obolibrary.org/obo/NCIT_C12736,NCIT,Intestine,NCIT_C12736
+PELVIC PERITONEUM,http://purl.obolibrary.org/obo/NCIT_C159344,NCIT,Pelvic Peritoneum,NCIT_C159344
+ADNEXA,http://purl.obolibrary.org/obo/NCIT_C137974,NCIT,Adnexa,NCIT_C137974
+LEFT UPPER QUADRANT,http://purl.obolibrary.org/obo/NCIT_C151397,NCIT,Left Upper Quadrant of Abdomen,NCIT_C151397
+TUMOR EXTENTION INTO BONE,http://purl.obolibrary.org/obo/NCIT_C12366,NCIT,Bone,NCIT_C12366
+TEMPORALIS MUSCLE,http://purl.obolibrary.org/obo/NCIT_C33743,NCIT,Temporal Muscle,NCIT_C33743
+ORBITAL MASS,http://purl.obolibrary.org/obo/NCIT_C12347,NCIT,Orbit,NCIT_C12347
+PERINEPHRIC METASTASIS,http://purl.obolibrary.org/obo/NCIT_C62408<;>http://purl.obolibrary.org/obo/NCIT_C19151,NCIT,Perinephric<;>Metastasis,NCIT_C62408<;>NCIT_C19151
+CHEST WALL METASTASIS,http://purl.obolibrary.org/obo/NCIT_C62484<;>http://purl.obolibrary.org/obo/NCIT_C19151,NCIT,Chest Wall<;>Metastasis,NCIT_C62484<;>NCIT_C19151
+LYMPH NODE METASTASIS,http://purl.obolibrary.org/obo/NCIT_C12745<;>http://purl.obolibrary.org/obo/NCIT_C19151,NCIT,Lymph Node<;>Metastasis,NCIT_C12745<;>NCIT_C19151
+CEREBELLUM/POSTERIOR FOSSA,http://purl.obolibrary.org/obo/NCIT_C12445<;>http://purl.obolibrary.org/obo/NCIT_C33361,NCIT,Cerebellum<;>Posterior Cranial Fossa,NCIT_C12445<;>NCIT_C33361
+INFRATENTORIAL,http://purl.obolibrary.org/obo/NCIT_C12509,NCIT,Infratentorial Brain,NCIT_C12509
+"PARIETAL LOBE,TEMPORAL LOBE",http://purl.obolibrary.org/obo/NCIT_C12354<;>http://purl.obolibrary.org/obo/NCIT_C12353,NCIT,Parietal Lobe<;>Temporal Lobe,NCIT_C12354<;>NCIT_C12353
+"OTHER LOCATIONS NOS,SPINAL CORD- LUMBAR/THECAL SAC,SPINAL CORD- THORACIC,VENTRICLES",http://purl.obolibrary.org/obo/NCIT_C69314<;>http://purl.obolibrary.org/obo/NCIT_C49799<;>http://purl.obolibrary.org/obo/NCIT_C69315<;>http://purl.obolibrary.org/obo/NCIT_C12356,NCIT,Lumbar Spine<;>Spinal Cord Dura Mater<;>Thoracic Spine<;>Brain Ventricle,NCIT_C69314<;>NCIT_C49799<;>NCIT_C69315<;>NCIT_C12356
+"CEREBELLUM/POSTERIOR FOSSA,OTHER LOCATIONS NOS",http://purl.obolibrary.org/obo/NCIT_C12445<;>http://purl.obolibrary.org/obo/NCIT_C33361,NCIT,Cerebellum<;>Posterior Cranial Fossa,NCIT_C12445<;>NCIT_C33361
+"FRONTAL LOBE,PARIETAL LOBE,TEMPORAL LOBE",http://purl.obolibrary.org/obo/NCIT_C12352<;>http://purl.obolibrary.org/obo/NCIT_C12354<;>http://purl.obolibrary.org/obo/NCIT_C12353,NCIT,Frontal Lobe<;>Parietal Lobe<;>Temporal Lobe,NCIT_C12352<;>NCIT_C12354<;>NCIT_C12353
+"BASAL GANGLIA,TEMPORAL LOBE",http://purl.obolibrary.org/obo/NCIT_C12447<;>http://purl.obolibrary.org/obo/NCIT_C12353,NCIT,Basal Ganglia<;>Temporal Lobe,NCIT_C12447<;>NCIT_C12353
+SUPRASELLAR/HYPOTHALAMIC/PITUITARY,http://purl.obolibrary.org/obo/NCIT_C95445<;>http://purl.obolibrary.org/obo/NCIT_C12458<;>http://purl.obolibrary.org/obo/NCIT_C12399,NCIT,Suprasellar<;>Hypothalamus<;>Pituitary Gland,NCIT_C95445<;>NCIT_C12458<;>NCIT_C12399
+POSTERIOR FOSSA,http://purl.obolibrary.org/obo/NCIT_C33361,NCIT,Posterior Cranial Fossa,NCIT_C33361
+SPINAL CORD- LUMBAR/THECAL SAC,http://purl.obolibrary.org/obo/NCIT_C69314<;>http://purl.obolibrary.org/obo/NCIT_C49799,NCIT,Lumbar Spine<;>Spinal Cord Dura Mater,NCIT_C69314<;>NCIT_C49799
+POSTERIOR FOSSA>SPINE,http://purl.obolibrary.org/obo/NCIT_C33361<;>http://purl.obolibrary.org/obo/NCIT_C12998,NCIT,Posterior Cranial Fossa<;>Vertebral Column,NCIT_C33361<;>NCIT_C12998
+VENTRICLES,http://purl.obolibrary.org/obo/NCIT_C12356,NCIT,Brain Ventricle,NCIT_C12356
+"CEREBELLUM/POSTERIOR FOSSA,SUPRASELLAR/HYPOTHALAMIC/PITUITARY",http://purl.obolibrary.org/obo/NCIT_C12445<;>http://purl.obolibrary.org/obo/NCIT_C33361<;>http://purl.obolibrary.org/obo/NCIT_C95445<;>http://purl.obolibrary.org/obo/NCIT_C12458<;>http://purl.obolibrary.org/obo/NCIT_C12399,NCIT,Cerebellum<;>Posterior Cranial Fossa<;>Suprasellar<;>Hypothalamus<;>Pituitary Gland,NCIT_C12445<;>NCIT_C33361<;>NCIT_C95445<;>NCIT_C12458<;>NCIT_C12399
+"FRONTAL LOBE,PARIETAL LOBE",http://purl.obolibrary.org/obo/NCIT_C12352<;>http://purl.obolibrary.org/obo/NCIT_C12354,NCIT,Frontal Lobe<;>Parietal Lobe,NCIT_C12352<;>NCIT_C12354
+BRAIN STEM- MIDBRAIN/TECTUM,http://purl.obolibrary.org/obo/NCIT_C12460,NCIT,Tectum Mesencephali,NCIT_C12460
+"CEREBELLUM/POSTERIOR FOSSA,VENTRICLES",http://purl.obolibrary.org/obo/NCIT_C12445<;>http://purl.obolibrary.org/obo/NCIT_C33361<;>http://purl.obolibrary.org/obo/NCIT_C12356,NCIT,Cerebellum<;>Posterior Cranial Fossa<;>Brain Ventricle,NCIT_C12445<;>NCIT_C33361<;>NCIT_C12445<;>NCIT_C33361<;>NCIT_C12356
+"SPINAL CORD- LUMBAR/THECAL SAC,SPINAL CORD- THORACIC",http://purl.obolibrary.org/obo/NCIT_C69314<;>http://purl.obolibrary.org/obo/NCIT_C49799<;>http://purl.obolibrary.org/obo/NCIT_C69315,NCIT,Lumbar Spine<;>Spinal Cord Dura Mater<;>Thoracic Spine,NCIT_C69314<;>NCIT_C49799<;>NCIT_C69315
+"OCCIPITAL LOBE,PARIETAL LOBE",http://purl.obolibrary.org/obo/NCIT_C12355<;>http://purl.obolibrary.org/obo/NCIT_C12354,NCIT,Occipital Lobe<;>Parietal Lobe,NCIT_C12355<;>NCIT_C12354
+"BRAIN STEM- PONS,CEREBELLUM/POSTERIOR FOSSA",http://purl.obolibrary.org/obo/NCIT_C12511<;>http://purl.obolibrary.org/obo/NCIT_C12445<;>http://purl.obolibrary.org/obo/NCIT_C33361,NCIT,Pons Varolii<;>Cerebellum<;>Posterior Cranial Fossa,NCIT_C12511<;>NCIT_C12445<;>NCIT_C33361
+"BRAIN STEM- PONS,BRAIN STEM-MEDULLA,CEREBELLUM/POSTERIOR FOSSA,SPINAL CORD- CERVICAL",http://purl.obolibrary.org/obo/NCIT_C12511<;>http://purl.obolibrary.org/obo/NCIT_C12442<;>http://purl.obolibrary.org/obo/NCIT_C12445<;>http://purl.obolibrary.org/obo/NCIT_C33361<;>http://purl.obolibrary.org/obo/NCIT_C12892,NCIT,Pons Varolii<;>Medulla Oblongata<;>Cerebellum<;>Posterior Cranial Fossa<;>Cervical Spinal Cord,NCIT_C12511<;>NCIT_C12442<;>NCIT_C12445<;>NCIT_C33361<;>NCIT_C12892
+"OCCIPITAL LOBE,TEMPORAL LOBE",http://purl.obolibrary.org/obo/NCIT_C12355<;>http://purl.obolibrary.org/obo/NCIT_C12353,NCIT,Occipital Lobe<;>Temporal Lobe,NCIT_C12355<;>NCIT_C12353
+"BRAIN STEM- PONS,BRAIN STEM-MEDULLA,SPINAL CORD- CERVICAL,SPINAL CORD- THORACIC,SUPRASELLAR/HYPOTHALAMIC/PITUITARY",http://purl.obolibrary.org/obo/NCIT_C12511<;>http://purl.obolibrary.org/obo/NCIT_C12442<;>http://purl.obolibrary.org/obo/NCIT_C12892<;>http://purl.obolibrary.org/obo/NCIT_C12894<;>http://purl.obolibrary.org/obo/NCIT_C95445<;>http://purl.obolibrary.org/obo/NCIT_C12458<;>http://purl.obolibrary.org/obo/NCIT_C12399,NCIT,Pons Varolii<;>Medulla Oblongata<;>Cervical Spinal Cord<;>Thoracic Spinal Cord<;>Suprasellar<;>Hypothalamus<;>Pituitary Gland,NCIT_C12511<;>NCIT_C12442<;>NCIT_C12892<;>NCIT_C12894<;>NCIT_C95445<;>NCIT_C12458<;>NCIT_C12399
+"BRAIN STEM- MIDBRAIN/TECTUM,BRAIN STEM- PONS,CEREBELLUM/POSTERIOR FOSSA",http://purl.obolibrary.org/obo/NCIT_C12460<;>http://purl.obolibrary.org/obo/NCIT_C12511<;>http://purl.obolibrary.org/obo/NCIT_C12445<;>http://purl.obolibrary.org/obo/NCIT_C33361,NCIT,Tectum Mesencephali<;>Pons Varolii<;>Cerebellum<;>Posterior Cranial Fossa,NCIT_C12460<;>NCIT_C12511<;>NCIT_C12445<;>NCIT_C33361
+"OCCIPITAL LOBE,PARIETAL LOBE,TEMPORAL LOBE",http://purl.obolibrary.org/obo/NCIT_C12355<;>http://purl.obolibrary.org/obo/NCIT_C12354<;>http://purl.obolibrary.org/obo/NCIT_C12353,NCIT,Occipital Lobe<;>Parietal Lobe<;>Temporal Lobe,NCIT_C12355<;>NCIT_C12354<;>NCIT_C12353
+SPINAL CORD- CERVICAL,http://purl.obolibrary.org/obo/NCIT_C12892,NCIT,Cervical Spinal Cord,NCIT_C12892
+"SPINAL CORD- CERVICAL,SPINAL CORD- THORACIC",http://purl.obolibrary.org/obo/NCIT_C12892<;>http://purl.obolibrary.org/obo/NCIT_C69315,NCIT,Cervical Spinal Cord<;>Thoracic Spine,NCIT_C12892<;>NCIT_C69315
+PATIETAL,http://purl.obolibrary.org/obo/NCIT_C12354,NCIT,Parietal Lobe,NCIT_C12354
+INSULAR LOBE,http://purl.obolibrary.org/obo/NCIT_C32278,NCIT,Central Lobe,NCIT_C32278
+SINONASAL,http://purl.obolibrary.org/obo/NCIT_C54292,NCIT,Sinonasal Tract,NCIT_C54292
+LIVER RIGHT LOBE,http://purl.obolibrary.org/obo/NCIT_C33481,NCIT,Right Lobe of the Liver,NCIT_C33481
+LIVER LEFT LOBE,http://purl.obolibrary.org/obo/NCIT_C32965,NCIT,Left Lobe of the Liver,NCIT_C32965
+LIVER LEFT LOBE+LIVER RIGHT LOBE,http://purl.obolibrary.org/obo/NCIT_C32965<;>http://purl.obolibrary.org/obo/NCIT_C33481,NCIT,Left Lobe of the Liver<;>Right Lobe of the Liver,NCIT_C32965<;>NCIT_C33481
+"SUPRATENTORIAL, TEMPORAL LOBE",http://purl.obolibrary.org/obo/NCIT_C12923<;>http://purl.obolibrary.org/obo/NCIT_C12353,NCIT,Supratentorial<;>Temporal Lobe,NCIT_C12923<;>NCIT_C12353
+"SUPRATENTORIAL, FRONTAL LOBE",http://purl.obolibrary.org/obo/NCIT_C12923<;>http://purl.obolibrary.org/obo/NCIT_C12352,NCIT,Supratentorial<;>Frontal Lobe,NCIT_C12923<;>NCIT_C12352
+"SUPRATENTORIAL, PARIETAL LOBE",http://purl.obolibrary.org/obo/NCIT_C12923<;>http://purl.obolibrary.org/obo/NCIT_C12354,NCIT,Supratentorial<;>Parietal Lobe,NCIT_C12923<;>NCIT_C12354
+"SUPRATENTORIAL, OCCIPITAL LOBE",http://purl.obolibrary.org/obo/NCIT_C12923<;>http://purl.obolibrary.org/obo/NCIT_C12355,NCIT,Supratentorial<;>Occipital Lobe,NCIT_C12923<;>NCIT_C12355
+"SUPRATENTORIAL, NOT OTHERWISE SPECIFIED",http://purl.obolibrary.org/obo/NCIT_C12923,NCIT,Supratentorial,NCIT_C12923
+"POSTERIOR FOSSA, CEREBELLUM",http://purl.obolibrary.org/obo/NCIT_C12445<;>http://purl.obolibrary.org/obo/NCIT_C33361,NCIT,Cerebellum<;>Posterior Cranial Fossa,NCIT_C12445<;>NCIT_C33361
+"POSTERIOR FOSSA, BRAIN STEM",http://purl.obolibrary.org/obo/NCIT_C12441<;>http://purl.obolibrary.org/obo/NCIT_C33361,NCIT,Brain Stem<;>Posterior Cranial Fossa,NCIT_C12441<;>NCIT_C33361
+SKULL BASE,http://purl.obolibrary.org/obo/NCIT_C12493,NCIT,Base of the Skull,NCIT_C12493
+BLADDER_NECK,http://purl.obolibrary.org/obo/NCIT_C12336,NCIT,Bladder Neck,NCIT_C12336
+TRUNKEXTREMITIES,http://purl.obolibrary.org/obo/NCIT_C33816<;>http://purl.obolibrary.org/obo/NCIT_C12429,NCIT,Trunk<;>Limb,NCIT_C33816<;>NCIT_C12429
+EXTREMITIESTRUNK,http://purl.obolibrary.org/obo/NCIT_C33816<;>http://purl.obolibrary.org/obo/NCIT_C12429,NCIT,Trunk<;>Limb,NCIT_C33816<;>NCIT_C12429
+EXTREMITIESEXTREMITIES,http://purl.obolibrary.org/obo/NCIT_C12429,NCIT,Limb,NCIT_C12429
+TRUNK[NOT AVAILABLE],http://purl.obolibrary.org/obo/NCIT_C33816,NCIT,Trunk,NCIT_C33816
+LEFT GLUTEUS,http://purl.obolibrary.org/obo/NCIT_C105638,NCIT,Left Gluteus Medius,NCIT_C105638
+CHEST - CHEST WALL,http://purl.obolibrary.org/obo/NCIT_C62484,NCIT,Chest Wall,NCIT_C62484
+HEAD AND NECK - OTHER PLEASE SPECIFY,http://purl.obolibrary.org/obo/NCIT_C12418,NCIT,Head and Neck,NCIT_C12418
+CHEST - MEDIASTINUM,http://purl.obolibrary.org/obo/NCIT_C12748,NCIT,Mediastinum,NCIT_C12748
+GYNECOLOGICAL - OVARY,http://purl.obolibrary.org/obo/NCIT_C12404,NCIT,Ovary,NCIT_C12404
+CHEST - OTHER PLEASE SPECIFY,http://purl.obolibrary.org/obo/NCIT_C25389,NCIT,Chest,NCIT_C25389
+CHEST - LUNG/PLEURA,http://purl.obolibrary.org/obo/NCIT_C25389<;>http://purl.obolibrary.org/obo/NCIT_C12468<;>http://purl.obolibrary.org/obo/NCIT_C12469,NCIT,Chest<;>Lung<;>Pleura,NCIT_C25389<;>NCIT_C12468<;>NCIT_C12469
+ELBOW METASTASIS,http://purl.obolibrary.org/obo/NCIT_C32497<;>http://purl.obolibrary.org/obo/NCIT_C19151,NCIT,Elbow Joint<;>Metastasis,NCIT_C32497<;>NCIT_C19151
+CORACOID METASTASIS,http://purl.obolibrary.org/obo/NCIT_C12783<;>http://purl.obolibrary.org/obo/NCIT_C19151,NCIT,Scapula<;>Metastasis,NCIT_C12783<;>NCIT_C19151
+LYMPH NODE METASTASES,http://purl.obolibrary.org/obo/NCIT_C12745<;>http://purl.obolibrary.org/obo/NCIT_C19151,NCIT,Lymph Node<;>Metastasis,NCIT_C12745<;>NCIT_C19151
+GROIN LYMPH NODES,http://purl.obolibrary.org/obo/NCIT_C12726<;>http://purl.obolibrary.org/obo/NCIT_C12745,NCIT,Inguinal Region<;>Lymph Node,NCIT_C12726<;>NCIT_C12745
+R OCCIPITAL BRAIN,http://purl.obolibrary.org/obo/NCIT_C25228<;>http://purl.obolibrary.org/obo/NCIT_C12355,NCIT,Right<;>Occipital Lobe,NCIT_C25228<;>NCIT_C12355
+R ELBOW METASTASIS,http://purl.obolibrary.org/obo/NCIT_C25228<;>http://purl.obolibrary.org/obo/NCIT_C32497<;>http://purl.obolibrary.org/obo/NCIT_C19151,NCIT,Right<;>Elbow Joint<;>Metastasis,NCIT_C25228<;>NCIT_C32497<;>NCIT_C19151
+PARIETAL METASTASIS,http://purl.obolibrary.org/obo/NCIT_C12354<;>http://purl.obolibrary.org/obo/NCIT_C19151,NCIT,Parietal Lobe<;>Metastasis,NCIT_C12354<;>NCIT_C19151
+PARIETAL AND TEMPORAL LOBE,http://purl.obolibrary.org/obo/NCIT_C12354<;>http://purl.obolibrary.org/obo/NCIT_C12353,NCIT,Parietal Lobe<;>Temporal Lobe,NCIT_C12354<;>NCIT_C12353
+"PARIETAL, OCCIPITAL, TEMPORAL LOBE",http://purl.obolibrary.org/obo/NCIT_C12355<;>http://purl.obolibrary.org/obo/NCIT_C12354<;>http://purl.obolibrary.org/obo/NCIT_C12353,NCIT,Occipital Lobe<;>Parietal Lobe<;>Temporal Lobe,NCIT_C12355<;>NCIT_C12354<;>NCIT_C12353
+PARIETAL AND OCCIPITAL LOBE,http://purl.obolibrary.org/obo/NCIT_C12355<;>http://purl.obolibrary.org/obo/NCIT_C12354,NCIT,Occipital Lobe<;>Parietal Lobe,NCIT_C12355<;>NCIT_C12354
+FRONTAL AND TEMPORAL LOBE,http://purl.obolibrary.org/obo/NCIT_C12352<;>http://purl.obolibrary.org/obo/NCIT_C12353,NCIT,Frontal Lobe<;>Temporal Lobe,NCIT_C12352<;>NCIT_C12353
+FRONTAL AND PARIETAL LOBE,http://purl.obolibrary.org/obo/NCIT_C12352<;>http://purl.obolibrary.org/obo/NCIT_C12354,NCIT,Frontal Lobe<;>Parietal Lobe,NCIT_C12352<;>NCIT_C12354
+"PARIETAL, OCCIPITAL AND TEMPORAL LOBE",http://purl.obolibrary.org/obo/NCIT_C12355<;>http://purl.obolibrary.org/obo/NCIT_C12354<;>http://purl.obolibrary.org/obo/NCIT_C12353,NCIT,Occipital Lobe<;>Parietal Lobe<;>Temporal Lobe,NCIT_C12355<;>NCIT_C12354<;>NCIT_C12353
+OCCIPITAL AND TEMPORAL LOBE,http://purl.obolibrary.org/obo/NCIT_C12355<;>http://purl.obolibrary.org/obo/NCIT_C12353,NCIT,Occipital Lobe<;>Temporal Lobe,NCIT_C12355<;>NCIT_C12353
+"FRONTAL, PARIETAL AND TEMPORAL LOBE",http://purl.obolibrary.org/obo/NCIT_C12352<;>http://purl.obolibrary.org/obo/NCIT_C12354<;>http://purl.obolibrary.org/obo/NCIT_C12353,NCIT,Frontal Lobe<;>Parietal Lobe<;>Temporal Lobe,NCIT_C12352<;>NCIT_C12354<;>NCIT_C12353
+PRIMARYTRUNK,http://purl.obolibrary.org/obo/NCIT_C33816,NCIT,Trunk,NCIT_C33816
+NATRUNK,http://purl.obolibrary.org/obo/NCIT_C33816,NCIT,Trunk,NCIT_C33816
+HEAD AND NECKPRIMARY,http://purl.obolibrary.org/obo/NCIT_C12418,NCIT,Head and Neck,NCIT_C12418
+GEJ,http://purl.obolibrary.org/obo/NCIT_C32668,NCIT,Gastroesophageal Junction,NCIT_C32668
+RIGHT NECK,http://purl.obolibrary.org/obo/NCIT_C25228<;>http://purl.obolibrary.org/obo/NCIT_C13063,NCIT,Right<;>Neck,NCIT_C25228<;>NCIT_C13063
+LYMPH_NODE,http://purl.obolibrary.org/obo/NCIT_C12745,NCIT,Lymph Node,NCIT_C12745
+SACRAL_MASS,http://purl.obolibrary.org/obo/NCIT_C33508,NCIT,Sacrum,NCIT_C33508
+PLEURAL_FLUID,http://purl.obolibrary.org/obo/NCIT_C77613,NCIT,Pleural Fluid,NCIT_C77613
+UPPER_TRACT,http://purl.obolibrary.org/obo/NCIT_C142328,NCIT,Upper Urinary System,NCIT_C142328
+URETHER,http://purl.obolibrary.org/obo/NCIT_C12416,NCIT,Ureter,NCIT_C12416
+PLUERA,http://purl.obolibrary.org/obo/NCIT_C12469,NCIT,Pleura,NCIT_C12469
+SOFT_TISSUE,http://purl.obolibrary.org/obo/NCIT_C12471,NCIT,Soft Tissue,NCIT_C12471
+RIGHT_ILIAC_BONE,http://purl.obolibrary.org/obo/NCIT_C25228<;>http://purl.obolibrary.org/obo/NCIT_C32765,NCIT,Right<;>Ilium,NCIT_C25228<;>NCIT_C32765
+RETROPERITONIUM,http://purl.obolibrary.org/obo/NCIT_C12298,NCIT,Retroperitoneum,NCIT_C12298
+ABDOMINAL WALL MASS,http://purl.obolibrary.org/obo/NCIT_C77608,NCIT,Abdominal Wall,NCIT_C77608
+PERITONEAL NODULE,http://purl.obolibrary.org/obo/NCIT_C12770,NCIT,Peritoneum,NCIT_C12770
+DIAGNOSIS CANCER BONE,http://purl.obolibrary.org/obo/NCIT_C12366,NCIT,Bone,NCIT_C12366
+DIAGNOSIS CANCER LOC BREAST,http://purl.obolibrary.org/obo/NCIT_C12971,NCIT,Breast,NCIT_C12971
+DIAGNOSIS CANCER LOC LIVER,http://purl.obolibrary.org/obo/NCIT_C12392,NCIT,Liver,NCIT_C12392
+DIAGNOSIS CANCER LOC SKIN,http://purl.obolibrary.org/obo/NCIT_C12470,NCIT,Skin,NCIT_C12470
+DIAGNOSIS CANCER LOC LUNG,http://purl.obolibrary.org/obo/NCIT_C12468,NCIT,Lung,NCIT_C12468
+DIAGNOSIS CANCER LOC PLEURAL EFFUSION,http://purl.obolibrary.org/obo/NCIT_C3331,NCIT,Pleural Effusion,NCIT_C3331
+DIAGNOSIS CANCER LOC BRAIN,http://purl.obolibrary.org/obo/NCIT_C12439,NCIT,Brain,NCIT_C12439
+DIAGNOSIS CANCER LOC CHEST WALL,http://purl.obolibrary.org/obo/NCIT_C62484,NCIT,Chest Wall,NCIT_C62484
+BLADDER; URETER,http://purl.obolibrary.org/obo/NCIT_C12414<;>http://purl.obolibrary.org/obo/NCIT_C12416,NCIT,Bladder<;>Ureter,NCIT_C12414<;>NCIT_C12416
+URETER; RENAL PELVIS,http://purl.obolibrary.org/obo/NCIT_C12416<;>http://purl.obolibrary.org/obo/NCIT_C12887,NCIT,Ureter<;>Renal Pelvis,NCIT_C12416<;>NCIT_C12887
+URETER; BLADDER,http://purl.obolibrary.org/obo/NCIT_C12414<;>http://purl.obolibrary.org/obo/NCIT_C12416,NCIT,Bladder<;>Ureter,NCIT_C12414<;>NCIT_C12416
+RENAL PELVIS; URETER,http://purl.obolibrary.org/obo/NCIT_C12416<;>http://purl.obolibrary.org/obo/NCIT_C12887,NCIT,Ureter<;>Renal Pelvis,NCIT_C12416<;>NCIT_C12887
+BLADDER; URETHRA,http://purl.obolibrary.org/obo/NCIT_C12417<;>http://purl.obolibrary.org/obo/NCIT_C12414,NCIT,Urethra<;>Bladder,NCIT_C12417<;>NCIT_C12414
+URETER; RENAL PELVIS; BLADDER,http://purl.obolibrary.org/obo/NCIT_C12414<;>http://purl.obolibrary.org/obo/NCIT_C12416<;>http://purl.obolibrary.org/obo/NCIT_C12887,NCIT,Bladder<;>Ureter<;>Renal Pelvis,NCIT_C12414<;>NCIT_C12416<;>NCIT_C12887
+"PERIPHERAL BLOOD, MANTLE CELL LYMPHOMA",http://purl.obolibrary.org/obo/NCIT_C173496,NCIT,Peripheral Blood,NCIT_C173496
+PERIPHERAL BLOOD / B-CELL NON-HODGKIN LYMPHOMA MANTLE CELL LYMPHOMA,http://purl.obolibrary.org/obo/NCIT_C173496<;>http://purl.obolibrary.org/obo/NCIT_C12474,NCIT,Peripheral Blood<;>B-Lymphocyte,NCIT_C173496<;>NCIT_C12474
+PERIPHERAL BLOOD/MANTLE CELL LYMPHOMA B CELL NON-HODGKIN'S LYMPHOMA,http://purl.obolibrary.org/obo/NCIT_C173496<;>http://purl.obolibrary.org/obo/NCIT_C12474,NCIT,Peripheral Blood<;>B-Lymphocyte,NCIT_C173496<;>NCIT_C12474
+"BONE MARROW/B-CELL NON-HODGKIN LYMPHOMA DLCL, STAGE 4B, AT RELAPSE",http://purl.obolibrary.org/obo/NCIT_C12431<;>http://purl.obolibrary.org/obo/NCIT_C12474,NCIT,Bone Marrow<;>B-Lymphocyte,NCIT_C12431<;>NCIT_C12474
+PERITONEAL EFFUSION/B-NHL DIFFUSE LARGE CELL,http://purl.obolibrary.org/obo/NCIT_C12770<;>http://purl.obolibrary.org/obo/NCIT_C12474,NCIT,Peritoneum<;>B-Lymphocyte,NCIT_C12770<;>NCIT_C12474
+PERITONEAL EFFUSION/B-CELL NON-HODGKIN LYMPHOMA,http://purl.obolibrary.org/obo/NCIT_C12770<;>http://purl.obolibrary.org/obo/NCIT_C12474,NCIT,Peritoneum<;>B-Lymphocyte,NCIT_C12770<;>NCIT_C12474
+PLEURAL EFFUSION/B-CELL NON-HODGKIN LYMPHOMA DLCL,http://purl.obolibrary.org/obo/NCIT_C77613<;>http://purl.obolibrary.org/obo/NCIT_C12474,NCIT,Pleural Fluid<;>B-Lymphocyte,NCIT_C77613<;>NCIT_C12474
+ASCITES/DIFFUSE LARGE B CELL LYMPHOMA,http://purl.obolibrary.org/obo/NCIT_C12770<;>http://purl.obolibrary.org/obo/NCIT_C12474,NCIT,Peritoneum<;>B-Lymphocyte,NCIT_C12770<;>NCIT_C12474
+MANTLE CELL LYMPHOMA B CELL NON-HODGKIN'S LYMPHOMA,http://purl.obolibrary.org/obo/NCIT_C12434<;>http://purl.obolibrary.org/obo/NCIT_C12474,NCIT,Blood<;>B-Lymphocyte,NCIT_C12434<;>NCIT_C12474
+PERIPHERAL BLOOD/B-CELL NON-HODGKIN LYMPHOMA,http://purl.obolibrary.org/obo/NCIT_C173496<;>http://purl.obolibrary.org/obo/NCIT_C12474,NCIT,Peripheral Blood<;>B-Lymphocyte,NCIT_C173496<;>NCIT_C12474
+RIGHT MIDDLE LOBE,http://purl.obolibrary.org/obo/NCIT_C12286,NCIT,Middle Lobe of the Right Lung,NCIT_C12286
+LEFT LOWER LOBE,http://purl.obolibrary.org/obo/NCIT_C33020,NCIT,Lower Lobe of the Left Lung,NCIT_C33020
+RIGHT UPPER LOBE,http://purl.obolibrary.org/obo/NCIT_C33023,NCIT,Upper Lobe of the Right Lung,NCIT_C33023
+RIGHT BRONCHUS INTERMEDIUS,http://purl.obolibrary.org/obo/NCIT_C41268,NCIT,Subsegmental Bronchus of Right Lung,NCIT_C41268
+LEFT UPPER LOBE,http://purl.obolibrary.org/obo/NCIT_C33021,NCIT,Upper Lobe of the Left Lung,NCIT_C33021
+PERIPHERAL BLOODCD3-,http://purl.obolibrary.org/obo/NCIT_C173496,NCIT,Peripheral Blood,NCIT_C173496
+PERITONEUM OVARY,http://purl.obolibrary.org/obo/NCIT_C12770<;>http://purl.obolibrary.org/obo/NCIT_C12404,NCIT,Peritoneum<;>Ovary,NCIT_C12770<;>NCIT_C12404
+RETROPERITONEAL MASS,http://purl.obolibrary.org/obo/NCIT_C28256,NCIT,Retroperitoneal,NCIT_C28256
+PELVIC_MASS,http://purl.obolibrary.org/obo/NCIT_C12767,NCIT,Pelvis,NCIT_C12767
+DISTAL RECTUM,http://purl.obolibrary.org/obo/NCIT_C12390<;>http://purl.obolibrary.org/obo/NCIT_C25237,NCIT,Rectum<;>Distal,NCIT_C12390<;>NCIT_C25237
+VERY DISTAL RECTUM RECURRENCE,http://purl.obolibrary.org/obo/NCIT_C12390<;>http://purl.obolibrary.org/obo/NCIT_C25237,NCIT,Rectum<;>Distal,NCIT_C12390<;>NCIT_C25237
+UPPER RECTUM/DISTAL SIGMOID,http://purl.obolibrary.org/obo/NCIT_C12384<;>http://purl.obolibrary.org/obo/NCIT_C12390<;>http://purl.obolibrary.org/obo/NCIT_C25355,NCIT,Sigmoid Colon<;>Rectum<;>Upper,NCIT_C12384<;>NCIT_C12390<;>NCIT_C25355
+MID-DISTAL RECTUM,http://purl.obolibrary.org/obo/NCIT_C12390<;>http://purl.obolibrary.org/obo/NCIT_C25237<;>http://purl.obolibrary.org/obo/NCIT_C25569,NCIT,Rectum<;>Distal<;>Middle,NCIT_C12390<;>NCIT_C25237<;>NCIT_C25569
+MID RECTUM,http://purl.obolibrary.org/obo/NCIT_C12390<;>http://purl.obolibrary.org/obo/NCIT_C25569,NCIT,Rectum<;>Middle,NCIT_C12390<;>NCIT_C25569
+MID-RECTUM,http://purl.obolibrary.org/obo/NCIT_C12390<;>http://purl.obolibrary.org/obo/NCIT_C25569,NCIT,Rectum<;>Middle,NCIT_C12390<;>NCIT_C25569
+UPPER RECTUM,http://purl.obolibrary.org/obo/NCIT_C12390<;>http://purl.obolibrary.org/obo/NCIT_C25355,NCIT,Rectum<;>Upper,NCIT_C12390<;>NCIT_C25355
+MID-TO-DISTAL RECTUM,http://purl.obolibrary.org/obo/NCIT_C12390<;>http://purl.obolibrary.org/obo/NCIT_C25237<;>http://purl.obolibrary.org/obo/NCIT_C25569,NCIT,Rectum<;>Distal<;>Middle,NCIT_C12390<;>NCIT_C25237<;>NCIT_C25569
+PELVIC RECURRENCE,http://purl.obolibrary.org/obo/NCIT_C12767,NCIT,Pelvis,NCIT_C12767
+MID TO DISTAL RECTUM,http://purl.obolibrary.org/obo/NCIT_C12390<;>http://purl.obolibrary.org/obo/NCIT_C25237<;>http://purl.obolibrary.org/obo/NCIT_C25569,NCIT,Rectum<;>Distal<;>Middle,NCIT_C12390<;>NCIT_C25237<;>NCIT_C25569
+DISTAL RECTAL RECURRENCE POST LAR,http://purl.obolibrary.org/obo/NCIT_C12390<;>http://purl.obolibrary.org/obo/NCIT_C25237,NCIT,Rectum<;>Distal,NCIT_C12390<;>NCIT_C25237
+MID RECTAL TUMOR,http://purl.obolibrary.org/obo/NCIT_C12390<;>http://purl.obolibrary.org/obo/NCIT_C25569,NCIT,Rectum<;>Middle,NCIT_C12390<;>NCIT_C25569
+"DISTAL RECTUM, TUMOR RECURRENCE",http://purl.obolibrary.org/obo/NCIT_C12390<;>http://purl.obolibrary.org/obo/NCIT_C25237,NCIT,Rectum<;>Distal,NCIT_C12390<;>NCIT_C25237
+DISTAL RECTAL TUMOR,http://purl.obolibrary.org/obo/NCIT_C12390<;>http://purl.obolibrary.org/obo/NCIT_C25237,NCIT,Rectum<;>Distal,NCIT_C12390<;>NCIT_C25237
+GYNECOLOGICAL - UTERUS,http://purl.obolibrary.org/obo/NCIT_C12405,NCIT,Uterus,NCIT_C12405
+LOWER EXTREMITY - OTHER PLEASE SPECIFY,http://purl.obolibrary.org/obo/NCIT_C12742,NCIT,Lower Extremity,NCIT_C12742
+HEAD AND NECK - NECKHEAD AND NECK - OTHER PLEASE SPECIFY,http://purl.obolibrary.org/obo/NCIT_C12418,NCIT,Head and Neck,NCIT_C12418
+SMALL BOWEL MELANOMA,http://purl.obolibrary.org/obo/NCIT_C12386,NCIT,Small Intestine,NCIT_C12386
+SKIN NODULES,http://purl.obolibrary.org/obo/NCIT_C12470,NCIT,Skin,NCIT_C12470
+"CHEST WALL, LEFT",http://purl.obolibrary.org/obo/NCIT_C25229<;>http://purl.obolibrary.org/obo/NCIT_C62484,NCIT,Left<;>Chest Wall,NCIT_C25229<;>NCIT_C62484
+"PELVIC NODULE, LEFT",http://purl.obolibrary.org/obo/NCIT_C25229<;>http://purl.obolibrary.org/obo/NCIT_C12767,NCIT,Left<;>Pelvis,NCIT_C25229<;>NCIT_C12767
+"LEFT FEMORAL HEAD, NECK, AND CURETTINGS",http://purl.obolibrary.org/obo/NCIT_C25229<;>http://purl.obolibrary.org/obo/NCIT_C61563<;>http://purl.obolibrary.org/obo/NCIT_C32718,NCIT,Left<;>Femoral Neck<;>Head of the Femur,NCIT_C25229<;>NCIT_C61563<;>NCIT_C32718
+L MEDIASTINUM,http://purl.obolibrary.org/obo/NCIT_C25229<;>http://purl.obolibrary.org/obo/NCIT_C12748,NCIT,Left<;>Mediastinum,NCIT_C25229<;>NCIT_C12748
+AORTOCAVAL MASS,http://purl.obolibrary.org/obo/NCIT_C118775,NCIT,Aortocaval Lymph Node,NCIT_C118775
+ABDOMENDIAPHRAGM,http://purl.obolibrary.org/obo/NCIT_C12664<;>http://purl.obolibrary.org/obo/NCIT_C12702,NCIT,Abdomen<;>Diaphragm,NCIT_C12664<;>NCIT_C12702
+SMALL BOWEL MASS,http://purl.obolibrary.org/obo/NCIT_C12386,NCIT,Small Intestine,NCIT_C12386
+LEFT FEMUR,http://purl.obolibrary.org/obo/NCIT_C25229<;>http://purl.obolibrary.org/obo/NCIT_C12717,NCIT,Left<;>Femur,NCIT_C25229<;>NCIT_C12717
+LUNG/LEFT LOWER LOBE,http://purl.obolibrary.org/obo/NCIT_C33020,NCIT,Lower Lobe of the Left Lung,NCIT_C33020
+RIGHT  LUNG/LOWER LOBE,http://purl.obolibrary.org/obo/NCIT_C33022,NCIT,Lower Lobe of the Right Lung,NCIT_C33022
+ABDOMEN/DIAPHRAGM,http://purl.obolibrary.org/obo/NCIT_C12664<;>http://purl.obolibrary.org/obo/NCIT_C12702,NCIT,Abdomen<;>Diaphragm,NCIT_C12664<;>NCIT_C12702
+LEFT PELVIS,http://purl.obolibrary.org/obo/NCIT_C25229<;>http://purl.obolibrary.org/obo/NCIT_C12767,NCIT,Left<;>Pelvis,NCIT_C25229<;>NCIT_C12767
+LIVER/RIGHT LOBE,http://purl.obolibrary.org/obo/NCIT_C33481,NCIT,Right Lobe of the Liver,NCIT_C33481
+LEFT  PELVIS,http://purl.obolibrary.org/obo/NCIT_C25229<;>http://purl.obolibrary.org/obo/NCIT_C12767,NCIT,Left<;>Pelvis,NCIT_C25229<;>NCIT_C12767
+LUNGLINGULA,http://purl.obolibrary.org/obo/NCIT_C40373,NCIT,Lingula of the Lung,NCIT_C40373
+TERMIL ILEUM,http://purl.obolibrary.org/obo/NCIT_C33757,NCIT,Terminal Ileum,NCIT_C33757
+LUNG/LOWER LOBE,http://purl.obolibrary.org/obo/NCIT_C12287,NCIT,Lower Lobe of the Lung,NCIT_C12287
+LEFT RETROPERITONEUM,http://purl.obolibrary.org/obo/NCIT_C25229<;>http://purl.obolibrary.org/obo/NCIT_C12298,NCIT,Left<;>Retroperitoneum,NCIT_C25229<;>NCIT_C12298
+LUNG/MIDDLE LOBE,http://purl.obolibrary.org/obo/NCIT_C12286,NCIT,Middle Lobe of the Right Lung,NCIT_C12286
+RETROPERITONEUM/UPPER ABDOMINAL,http://purl.obolibrary.org/obo/NCIT_C12298<;>http://purl.obolibrary.org/obo/NCIT_C25355<;>http://purl.obolibrary.org/obo/NCIT_C25342,NCIT,Retroperitoneum<;>Upper<;>Abdominal,NCIT_C12298<;>NCIT_C25355<;>NCIT_C25342
+ABDOMINAL WAL,http://purl.obolibrary.org/obo/NCIT_C77608,NCIT,Abdominal Wall,NCIT_C77608
+CERVIXUTERUS,http://purl.obolibrary.org/obo/NCIT_C12311,NCIT,Cervix Uteri,NCIT_C12311
+INTRA-ABDOMINALPELVISRETROPERITONEUM,http://purl.obolibrary.org/obo/NCIT_C12492<;>http://purl.obolibrary.org/obo/NCIT_C12767<;>http://purl.obolibrary.org/obo/NCIT_C12298,NCIT,Intra-abdominal<;>Pelvis<;>Retroperitoneum,NCIT_C12492<;>NCIT_C12767<;>NCIT_C12298
+PELVISUTERUS,http://purl.obolibrary.org/obo/NCIT_C12405<;>http://purl.obolibrary.org/obo/NCIT_C12767,NCIT,Uterus<;>Pelvis,NCIT_C12405<;>NCIT_C12767
+GYNECOLOGICALUTERUS,http://purl.obolibrary.org/obo/NCIT_C12405,NCIT,Uterus,NCIT_C12405
+HEAD AND NECKNECK,http://purl.obolibrary.org/obo/NCIT_C12418,NCIT,Head and Neck,NCIT_C12418
+INTRA-ABDOMINALSMALL INTESTINE,http://purl.obolibrary.org/obo/NCIT_C12492<;>http://purl.obolibrary.org/obo/NCIT_C12386,NCIT,Intra-abdominal<;>Small Intestine,NCIT_C12492<;>NCIT_C12386
+KIDNEYLIVERRETROPERITONEUM/UPPER ABDOMINAL,http://purl.obolibrary.org/obo/NCIT_C12415<;>http://purl.obolibrary.org/obo/NCIT_C12392<;>http://purl.obolibrary.org/obo/NCIT_C12298<;>http://purl.obolibrary.org/obo/NCIT_C25355<;>http://purl.obolibrary.org/obo/NCIT_C25342,NCIT,Kidney<;>Liver<;>Retroperitoneum<;>Upper<;>Abdominal,NCIT_C12415<;>NCIT_C12392<;>NCIT_C12298<;>NCIT_C25355<;>NCIT_C25342
+RETROPERITONEUMRETROPERITONEUM/UPPER ABDOMINALSMALL INTESTINE,http://purl.obolibrary.org/obo/NCIT_C12298<;>http://purl.obolibrary.org/obo/NCIT_C25355<;>http://purl.obolibrary.org/obo/NCIT_C25342<;>http://purl.obolibrary.org/obo/NCIT_C12386,NCIT,Retroperitoneum<;>Upper<;>Abdominal<;>Small Intestine,NCIT_C12298<;>NCIT_C25355<;>NCIT_C25342<;>NCIT_C12386
+INTRA-ABDOMINALRETROPERITONEUM/UPPER ABDOMINAL,http://purl.obolibrary.org/obo/NCIT_C12492<;>http://purl.obolibrary.org/obo/NCIT_C12298<;>http://purl.obolibrary.org/obo/NCIT_C25355<;>http://purl.obolibrary.org/obo/NCIT_C25342,NCIT,Intra-abdominal<;>Retroperitoneum<;>Upper<;>Abdominal,NCIT_C12492<;>NCIT_C12298<;>NCIT_C25355<;>NCIT_C25342
+RETROPERITONEUMRETROPERITONEUM/UPPER ABDOMINAL,http://purl.obolibrary.org/obo/NCIT_C12298<;>http://purl.obolibrary.org/obo/NCIT_C25355<;>http://purl.obolibrary.org/obo/NCIT_C25342,NCIT,Retroperitoneum<;>Upper<;>Abdominal,NCIT_C12298<;>NCIT_C25355<;>NCIT_C25342
+RETROPERITONEUM/UPPER ABDOMINALSMALL INTESTINE,http://purl.obolibrary.org/obo/NCIT_C12298<;>http://purl.obolibrary.org/obo/NCIT_C25355<;>http://purl.obolibrary.org/obo/NCIT_C25342<;>http://purl.obolibrary.org/obo/NCIT_C12386,NCIT,Retroperitoneum<;>Upper<;>Abdominal<;>Small Intestine,NCIT_C12298<;>NCIT_C25355<;>NCIT_C25342<;>NCIT_C12386
+DISTANT METASTASISTRUNK,http://purl.obolibrary.org/obo/NCIT_C18206<;>http://purl.obolibrary.org/obo/NCIT_C33816,NCIT,Distant Metastasis<;>Trunk,NCIT_C18206<;>NCIT_C33816
+REGIONAL LYMPH NODETRUNK,http://purl.obolibrary.org/obo/NCIT_C49018<;>http://purl.obolibrary.org/obo/NCIT_C33816,NCIT,Regional Lymph Node<;>Trunk,NCIT_C49018<;>NCIT_C33816
+OTHERREGIONAL LYMPH NODE,http://purl.obolibrary.org/obo/NCIT_C49018,NCIT,Regional Lymph Node,NCIT_C49018
+EXTREMITIESPRIMARY,http://purl.obolibrary.org/obo/NCIT_C12429,NCIT,Limb,NCIT_C12429
+EXTREMITIESREGIONAL LYMPH NODE,http://purl.obolibrary.org/obo/NCIT_C12429<;>http://purl.obolibrary.org/obo/NCIT_C49018,NCIT,Limb<;>Regional Lymph Node,NCIT_C12429<;>NCIT_C49018
+EXTREMITIESREGIONAL CUTANEOUS OR SUBCUTANEOUS TISSUE,http://purl.obolibrary.org/obo/NCIT_C12429<;>http://purl.obolibrary.org/obo/NCIT_C92441,NCIT,Limb<;>Skin/Subcutaneous Tissue,NCIT_C12429<;>NCIT_C92441
+EXTREMITIESREGIONAL LYMPH NODETRUNK,http://purl.obolibrary.org/obo/NCIT_C12429<;>http://purl.obolibrary.org/obo/NCIT_C49018<;>http://purl.obolibrary.org/obo/NCIT_C33816,NCIT,Limb<;>Regional Lymph Node<;>Trunk,NCIT_C12429<;>NCIT_C49018<;>NCIT_C33816
+REGIONAL CUTANEOUS OR SUBCUTANEOUS TISSUETRUNK,http://purl.obolibrary.org/obo/NCIT_C92441<;>http://purl.obolibrary.org/obo/NCIT_C33816,NCIT,Skin/Subcutaneous Tissue<;>Trunk,NCIT_C92441<;>NCIT_C33816
+DISTANT METASTASISEXTREMITIESTRUNK,http://purl.obolibrary.org/obo/NCIT_C18206<;>http://purl.obolibrary.org/obo/NCIT_C12429<;>http://purl.obolibrary.org/obo/NCIT_C33816,NCIT,Distant Metastasis<;>Limb<;>Trunk,NCIT_C18206<;>NCIT_C12429<;>NCIT_C33816
+HEAD AND NECKREGIONAL LYMPH NODE,http://purl.obolibrary.org/obo/NCIT_C12418<;>http://purl.obolibrary.org/obo/NCIT_C49018,NCIT,Head and Neck<;>Regional Lymph Node,NCIT_C12418<;>NCIT_C49018
+HEAD AND NECKREGIONAL CUTANEOUS OR SUBCUTANEOUS TISSUE,http://purl.obolibrary.org/obo/NCIT_C12418<;>http://purl.obolibrary.org/obo/NCIT_C92441,NCIT,Head and Neck<;>Skin/Subcutaneous Tissue,NCIT_C12418<;>NCIT_C92441
+OTHERREGIONAL CUTANEOUS OR SUBCUTANEOUS TISSUE,http://purl.obolibrary.org/obo/NCIT_C92441,NCIT,Skin/Subcutaneous Tissue,NCIT_C92441
+REGIONAL CUTANEOUS OR SUBCUTANEOUS TISSUE,http://purl.obolibrary.org/obo/NCIT_C92441,NCIT,Skin/Subcutaneous Tissue,NCIT_C92441
+DISTANT METASTASISHEAD AND NECK,http://purl.obolibrary.org/obo/NCIT_C18206<;>http://purl.obolibrary.org/obo/NCIT_C12418,NCIT,Distant Metastasis<;>Head and Neck,NCIT_C18206<;>NCIT_C12418
+DISTANT METASTASISEXTREMITIES,http://purl.obolibrary.org/obo/NCIT_C18206<;>http://purl.obolibrary.org/obo/NCIT_C12429,NCIT,Distant Metastasis<;>Limb,NCIT_C18206<;>NCIT_C12429
+EXTREMITIESPRIMARYTRUNK,http://purl.obolibrary.org/obo/NCIT_C12429<;>http://purl.obolibrary.org/obo/NCIT_C33816,NCIT,Limb<;>Trunk,NCIT_C12429<;>NCIT_C33816
+DISTANT METASTASISOTHER,http://purl.obolibrary.org/obo/NCIT_C18206,NCIT,Distant Metastasis,NCIT_C18206
+CAECUM,http://purl.obolibrary.org/obo/NCIT_C12381,NCIT,Cecum,NCIT_C12381
+SINONASAL CAVITY,http://purl.obolibrary.org/obo/NCIT_C12424<;>http://purl.obolibrary.org/obo/NCIT_C12763,NCIT,Nasal Cavity<;>Paranasal Sinus,NCIT_C12424<;>NCIT_C12763
+DISTANT METS,http://purl.obolibrary.org/obo/NCIT_C18206,NCIT,Distant Metastasis,NCIT_C18206
+KIDNEY LUNG MET,http://purl.obolibrary.org/obo/NCIT_C12415<;>http://purl.obolibrary.org/obo/NCIT_C12468<;>http://purl.obolibrary.org/obo/NCIT_C19151,NCIT,Kidney<;>Lung<;>Metastasis,NCIT_C12415<;>NCIT_C12468<;>NCIT_C19151
+4TH VENTRICLE,http://purl.obolibrary.org/obo/NCIT_C12828,NCIT,Fourth Ventricle,NCIT_C12828
+3RD VENTRICLE,http://purl.obolibrary.org/obo/NCIT_C12827,NCIT,Third Ventricle,NCIT_C12827
+PSOAS MASS,http://purl.obolibrary.org/obo/NCIT_C33422,NCIT,Psoas Muscle,NCIT_C33422
+PERIRECTAL,http://purl.obolibrary.org/obo/NCIT_C129464,NCIT,Anorectal,NCIT_C129464
+PENILE,http://purl.obolibrary.org/obo/NCIT_C12409,NCIT,Penis,NCIT_C12409
+PROSTATETURP,http://purl.obolibrary.org/obo/NCIT_C12410,NCIT,Prostate Gland,NCIT_C12410
+OTHER SOFT TISSUE,http://purl.obolibrary.org/obo/NCIT_C12471,NCIT,Soft Tissue,NCIT_C12471
+METASTATIC HORMONE-SENSITIVE,http://purl.obolibrary.org/obo/NCIT_C14174,NCIT,Metastatic,NCIT_C14174
+DIAGNOSIS CANCER LOC AXILLARY LN,http://purl.obolibrary.org/obo/NCIT_C12904,NCIT,Axillary Lymph Node,NCIT_C12904
+DIAGNOSIS CANCER LOC OTHER LN,http://purl.obolibrary.org/obo/NCIT_C12745,NCIT,Lymph Node,NCIT_C12745
+METASTATIC CASTRATION-RESISTANT,http://purl.obolibrary.org/obo/NCIT_C14174,NCIT,Metastatic,NCIT_C14174
+REGIONAL NODES,http://purl.obolibrary.org/obo/NCIT_C49018,NCIT,Regional Lymph Node,NCIT_C49018
+NON-METASTATIC CASTRATION-RESISTANT,http://purl.obolibrary.org/obo/NCIT_C14148,NCIT,Nonmetastatic,NCIT_C14148
+"METASTATIC, VARIANT HISTOLOGY",http://purl.obolibrary.org/obo/NCIT_C14174,NCIT,Metastatic,NCIT_C14174
+RIGHT ADNEXA,http://purl.obolibrary.org/obo/NCIT_C25228<;>http://purl.obolibrary.org/obo/NCIT_C137974,NCIT,Right<;>Adnexa,NCIT_C25228<;>NCIT_C137974
+LEFT ADNEXA,http://purl.obolibrary.org/obo/NCIT_C25229<;>http://purl.obolibrary.org/obo/NCIT_C137974,NCIT,Left<;>Adnexa,NCIT_C25229<;>NCIT_C137974
+"BASAL GANGLIA,THALAMUS",http://purl.obolibrary.org/obo/NCIT_C12447<;>http://purl.obolibrary.org/obo/NCIT_C12459,NCIT,Basal Ganglia<;>Thalamus,NCIT_C12447<;>NCIT_C12459
+ASCENDING TO TRANSVERSE COLON,http://purl.obolibrary.org/obo/NCIT_C12265<;>http://purl.obolibrary.org/obo/NCIT_C12266<;>http://purl.obolibrary.org/obo/NCIT_C12385,NCIT,Ascending Colon<;>Hepatic Flexure<;>Transverse Colon,NCIT_C12265<;>NCIT_C12266<;>NCIT_C12385
+SPLENIC FLEXURE TO SIGMOID COLON,http://purl.obolibrary.org/obo/NCIT_C12267<;>http://purl.obolibrary.org/obo/NCIT_C12268<;>http://purl.obolibrary.org/obo/NCIT_C12384,NCIT,Splenic Flexure<;>Descending Colon<;>Sigmoid Colon,NCIT_C12267<;>NCIT_C12268<;>NCIT_C12384
+HEPATIX FLEXURE,http://purl.obolibrary.org/obo/NCIT_C12266,NCIT,Hepatic Flexure,NCIT_C12266
+TRANVERSE COLON,http://purl.obolibrary.org/obo/NCIT_C12385,NCIT,Transverse Colon,NCIT_C12385
+SPLENIC METASTASIS,http://purl.obolibrary.org/obo/NCIT_C12432<;>http://purl.obolibrary.org/obo/NCIT_C19151,NCIT,Spleen<;>Metastasis,NCIT_C12432<;>NCIT_C19151
+REGIONAL CUTANEOUS OR SUBCUTANEOUS TISSUE INCLUDES SATELLITE AND IN-TRANSIT METASTASIS,http://purl.obolibrary.org/obo/NCIT_C92441<;>http://purl.obolibrary.org/obo/NCIT_C19151,NCIT,Skin/Subcutaneous Tissue<;>Metastasis,NCIT_C92441<;>NCIT_C19151
+"PELVIS, SITE INDETERMINATE",http://purl.obolibrary.org/obo/NCIT_C12767,NCIT,Pelvis,NCIT_C12767
+RETROPERITONEAL PELVIS,http://purl.obolibrary.org/obo/NCIT_C12767<;>http://purl.obolibrary.org/obo/NCIT_C12298,NCIT,Pelvis<;>Retroperitoneum,NCIT_C12767<;>NCIT_C12298
+PELVIS/LABIA,http://purl.obolibrary.org/obo/NCIT_C12767<;>http://purl.obolibrary.org/obo/NCIT_C96267,NCIT,Pelvis<;>Labial,NCIT_C12767<;>NCIT_C96267
+PELVIS/PERINEAL,http://purl.obolibrary.org/obo/NCIT_C12767<;>http://purl.obolibrary.org/obo/NCIT_C77621,NCIT,Pelvis<;>Perineal Gland,NCIT_C12767<;>NCIT_C77621
+PELVIS/BUTTOCK,http://purl.obolibrary.org/obo/NCIT_C12767<;>http://purl.obolibrary.org/obo/NCIT_C89806,NCIT,Pelvis<;>Buttock,NCIT_C12767<;>NCIT_C89806
+DIFFUSE/SITE UNKNOWN,http://purl.obolibrary.org/obo/NCIT_C14175,NCIT,Diffuse,NCIT_C14175
+RETROPERITONEUM/UPPER ABDOMINAL - RETROPERITONEUM,http://purl.obolibrary.org/obo/NCIT_C12298<;>http://purl.obolibrary.org/obo/NCIT_C25355<;>http://purl.obolibrary.org/obo/NCIT_C25342,NCIT,Retroperitoneum<;>Upper<;>Abdominal,NCIT_C12298<;>NCIT_C25355<;>NCIT_C25342
+RETROPERITONEUM/UPPER ABDOMINAL - INTRAABDOMINAL,http://purl.obolibrary.org/obo/NCIT_C12492<;>http://purl.obolibrary.org/obo/NCIT_C12298<;>http://purl.obolibrary.org/obo/NCIT_C25355<;>http://purl.obolibrary.org/obo/NCIT_C25342,NCIT,Intra-abdominal<;>Retroperitoneum<;>Upper<;>Abdominal,NCIT_C12492<;>NCIT_C12298<;>NCIT_C25355<;>NCIT_C25342
+RETROPERITONEUM/UPPER ABDOMINAL - OTHER PLEASE SPECIFY,http://purl.obolibrary.org/obo/NCIT_C12298<;>http://purl.obolibrary.org/obo/NCIT_C25355<;>http://purl.obolibrary.org/obo/NCIT_C25342,NCIT,Retroperitoneum<;>Upper<;>Abdominal,NCIT_C12298<;>NCIT_C25355<;>NCIT_C25342
+RETROPERITONEUM/UPPER ABDOMINAL - GASTRIC,http://purl.obolibrary.org/obo/NCIT_C12298<;>http://purl.obolibrary.org/obo/NCIT_C25355<;>http://purl.obolibrary.org/obo/NCIT_C25342<;>http://purl.obolibrary.org/obo/NCIT_C12391,NCIT,Retroperitoneum<;>Upper<;>Abdominal<;>Stomach,NCIT_C12298<;>NCIT_C25355<;>NCIT_C25342<;>NCIT_C12391
+RETROPERITONEUM/UPPER ABDOMINAL - KIDNEY,http://purl.obolibrary.org/obo/NCIT_C12298<;>http://purl.obolibrary.org/obo/NCIT_C25355<;>http://purl.obolibrary.org/obo/NCIT_C25342<;>http://purl.obolibrary.org/obo/NCIT_C12415,NCIT,Retroperitoneum<;>Upper<;>Abdominal<;>Kidney,NCIT_C12298<;>NCIT_C25355<;>NCIT_C25342<;>NCIT_C12415
+RETROPERITONEUM/UPPER ABDOMINAL - KIDNEYRETROPERITONEUM/UPPER ABDOMINAL - LIVERRETROPERITONEUM/UPPER ABDOMINAL - OTHER PLEASE SPECIFY,http://purl.obolibrary.org/obo/NCIT_C12298<;>http://purl.obolibrary.org/obo/NCIT_C25355<;>http://purl.obolibrary.org/obo/NCIT_C25342<;>http://purl.obolibrary.org/obo/NCIT_C12415<;>http://purl.obolibrary.org/obo/NCIT_C12392,NCIT,Retroperitoneum<;>Upper<;>Abdominal<;>Kidney<;>Liver,NCIT_C12298<;>NCIT_C25355<;>NCIT_C25342<;>NCIT_C12415<;>NCIT_C12392
+RETROPERITONEUM/UPPER ABDOMINAL - RETROPERITONEUMRETROPERITONEUM/UPPER ABDOMINAL - SMALL INTESTINESRETROPERITONEUM/UPPER ABDOMINAL - OTHER PLEASE SPECIFY,http://purl.obolibrary.org/obo/NCIT_C12298<;>http://purl.obolibrary.org/obo/NCIT_C25355<;>http://purl.obolibrary.org/obo/NCIT_C25342<;>http://purl.obolibrary.org/obo/NCIT_C12392,NCIT,Retroperitoneum<;>Upper<;>Abdominal<;>Small Intestine,NCIT_C12298<;>NCIT_C25355<;>NCIT_C25342<;>NCIT_C12392
+RETROPERITONEUM/UPPER ABDOMINAL - COLON,http://purl.obolibrary.org/obo/NCIT_C12298<;>http://purl.obolibrary.org/obo/NCIT_C25355<;>http://purl.obolibrary.org/obo/NCIT_C25342<;>http://purl.obolibrary.org/obo/NCIT_C12382,NCIT,Retroperitoneum<;>Upper<;>Abdominal<;>Colon,NCIT_C12298<;>NCIT_C25355<;>NCIT_C25342<;>NCIT_C12382
+RETROPERITONEUM/UPPER ABDOMINAL - SMALL INTESTINES,http://purl.obolibrary.org/obo/NCIT_C12298<;>http://purl.obolibrary.org/obo/NCIT_C25355<;>http://purl.obolibrary.org/obo/NCIT_C25342<;>http://purl.obolibrary.org/obo/NCIT_C12392,NCIT,Retroperitoneum<;>Upper<;>Abdominal<;>Small Intestine,NCIT_C12298<;>NCIT_C25355<;>NCIT_C25342<;>NCIT_C12392
+GYNECOLOGICAL - UTERUSGYNECOLOGICAL - CERVIX,http://purl.obolibrary.org/obo/NCIT_C12405<;>http://purl.obolibrary.org/obo/NCIT_C12311,NCIT,Uterus<;>Cervix Uteri,NCIT_C12405<;>NCIT_C12311
+RETROPERITONEUM/UPPER ABDOMINAL - PANCREAS,http://purl.obolibrary.org/obo/NCIT_C12298<;>http://purl.obolibrary.org/obo/NCIT_C25355<;>http://purl.obolibrary.org/obo/NCIT_C25342<;>http://purl.obolibrary.org/obo/NCIT_C12393,NCIT,Retroperitoneum<;>Upper<;>Abdominal<;>Pancreas,NCIT_C12298<;>NCIT_C25355<;>NCIT_C25342<;>NCIT_C12393
+GYNECOLOGICAL - UTERUSGYNECOLOGICAL - OTHER PLEASE SPECIFY,http://purl.obolibrary.org/obo/NCIT_C12405,NCIT,Uterus,NCIT_C12405
+RETROPERITONEUM/UPPER ABDOMINAL - RETROPERITONEUMRETROPERITONEUM/UPPER ABDOMINAL - OTHER PLEASE SPECIFY,http://purl.obolibrary.org/obo/NCIT_C12298<;>http://purl.obolibrary.org/obo/NCIT_C25355<;>http://purl.obolibrary.org/obo/NCIT_C25342,NCIT,Retroperitoneum<;>Upper<;>Abdominal,NCIT_C12298<;>NCIT_C25355<;>NCIT_C25342
+RETROPERITONEUM/UPPER ABDOMINAL - SMALL INTESTINESRETROPERITONEUM/UPPER ABDOMINAL - OTHER PLEASE SPECIFY,http://purl.obolibrary.org/obo/NCIT_C12298<;>http://purl.obolibrary.org/obo/NCIT_C25355<;>http://purl.obolibrary.org/obo/NCIT_C25342<;>http://purl.obolibrary.org/obo/NCIT_C12392,NCIT,Retroperitoneum<;>Upper<;>Abdominal<;>Small Intestine,NCIT_C12298<;>NCIT_C25355<;>NCIT_C25342<;>NCIT_C12392
+RETROPERITONEUM/UPPER ABDOMINAL - INTRAABDOMINALRETROPERITONEUM/UPPER ABDOMINAL - OTHER PLEASE SPECIFY,http://purl.obolibrary.org/obo/NCIT_C12492<;>http://purl.obolibrary.org/obo/NCIT_C12298<;>http://purl.obolibrary.org/obo/NCIT_C25355<;>http://purl.obolibrary.org/obo/NCIT_C25342,NCIT,Intra-abdominal<;>Retroperitoneum<;>Upper<;>Abdominal,NCIT_C12492<;>NCIT_C12298<;>NCIT_C25355<;>NCIT_C25342
+GROIN METASTASIS,http://purl.obolibrary.org/obo/NCIT_C12726<;>http://purl.obolibrary.org/obo/NCIT_C19151,NCIT,Inguinal Region<;>Metastasis,NCIT_C12726<;>NCIT_C19151
+SMALL BOWEL NONRESPONDING METASTASIS,http://purl.obolibrary.org/obo/NCIT_C12386<;>http://purl.obolibrary.org/obo/NCIT_C19151,NCIT,Small Intestine<;>Metastasis,NCIT_C12386<;>NCIT_C19151
+NONRESPONDING INGUINAL METASTASIS,http://purl.obolibrary.org/obo/NCIT_C12726<;>http://purl.obolibrary.org/obo/NCIT_C19151,NCIT,Inguinal Region<;>Metastasis,NCIT_C12726<;>NCIT_C19151
+SMALL BOWEL METASTASIS,http://purl.obolibrary.org/obo/NCIT_C12386<;>http://purl.obolibrary.org/obo/NCIT_C19151,NCIT,Small Intestine<;>Metastasis,NCIT_C12386<;>NCIT_C19151
+LEFT INGUINAL LYMPH NODES,http://purl.obolibrary.org/obo/NCIT_C25229<;>http://purl.obolibrary.org/obo/NCIT_C32801,NCIT,Left<;>Inguinal Lymph Node,NCIT_C25229<;>NCIT_C32801
+SOFT TISSUE METASTASIS,http://purl.obolibrary.org/obo/NCIT_C12471<;>http://purl.obolibrary.org/obo/NCIT_C19151,NCIT,Soft Tissue<;>Metastasis,NCIT_C12471<;>NCIT_C19151
+GROIN LYMPH NODE METASTASES,http://purl.obolibrary.org/obo/NCIT_C32801<;>http://purl.obolibrary.org/obo/NCIT_C19151,NCIT,Inguinal Lymph Node<;>Metastasis,NCIT_C32801<;>NCIT_C19151
+MID,http://purl.obolibrary.org/obo/NCIT_C25569,NCIT,Middle,NCIT_C25569
+MIDDISTAL,http://purl.obolibrary.org/obo/NCIT_C25569<;>http://purl.obolibrary.org/obo/NCIT_C25237,NCIT,Middle<;>Distal,NCIT_C25569<;>NCIT_C25237
+PROXIMALMID,http://purl.obolibrary.org/obo/NCIT_C25236<;>http://purl.obolibrary.org/obo/NCIT_C25569,NCIT,Proximal<;>Middle,NCIT_C25236<;>NCIT_C25569
+APEXBASE,http://purl.obolibrary.org/obo/NCIT_C13087<;>http://purl.obolibrary.org/obo/NCIT_C13088,NCIT,Apex of the Prostate<;>Base of the Prostate,NCIT_C13087<;>NCIT_C13088
+APEXMIDDLEBASE,http://purl.obolibrary.org/obo/NCIT_C157168<;>http://purl.obolibrary.org/obo/NCIT_C13087<;>http://purl.obolibrary.org/obo/NCIT_C13088,NCIT,Middle of the Prostate<;>Apex of the Prostate<;>Base of the Prostate,NCIT_C157168<;>NCIT_C13087<;>NCIT_C13088
+APEXMIDDLE,http://purl.obolibrary.org/obo/NCIT_C157168<;>http://purl.obolibrary.org/obo/NCIT_C13087,NCIT,Middle of the Prostate<;>Apex of the Prostate,NCIT_C157168<;>NCIT_C13087
+MIDDLEBASE,http://purl.obolibrary.org/obo/NCIT_C157168<;>http://purl.obolibrary.org/obo/NCIT_C13088,NCIT,Middle of the Prostate<;>Base of the Prostate,NCIT_C157168<;>NCIT_C13088
+SALVAGE PROSTATECTOMY,http://purl.obolibrary.org/obo/NCIT_C12410,NCIT,Prostate Gland,NCIT_C12410
+LEFT ORBITAL,http://purl.obolibrary.org/obo/NCIT_C25229<;>http://purl.obolibrary.org/obo/NCIT_C12347,NCIT,Left<;>Orbit,NCIT_C25229<;>NCIT_C12347
+TESTIS-PARATESTIS,http://purl.obolibrary.org/obo/NCIT_C12412<;>http://purl.obolibrary.org/obo/NCIT_C162491,NCIT,Testis<;>Paratesticular Region,NCIT_C12412<;>NCIT_C162491
+"LEFT CHEST, DIAPHRAM",http://purl.obolibrary.org/obo/NCIT_C25229<;>http://purl.obolibrary.org/obo/NCIT_C25389<;>http://purl.obolibrary.org/obo/NCIT_C12702,NCIT,Left<;>Chest<;>Diaphragm,NCIT_C25229<;>NCIT_C25389<;>NCIT_C12702
+INFRATEMPORAL FOSSA,http://purl.obolibrary.org/obo/FMA_75308,FMA,Infratemporal Fossa,FMA_75308
+TESTIS-PA RATESTIS,http://purl.obolibrary.org/obo/NCIT_C12412<;>http://purl.obolibrary.org/obo/NCIT_C162491,NCIT,Testis<;>Paratesticular Region,NCIT_C12412<;>NCIT_C162491
+ABDOMEN/DIAPHRAM,http://purl.obolibrary.org/obo/NCIT_C12664<;>http://purl.obolibrary.org/obo/NCIT_C12702,NCIT,Abdomen<;>Diaphragm,NCIT_C12664<;>NCIT_C12702
+U,http://purl.obolibrary.org/obo/NCIT_C25355<;>http://purl.obolibrary.org/obo/NCIT_C12391,NCIT,Upper<;>Stomach,NCIT_C25355<;>NCIT_C12391
+L,http://purl.obolibrary.org/obo/NCIT_C25309<;>http://purl.obolibrary.org/obo/NCIT_C12391,NCIT,Lower<;>Stomach,NCIT_C25309<;>NCIT_C12391
+M,http://purl.obolibrary.org/obo/NCIT_C25569<;>http://purl.obolibrary.org/obo/NCIT_C12391,NCIT,Middle<;>Stomach,NCIT_C25569<;>NCIT_C12391
+MID-DISTAL,http://purl.obolibrary.org/obo/NCIT_C25569<;>http://purl.obolibrary.org/obo/NCIT_C25237,NCIT,Middle<;>Distal,NCIT_C25569<;>NCIT_C25237
+LOWER ABDOMINAL/PELVIC - SPERMATIC CORD,http://purl.obolibrary.org/obo/NCIT_C25309<;>http://purl.obolibrary.org/obo/NCIT_C12664<;>http://purl.obolibrary.org/obo/NCIT_C12767<;>http://purl.obolibrary.org/obo/NCIT_C12329,NCIT,Lower<;>Abdomen<;>Pelvis<;>Spermatic Cord,NCIT_C25309<;>NCIT_C12664<;>NCIT_C12767<;>NCIT_C12329
+UPPER EXTREMITY - UPPER ARM/ELBOW,http://purl.obolibrary.org/obo/NCIT_C12671<;>http://purl.obolibrary.org/obo/NCIT_C25355<;>http://purl.obolibrary.org/obo/NCIT_C32141<;>http://purl.obolibrary.org/obo/NCIT_C32497,NCIT,Upper Extremity<;>Upper<;>Arm<;>Elbow Joint,NCIT_C12671<;>NCIT_C25355<;>NCIT_C32141<;>NCIT_C32497
+LOWER ABDOMINAL/PELVIC - PELVIC,http://purl.obolibrary.org/obo/NCIT_C25309<;>http://purl.obolibrary.org/obo/NCIT_C12664<;>http://purl.obolibrary.org/obo/NCIT_C12767,NCIT,Lower<;>Abdomen<;>Pelvis,NCIT_C25309<;>NCIT_C12664<;>NCIT_C12767
+SUPERFICIAL TRUNK - BACK,http://purl.obolibrary.org/obo/NCIT_C12295<;>http://purl.obolibrary.org/obo/NCIT_C13062,NCIT,Skin of the Trunk<;>Back,NCIT_C12295<;>NCIT_C13062
+LOWER EXTREMITY - THIGH/KNEE,http://purl.obolibrary.org/obo/NCIT_C12742<;>http://purl.obolibrary.org/obo/NCIT_C33763<;>http://purl.obolibrary.org/obo/NCIT_C32898,NCIT,Lower Extremity<;>Thigh<;>Knee Joint,NCIT_C12742<;>NCIT_C33763<;>NCIT_C32898
+LOWER ABDOMINAL/PELVIC - OTHER PLEASE SPECIFY,http://purl.obolibrary.org/obo/NCIT_C25309<;>http://purl.obolibrary.org/obo/NCIT_C12664<;>http://purl.obolibrary.org/obo/NCIT_C12767,NCIT,Lower<;>Abdomen<;>Pelvis,NCIT_C25309<;>NCIT_C12664<;>NCIT_C12767
+LOWER EXTREMITY - FOOT/ANKLE,http://purl.obolibrary.org/obo/NCIT_C12742<;>http://purl.obolibrary.org/obo/NCIT_C32622<;>http://purl.obolibrary.org/obo/NCIT_C32078,NCIT,Lower Extremity<;>Foot<;>Ankle Joint,NCIT_C12742<;>NCIT_C32622<;>NCIT_C32078
+LOWER EXTREMITY - LOWER LEG/CALF,http://purl.obolibrary.org/obo/NCIT_C12742<;>http://purl.obolibrary.org/obo/NCIT_C25309<;>http://purl.obolibrary.org/obo/NCIT_C32974<;>http://purl.obolibrary.org/obo/NCIT_C93027,NCIT,Lower Extremity<;>Lower<;>Leg<;>Calf,NCIT_C12742<;>NCIT_C25309<;>NCIT_C32974<;>NCIT_C93027
+LOWER ABDOMINAL/PELVIC - PELVICGYNECOLOGICAL - UTERUS,http://purl.obolibrary.org/obo/NCIT_C25309<;>http://purl.obolibrary.org/obo/NCIT_C12664<;>http://purl.obolibrary.org/obo/NCIT_C12767<;>http://purl.obolibrary.org/obo/NCIT_C12405,NCIT,Lower<;>Abdomen<;>Pelvis<;>Uterus,NCIT_C25309<;>NCIT_C12664<;>NCIT_C12767<;>NCIT_C12405
+LOWER ABDOMINAL/PELVIC - BLADDER,http://purl.obolibrary.org/obo/NCIT_C25309<;>http://purl.obolibrary.org/obo/NCIT_C12664<;>http://purl.obolibrary.org/obo/NCIT_C12767<;>http://purl.obolibrary.org/obo/NCIT_C12414,NCIT,Lower<;>Abdomen<;>Pelvis<;>Bladder,NCIT_C25309<;>NCIT_C12664<;>NCIT_C12767<;>NCIT_C12414
+LOWER EXTREMITY - GROIN,http://purl.obolibrary.org/obo/NCIT_C12742<;>http://purl.obolibrary.org/obo/NCIT_C12726,NCIT,Lower Extremity<;>Inguinal Region,NCIT_C12742<;>NCIT_C12726
+UPPER EXTREMITY - SHOULDER/AXILLA,http://purl.obolibrary.org/obo/NCIT_C12671<;>http://purl.obolibrary.org/obo/NCIT_C25203<;>http://purl.obolibrary.org/obo/NCIT_C12674,NCIT,Upper Extremity<;>Shoulder<;>Axilla,NCIT_C12671<;>NCIT_C25203<;>NCIT_C12674
+SUPERFICIAL TRUNK - ABDOMINAL WALL,http://purl.obolibrary.org/obo/NCIT_C12295<;>http://purl.obolibrary.org/obo/NCIT_C77608,NCIT,Skin of the Trunk<;>Abdominal Wall,NCIT_C12295<;>NCIT_C77608
+SUPERFICIAL TRUNK - BUTTOCK,http://purl.obolibrary.org/obo/NCIT_C12295<;>http://purl.obolibrary.org/obo/NCIT_C89806,NCIT,Skin of the Trunk<;>Buttock,NCIT_C12295<;>NCIT_C89806
+SUPERFICIAL TRUNK - FLANK,http://purl.obolibrary.org/obo/NCIT_C12295<;>http://purl.obolibrary.org/obo/NCIT_C93028,NCIT,Skin of the Trunk<;>Flank,NCIT_C12295<;>NCIT_C93028
+SCALP METASTASIS,http://purl.obolibrary.org/obo/NCIT_C89807<;>http://purl.obolibrary.org/obo/NCIT_C19151,NCIT,Scalp<;>Metastasis,NCIT_C89807<;>NCIT_C19151
+LEFT THIGH METASTASIS,http://purl.obolibrary.org/obo/NCIT_C105632<;>http://purl.obolibrary.org/obo/NCIT_C19151,NCIT,Left Thigh<;>Metastasis,NCIT_C105632<;>NCIT_C19151
+GLUTEAL METASTASIS,http://purl.obolibrary.org/obo/NCIT_C78205<;>http://purl.obolibrary.org/obo/NCIT_C19151,NCIT,Gluteal Muscle<;>Metastasis,NCIT_C78205<;>NCIT_C19151
+LEFT AXILLARY LYMPH NODES,http://purl.obolibrary.org/obo/NCIT_C25229<;>http://purl.obolibrary.org/obo/NCIT_C12904,NCIT,Left<;>Axillary Lymph Node,NCIT_C25229<;>NCIT_C12904
+NONRESPONDING ADRENAL GLAND METASTASIS,http://purl.obolibrary.org/obo/NCIT_C12666<;>http://purl.obolibrary.org/obo/NCIT_C19151,NCIT,Adrenal Gland<;>Metastasis,NCIT_C12666<;>NCIT_C19151
+PORTAL LYMPH NODE METASTASIS,http://purl.obolibrary.org/obo/NCIT_C77645<;>http://purl.obolibrary.org/obo/NCIT_C19151,NCIT,Portal Lymph Node<;>Metastasis,NCIT_C77645<;>NCIT_C19151
+NONRESPONDING SPLEEN METASTASIS,http://purl.obolibrary.org/obo/NCIT_C12432<;>http://purl.obolibrary.org/obo/NCIT_C19151,NCIT,Spleen<;>Metastasis,NCIT_C12432<;>NCIT_C19151
+LEFT PARIETAL BRAIN METASTASIS,http://purl.obolibrary.org/obo/NCIT_C25229<;>http://purl.obolibrary.org/obo/NCIT_C12354<;>http://purl.obolibrary.org/obo/NCIT_C19151,NCIT,Left<;>Parietal Lobe<;>Metastasis,NCIT_C25229<;>NCIT_C12354<;>NCIT_C19151
+L AXILLARY LYMPH NODE DISSECTION,http://purl.obolibrary.org/obo/NCIT_C25229<;>http://purl.obolibrary.org/obo/NCIT_C12904,NCIT,Left<;>Axillary Lymph Node,NCIT_C25229<;>NCIT_C12904
+PUBIC NONRESPONDING METASTSIS,http://purl.obolibrary.org/obo/NCIT_C33423<;>http://purl.obolibrary.org/obo/NCIT_C19151,NCIT,Pubic Bone<;>Metastasis,NCIT_C33423<;>NCIT_C19151
+NONRESPONDING CUTANEOUS METASTASIS,http://purl.obolibrary.org/obo/NCIT_C12470<;>http://purl.obolibrary.org/obo/NCIT_C19151,NCIT,Skin<;>Metastasis,NCIT_C12470<;>NCIT_C19151
+INGUINAL LYMPH NODES,http://purl.obolibrary.org/obo/NCIT_C32801,NCIT,Inguinal Lymph Node,NCIT_C32801
+L TEMPORAL BRAIN METASTASIS,http://purl.obolibrary.org/obo/NCIT_C25229<;>http://purl.obolibrary.org/obo/NCIT_C12353<;>http://purl.obolibrary.org/obo/NCIT_C19151,NCIT,Left<;>Temporal Lobe<;>Metastasis,NCIT_C25229<;>NCIT_C12353<;>NCIT_C19151
+R CHEST WALL NODULAR METASTASIS,http://purl.obolibrary.org/obo/NCIT_C25228<;>http://purl.obolibrary.org/obo/NCIT_C62484<;>http://purl.obolibrary.org/obo/NCIT_C19151,NCIT,Right<;>Chest Wall<;>Metastasis,NCIT_C25228<;>NCIT_C62484<;>NCIT_C19151
+R AXILLARY LYMPH NODE METASTASIS,http://purl.obolibrary.org/obo/NCIT_C25228<;>http://purl.obolibrary.org/obo/NCIT_C12904<;>http://purl.obolibrary.org/obo/NCIT_C19151,NCIT,Right<;>Axillary Lymph Node<;>Metastasis,NCIT_C25228<;>NCIT_C12904<;>NCIT_C19151
+"ANTERIOR CHEST, SKIN METASTASIS",http://purl.obolibrary.org/obo/FMA_24816<;>http://purl.obolibrary.org/obo/NCIT_C12470<;>http://purl.obolibrary.org/obo/NCIT_C19151,FMA<;>NCIT,Anterior Chest<;>Skin<;>Metastasis,FMA_24816<;>NCIT_C12470<;>NCIT_C19151
+ABDONIMAL NODULE,http://purl.obolibrary.org/obo/NCIT_C12664,NCIT,Abdomen,NCIT_C12664
+L ARM MELANOMA,http://purl.obolibrary.org/obo/NCIT_C105633,NCIT,Left Arm,NCIT_C105633
+SKIN/CHEST WALL METASTASIS,http://purl.obolibrary.org/obo/NCIT_C12470<;>http://purl.obolibrary.org/obo/NCIT_C62484<;>http://purl.obolibrary.org/obo/NCIT_C19151,NCIT,Skin<;>Chest Wall<;>Metastasis,NCIT_C12470<;>NCIT_C62484<;>NCIT_C19151
+FOREARM METASTASIS,http://purl.obolibrary.org/obo/NCIT_C32628<;>http://purl.obolibrary.org/obo/NCIT_C19151,NCIT,Forearm<;>Metastasis,NCIT_C32628<;>NCIT_C19151
+NECK LYMPH NODE,http://purl.obolibrary.org/obo/NCIT_C13063<;>http://purl.obolibrary.org/obo/NCIT_C12745,NCIT,Neck<;>Lymph Node,NCIT_C13063<;>NCIT_C12745
+ABDOMINAL TUMOR NODULES,http://purl.obolibrary.org/obo/NCIT_C12664,NCIT,Abdomen,NCIT_C12664
+SKIN AND BREAST METASTASIS,http://purl.obolibrary.org/obo/NCIT_C12470<;>http://purl.obolibrary.org/obo/NCIT_C12971<;>http://purl.obolibrary.org/obo/NCIT_C19151,NCIT,Skin<;>Breast<;>Metastasis,NCIT_C12470<;>NCIT_C12971<;>NCIT_C19151
+LESSER CURVE,http://purl.obolibrary.org/obo/NCIT_C12261,NCIT,Lesser Curvature of the Stomach,NCIT_C12261
+GREATER CURVE,http://purl.obolibrary.org/obo/NCIT_C12262,NCIT,Greater Curvature of the Stomach,NCIT_C12262
+INCISURA,http://purl.obolibrary.org/obo/FMA_14573,FMA,Angular Notch of Stomach,FMA_14573
+RIGHT FRONTAL,http://purl.obolibrary.org/obo/NCIT_C25228<;>http://purl.obolibrary.org/obo/NCIT_C12352,NCIT,Right<;>Frontal Lobe,NCIT_C25228<;>NCIT_C12352
+RIGHT TEMPORAL,http://purl.obolibrary.org/obo/NCIT_C25228<;>http://purl.obolibrary.org/obo/NCIT_C12353,NCIT,Right<;>Temporal Lobe,NCIT_C25228<;>NCIT_C12353
+LEFT FRONTAL,http://purl.obolibrary.org/obo/NCIT_C25229<;>http://purl.obolibrary.org/obo/NCIT_C12352,NCIT,Left<;>Frontal Lobe,NCIT_C25229<;>NCIT_C12352
+RIGHT PARIETAL,http://purl.obolibrary.org/obo/NCIT_C25228<;>http://purl.obolibrary.org/obo/NCIT_C12354,NCIT,Right<;>Parietal Lobe,NCIT_C25228<;>NCIT_C12354
+RIGHT PARIETAL OCCIPITAL,http://purl.obolibrary.org/obo/NCIT_C25228<;>http://purl.obolibrary.org/obo/NCIT_C12354<;>http://purl.obolibrary.org/obo/NCIT_C12355,NCIT,Right<;>Parietal Lobe<;>Occipital Lobe,NCIT_C25228<;>NCIT_C12354<;>NCIT_C12355
+RIGHT FRONTOTEMPORAL,http://purl.obolibrary.org/obo/NCIT_C25228<;>http://purl.obolibrary.org/obo/NCIT_C12352<;>http://purl.obolibrary.org/obo/NCIT_C12353,NCIT,Right<;>Frontal Lobe<;>Temporal Lobe,NCIT_C25228<;>NCIT_C12352<;>NCIT_C12353
+LEFT TEMPOROPARIETAL,http://purl.obolibrary.org/obo/NCIT_C25229<;>http://purl.obolibrary.org/obo/NCIT_C12353,NCIT,Left<;>Temporal Lobe<;>Parietal Lobe,NCIT_C25229<;>NCIT_C12353
+LEFT OCCIPITAL,http://purl.obolibrary.org/obo/NCIT_C25229<;>http://purl.obolibrary.org/obo/NCIT_C12355,NCIT,Left<;>Occipital Lobe,NCIT_C25229<;>NCIT_C12355
+LEFT CEREBELLUM,http://purl.obolibrary.org/obo/NCIT_C25229<;>http://purl.obolibrary.org/obo/NCIT_C12445,NCIT,Left<;>Cerebellum,NCIT_C25229<;>NCIT_C12445
+RIGHT TEMPORO-OCCIPITAL,http://purl.obolibrary.org/obo/NCIT_C25228<;>http://purl.obolibrary.org/obo/NCIT_C12353<;>http://purl.obolibrary.org/obo/NCIT_C12355,NCIT,Right<;>Temporal Lobe<;>Occipital Lobe,NCIT_C25228<;>NCIT_C12353<;>NCIT_C12355
+LEFT TEMPORAL,http://purl.obolibrary.org/obo/NCIT_C25229<;>http://purl.obolibrary.org/obo/NCIT_C12353,NCIT,Left<;>Temporal Lobe,NCIT_C25229<;>NCIT_C12353
+LEFT TEMPORAL-OCCIPITAL,http://purl.obolibrary.org/obo/NCIT_C25229<;>http://purl.obolibrary.org/obo/NCIT_C12353<;>http://purl.obolibrary.org/obo/NCIT_C12355,NCIT,Left<;>Temporal Lobe<;>Occipital Lobe,NCIT_C25229<;>NCIT_C12353<;>NCIT_C12355
+LEFT PARIETAL,http://purl.obolibrary.org/obo/NCIT_C25229<;>http://purl.obolibrary.org/obo/NCIT_C12354,NCIT,Left<;>Parietal Lobe,NCIT_C25229<;>NCIT_C12354
+LEFT PARIETOTEMPORAL,http://purl.obolibrary.org/obo/NCIT_C25229<;>http://purl.obolibrary.org/obo/NCIT_C12353,NCIT,Left<;>Temporal Lobe<;>Parietal Lobe,NCIT_C25229<;>NCIT_C12353
+RIGHT FRONTAL/BASAL GANGLIA,http://purl.obolibrary.org/obo/NCIT_C25228<;>http://purl.obolibrary.org/obo/NCIT_C12352<;>http://purl.obolibrary.org/obo/NCIT_C12447,NCIT,Right<;>Frontal Lobe<;>Basal Ganglia,NCIT_C25228<;>NCIT_C12352<;>NCIT_C12447
+"LEFT PARIETAL, RIGHT PARIETAL",http://purl.obolibrary.org/obo/NCIT_C25229<;>http://purl.obolibrary.org/obo/NCIT_C12354<;>http://purl.obolibrary.org/obo/NCIT_C25228<;>http://purl.obolibrary.org/obo/NCIT_C12354,NCIT,Left<;>Parietal Lobe<;>Right<;>Parietal Lobe,NCIT_C25229<;>NCIT_C12354<;>NCIT_C25228<;>NCIT_C12354
+RIGHT PARIETO-OCCIPITAL,http://purl.obolibrary.org/obo/NCIT_C25228<;>http://purl.obolibrary.org/obo/NCIT_C12354<;>http://purl.obolibrary.org/obo/NCIT_C12355,NCIT,Right<;>Parietal Lobe<;>Occipital Lobe,NCIT_C25228<;>NCIT_C12354<;>NCIT_C12355
+LEFT PARIETO-OCCIPITAL,http://purl.obolibrary.org/obo/NCIT_C25229<;>http://purl.obolibrary.org/obo/NCIT_C12354<;>http://purl.obolibrary.org/obo/NCIT_C12355,NCIT,Left<;>Parietal Lobe<;>Occipital Lobe,NCIT_C25229<;>NCIT_C12354<;>NCIT_C12355
+LEFT FRONTAL LOBE,http://purl.obolibrary.org/obo/NCIT_C25229<;>http://purl.obolibrary.org/obo/NCIT_C12352,NCIT,Left<;>Frontal Lobe,NCIT_C25229<;>NCIT_C12352
+RIGHT PARIETAL; RIGHT TEMPORAL,http://purl.obolibrary.org/obo/NCIT_C25228<;>http://purl.obolibrary.org/obo/NCIT_C12354<;>http://purl.obolibrary.org/obo/NCIT_C12353,NCIT,Right<;>Parietal Lobe<;>Temporal Lobe,NCIT_C25228<;>NCIT_C12354<;>NCIT_C12353
+LEFT FRONTOTEMPORAL,http://purl.obolibrary.org/obo/NCIT_C25229<;>http://purl.obolibrary.org/obo/NCIT_C12352<;>http://purl.obolibrary.org/obo/NCIT_C12353,NCIT,Left<;>Frontal Lobe<;>Temporal Lobe,NCIT_C25229<;>NCIT_C12352<;>NCIT_C12353
+LEFT OCCIPITAL-PARIETAL,http://purl.obolibrary.org/obo/NCIT_C25229<;>http://purl.obolibrary.org/obo/NCIT_C12354<;>http://purl.obolibrary.org/obo/NCIT_C12355,NCIT,Left<;>Parietal Lobe<;>Occipital Lobe,NCIT_C25229<;>NCIT_C12354<;>NCIT_C12355
+RIGHT CEREBELLUM/OCCIPITAL,http://purl.obolibrary.org/obo/NCIT_C25228<;>http://purl.obolibrary.org/obo/NCIT_C12445<;>http://purl.obolibrary.org/obo/NCIT_C12355,NCIT,Right<;>Cerebellum<;>Occipital Lobe,NCIT_C25228<;>NCIT_C12445<;>NCIT_C12355
+"TEMPORAL, PARIETAL LOBE, AND LATERAL  VENTRICLE",http://purl.obolibrary.org/obo/NCIT_C12834<;>http://purl.obolibrary.org/obo/NCIT_C12354<;>http://purl.obolibrary.org/obo/NCIT_C12353,NCIT,Lateral Ventricle<;>Parietal Lobe<;>Temporal Lobe,NCIT_C12834<;>NCIT_C12354<;>NCIT_C12353
+TEMPORAL LOBE AND BASAL GANGLIA AND THALAMUS,http://purl.obolibrary.org/obo/NCIT_C12353<;>http://purl.obolibrary.org/obo/NCIT_C12447,NCIT,Temporal Lobe<;>Basal Ganglia,NCIT_C12353<;>NCIT_C12447
+"BRAIN, RIGHT TEMPORAL",http://purl.obolibrary.org/obo/NCIT_C25228<;>http://purl.obolibrary.org/obo/NCIT_C12353,NCIT,Right<;>Temporal Lobe,NCIT_C25228<;>NCIT_C12353
+"PLEURA, LEFT",http://purl.obolibrary.org/obo/NCIT_C25229<;>http://purl.obolibrary.org/obo/NCIT_C12469,NCIT,Left<;>Pleura,NCIT_C25229<;>NCIT_C12469
+"BRAIN, RIGHT OCCIPITAL",http://purl.obolibrary.org/obo/NCIT_C25228<;>http://purl.obolibrary.org/obo/NCIT_C12355,NCIT,Right<;>Occipital Lobe,NCIT_C25228<;>NCIT_C12355
+"PLEURA, RIGHT",http://purl.obolibrary.org/obo/NCIT_C25228<;>http://purl.obolibrary.org/obo/NCIT_C12469,NCIT,Right<;>Pleura,NCIT_C25228<;>NCIT_C12469
+T3 EPIDURAL TUMOR,http://purl.obolibrary.org/obo/NCIT_C33725,NCIT,T3 Vertebra,NCIT_C33725
+"BRAIN, RIGHT FRONTAL",http://purl.obolibrary.org/obo/NCIT_C25228<;>http://purl.obolibrary.org/obo/NCIT_C12352,NCIT,Right<;>Frontal Lobe,NCIT_C25228<;>NCIT_C12352
+"LYMPH NODE, RIGHT AXILLARY",http://purl.obolibrary.org/obo/NCIT_C25228<;>http://purl.obolibrary.org/obo/NCIT_C12904,NCIT,Right<;>Axillary Lymph Node,NCIT_C25228<;>NCIT_C12904
+T9-T10 EPIDURAL TUMOR,http://purl.obolibrary.org/obo/NCIT_C33731<;>http://purl.obolibrary.org/obo/NCIT_C33721,NCIT,T9 Vertebra<;>T10 Vertebra,NCIT_C33731<;>NCIT_C33721
+"ABDOMINAL WALL, RIGHT",http://purl.obolibrary.org/obo/NCIT_C25228<;>http://purl.obolibrary.org/obo/NCIT_C77608,NCIT,Right<;>Abdominal Wall,NCIT_C25228<;>NCIT_C77608
+T8 EPIDURAL TUMOR,http://purl.obolibrary.org/obo/NCIT_C33730,NCIT,T8 Vertebra,NCIT_C33730
+"FEMUR, RIGHT BONE",http://purl.obolibrary.org/obo/NCIT_C25228<;>http://purl.obolibrary.org/obo/NCIT_C12717,NCIT,Right<;>Femur,NCIT_C25228<;>NCIT_C12717
+"PLEURAL EFFUSION, LEFT",http://purl.obolibrary.org/obo/NCIT_C25229<;>http://purl.obolibrary.org/obo/NCIT_C3331,NCIT,Left<;>Pleural Effusion,NCIT_C25229<;>NCIT_C3331
+T2 EPIDURAL TUMOR,http://purl.obolibrary.org/obo/NCIT_C33724,NCIT,T2 Vertebra,NCIT_C33724
+"BRAIN, LEFT TEMPORAL",http://purl.obolibrary.org/obo/NCIT_C25229<;>http://purl.obolibrary.org/obo/NCIT_C12353,NCIT,Left<;>Temporal Lobe,NCIT_C25229<;>NCIT_C12353
+"BRAIN, LEFT OCCIPITAL",http://purl.obolibrary.org/obo/NCIT_C25229<;>http://purl.obolibrary.org/obo/NCIT_C12355,NCIT,Left<;>Occipital Lobe,NCIT_C25229<;>NCIT_C12355
+"BRAIN, LEFT PARIETAL",http://purl.obolibrary.org/obo/NCIT_C25229<;>http://purl.obolibrary.org/obo/NCIT_C12354,NCIT,Left<;>Parietal Lobe,NCIT_C25229<;>NCIT_C12354
+"PLEURAL EFFUSION, RIGHT",http://purl.obolibrary.org/obo/NCIT_C25228<;>http://purl.obolibrary.org/obo/NCIT_C3331,NCIT,Right<;>Pleural Effusion,NCIT_C25228<;>NCIT_C3331
+"ABDOMEN, LEFT",http://purl.obolibrary.org/obo/NCIT_C25229<;>http://purl.obolibrary.org/obo/NCIT_C12664,NCIT,Left<;>Abdomen,NCIT_C25229<;>NCIT_C12664
+"CHEST WALL, RIGHT RIBS SIX AND SEVEN",http://purl.obolibrary.org/obo/NCIT_C62484<;>http://purl.obolibrary.org/obo/NCIT_C52762<;>,NCIT,Chest Wall<;>Rib 6<;>Rib 7,NCIT_C62484<;>NCIT_C52762<;>NCIT_C52761
+C7-T1 SPINAL TUMOR,http://purl.obolibrary.org/obo/NCIT_C32245<;>http://purl.obolibrary.org/obo/NCIT_C33720,NCIT,C7 Vertebra<;>T1 Vertebra,NCIT_C32245<;>NCIT_C33720
+"LUNG, PLEURA, DIAPHRAGM; RIGHT",http://purl.obolibrary.org/obo/NCIT_C25228<;>http://purl.obolibrary.org/obo/NCIT_C12468<;>http://purl.obolibrary.org/obo/NCIT_C12469<;>http://purl.obolibrary.org/obo/NCIT_C12702,NCIT,Right<;>Lung<;>Pleura<;>Diaphragm,NCIT_C25228<;>NCIT_C12468<;>NCIT_C12469<;>NCIT_C12702
+"LYMPH NODE, LEFT SUPRACLAVICULAR",http://purl.obolibrary.org/obo/FMA_232719,FMA,Left Supraclavicular Lymph Node,FMA_232719
+"CHEST WALL, RIGHT",http://purl.obolibrary.org/obo/NCIT_C25228<;>http://purl.obolibrary.org/obo/NCIT_C62484,NCIT,Right<;>Chest Wall,NCIT_C25228<;>NCIT_C62484
+"KIDNEY AND ADRENAL GLAND, LEFT",http://purl.obolibrary.org/obo/NCIT_C25229<;>http://purl.obolibrary.org/obo/NCIT_C12666<;>http://purl.obolibrary.org/obo/NCIT_C12415,NCIT,Left<;>Adrenal Gland<;>Kidney,NCIT_C25229<;>NCIT_C12666<;>NCIT_C12415
+C4 EPIDURAL TUMOR,http://purl.obolibrary.org/obo/NCIT_C32242,NCIT,C4 Vertebra,NCIT_C32242
+T5 EPIDURAL TUMOR,http://purl.obolibrary.org/obo/NCIT_C33727,NCIT,T5 Vertebra,NCIT_C33727
+T5-T6 EPIDURAL TUMOR,http://purl.obolibrary.org/obo/NCIT_C33727<;>http://purl.obolibrary.org/obo/NCIT_C33728,NCIT,T5 Vertebra<;>T6 Vertebra,NCIT_C33727<;>NCIT_C33728
+"ADRENAL GLAND, LEFT",http://purl.obolibrary.org/obo/NCIT_C25229<;>http://purl.obolibrary.org/obo/NCIT_C12666,NCIT,Left<;>Adrenal Gland,NCIT_C25229<;>NCIT_C12666
+"PLUERA, RIGHT",http://purl.obolibrary.org/obo/NCIT_C25228<;>http://purl.obolibrary.org/obo/NCIT_C12469,NCIT,Right<;>Pleura,NCIT_C25228<;>NCIT_C12469
+LEFT OCCIPITAL BRAIN,http://purl.obolibrary.org/obo/NCIT_C25229<;>http://purl.obolibrary.org/obo/NCIT_C12355,NCIT,Left<;>Occipital Lobe,NCIT_C25229<;>NCIT_C12355
+PLUERAL FLUID,http://purl.obolibrary.org/obo/NCIT_C77613,NCIT,Pleural Fluid,NCIT_C77613
+LEFT TEMPORAL BRAIN,http://purl.obolibrary.org/obo/NCIT_C25229<;>http://purl.obolibrary.org/obo/NCIT_C12353,NCIT,Left<;>Temporal Lobe,NCIT_C25229<;>NCIT_C12353
+"PLUERA, LEFT",http://purl.obolibrary.org/obo/NCIT_C25229<;>http://purl.obolibrary.org/obo/NCIT_C12469,NCIT,Left<;>Pleura,NCIT_C25229<;>NCIT_C12469
+RIGHT OCCIPITAL BRAIN,http://purl.obolibrary.org/obo/NCIT_C25228<;>http://purl.obolibrary.org/obo/NCIT_C12355,NCIT,Right<;>Occipital Lobe,NCIT_C25228<;>NCIT_C12355
+T10 EPIDURAL TUMOR,http://purl.obolibrary.org/obo/NCIT_C33721,NCIT,T10 Vertebra,NCIT_C33721
+"LUNG, LEFT LOBE",http://purl.obolibrary.org/obo/NCIT_C48945,NCIT,Lobe of the Left Lung,NCIT_C48945
+RIGHT TEMPORAL BRAIN,http://purl.obolibrary.org/obo/NCIT_C25228<;>http://purl.obolibrary.org/obo/NCIT_C12353,NCIT,Right<;>Temporal Lobe,NCIT_C25228<;>NCIT_C12353
+RIGHT MEDIASTINAL LYMPH NODE,http://purl.obolibrary.org/obo/NCIT_C25228<;>http://purl.obolibrary.org/obo/NCIT_C33073,NCIT,Right<;>Mediastinal Lymph Node,NCIT_C25228<;>NCIT_C33073
+RIGHT   HUMERUS,http://purl.obolibrary.org/obo/NCIT_C25228<;>http://purl.obolibrary.org/obo/NCIT_C12731,NCIT,Right<;>Humerus,NCIT_C25228<;>NCIT_C12731
+SOFT   TISSUEBONESCAPULA,http://purl.obolibrary.org/obo/NCIT_C12471<;>http://purl.obolibrary.org/obo/NCIT_C12366<;>http://purl.obolibrary.org/obo/NCIT_C12783,NCIT,Soft Tissue<;>Bone<;>Scapula,NCIT_C12471<;>NCIT_C12366<;>NCIT_C12783
+RIGHT OCCIPITAL NODE,http://purl.obolibrary.org/obo/NCIT_C25228<;>http://purl.obolibrary.org/obo/NCIT_C98188,NCIT,Right<;>Occipital Lymph Node,NCIT_C25228<;>NCIT_C98188
+L PARIETAL SCALP,http://purl.obolibrary.org/obo/NCIT_C25229<;>http://purl.obolibrary.org/obo/NCIT_C12354<;>http://purl.obolibrary.org/obo/NCIT_C89807,NCIT,Left<;>Parietal Lobe<;>Scalp,NCIT_C25229<;>NCIT_C12354<;>NCIT_C89807
+UPPER ARM/ELBOW,http://purl.obolibrary.org/obo/NCIT_C25355<;>http://purl.obolibrary.org/obo/NCIT_C32141<;>http://purl.obolibrary.org/obo/NCIT_C32497,NCIT,Upper<;>Arm<;>Elbow Joint,NCIT_C25355<;>NCIT_C32141<;>NCIT_C32497
+THIGH/KNEE,http://purl.obolibrary.org/obo/NCIT_C33763<;>http://purl.obolibrary.org/obo/NCIT_C32898,NCIT,Thigh<;>Knee Joint,NCIT_C33763<;>NCIT_C32898
+LOWER ABDOMEN/PELVIS,http://purl.obolibrary.org/obo/NCIT_C25309<;>http://purl.obolibrary.org/obo/NCIT_C12664<;>http://purl.obolibrary.org/obo/NCIT_C12767,NCIT,Lower<;>Abdomen<;>Pelvis,NCIT_C25309<;>NCIT_C12664<;>NCIT_C12767
+FOOT/ANKLE,http://purl.obolibrary.org/obo/NCIT_C32622<;>http://purl.obolibrary.org/obo/NCIT_C32078,NCIT,Foot<;>Ankle Joint,NCIT_C32622<;>NCIT_C32078
+LOWER LEG/CALF,http://purl.obolibrary.org/obo/NCIT_C25309<;>http://purl.obolibrary.org/obo/NCIT_C32974<;>http://purl.obolibrary.org/obo/NCIT_C93027,NCIT,Lower<;>Leg<;>Calf,NCIT_C25309<;>NCIT_C32974<;>NCIT_C93027
+SHOULDER/AXILLA,http://purl.obolibrary.org/obo/NCIT_C25203<;>http://purl.obolibrary.org/obo/NCIT_C12674,NCIT,Shoulder<;>Axilla,NCIT_C25203<;>NCIT_C12674
+LUNG/PLEURA,http://purl.obolibrary.org/obo/NCIT_C12468<;>http://purl.obolibrary.org/obo/NCIT_C12469,NCIT,Lung<;>Pleura,NCIT_C12468<;>NCIT_C12469
+"CEREBELLUM/POSTERIOR FOSSA,SPINAL CORD- CERVICAL,SPINAL CORD- LUMBAR/THECAL SAC,SPINAL CORD- THORACIC",http://purl.obolibrary.org/obo/NCIT_C12445<;>http://purl.obolibrary.org/obo/NCIT_C33361<;>http://purl.obolibrary.org/obo/NCIT_C12892<;>http://purl.obolibrary.org/obo/NCIT_C69314<;>http://purl.obolibrary.org/obo/NCIT_C49799<;>http://purl.obolibrary.org/obo/NCIT_C69315,NCIT,Cerebellum<;>Posterior Cranial Fossa<;>Cervical Spinal Cord<;>Lumbar Spine<;>Spinal Cord Dura Mater<;>Thoracic Spine,NCIT_C12445<;>NCIT_C33361<;>NCIT_C12892<;>NCIT_C69314<;>NCIT_C49799<;>NCIT_C69315
+"OTHER LOCATIONS NOS,SPINAL CORD- LUMBAR/THECAL SAC,SPINAL CORD- THORACIC,TEMPORAL LOBE",http://purl.obolibrary.org/obo/NCIT_C69314<;>http://purl.obolibrary.org/obo/NCIT_C49799<;>http://purl.obolibrary.org/obo/NCIT_C69315<;>http://purl.obolibrary.org/obo/NCIT_C12353,NCIT,Lumbar Spine<;>Spinal Cord Dura Mater<;>Thoracic Spine<;>Temporal Lobe,NCIT_C69314<;>NCIT_C49799<;>NCIT_C69315<;>NCIT_C12353
+"OCCIPITAL LOBE,SUPRASELLAR/HYPOTHALAMIC/PITUITARY",http://purl.obolibrary.org/obo/NCIT_C12355<;>http://purl.obolibrary.org/obo/NCIT_C95445<;>http://purl.obolibrary.org/obo/NCIT_C12458<;>http://purl.obolibrary.org/obo/NCIT_C12399,NCIT,Occipital Lobe<;>Suprasellar<;>Hypothalamus<;>Pituitary Gland,NCIT_C12355<;>NCIT_C95445<;>NCIT_C12458<;>NCIT_C12399
+"FRONTAL LOBE,SUPRASELLAR/HYPOTHALAMIC/PITUITARY,THALAMUS,VENTRICLES",http://purl.obolibrary.org/obo/NCIT_C12352<;>http://purl.obolibrary.org/obo/NCIT_C95445<;>http://purl.obolibrary.org/obo/NCIT_C12458<;>http://purl.obolibrary.org/obo/NCIT_C12399<;>http://purl.obolibrary.org/obo/NCIT_C12459<;>http://purl.obolibrary.org/obo/NCIT_C12356,NCIT,Frontal Lobe<;>Suprasellar<;>Hypothalamus<;>Pituitary Gland<;>Thalamus<;>Brain Ventricle,NCIT_C12352<;>NCIT_C95445<;>NCIT_C12458<;>NCIT_C12399<;>NCIT_C12459<;>NCIT_C12356
+"OPTIC PATHWAY,SUPRASELLAR/HYPOTHALAMIC/PITUITARY,THALAMUS",http://purl.obolibrary.org/obo/NCIT_C41445<;>http://purl.obolibrary.org/obo/NCIT_C95445<;>http://purl.obolibrary.org/obo/NCIT_C12458<;>http://purl.obolibrary.org/obo/NCIT_C12399<;>http://purl.obolibrary.org/obo/NCIT_C12459,NCIT,Visual Pathway<;>Suprasellar<;>Hypothalamus<;>Pituitary Gland<;>Thalamus,NCIT_C41445<;>NCIT_C95445<;>NCIT_C12458<;>NCIT_C12399<;>NCIT_C12459
+"CEREBELLUM/POSTERIOR FOSSA,FRONTAL LOBE",http://purl.obolibrary.org/obo/NCIT_C12445<;>http://purl.obolibrary.org/obo/NCIT_C33361<;>http://purl.obolibrary.org/obo/NCIT_C12352,NCIT,Cerebellum<;>Posterior Cranial Fossa<;>Frontal Lobe,NCIT_C12445<;>NCIT_C33361<;>NCIT_C12352
+"CEREBELLUM/POSTERIOR FOSSA,HIPPOCAMPUS,OTHER LOCATIONS NOS,SPINAL CORD- THORACIC,TEMPORAL LOBE,THALAMUS",http://purl.obolibrary.org/obo/NCIT_C12445<;>http://purl.obolibrary.org/obo/NCIT_C33361<;>http://purl.obolibrary.org/obo/NCIT_C12444<;>http://purl.obolibrary.org/obo/NCIT_C69315<;>http://purl.obolibrary.org/obo/NCIT_C12353<;>http://purl.obolibrary.org/obo/NCIT_C12459,NCIT,Cerebellum<;>Posterior Cranial Fossa<;>Hippocampus<;>Thoracic Spine<;>Temporal Lobe<;>Thalamus,NCIT_C12445<;>NCIT_C33361<;>NCIT_C12444<;>NCIT_C69315<;>NCIT_C12353<;>NCIT_C12459
+"TEMPORAL LOBE,THALAMUS,VENTRICLES",http://purl.obolibrary.org/obo/NCIT_C12353<;>http://purl.obolibrary.org/obo/NCIT_C12459<;>http://purl.obolibrary.org/obo/NCIT_C12356,NCIT,Temporal Lobe<;>Thalamus<;>Brain Ventricle,NCIT_C12353<;>NCIT_C12459<;>NCIT_C12356
+THALAMIC/CORTICAL,http://purl.obolibrary.org/obo/NCIT_C12459<;>http://purl.obolibrary.org/obo/NCIT_C12443,NCIT,Thalamus<;>Cerebral Cortex,NCIT_C12459<;>NCIT_C12443
+"OPTIC PATHWAY,SUPRASELLAR/HYPOTHALAMIC/PITUITARY,TEMPORAL LOBE",http://purl.obolibrary.org/obo/NCIT_C41445<;>http://purl.obolibrary.org/obo/NCIT_C95445<;>http://purl.obolibrary.org/obo/NCIT_C12458<;>http://purl.obolibrary.org/obo/NCIT_C12399<;>http://purl.obolibrary.org/obo/NCIT_C12353,NCIT,Visual Pathway<;>Suprasellar<;>Hypothalamus<;>Pituitary Gland<;>Temporal Lobe,NCIT_C41445<;>NCIT_C95445<;>NCIT_C12458<;>NCIT_C12399<;>NCIT_C12353
+OPTIC PATHWAY,http://purl.obolibrary.org/obo/NCIT_C41445,NCIT,Visual Pathway,NCIT_C41445
+"BRAIN STEM-MEDULLA,VENTRICLES",http://purl.obolibrary.org/obo/NCIT_C12442<;>http://purl.obolibrary.org/obo/NCIT_C12356,NCIT,Medulla Oblongata<;>Brain Ventricle,NCIT_C12442<;>NCIT_C12356
+"OPTIC PATHWAY,SUPRASELLAR/HYPOTHALAMIC/PITUITARY",http://purl.obolibrary.org/obo/NCIT_C41445<;>http://purl.obolibrary.org/obo/NCIT_C95445<;>http://purl.obolibrary.org/obo/NCIT_C12458<;>http://purl.obolibrary.org/obo/NCIT_C12399,NCIT,Visual Pathway<;>Suprasellar<;>Hypothalamus<;>Pituitary Gland,NCIT_C41445<;>NCIT_C95445<;>NCIT_C12458<;>NCIT_C12399
+"CEREBELLUM/POSTERIOR FOSSA,OPTIC PATHWAY,OTHER LOCATIONS NOS,SUPRASELLAR/HYPOTHALAMIC/PITUITARY,THALAMUS",http://purl.obolibrary.org/obo/NCIT_C12445<;>http://purl.obolibrary.org/obo/NCIT_C33361<;>http://purl.obolibrary.org/obo/NCIT_C41445<;>http://purl.obolibrary.org/obo/NCIT_C95445<;>http://purl.obolibrary.org/obo/NCIT_C12458<;>http://purl.obolibrary.org/obo/NCIT_C12399<;>http://purl.obolibrary.org/obo/NCIT_C12459,NCIT,Cerebellum<;>Posterior Cranial Fossa<;>Visual Pathway<;>Suprasellar<;>Hypothalamus<;>Pituitary Gland<;>Thalamus,NCIT_C12445<;>NCIT_C33361<;>NCIT_C41445<;>NCIT_C95445<;>NCIT_C12458<;>NCIT_C12399<;>NCIT_C12459
+"BRAIN STEM- MIDBRAIN/TECTUM,VENTRICLES",http://purl.obolibrary.org/obo/NCIT_C12460<;>http://purl.obolibrary.org/obo/NCIT_C12356,NCIT,Tectum Mesencephali<;>Brain Ventricle,NCIT_C12460<;>NCIT_C12356
+"BRAIN STEM- MIDBRAIN/TECTUM,CEREBELLUM/POSTERIOR FOSSA,OCCIPITAL LOBE,OPTIC PATHWAY,PARIETAL LOBE,TEMPORAL LOBE",http://purl.obolibrary.org/obo/NCIT_C12460<;>http://purl.obolibrary.org/obo/NCIT_C12445<;>http://purl.obolibrary.org/obo/NCIT_C33361<;>http://purl.obolibrary.org/obo/NCIT_C12355<;>http://purl.obolibrary.org/obo/NCIT_C41445<;>http://purl.obolibrary.org/obo/NCIT_C12354<;>http://purl.obolibrary.org/obo/NCIT_C12353,NCIT,Tectum Mesencephali<;>Cerebellum<;>Posterior Cranial Fossa<;>Occipital Lobe<;>Visual Pathway<;>Parietal Lobe<;>Temporal Lobe,NCIT_C12460<;>NCIT_C12445<;>NCIT_C33361<;>NCIT_C12355<;>NCIT_C41445<;>NCIT_C12354<;>NCIT_C12353
+"CEREBELLUM/POSTERIOR FOSSA,MENINGES/DURA,SPINAL CORD- CERVICAL,SPINAL CORD- THORACIC,VENTRICLES",http://purl.obolibrary.org/obo/NCIT_C12445<;>http://purl.obolibrary.org/obo/NCIT_C33361<;>http://purl.obolibrary.org/obo/NCIT_C12348<;>http://purl.obolibrary.org/obo/NCIT_C32488<;>http://purl.obolibrary.org/obo/NCIT_C12892<;>http://purl.obolibrary.org/obo/NCIT_C69315<;>http://purl.obolibrary.org/obo/NCIT_C12356,NCIT,Cerebellum<;>Posterior Cranial Fossa<;>Meninges<;>Dura Mater<;>Cervical Spinal Cord<;>Thoracic Spine<;>Brain Ventricle,NCIT_C12445<;>NCIT_C33361<;>NCIT_C12348<;>NCIT_C32488<;>NCIT_C12892<;>NCIT_C69315<;>NCIT_C12356
+PERIHILAR,http://purl.obolibrary.org/obo/NCIT_C12376,NCIT,Bile Duct,NCIT_C12376
+FUNDUS/BODY,http://purl.obolibrary.org/obo/NCIT_C12257<;>http://purl.obolibrary.org/obo/NCIT_C12258,NCIT,Fundus of the Stomach<;>Body of Stomach,NCIT_C12257<;>NCIT_C12258
+FRONTOPARIETAL,http://purl.obolibrary.org/obo/NCIT_C12352<;>http://purl.obolibrary.org/obo/NCIT_C12354,NCIT,Frontal Lobe<;>Parietal Lobe,NCIT_C12352<;>NCIT_C12354
+EXTRA-ADRENAL SITE,http://purl.obolibrary.org/obo/NCIT_C103852,NCIT,Extra-Adrenal,NCIT_C103852
+RETROPERITONEAL LYMPH NODE 1 YEAR PRIOR NOT MATCHING BIOPSY,http://purl.obolibrary.org/obo/NCIT_C98189,NCIT,Retroperitoneal Lymph Node,NCIT_C98189
+PERINEA!,http://purl.obolibrary.org/obo/NCIT_C33301,NCIT,Perineum,NCIT_C33301
+VETEBRAL METASTASOS,http://purl.obolibrary.org/obo/NCIT_C12933<;>http://purl.obolibrary.org/obo/NCIT_C19151,NCIT,Vertebra<;>Metastasis,NCIT_C12933<;>NCIT_C19151
+"LYMPH NODE, RIGHT PARA ILIAC",http://purl.obolibrary.org/obo/NCIT_C12745<;>http://purl.obolibrary.org/obo/NCIT_C25228<;>http://purl.obolibrary.org/obo/NCIT_C32765,NCIT,Lymph Node<;>Right<;>Ilium,NCIT_C12745<;>NCIT_C25228<;>NCIT_C32765
+SOFT TISSUE RIGHT PARA ILIAC,http://purl.obolibrary.org/obo/NCIT_C12471<;>http://purl.obolibrary.org/obo/NCIT_C25228<;>http://purl.obolibrary.org/obo/NCIT_C32765,NCIT,Soft Tissue<;>Right<;>Ilium,NCIT_C12471<;>NCIT_C25228<;>NCIT_C32765
+INFRARENAL MASS LEFT,http://purl.obolibrary.org/obo/NCIT_C25229<;>http://purl.obolibrary.org/obo/NCIT_C116179,NCIT,Left<;>Infrarenal Aortic Segment,NCIT_C25229<;>NCIT_C116179
+PARA-ESOPHAGEAL,http://purl.obolibrary.org/obo/NCIT_C25344,NCIT,Paraesophageal,NCIT_C25344
+EXTRA ADRENAL ABDOMEN/PELVIS,http://purl.obolibrary.org/obo/NCIT_C103852<;>http://purl.obolibrary.org/obo/NCIT_C12664<;>http://purl.obolibrary.org/obo/NCIT_C12767,NCIT,Extra-Adrenal<;>Abdomen<;>Pelvis,NCIT_C103852<;>NCIT_C12664<;>NCIT_C12767
+RETROCAVAL RETROPERITONEUM EXTRA ADRENAL PGL,http://purl.obolibrary.org/obo/NCIT_C186236<;>http://purl.obolibrary.org/obo/NCIT_C12298<;>http://purl.obolibrary.org/obo/NCIT_C103852,NCIT,Retrocaval<;>Retroperitoneum<;>Extra-Adrenal,NCIT_C186236<;>NCIT_C12298<;>NCIT_C103852
+PERI-RENAL EXTRA ADRENAL PGL,http://purl.obolibrary.org/obo/NCIT_C103852<;>http://purl.obolibrary.org/obo/NCIT_C25225,NCIT,Extra-Adrenal<;>Renal,NCIT_C103852<;>NCIT_C25225
+EXTRA ADRENAL THORACIC,http://purl.obolibrary.org/obo/NCIT_C103852<;>http://purl.obolibrary.org/obo/NCIT_C13360,NCIT,Extra-Adrenal<;>Thoracic,NCIT_C103852<;>NCIT_C13360
+THORACIC PARASPINAL EXTRA ADRENAL PGL,http://purl.obolibrary.org/obo/NCIT_C13360<;>http://purl.obolibrary.org/obo/NCIT_C129461<;>http://purl.obolibrary.org/obo/NCIT_C103852,NCIT,Thoracic<;>Paraspinal<;>Extra-Adrenal,NCIT_C13360<;>NCIT_C129461<;>NCIT_C103852
+INTRAPERICARDIAL PARA-AORTIC EXTRA ADRENAL PGL,http://purl.obolibrary.org/obo/NCIT_C13005<;>http://purl.obolibrary.org/obo/NCIT_C25316<;>http://purl.obolibrary.org/obo/NCIT_C103852,NCIT,Pericardium<;>Paraaortic Region<;>Extra-Adrenal,NCIT_C13005<;>NCIT_C25316<;>NCIT_C103852
+RETROCAVAL RETROPERITONEAL EXTRA ADRENAL PGL,http://purl.obolibrary.org/obo/NCIT_C186236<;>http://purl.obolibrary.org/obo/NCIT_C28256<;>http://purl.obolibrary.org/obo/NCIT_C103852,NCIT,Retrocaval<;>Retroperitoneal<;>Extra-Adrenal,NCIT_C186236<;>NCIT_C28256<;>NCIT_C103852
+CARDIAC ATRIUM EXTRA ADRENAL PGL,http://purl.obolibrary.org/obo/NCIT_C12728<;>http://purl.obolibrary.org/obo/NCIT_C103852,NCIT,Cardiac Atrium<;>Extra-Adrenal,NCIT_C12728<;>NCIT_C103852
+THORACIC EXTRA ADRENAL PGL,http://purl.obolibrary.org/obo/NCIT_C103852<;>http://purl.obolibrary.org/obo/NCIT_C13360,NCIT,Extra-Adrenal<;>Thoracic,NCIT_C103852<;>NCIT_C13360
+RETROPERITONEAL EXTRA ADRENAL PGL,http://purl.obolibrary.org/obo/NCIT_C28256<;>http://purl.obolibrary.org/obo/NCIT_C103852,NCIT,Retroperitoneal<;>Extra-Adrenal,NCIT_C28256<;>NCIT_C103852
+PARA-AORTIC EXTRA ADRENAL PGL,http://purl.obolibrary.org/obo/NCIT_C25316<;>http://purl.obolibrary.org/obo/NCIT_C103852,NCIT,Paraaortic Region<;>Extra-Adrenal,NCIT_C25316<;>NCIT_C103852
+PERI-ADRENAL EXTRA ADRENAL PGL,http://purl.obolibrary.org/obo/NCIT_C103852,NCIT,Extra-Adrenal,NCIT_C103852
+PERI-ADRENAL RETROPERITONEAL EXTRA ADRENAL PGL,http://purl.obolibrary.org/obo/NCIT_C28256<;>http://purl.obolibrary.org/obo/NCIT_C103852,NCIT,Retroperitoneal<;>Extra-Adrenal,NCIT_C28256<;>NCIT_C103852
+MINOR PELVIS EXTRA ADRENAL PGL,http://purl.obolibrary.org/obo/OMIT_0027038<;>http://purl.obolibrary.org/obo/NCIT_C103852,OMIT<;>NCIT,Lesser Pelvis<;>Extra-Adrenal,OMIT_0027038<;>NCIT_C103852
+PARA-AORTIC/CELIAC ARTERY EXTRA ADRENAL PGL,http://purl.obolibrary.org/obo/NCIT_C25316<;>http://purl.obolibrary.org/obo/NCIT_C52846<;>http://purl.obolibrary.org/obo/NCIT_C103852,NCIT,Paraaortic Region<;>Celiac Artery<;>Extra-Adrenal,NCIT_C25316<;>NCIT_C52846<;>NCIT_C103852
+PARA-AORTIC /PERI-CAVAL RETROPERITONEAL EXTRA ADRENAL PGL,http://purl.obolibrary.org/obo/NCIT_C25316<;>http://purl.obolibrary.org/obo/NCIT_C12817<;>http://purl.obolibrary.org/obo/NCIT_C28256<;>http://purl.obolibrary.org/obo/NCIT_C103852,NCIT,Paraaortic Region<;>Vena Cava<;>Retroperitoneal<;>Extra-Adrenal,NCIT_C25316<;>NCIT_C12817<;>NCIT_C28256<;>NCIT_C103852
+PARA-AORTIC /PERI-CAVAL EXTRA ADRENAL PGL,http://purl.obolibrary.org/obo/NCIT_C25316<;>http://purl.obolibrary.org/obo/NCIT_C12817<;>http://purl.obolibrary.org/obo/NCIT_C103852,NCIT,Paraaortic Region<;>Vena Cava<;>Extra-Adrenal,NCIT_C25316<;>NCIT_C12817<;>NCIT_C103852
+THORACIC MEDIASTINAL EXTRA ADRENAL PGL,http://purl.obolibrary.org/obo/NCIT_C13360<;>http://purl.obolibrary.org/obo/NCIT_C25310<;>http://purl.obolibrary.org/obo/NCIT_C103852,NCIT,Thoracic<;>Mediastinal<;>Extra-Adrenal,NCIT_C13360<;>NCIT_C25310<;>NCIT_C103852
+FRONTAL - CROSSES MIDLINE,http://purl.obolibrary.org/obo/NCIT_C12352<;>http://purl.obolibrary.org/obo/NCIT_C81170,NCIT,Frontal Lobe<;>Midline,NCIT_C12352<;>NCIT_C81170
+TEMPORAL - ANTERIOR,http://purl.obolibrary.org/obo/NCIT_C12353<;>http://purl.obolibrary.org/obo/NCIT_C25231,NCIT,Temporal Lobe<;>Anterior,NCIT_C12353<;>NCIT_C25231
+HEAD-UNCINATE PROCESS,http://purl.obolibrary.org/obo/NCIT_C12269<;>http://purl.obolibrary.org/obo/NCIT_C62432,NCIT,Head of the Pancreas<;>Uncinate Process of Pancreas,NCIT_C12269<;>NCIT_C62432
+HEAD-BODY,http://purl.obolibrary.org/obo/NCIT_C12269<;>http://purl.obolibrary.org/obo/NCIT_C12270,NCIT,Head of the Pancreas<;>Body of the Pancreas,NCIT_C12269<;>NCIT_C12270
+BODY-TAIL,http://purl.obolibrary.org/obo/NCIT_C12270<;>http://purl.obolibrary.org/obo/NCIT_C12271,NCIT,Body of the Pancreas<;>Tail of the Pancreas,NCIT_C12270<;>NCIT_C12271
+TAIL AND HEAD,http://purl.obolibrary.org/obo/NCIT_C12269<;>http://purl.obolibrary.org/obo/NCIT_C12271,NCIT,Head of the Pancreas<;>Tail of the Pancreas,NCIT_C12269<;>NCIT_C12271
+BODY AND TAIL,http://purl.obolibrary.org/obo/NCIT_C12270<;>http://purl.obolibrary.org/obo/NCIT_C12271,NCIT,Body of the Pancreas<;>Tail of the Pancreas,NCIT_C12270<;>NCIT_C12271
+HEAD AND BODY,http://purl.obolibrary.org/obo/NCIT_C12269<;>http://purl.obolibrary.org/obo/NCIT_C12270,NCIT,Head of the Pancreas<;>Body of the Pancreas,NCIT_C12269<;>NCIT_C12270
+L2 VETEBRAL BODY,http://purl.obolibrary.org/obo/NCIT_C32900,NCIT,L2 Vertebra,NCIT_C32900
+MATCHING TISSUE,http://purl.obolibrary.org/obo/NCIT_C12410,NCIT,Prostate Gland,NCIT_C12410
+DISEASE MULTIFOCAL INDICATOR,http://purl.obolibrary.org/obo/NCIT_C25253,NCIT,Multifocal,NCIT_C25253
+AXILLARY SOFT TISSUE METASTASIS,http://purl.obolibrary.org/obo/NCIT_C13351<;>http://purl.obolibrary.org/obo/NCIT_C12471<;>http://purl.obolibrary.org/obo/NCIT_C19151,NCIT,Axillary<;>Soft Tissue<;>Metastasis,NCIT_C13351<;>NCIT_C12471<;>NCIT_C19151
+UPPER BACK METASTASIS,http://purl.obolibrary.org/obo/NCIT_C25355<;>http://purl.obolibrary.org/obo/NCIT_C13062<;>http://purl.obolibrary.org/obo/NCIT_C19151,NCIT,Upper<;>Back<;>Metastasis,NCIT_C25355<;>NCIT_C13062<;>NCIT_C19151
+MIDDLE 1/3,http://purl.obolibrary.org/obo/NCIT_C25569<;>http://purl.obolibrary.org/obo/NCIT_C12391,NCIT,Middle<;>Stomach,NCIT_C25569<;>NCIT_C12391
+DISTAL 1/3,http://purl.obolibrary.org/obo/NCIT_C25237<;>http://purl.obolibrary.org/obo/NCIT_C12391,NCIT,Distal<;>Stomach,NCIT_C25237<;>NCIT_C12391
+UPPER 1/3,http://purl.obolibrary.org/obo/NCIT_C25355<;>http://purl.obolibrary.org/obo/NCIT_C12391,NCIT,Upper<;>Stomach,NCIT_C25355<;>NCIT_C12391
+MULTIFOCAL LEFT FRONTAL/TEMPORAL/PARIETAL; RIGHT OCCIPITAL,http://purl.obolibrary.org/obo/NCIT_C25253<;>http://purl.obolibrary.org/obo/NCIT_C25229<;>http://purl.obolibrary.org/obo/NCIT_C12352<;>http://purl.obolibrary.org/obo/NCIT_C12354<;>http://purl.obolibrary.org/obo/NCIT_C12353<;>http://purl.obolibrary.org/obo/NCIT_C25228<;>http://purl.obolibrary.org/obo/NCIT_C12355,NCIT,Multifocal<;>Left<;>Frontal Lobe<;>Parietal Lobe<;>Temporal Lobe<;>Right<;>Occipital Lobe,NCIT_C25253<;>NCIT_C25229<;>NCIT_C12352<;>NCIT_C12354<;>NCIT_C12353<;>NCIT_C25228<;>NCIT_C12355
+HEMISPHERE,http://purl.obolibrary.org/obo/NCIT_C12439,NCIT,Brain,NCIT_C12439
+CHEST WALLHEAD,http://purl.obolibrary.org/obo/NCIT_C62484<;>http://purl.obolibrary.org/obo/NCIT_C12419,NCIT,Chest Wall<;>Head,NCIT_C62484<;>NCIT_C12419
+AORTO-CAVAL PERIPANCREATIC PRESACRAL EXTRA ADRENAL PGL,http://purl.obolibrary.org/obo/NCIT_C118775<;>http://purl.obolibrary.org/obo/NCIT_C77642<;>http://purl.obolibrary.org/obo/NCIT_C75910<;>http://purl.obolibrary.org/obo/NCIT_C103852,NCIT,Aortocaval Lymph Node<;>Pancreatic Lymph Node<;>Presacral<;>Extra-Adrenal,NCIT_C118775<;>NCIT_C77642<;>NCIT_C75910<;>NCIT_C103852
+PERI-AORTIC RETROPERITONEAL EXTRA ADRENAL PGL,http://purl.obolibrary.org/obo/NCIT_C12669<;>http://purl.obolibrary.org/obo/NCIT_C28256<;>http://purl.obolibrary.org/obo/NCIT_C103852,NCIT,Aorta<;>Retroperitoneal<;>Extra-Adrenal,NCIT_C12669<;>NCIT_C28256<;>NCIT_C103852
+AORTOCAVAL RETROPERITONEAL EXTRA ADRENAL PGL,http://purl.obolibrary.org/obo/NCIT_C118775<;>http://purl.obolibrary.org/obo/NCIT_C28256<;>http://purl.obolibrary.org/obo/NCIT_C103852,NCIT,Aortocaval Lymph Node<;>Retroperitoneal<;>Extra-Adrenal,NCIT_C118775<;>NCIT_C28256<;>NCIT_C103852
+PARA-ADRENAL SOFT TISSUE EXTRA ADRENAL PGL,http://purl.obolibrary.org/obo/NCIT_C12471<;>http://purl.obolibrary.org/obo/NCIT_C103852,NCIT,Soft Tissue<;>Extra-Adrenal,NCIT_C12471<;>NCIT_C103852
+PERI-AORTIC EXTRA ADRENAL PGL ABOVE LEFT RENAL VEIN,http://purl.obolibrary.org/obo/NCIT_C12669<;>http://purl.obolibrary.org/obo/NCIT_C103852<;>http://purl.obolibrary.org/obo/NCIT_C75329<;>http://purl.obolibrary.org/obo/NCIT_C52693,NCIT,Aorta<;>Extra-Adrenal<;>Above<;>Left Renal Vein,NCIT_C12669<;>NCIT_C103852<;>NCIT_C75329<;>NCIT_C52693
+PORTO-CAVAL EXTRA ADRENAL PGL,http://purl.obolibrary.org/obo/NCIT_C117872<;>http://purl.obolibrary.org/obo/NCIT_C103852,NCIT,Portacaval Lymph Node<;>Extra-Adrenal,NCIT_C117872<;>NCIT_C103852
+THROACIC EIPDURAL PARAGANGLIOMA,http://purl.obolibrary.org/obo/NCIT_C12799<;>http://purl.obolibrary.org/obo/NCIT_C41449,NCIT,Thorax<;>Epidural Spinal Canal Space,NCIT_C12799<;>NCIT_C41449
+NECK,http://purl.obolibrary.org/obo/FMA_14538,FMA,Neck of Gallbladder,FMA_14538
+PERIPHERAL LUNG,http://purl.obolibrary.org/obo/NCIT_C159212,NCIT,Peripheral Lung,NCIT_C159212
+CENTRAL LUNG,http://purl.obolibrary.org/obo/NCIT_C159213,NCIT,Central Lung,NCIT_C159213
+TAIL,http://purl.obolibrary.org/obo/NCIT_C12271,NCIT,Tail of the Pancreas,NCIT_C12271
+HEAD AND NECK,http://purl.obolibrary.org/obo/NCIT_C12418,NCIT,Head and Neck,NCIT_C12418
+LUNG METASTASIS,http://purl.obolibrary.org/obo/NCIT_C12468<;>http://purl.obolibrary.org/obo/NCIT_C19151,NCIT,Lung<;>Metastasis,NCIT_C12468<;>NCIT_C19151
+BREAST METASTASIS,http://purl.obolibrary.org/obo/NCIT_C12971<;>http://purl.obolibrary.org/obo/NCIT_C19151,NCIT,Breast<;>Metastasis,NCIT_C12971<;>NCIT_C19151
+SKIN METASTASIS,http://purl.obolibrary.org/obo/NCIT_C12470<;>http://purl.obolibrary.org/obo/NCIT_C19151,NCIT,Skin<;>Metastasis,NCIT_C12470<;>NCIT_C19151
+CNS METASTASIS,http://purl.obolibrary.org/obo/NCIT_C12438<;>http://purl.obolibrary.org/obo/NCIT_C19151,NCIT,Central Nervous System<;>Metastasis,NCIT_C12438<;>NCIT_C19151
+LOCALLY ADVANCED,http://purl.obolibrary.org/obo/NCIT_C8524,NCIT,Locally Advanced Malignant Neoplasm,NCIT_C8524
+NECK MASS,http://purl.obolibrary.org/obo/NCIT_C13063,NCIT,Neck,NCIT_C13063
+LOCALIZED TUMOR,http://purl.obolibrary.org/obo/NCIT_C14146,NCIT,Localized,NCIT_C14146
+LOCOREGIONAL & DISTANT,http://purl.obolibrary.org/obo/NCIT_C25388<;>http://purl.obolibrary.org/obo/NCIT_C25321,NCIT,Local-Regional<;>Distant,NCIT_C25388<;>NCIT_C25321
+LOCOREGIONAL AND DISTANT RECURRENCE,http://purl.obolibrary.org/obo/NCIT_C25388<;>http://purl.obolibrary.org/obo/NCIT_C25321,NCIT,Local-Regional<;>Distant,NCIT_C25388<;>NCIT_C25321
+REGIONAL RECURRENCE,http://purl.obolibrary.org/obo/NCIT_C25643,NCIT,Regional,NCIT_C25643
+HEADREGULAR,http://purl.obolibrary.org/obo/NCIT_C12419,NCIT,Head,NCIT_C12419
+HEAD,http://purl.obolibrary.org/obo/NCIT_C12269,NCIT,Head of the Pancreas,NCIT_C12269
+BODYSTOMACH,http://purl.obolibrary.org/obo/NCIT_C12258,NCIT,Body of Stomach,NCIT_C12258
+BODY,http://purl.obolibrary.org/obo/NCIT_C12270,NCIT,Body of the Pancreas,NCIT_C12270
