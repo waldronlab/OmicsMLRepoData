@@ -81,6 +81,7 @@ curated_treatment
 ```{r}
 source(file.path(dir, "R/template_bodysite.R"))
 curated_bodysite
+curated_bodysubsite
 ```
 
 
@@ -100,6 +101,7 @@ curated_all <- do.call("rbind", list(curated_age_all,
                                      curated_disease_all, 
                                      curated_treatment,
                                      curated_bodysite,
+                                     curated_bodysubsite,
                                      curated_sex,
                                      curated_abx_current_use))
 ```

@@ -149,27 +149,42 @@ fields and their curated versions as listed in their column names.
 
 ```{r cal_completness_and_report, eval=FALSE}
 library(OmicsMLRepoCuration)
-original_fields_completeness <- calCompleteness(fields_list = merging_schema$original_fields,
-                                                DB = "cMD")
+original_fields_completeness <- checkCurationStats(
+    fields_list = merging_schema$original_fields,
+    DB = "cMD")
+original_fields_unique_vals <- checkCurationStats(
+    fields_list = merging_schema$original_fields,
+    check = "unique",
+    DB = "cMD")
 
 x <- merging_schema$curated_fields 
 curated_fields_name <- sapply(x, function(x) {
     strsplit(x, split = ";") %>% 
         unlist %>% 
-        paste0("curated_", .) %>% 
+        # paste0("curated_", .) %>% 
         paste0(., collapse = ";")
 }) %>% as.vector
 
-curated_fields_completeness <- calCompleteness(fields_list = curated_fields_name,
-                                               DB = "cMD")
+curated_fields_completeness <- checkCurationStats(
+    fields_list = curated_fields_name,
+    DB = "cMD")
+curated_fields_unique_vals <- checkCurationStats(
+    fields_list = curated_fields_name,
+    check = "unique",
+    DB = "cMD")
 ```
 
 ```{r eval=FALSE}
 merging_schema$original_fields_completeness <- original_fields_completeness
 merging_schema$curated_fields_completeness <- curated_fields_completeness
-merging_schema %>% 
-    dplyr::relocate(original_fields_completeness, .after = original_fields) %>%
-    dplyr::relocate(curated_fields_completeness, .after = curated_fields) 
+merging_schema$original_fields_unique_vals <- original_fields_unique_vals
+merging_schema$curated_fields_unique_vals <- curated_fields_unique_vals
+
+merging_schema <- merging_schema %>% 
+    # dplyr::relocate(original_fields_completeness, .after = original_fields) %>%
+    # dplyr::relocate(curated_fields_completeness, .after = curated_fields) %>%
+    dplyr::relocate(original_fields_unique_vals, .after = original_fields_completeness) %>%
+    dplyr::relocate(curated_fields_unique_vals, .after = curated_fields_completeness)
 ```
 
 ```{r save_as_Google_Sheets, echo=FALSE, eval=FALSE}
