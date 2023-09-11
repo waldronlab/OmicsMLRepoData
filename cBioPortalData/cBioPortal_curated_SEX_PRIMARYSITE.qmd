@@ -1,0 +1,210 @@
+---
+title: "cBioPortal missing data inference: SEX and PRIMARY_SITE"
+author:
+  - Sehyun Oh
+date: "`r format(Sys.time(), '%B %d, %Y')`"
+format:
+    html:
+        fontsize: 14pxs
+        toc: true
+        top-depth: 3
+abstract: "Extract, Transform, and Load (ETL) data dictionary of cMD metadata"
+---
+
+```{r setup, include=FALSE}
+knitr::opts_chunk$set(echo = TRUE, 
+                      warning = FALSE,
+                      message = FALSE,
+                      collapse = TRUE)
+```
+
+```{r}
+dir <- system.file("extdata", package = "OmicsMLRepoData")
+fpath <- file.path(dir, "cBioPortal_all_clinicalData_combined_2022-10-14.rds")
+cbio <- readRDS(fpath) # our curation/harmonization starts from this table
+```
+
+```{r}
+## Unique patients
+sum(is.na(cbio$patientId)) # patientID is complete
+unique_patient <- length(unique(cbio$patientId))
+percent_unique <- unique_patient /nrow(cbio)*100
+paste(round(percent_unique), "percent of patients are unique.")
+```
+
+```{r}
+## Patient-level redundancy
+patientId_summary <- sort(table(cbio$patientId), decreasing = TRUE)
+no_meta <- sum(is.na(cbio$patientId)) # 0 : All the samples have patientId
+one_meta <- patientId_summary[patientId_summary == 1] # the number of patients with only one metadata entry
+multi_meta <- patientId_summary[patientId_summary >= 2] 
+```
+
+```{r}
+## Remove empty columns
+empty_col_all <- which(colSums(is.na(cbio)) == nrow(cbio)) # index
+# length(empty_col_all) # 782
+cbio <- cbio[,-empty_col_all] # 179,538 x 2,755
+```
+
+
+For a given patient, I think we can infer SEX, RACE, ETHNICITY, PRIMARY_SITE.
+
+```{r}
+curated_cbio <- cbio[, c("studyId", "patientId", "sampleId", "SEX", "GENDER", "RACE", "ETHNICITY", "PRIMARY_SITE")] 
+curated_cbio$curation_id <- paste(curated_cbio$studyId, curated_cbio$patientId, sep = ":") %>%
+    paste(., curated_cbio$sampleId, sep = ":")
+```
+
+
+## Sex
+```{r}
+allCols <- colnames(cbio)
+sex_colnames <- allCols[grep("SEX|GENDER|FEMALE|MALE", allCols, ignore.case = TRUE)]
+sapply(sex_colnames, function(x) table(cbio[,x], useNA = "ifany"))
+```
+
+```{r}
+sex_map <- data.frame(
+    original_value = c("Male", "MALE", "Female", "FEMALE", "U", "Unknown", ""),
+    curated_ontology_term = c("Male", "Male", "Female", "Female", "Male", "Unknown", NA)
+)
+
+## No sample has information from both `GENDER` and `SEX` columns
+sum(!is.na(curated_cbio$SEX) & !is.na(curated_cbio$GENDER))
+
+curated_cbio$SEX[is.na(curated_cbio$SEX)] <- "" # convert NA to empty string for paste
+curated_cbio$GENDER[is.na(curated_cbio$GENDER)] <- "" # convert NA to empty string for paste
+curated_cbio$curated_sex <- paste0(curated_cbio$SEX, curated_cbio$GENDER)
+
+## Consistent formatting of all the original SEX values in `curated_SEX1` column
+curated_cbio$curated_SEX1 <- plyr::mapvalues(
+    curated_cbio$curated_sex,
+    from = sex_map$original_value,
+    to = sex_map$curated_ontology_term,
+    warn_missing = FALSE)
+
+table(curated_cbio$curated_SEX1, useNA = "ifany")
+
+curated_cbio$SEX[curated_cbio$SEX == ""] <- NA # put NA back
+curated_cbio$GENDER[curated_cbio$GENDER == ""] <- NA # put NA back
+curated_cbio <- curated_cbio[,-which(colnames(curated_cbio) == "curated_sex")] # remove temp/intermediate column
+```
+
+
+# Fill in missing values
+```{r fillValue, echo=FALSE}
+#' For cBioPortalData curation
+#' 
+#' Initially designed to infer any missing values among the multiple samples 
+#' originated from a single patient, which should be consistent such as sex. 
+#' If the requested \code{attribute} is not available, this function assigns
+#' \code{NA}. If there is any conflicts between samples (e.g., 4 samples
+#' are labeled as `Female` while 1 sample is `Male` even though all 5 samples
+#' are from a single patient), this function returns the original, conflicting
+#' values.
+#'
+#' @import dplyr
+#' @importFrom stringr str_to_title
+#'
+#' @param tb Metadata table
+#' @param patientId Patient ID
+#' @param attrbute Name of the new column 
+#'
+#' @return The character vector with the same length of the rows from a given
+#' patient's sampleId.
+#'
+#' @internal
+fillValue <- function(tb, patientId, attribute) {
+    rowInd <- which(tb$patientId == patientId)
+    colInd <- which(colSums(is.na(tb[rowInd,])) != length(rowInd)) # column with at least one non-NA value
+    subtb <- tb[rowInd, colInd]
+
+    if (!attribute %in% colnames(subtb)) {
+        msg <- paste(patientId, "doesn't have", attribute, "values.")
+        message(msg)
+        uniqueVal <- NA
+    } else {
+        allVal <- stringr::str_to_title(subtb[, attribute, drop = TRUE]) # make all terms starts with uppercase
+        uniqueVal <- unique(allVal[!is.na(allVal)])
+    }
+
+    if (length(uniqueVal) != 1) {
+        msg <- paste(patientId, attribute, "has", length(uniqueVal), "values.")
+        message(msg)
+        res <- allVal
+    } else {
+        ## Assign NAs if the requested attribute doesn't exist for a patient
+        ## Assign original values if there is any conflicts across samples from the same patients
+        res <- rep(uniqueVal, times = length(rowInd)) 
+    }
+
+    return(res)
+}
+```
+
+```{r takes_long, eval=FALSE}
+curated_cbio$curated_SEX <- NA
+curated_cbio$curated_PRIMARY_SITE <- NA
+
+for (i in seq_along(multi_meta)) {
+    # Select patients with multiple data entries
+    name <- names(multi_meta)[i]
+    rowInd <- which(tb$patientId == name)
+    
+    res1 <- fillValue(curated_cbio, name, "curated_SEX1")
+    res2 <- fillValue(curated_cbio, name, "PRIMARY_SITE")
+    
+    # print(name)
+    curated_cbio$curated_SEX[rowInd] <- res1
+    curated_cbio$curated_PRIMARY_SITE[rowInd] <- res2
+}
+
+## Copy non-multiplicated values
+ind <- which(curated_cbio$patientId %in% names(one_meta)) # the number of patients with only one metadata entry
+curated_cbio$curated_SEX[ind] <- curated_cbio$curated_SEX1[ind]
+```
+
+```{r eval=FALSE}
+## Save
+write.csv(curated_cbio, "data/curated_Sex_PrimarySite.csv", row.names = FALSE)
+```
+
+Check the updated completeness of the original and curated attributes
+```{r}
+curated_cbio <- read.csv("data/curated_Sex_PrimarySite.csv")
+round(colSums(!is.na(curated_cbio))/nrow(curated_cbio)*100)
+```
+
+```{r}
+chk <- curated_cbio %>% 
+    group_by(patientId) %>%
+    summarise(sampleSize = n(),
+              uniqueVal = length(unique(curated_SEX1[!is.na(curated_SEX1)]))) %>%
+    filter(uniqueVal > 1)
+
+## The number of samples from a single patientId with unconcordant SEX info
+table(chk$sampleSize)
+```
+
+
+Check the entries with unconcordant SEX info
+```{r}
+i <- 8
+patientId <- chk$patientId[which(chk$sampleSize == i)]
+patientId
+```
+
+```{r}
+checkCols <- c("studyId", "patientId", "sampleId", "SEX", "RACE", "ETHNICITY", "PRIMARY_SITE")
+
+for (id in patientId) {
+    res <- curated_cbio[which(curated_cbio$patientId == id), checkCols]
+    print(res)
+}
+```
+
+
+
+
+
