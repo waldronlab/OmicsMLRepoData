@@ -33,5 +33,7 @@ meta <- x %>%
                  remove = TRUE, # remove the individual column
                  na.rm = FALSE) # NA stays
 
+meta$last_modified <- Sys.Date()
+
 ## Place the `uncurated` column at the end
 meta <- relocate(meta, "unharmonized_metadata", .after = "last_modified")
