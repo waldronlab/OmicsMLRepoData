@@ -1,0 +1,143 @@
+---
+title: "Harmonize study design and target phenotype information in cbio data"
+author:
+  - Sehyun Oh
+  - Kai Gravel-Pucillo
+date: "`r format(Sys.time(), '%B %d, %Y')`"
+format:
+    html:
+        fontsize: 14pxs
+        toc: true
+        top-depth: 3
+abstract: "Prepare U24 Supplement: AI/ML-ready"
+---
+
+```{r setup, include=FALSE}
+knitr::opts_chunk$set(echo = TRUE, 
+                    warning = FALSE,
+                    message = FALSE,
+                    collapse = TRUE,
+                    eval = TRUE)
+```
+
+
+# Overview
+
+This .qmd file demonstrates a workflow for curating and harmonizing 
+study design and target phenotype data with the cbioportal dataset.
+This file curates information derived from the study descriptions to produce a 
+curated column describing the study design format as well as a curated column
+describing the disease and/or condition(s) focused on in each study.
+
+
+# Setup
+
+## Load Packages
+
+```{r load}
+suppressPackageStartupMessages({
+ library(dplyr)
+library(tidyverse)
+library(stringr)
+library(rvest)
+library(rols)
+library(vctrs)
+library(hash)
+})
+```
+
+
+## Setup for Curation
+
+We will first add a `curation_id` consisting of study ID and patient ID (`studyId:patientId`) to avoid confusion due to duplicated samples.
+```{r curation_setup}
+# Load cbio data
+cbio <- readRDS("C:\\Users\\Owner\\Desktop\\CUNY Internship\\cBioPortal_all_clinicalData_combined_2022-10-14.rds")
+
+# Add curation ID
+cbio$curation_id <- paste(cbio$studyId, cbio$patientId, sep = ":")
+
+# Setup google sheets link to mapping table
+url <- "https://docs.google.com/spreadsheets/d/1IgrVEdgCZdvBmWrER21A57lSkfDjdRdV3RbK_yoqMl4/edit?usp=sharing"
+
+ss <- googledrive::as_id(url)
+
+# Define a project directory
+proj_dir <- "C:\\Users\\Owner\\Desktop\\CUNY Internship\\cbio\\StudyDesign\\"
+```
+
+
+# Exploratory Data Analysis & Data Curation
+
+## Identifying Relevant Columns
+
+Next we will create a new dataframe containing only the columns that are relevant
+to this curation, which are the curation_id and studyId columns. 
+```{r}
+# Create tibble
+cbio <- tibble(cbio)
+
+# Create a subset of cbio containing only relevant columns
+studydesign_cols_cbio <- cbio[,c("curation_id", "studyId")]
+```
+
+Then we will create a dataframe of only the unique studyId values, and export 
+this dataframe to a csv file for manual development of an ontology map of the 
+corresponding study designs and target phenotypes:
+```{r}
+# Create a summary dataframe of the relevant columns
+unique_studies <- data.frame("study_id"=unique(studydesign_cols_cbio$studyId))
+
+# Create a csv file for manual curation
+write.csv(unique_studies, 
+          file = file.path(proj_dir, "unique_study_ids.csv"),
+          row.names = FALSE)
+```
+
+
+# Mapping
+
+## Import Maps
+
+To access the necessary study design and target phenotype ontology terms we will 
+load the `study_design_ontology_map` ontology map file.
+```{r import_maps, eval=FALSE}
+# import bodysite ontology map
+mapped_terms <- read_sheet(ss, sheet = "study_design_ontology_map")
+
+# import bodysite ontology map
+mapped_terms <-read.csv(file = file.path(proj_dir, "cBioPortal_study_design_ontology_map.csv"), header=T)
+```
+
+
+# Curating Study Design Columns
+
+Now we can map the study_id values in the `studydesign_cols_cbio` dataframe to 
+their corresponding study_design and target_phenotype terms and propagate these 
+values into two new curated columns: 
+```{r}
+# Format columns for mapping
+colnames(studydesign_cols_cbio)[2] <- "study_id"
+studydesign_cols_cbio$target_phenotype_term_id <-
+studydesign_cols_cbio$target_phenotype <-
+studydesign_cols_cbio$study_design <- NA
+
+# Iterate through merged column values
+for(x in 1:length(studydesign_cols_cbio$study_id)){
+  studydesign_cols_cbio$study_design[x] <- paste(mapped_terms$study_design[which(studydesign_cols_cbio$study_id[x]==mapped_terms$study_id)])
+  studydesign_cols_cbio$target_phenotype[x] <- paste(mapped_terms$target_phenotype[which(studydesign_cols_cbio$study_id[x]==mapped_terms$study_id)])
+  studydesign_cols_cbio$target_phenotype_term_id[x] <- paste(mapped_terms$target_phenotype_term_id[which(studydesign_cols_cbio$study_id[x]==mapped_terms$study_id)])
+  # Processing Checkpoints
+  if(x %% 10000==0){print(x)}
+}
+```
+
+
+## Export
+
+Finally, we will export our completed table to GitHub.
+```{r export_curated_table, eval=FALSE}
+# export to GitHub
+write.csv(studydesign_cols_cbio, file = file.path(proj_dir, "curated_study_design.csv"), 
+          row.names=F)
+```
