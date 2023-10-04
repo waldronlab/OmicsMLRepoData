@@ -1,0 +1,8 @@
+"original_fields","original_fields_completeness","curated_fields","curated_fields_completeness","curation_activities","curation_guides"
+"study_condition;disease;disease_subtype","100;100;14","curated_control;curated_disease","100;100","Correction, Separate/Augment 'target_phenotype'",NA
+NA,"NULL","curated_target_condition","100","Newly created to supplement the intension of previous 'study_conditon' column",NA
+"age;infant_age","60;13","curated_age_years;curated_age_min;curated_age_max;curated_age_group","61;100;100","Correction","Enter only age and its unit OR Select age group"
+"age_category","100","curated_age_min;curated_age_max;curated_age_group","100;100;100","Correction",NA
+"gender","89","curated_sex","89","Add the missing value",NA
+"body_site;body_subsite","100;10","curated_body_site;curated_body_subsite","100;8","Remove redundant entry from body_subsite",NA
+"treatment;antibiotics_family;antibiotics_current_use","24;2;65","curated_treatment;curated_antibiotics_current_use","26;65","antibiotics_current_use is also updated accordingly","Can you enter a more general term (e.g., insulin example)?"
