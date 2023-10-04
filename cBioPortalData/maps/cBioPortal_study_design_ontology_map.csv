@@ -1,0 +1,361 @@
+study_id,study_design,target_phenotype,target_phenotype_term_id
+acbc_mskcc_2015,cross-sectional observational;not case-control,Breast Adenoid Cystic Carcinoma,NCIT:C5130
+acc_2019,cross-sectional observational;not case-control,Adenoid Cystic Carcinoma,NCIT:C2970
+acc_tcga,meta-analysis;cross-sectional observational;not case-control,Adrenal Cortical Carcinoma,NCIT:C9325
+acc_tcga_pan_can_atlas_2018,meta-analysis;cross-sectional observational;not case-control,Adrenal Cortical Carcinoma,NCIT:C9325
+acyc_fmi_2014,cross-sectional observational;not case-control,Adenoid Cystic Carcinoma,NCIT:C2970
+acyc_jhu_2016,case-control,Adenoid Cystic Carcinoma,NCIT:C2970
+acyc_mda_2015,cross-sectional observational;not case-control,Adenoid Cystic Carcinoma,NCIT:C2970
+acyc_mgh_2016,cross-sectional observational;not case-control,Adenoid Cystic Carcinoma,NCIT:C2970
+acyc_mskcc_2013,case-control,Adenoid Cystic Carcinoma,NCIT:C2970
+acyc_sanger_2013,cross-sectional observational;not case-control,Adenoid Cystic Carcinoma,NCIT:C2970
+all_phase2_target_2018_pub,cross-sectional observational;not case-control,Pediatric;Acute Lymphoblastic Leukemia,NCIT:C39299;NCIT:C3167
+all_stjude_2013,case-control,Hypodiploidy;Acute Lymphoblastic Leukemia,NCIT:C80337;NCIT:C3167
+all_stjude_2015,case-control,Acute Lymphoblastic Leukemia;MLL Gene Rearrangement,NCIT:C3167;NCIT:C122623
+all_stjude_2016,case-control,B Acute Lymphoblastic Leukemia,NCIT:C8644
+aml_ohsu_2018,cross-sectional observational;not case-control,Acute Myeloid Leukemia,NCIT:C3171
+aml_target_2018_pub,cross-sectional observational;not case-control,Pediatric;Acute Myeloid Leukemia,NCIT:C39299;NCIT:C3171
+ampca_bcm_2016,cross-sectional observational;not case-control,Ampulla of Vater Carcinoma,NCIT:C3908
+angs_painter_2020,cross-sectional observational;not case-control,Angiosarcoma,NCIT:C3088
+angs_project_painter_2018,cross-sectional observational;not case-control,Angiosarcoma,NCIT:C3088
+bcc_unige_2016,case-control,Basal Cell Carcinoma,NCIT:C156767
+bfn_duke_nus_2015,cross-sectional observational;not case-control,Breast Fibroepithelial Neoplasm,NCIT:C40405
+biliary_tract_summit_2022,case-control,Liver and Intrahepatic Bile Duct Carcinoma,NCIT:C7927
+blca_bcan_hcrn_2022,cross-sectional observational;not case-control,Urothelial Carcinoma,NCIT:C4030
+blca_bgi,case-control,Bladder Urothelial Carcinoma,NCIT:C39851
+blca_cornell_2016,case-control,Urothelial Carcinoma,NCIT:C4030
+blca_dfarber_mskcc_2014,case-control,Bladder Urothelial Carcinoma,NCIT:C39851
+blca_msk_tcga_2020,case-control,Bladder Carcinoma,NCIT:C4912
+blca_mskcc_solit_2012,cross-sectional observational;not case-control,Bladder Carcinoma,NCIT:C4912
+blca_mskcc_solit_2014,cross-sectional observational;not case-control,Bladder Carcinoma,NCIT:C4912
+blca_nmibc_2017,case-control,Non-Muscle Invasive Bladder Carcinoma,NCIT:C27474
+blca_plasmacytoid_mskcc_2016,cross-sectional observational;not case-control,Bladder Carcinoma,NCIT:C4912
+blca_tcga,cross-sectional observational;not case-control,Bladder Urothelial Carcinoma,NCIT:C39851
+blca_tcga_pan_can_atlas_2018,meta-analysis;cross-sectional observational;not case-control,Bladder Urothelial Carcinoma,NCIT:C39851
+blca_tcga_pub,cross-sectional observational;not case-control,Infiltrating Bladder Urothelial Carcinoma,NCIT:C27885
+blca_tcga_pub_2017,cross-sectional observational;not case-control,Bladder Carcinoma,NCIT:C4912
+brain_cptac_2020,cross-sectional observational;not case-control,Pediatric;Malignant Brain Neoplasm,NCIT:C39299;NCIT:C3568
+brca_bccrc,cross-sectional observational;not case-control,Breast Carcinoma,NCIT:C4872
+brca_bccrc_xenograft_2014,cross-sectional observational;not case-control,Breast Carcinoma;Xenograft,NCIT:C4872;NCIT:C12932
+brca_broad,case-control,Invasive Breast Carcinoma,NCIT:C9245
+brca_cptac_2020,cross-sectional observational;not case-control,Breast Carcinoma,NCIT:C4872
+brca_hta9_htan_2022,cross-sectional observational;not case-control,Breast Carcinoma,NCIT:C4872
+brca_igr_2015,case-control,Metastatic Malignant Neoplasm in the Breast,NCIT:C7511
+brca_jup_msk_2020,cross-sectional observational;not case-control,Juvenile Breast Papillomatosis;Breast Carcinoma,NCIT:C9503;NCIT:C4872
+brca_mapk_hp_msk_2021,case-control,Breast Carcinoma,NCIT:C4872
+brca_mbcproject_2022,cross-sectional observational;not case-control,Metastatic Malignant Neoplasm in the Breast,NCIT:C7511
+brca_mbcproject_wagle_2017,cross-sectional observational;not case-control,Metastatic Malignant Neoplasm in the Breast,NCIT:C7511
+brca_metabric,case-control,Breast Carcinoma,NCIT:C4872
+brca_mskcc_2019,cross-sectional observational;not case-control,Estrogen Receptor-Positive Breast Carcinoma,NCIT:C188366
+brca_pareja_msk_2020,case-control,Breast Carcinoma,NCIT:C4872
+brca_sanger,case-control,Invasive Breast Carcinoma,NCIT:C9245
+brca_smc_2018,cross-sectional observational;not case-control,Breast Carcinoma,NCIT:C4872
+brca_tcga,cross-sectional observational;not case-control,Invasive Breast Carcinoma,NCIT:C9245
+brca_tcga_pan_can_atlas_2018,meta-analysis;cross-sectional observational;not case-control,Invasive Breast Carcinoma,NCIT:C9245
+brca_tcga_pub,case-control,Invasive Breast Carcinoma,NCIT:C9245
+brca_tcga_pub2015,case-control,Invasive Breast Carcinoma,NCIT:C9245
+breast_alpelisib_2020,case-control;time series / longitudinal observational,Breast Carcinoma,NCIT:C4872
+breast_ink4_msk_2021,case-control,Metastatic Malignant Neoplasm in the Breast,NCIT:C7511
+breast_msk_2018,case-control,Breast Carcinoma,NCIT:C4872
+ccle_broad_2019,meta-analysis;cross-sectional observational;not case-control,Cancer Cell Line,OBI:0001906
+ccrcc_dfci_2019,case-control,Metastatic Clear Cell Renal Cell Carcinoma,NCIT:C162768
+ccrcc_irc_2014,cross-sectional observational;not case-control,Clear Cell Renal Cell Carcinoma,NCIT:C4033
+ccrcc_utokyo_2013,case-control,Clear Cell Renal Cell Carcinoma,NCIT:C4033
+cellline_ccle_broad,meta-analysis;cross-sectional observational;not case-control,Cancer Cell Line,OBI:0001906
+cellline_nci60,meta-analysis;cross-sectional observational;not case-control,Cancer Cell Line,OBI:0001906
+cesc_tcga,cross-sectional observational;not case-control,Cervical Squamous Cell Carcinoma;Cervical Adenocarcinoma,NCIT:C4028;NCIT:C4029
+cesc_tcga_pan_can_atlas_2018,meta-analysis;cross-sectional observational;not case-control,Cervical Squamous Cell Carcinoma,NCIT:C4028
+cfdna_msk_2019,case-control,Circulating Cell-Free DNA;Leukocyte;Malignant Neoplasm,NCIT:C128274;NCIT:C12529;NCIT:C9305
+chol_icgc_2017,cross-sectional observational;not case-control,Cholangiocarcinoma,NCIT:C4436
+chol_jhu_2013,case-control,Intrahepatic Cholangiocarcinoma;Gallbladder Carcinoma,NCIT:C35417;NCIT:C3844
+chol_msk_2018,case-control,Cholangiocarcinoma,NCIT:C4436
+chol_nccs_2013,cross-sectional observational;not case-control,Cholangiocarcinoma,NCIT:C4436
+chol_nus_2012,case-control,Opisthorchis Viverrini-Related Cholangiocarcinoma,NCIT:C27769
+chol_tcga,cross-sectional observational;not case-control,Cholangiocarcinoma,NCIT:C4436
+chol_tcga_pan_can_atlas_2018,meta-analysis;cross-sectional observational;not case-control,Cholangiocarcinoma,NCIT:C4436
+cll_broad_2015,case-control,Chronic Lymphocytic Leukemia,NCIT:C3163
+cll_iuopa_2015,case-control,Chronic Lymphocytic Leukemia,NCIT:C3163
+cllsll_icgc_2011,cross-sectional observational;not case-control,Chronic Lymphocytic Leukemia,NCIT:C3163
+coad_caseccc_2015,case-control,Colon Adenocarcinoma,NCIT:C4349
+coad_cptac_2019,case-control,Colon Adenocarcinoma,NCIT:C4349
+coadread_dfci_2016,cross-sectional observational;not case-control,Colorectal Adenocarcinoma,NCIT:C5105
+coadread_genentech,case-control,Colorectal Adenocarcinoma,NCIT:C5105
+coadread_mskcc,case-control,Colorectal Adenocarcinoma,NCIT:C5105
+coadread_tcga,cross-sectional observational;not case-control,Colorectal Adenocarcinoma,NCIT:C5105
+coadread_tcga_pan_can_atlas_2018,meta-analysis;cross-sectional observational;not case-control,Colorectal Adenocarcinoma,NCIT:C5105
+coadread_tcga_pub,case-control,Colorectal Adenocarcinoma,NCIT:C5105
+crc_apc_impact_2020,case-control,Colorectal Carcinoma,NCIT:C2955
+crc_dd_2022,cross-sectional observational;not case-control,Colorectal Carcinoma,NCIT:C2955
+crc_msk_2017,case-control,Metastatic Colorectal Carcinoma,NCIT:C156096
+crc_nigerian_2020,case-control,Colorectal Carcinoma,NCIT:C2955
+cscc_dfarber_2015,cross-sectional observational;not case-control,Skin Squamous Cell Carcinoma,NCIT:C4819
+cscc_hgsc_bcm_2014,case-control,Skin Squamous Cell Carcinoma,NCIT:C4819
+cscc_ucsf_2021,meta-analysis;case-control,Skin Squamous Cell Carcinoma,NCIT:C4819
+ctcl_columbia_2015,case-control,Sezary Syndrome;Primary Cutaneous T-Cell Non-Hodgkin Lymphoma,NCIT:C3366;NCIT:C3467
+desm_broad_2015,case-control,Desmoplastic Melanoma,NCIT:C37257
+difg_glass_2019,case-control,Diffuse Glioma,NCIT:C129325
+dlbc_broad_2012,case-control,Diffuse Large B-Cell Lymphoma,NCIT:C8851
+dlbc_tcga,cross-sectional observational;not case-control,Diffuse Large B-Cell Lymphoma,NCIT:C8851
+dlbc_tcga_pan_can_atlas_2018,meta-analysis;cross-sectional observational;not case-control,Diffuse Large B-Cell Lymphoma,NCIT:C8851
+dlbcl_dfci_2018,case-control,Diffuse Large B-Cell Lymphoma,NCIT:C8851
+dlbcl_duke_2017,case-control,Diffuse Large B-Cell Lymphoma,NCIT:C8851
+egc_msk_2017,cross-sectional observational;not case-control,Metastatic;Gastroesophageal Cancer,NCIT:C14174;NCIT:C103064
+egc_msk_tp53_ccr_2022,case-control,Gastroesophageal Cancer,NCIT:C103064
+egc_mskcc_2020,case-control,Gastroesophageal Cancer,NCIT:C103064
+egc_tmucih_2015,case-control,Gastric Adenocarcinoma,NCIT:C4004
+egc_trap_msk_2020,case-control,Esophageal Carcinoma,NCIT:C3513
+es_dfarber_broad_2014,cross-sectional observational;not case-control,Childhood Ewing Sarcoma,NCIT:C189002
+es_iocurie_2014,case-control,Ewing Sarcoma,NCIT:C4817
+esca_broad,case-control,Esophageal Adenocarcinoma,NCIT:C4025
+esca_tcga,cross-sectional observational;not case-control,Esophageal Adenocarcinoma,NCIT:C4025
+esca_tcga_pan_can_atlas_2018,meta-analysis;cross-sectional observational;not case-control,Esophageal Adenocarcinoma,NCIT:C4025
+escc_icgc,case-control,Esophageal Squamous Cell Carcinoma,NCIT:C4024
+escc_ucla_2014,cross-sectional observational;not case-control,Esophageal Squamous Cell Carcinoma,NCIT:C4024
+gbc_msk_2018,case-control,Gallbladder Carcinoma,NCIT:C3844
+gbc_mskcc_2022,cross-sectional observational;not case-control,Gallbladder Carcinoma,NCIT:C3844
+gbc_shanghai_2014,case-control,Gallbladder Carcinoma,NCIT:C3844
+gbm_columbia_2019,case-control,Glioblastoma,NCIT:C3058
+gbm_cptac_2021,cross-sectional observational;not case-control,Glioblastoma,NCIT:C3058
+gbm_mayo_pdx_sarkaria_2019,cross-sectional observational;not case-control,Glioblastoma,NCIT:C3058
+gbm_tcga,cross-sectional observational;not case-control,Glioblastoma,NCIT:C3058
+gbm_tcga_pan_can_atlas_2018,meta-analysis;cross-sectional observational;not case-control,Glioblastoma,NCIT:C3058
+gbm_tcga_pub,case-control,Glioblastoma,NCIT:C3058
+gbm_tcga_pub2013,case-control,Glioblastoma,NCIT:C3058
+gct_msk_2016,cross-sectional observational;not case-control,Germ Cell Tumor,NCIT:C3708
+gct_msk_2020,cross-sectional observational;not case-control,Germ Cell Tumor;Leukemia,NCIT:C3708;NCIT:C3161
+glioma_msk_2018,case-control,Glioma,NCIT:C3059
+glioma_mskcc_2019,case-control,Glioma,NCIT:C3059
+hcc_inserm_fr_2015,case-control,Hepatocellular Carcinoma,NCIT:C3099
+hcc_meric_2021,case-control,Hepatocellular Carcinoma,NCIT:C3099
+hcc_msk_venturaa_2018,case-control,Hepatocellular Adenoma;Hepatocellular Carcinoma,NCIT:C3758;NCIT:C3099
+hcc_mskimpact_2018,case-control,Hepatocellular Carcinoma,NCIT:C3099
+hccihch_pku_2019,case-control,Hepatocellular Carcinoma;Intrahepatic Cholangiocarcinoma,NCIT:C3099;NCIT:C35417
+hgsoc_msk_2021,case-control,Ovarian Serous Adenocarcinoma,NCIT:C7550
+histiocytosis_cobi_msk_2019,case-control,Histiocytosis,NCIT:C3106
+hnc_mskcc_2016,cross-sectional observational;not case-control,Head and Neck,NCIT:C12418
+hnsc_broad,case-control,Head and Neck Squamous Cell Carcinoma,NCIT:C34447
+hnsc_jhu,case-control,Head and Neck Squamous Cell Carcinoma,NCIT:C34447
+hnsc_mdanderson_2013,case-control,Oral Cavity Squamous Cell Carcinoma,NCIT:C4833
+hnsc_tcga,cross-sectional observational;not case-control,Head and Neck Squamous Cell Carcinoma,NCIT:C34447
+hnsc_tcga_pan_can_atlas_2018,meta-analysis;cross-sectional observational;not case-control,Head and Neck Squamous Cell Carcinoma,NCIT:C34447
+hnsc_tcga_pub,case-control,Head and Neck Squamous Cell Carcinoma,NCIT:C34447
+ihch_ismms_2015,case-control,Intrahepatic Cholangiocarcinoma,NCIT:C35417
+ihch_msk_2021,case-control,Intrahepatic Cholangiocarcinoma,NCIT:C35417
+ihch_mskcc_2020,case-control,Intrahepatic Cholangiocarcinoma,NCIT:C35417
+ihch_smmu_2014,case-control,Intrahepatic Cholangiocarcinoma,NCIT:C35417
+kich_tcga,cross-sectional observational;not case-control,Chromophobe Renal Cell Carcinoma,NCIT:C4146
+kich_tcga_pan_can_atlas_2018,meta-analysis;cross-sectional observational;not case-control,Chromophobe Renal Cell Carcinoma,NCIT:C4146
+kich_tcga_pub,case-control,Chromophobe Renal Cell Carcinoma,NCIT:C4146
+kirc_bgi,case-control,Clear Cell Renal Cell Carcinoma,NCIT:C4033
+kirc_tcga,cross-sectional observational;not case-control,Clear Cell Renal Cell Carcinoma,NCIT:C4033
+kirc_tcga_pan_can_atlas_2018,meta-analysis;cross-sectional observational;not case-control,Clear Cell Renal Cell Carcinoma,NCIT:C4033
+kirc_tcga_pub,case-control,Clear Cell Renal Cell Carcinoma,NCIT:C4033
+kirp_tcga,cross-sectional observational;not case-control,Papillary Renal Cell Carcinoma,NCIT:C6975
+kirp_tcga_pan_can_atlas_2018,meta-analysis;cross-sectional observational;not case-control,Papillary Renal Cell Carcinoma,NCIT:C6975
+laml_tcga,cross-sectional observational;not case-control,Acute Myeloid Leukemia,NCIT:C3171
+laml_tcga_pan_can_atlas_2018,meta-analysis;cross-sectional observational;not case-control,Acute Myeloid Leukemia,NCIT:C3171
+laml_tcga_pub,case-control,Acute Myeloid Leukemia,NCIT:C3171
+lcll_broad_2013,case-control,Chronic Lymphocytic Leukemia,NCIT:C3163
+lgg_tcga,cross-sectional observational;not case-control,Low Grade Glioma;Brain Glioma,NCIT:C132067;MONDO:0005499
+lgg_tcga_pan_can_atlas_2018,meta-analysis;cross-sectional observational;not case-control,Low Grade Glioma;Brain Glioma,NCIT:C132067;MONDO:0005499
+lgg_ucsf_2014,case-control,Low Grade Glioma,NCIT:C132067
+lgggbm_tcga_pub,case-control,Diffuse Glioma,NCIT:C129325
+lgsoc_mapk_msk_2022,case-control,Ovarian Low Grade Serous Adenocarcinoma,NCIT:C105556
+liad_inserm_fr_2014,case-control,Hepatocellular Adenoma,NCIT:C3758
+lihc_amc_prv,case-control,Hepatocellular Carcinoma,NCIT:C3099
+lihc_riken,case-control,Hepatocellular Carcinoma,NCIT:C3099
+lihc_tcga,cross-sectional observational;not case-control,Hepatocellular Carcinoma,NCIT:C3099
+lihc_tcga_pan_can_atlas_2018,meta-analysis;cross-sectional observational;not case-control,Hepatocellular Carcinoma,NCIT:C3099
+luad_broad,case-control,Lung Adenocarcinoma,NCIT:C3512
+luad_cptac_2020,case-control,Lung Adenocarcinoma,NCIT:C3512
+luad_msk_npjpo_2021,case-control,Lung Adenocarcinoma,NCIT:C3512
+luad_mskcc_2015,case-control,Lung Non-Small Cell Carcinoma;Lung Adenocarcinoma,NCIT:C2926;NCIT:C3512
+luad_mskcc_2020,case-control,Lung Adenocarcinoma,NCIT:C3512
+luad_mskimpact_2021,case-control,Lung Adenocarcinoma,NCIT:C3512
+luad_oncosg_2020,case-control,Lung Adenocarcinoma,NCIT:C3512
+luad_tcga,cross-sectional observational;not case-control,Lung Adenocarcinoma,NCIT:C3512
+luad_tcga_pan_can_atlas_2018,meta-analysis;cross-sectional observational;not case-control,Lung Adenocarcinoma,NCIT:C3512
+luad_tcga_pub,case-control,Lung Adenocarcinoma,NCIT:C3512
+luad_tsp,case-control,Lung Adenocarcinoma,NCIT:C3512
+lung_msk_2017,cross-sectional observational;not case-control,Metastatic Lung Adenocarcinoma,NCIT:C155908
+lung_msk_mind_2020,cross-sectional observational;not case-control,Lung Adenocarcinoma,NCIT:C3512
+lung_msk_pdx,case-control,Lung Carcinoma;Thoracic Cancer;Xenograft,NCIT:C4878;MONDO:0003274;NCIT:C12932
+lung_nci_2022,case-control,Lung Carcinoma,NCIT:C4878
+lung_pdx_msk_2021,cross-sectional observational;not case-control,Lung Small Cell Carcinoma,NCIT:C4917
+lung_smc_2016,case-control,Lung Carcinoma,NCIT:C4878
+lusc_cptac_2021,case-control,Lung Squamous Cell Carcinoma,NCIT:C3493
+lusc_tcga,cross-sectional observational;not case-control,Lung Squamous Cell Carcinoma,NCIT:C3493
+lusc_tcga_pan_can_atlas_2018,meta-analysis;cross-sectional observational;not case-control,Lung Squamous Cell Carcinoma,NCIT:C3493
+lusc_tcga_pub,case-control,Lung Squamous Cell Carcinoma,NCIT:C3493
+lymphoma_cellline_msk_2020,cross-sectional observational;not case-control,Lymphoma;Cell Line,NCIT:C3208;NCIT:C16403
+mbc_msk_2021,case-control,Breast Metaplastic Carcinoma,NCIT:C5164
+mbl_broad_2012,case-control,Medulloblastoma,NCIT:C3222
+mbl_dkfz_2017,case-control,Medulloblastoma,NCIT:C3222
+mbl_icgc,case-control,Medulloblastoma,NCIT:C3222
+mbl_pcgp,case-control,Medulloblastoma,NCIT:C3222
+mbl_sickkids_2016,case-control,Medulloblastoma,NCIT:C3222
+mbn_mdacc_2013,cross-sectional observational;not case-control,Mature B-Cell Neoplasm,NCIT:C27910
+mcl_idibips_2013,case-control,Mantle Cell Lymphoma,NCIT:C4337
+mds_iwg_2022,cross-sectional observational;not case-control,Myelodysplastic Syndrome,NCIT:C3247
+mds_mskcc_2020,meta-analysis;cross-sectional observational;not case-control,Myeloid Neoplasm,NCIT:C9290
+mds_tokyo_2011,case-control,Myelodysplastic Syndrome,NCIT:C3247
+mel_dfci_2019,cross-sectional observational;not case-control,Metastatic Melanoma,NCIT:C8925
+mel_mskimpact_2020,case-control,Melanoma,NCIT:C3224
+mel_tsam_liang_2017,case-control,Acral Lentiginous Melanoma,NCIT:C4022
+mel_ucla_2016,case-control,Melanoma,NCIT:C3224
+meso_tcga,cross-sectional observational;not case-control,Mesothelioma,NCIT:C3234
+meso_tcga_pan_can_atlas_2018,meta-analysis;cross-sectional observational;not case-control,Mesothelioma,NCIT:C3234
+metastatic_solid_tumors_mich_2017,case-control,Metastatic;Solid Carcinoma,NCIT:C14174;NCIT:C4137
+mixed_allen_2018,case-control,Microsatellite Stable;Solid Carcinoma,NCIT:C131459;NCIT:C4137
+mixed_cfdna_msk_2020,case-control,Metastatic;Solid Carcinoma,NCIT:C14174;NCIT:C4137
+mixed_impact_subset_2022,cross-sectional observational;not case-control,Malignant Neoplasm,NCIT:C9305
+mixed_kunga_msk_2022,cross-sectional observational;not case-control,Childhood Malignant Neoplasm,NCIT:C4005
+mixed_msk_tcga_2021,cross-sectional observational;not case-control,Malignant Neoplasm,NCIT:C9305
+mixed_pipseq_2017,case-control,Childhood Malignant Neoplasm,NCIT:C4005
+mixed_selpercatinib_2020,cross-sectional observational;not case-control,Solid Carcinoma,NCIT:C4137
+mm_broad,case-control,Plasma Cell Myeloma,NCIT:C3242
+mng_utoronto_2021,cross-sectional observational;not case-control,Meningioma,NCIT:C3230
+mnm_washu_2016,case-control,Acute Myeloid Leukemia;Myelodysplastic Syndrome,NCIT:C3171;NCIT:C3247
+mpcproject_broad_2021,cross-sectional observational;not case-control,Metastatic Prostate Carcinoma,NCIT:C8946
+mpn_cimr_2013,case-control,Myeloproliferative Neoplasm,NCIT:C4345
+mpnst_mskcc,case-control,Malignant Peripheral Nerve Sheath Tumor,NCIT:C3798
+mrt_bcgsc_2016,case-control,Rhabdoid Tumor,NCIT:C3808
+msk_access_2021,case-control,Malignant Neoplasm,NCIT:C9305
+msk_ch_2020,case-control,Malignant Neoplasm,NCIT:C9305
+msk_ch_ped_2021,case-control,Malignant Neoplasm,NCIT:C9305
+msk_impact_2017,case-control,Malignant Neoplasm,NCIT:C9305
+msk_met_2021,cross-sectional observational;not case-control,Malignant Neoplasm,NCIT:C9305
+msk_spectrum_tme_2022,cross-sectional observational;not case-control,Ovarian High Grade Serous Adenocarcinoma,NCIT:C105555
+nbl_amc_2012,case-control,Neuroblastoma,NCIT:C3270
+nbl_broad_2013,case-control,High Risk Neuroblastoma,NCIT:C150281
+nbl_target_2018_pub,cross-sectional observational;not case-control,Neuroblastoma,NCIT:C3270
+nbl_ucologne_2015,case-control,Neuroblastoma,NCIT:C3270
+nccrcc_genentech_2014,case-control,Renal Cell Carcinoma,NCIT:C9385
+nepc_wcm_2016,case-control,Prostate Carcinoma,NCIT:C4863
+nhl_bcgsc_2011,case-control,Non-Hodgkin Lymphoma,NCIT:C3211
+nhl_bcgsc_2013,case-control,Diffuse Large B-Cell Lymphoma,NCIT:C8851
+npc_nusingapore,case-control,Nasopharyngeal Carcinoma,NCIT:C3871
+nsclc_mskcc_2015,case-control,Lung Non-Small Cell Carcinoma,NCIT:C2926
+nsclc_mskcc_2018,case-control,Lung Non-Small Cell Carcinoma,NCIT:C2926
+nsclc_pd1_msk_2018,case-control,Lung Non-Small Cell Carcinoma,NCIT:C2926
+nsclc_tcga_broad_2016,case-control,Lung Non-Small Cell Carcinoma,NCIT:C2926
+nsclc_tracerx_2017,cross-sectional observational;not case-control,Lung Non-Small Cell Carcinoma,NCIT:C2926
+nsclc_unito_2016,cross-sectional observational;not case-control,Lung Non-Small Cell Carcinoma,NCIT:C2926
+ntrk_msk_2019,cross-sectional observational;not case-control,TRK Receptor Family Fusion Positive;Malignant Neoplasm,NCIT:C138156;NCIT:C9305
+odg_msk_2017,time series / longitudinal observational,Anaplastic Oligodendroglioma;Anaplastic Oligoastrocytoma,NCIT:C4326;NCIT:C6959
+ov_tcga,cross-sectional observational;not case-control,Ovarian Serous Adenocarcinoma,NCIT:C7550
+ov_tcga_pan_can_atlas_2018,meta-analysis;cross-sectional observational;not case-control,Ovarian Serous Adenocarcinoma,NCIT:C7550
+ov_tcga_pub,case-control,Ovarian High Grade Serous Adenocarcinoma,NCIT:C105555
+paac_jhu_2014,case-control,Pancreatic Acinar Cell Carcinoma,NCIT:C7977
+paad_cptac_2021,case-control,Pancreatic Carcinoma,NCIT:C3850
+paad_icgc,case-control,Pancreatic Ductal Adenocarcinoma,NCIT:C9120
+paad_qcmg_uq_2016,cross-sectional observational;not case-control,Pancreatic Ductal Adenocarcinoma,NCIT:C9120
+paad_tcga,cross-sectional observational;not case-control,Pancreatic Adenocarcinoma,NCIT:C8294
+paad_tcga_pan_can_atlas_2018,meta-analysis;cross-sectional observational;not case-control,Pancreatic Adenocarcinoma,NCIT:C8294
+paad_utsw_2015,case-control,Pancreatic Carcinoma,NCIT:C3850
+pact_jhu_2011,cross-sectional observational;not case-control,Pancreatic Cystic Neoplasm,NCIT:C200227
+pan_origimed_2020,cross-sectional observational;not case-control,Solid Carcinoma,NCIT:C4137
+pancan_pcawg_2020,case-control,Malignant Neoplasm,NCIT:C9305
+panet_arcnet_2017,case-control,Pancreatic Neuroendocrine Tumor,NCIT:C27720
+panet_jhu_2011,cross-sectional observational;not case-control,Pancreatic Neuroendocrine Tumor,NCIT:C27720
+panet_shanghai_2013,case-control,Pancreatic Insulinoma;Benign,NCIT:C95598;NCIT:C14172
+past_dkfz_heidelberg_2013,case-control,Pilocytic Astrocytoma,NCIT:C4047
+pcnsl_mayo_2015,cross-sectional observational;not case-control,Primary Central Nervous System Lymphoma,NCIT:C9302
+pcpg_tcga,cross-sectional observational;not case-control,Adrenal Gland Pheochromocytoma;Paraganglioma,NCIT:C3326;NCIT:C3308
+pcpg_tcga_pan_can_atlas_2018,meta-analysis;cross-sectional observational;not case-control,Adrenal Gland Pheochromocytoma;Paraganglioma,NCIT:C3326;NCIT:C3308
+pcpg_tcga_pub,case-control,Adrenal Gland Pheochromocytoma;Paraganglioma,NCIT:C3326;NCIT:C3308
+pediatric_dkfz_2017,cross-sectional observational;not case-control,Childhood Malignant Neoplasm,NCIT:C4005
+plmeso_nyu_2015,case-control,Pleural Mesothelioma,NCIT:C9351
+pog570_bcgsc_2020,case-control,Metastatic Malignant Neoplasm,NCIT:C36263
+pptc_2019,cross-sectional observational;not case-control,Malignant Neoplasm;Xenograft,NCIT:C9305;NCIT:C12932
+prad_broad,case-control,Prostate Adenocarcinoma,NCIT:C2919
+prad_broad_2013,case-control,Prostate Adenocarcinoma,NCIT:C2919
+prad_cdk12_mskcc_2020,case-control,Prostate Adenocarcinoma,NCIT:C2919
+prad_cpcg_2017,cross-sectional observational;not case-control,Prostate Adenocarcinoma,NCIT:C2919
+prad_eururol_2017,case-control,Prostate Adenocarcinoma,NCIT:C2919
+prad_fhcrc,case-control,Prostate Adenocarcinoma,NCIT:C2919
+prad_mcspc_mskcc_2020,case-control,Metastatic;Castration-Sensitive Prostate Carcinoma,NCIT:C14174;NCIT:C153336
+prad_mich,case-control,Metastatic Prostate Adenocarcinoma,NCIT:C8945
+prad_msk_2019,case-control,Prostate Carcinoma,NCIT:C4863
+prad_msk_stopsack_2021,cross-sectional observational;not case-control,Prostate Carcinoma,NCIT:C4863
+prad_mskcc,cross-sectional observational;not case-control,Prostate Adenocarcinoma,NCIT:C2919
+prad_mskcc_2014,case-control,Prostate Carcinoma,NCIT:C4863
+prad_mskcc_2017,case-control,Prostate Carcinoma,NCIT:C4863
+prad_mskcc_cheny1_organoids_2014,case-control,Prostate Carcinoma,NCIT:C4863
+prad_p1000,case-control,Prostate Carcinoma,NCIT:C4863
+prad_pik3r1_msk_2021,case-control,Prostate Adenocarcinoma,NCIT:C2919
+prad_su2c_2015,case-control,Metastatic Prostate Carcinoma,NCIT:C8946
+prad_su2c_2019,case-control,Castration-Resistant Prostate Carcinoma,NCIT:C130234
+prad_tcga,cross-sectional observational;not case-control,Prostate Adenocarcinoma,NCIT:C2919
+prad_tcga_pan_can_atlas_2018,meta-analysis;cross-sectional observational;not case-control,Prostate Adenocarcinoma,NCIT:C2919
+prad_tcga_pub,case-control,Prostate Adenocarcinoma,NCIT:C2919
+prostate_dkfz_2018,case-control,Prostate Carcinoma,NCIT:C4863
+prostate_pcbm_swiss_2019,cross-sectional observational;not case-control,Brain;Site of Metastasis;Metastatic Prostate Carcinoma,NCIT:C12439;NCIT:C172233;NCIT:C8946
+rbl_cfdna_msk_2020,cross-sectional observational;not case-control,Retinoblastoma,NCIT:C7541
+rbl_mskcc_2020,case-control,Retinoblastoma,NCIT:C7541
+rectal_msk_2019,case-control,Rectal Carcinoma,NCIT:C9382
+rectal_msk_2022,cross-sectional observational;not case-control,Rectal Carcinoma,NCIT:C9382
+rms_nih_2014,case-control,Rhabdomyosarcoma,NCIT:C3359
+rt_target_2018_pub,cross-sectional observational;not case-control,Rhabdoid Tumor,NCIT:C3808
+sarc_mskcc,case-control,Sarcoma,NCIT:C9118
+sarc_tcga,cross-sectional observational;not case-control,Sarcoma,NCIT:C9118
+sarc_tcga_pan_can_atlas_2018,meta-analysis;cross-sectional observational;not case-control,Sarcoma,NCIT:C9118
+sarc_tcga_pub,case-control,Adult Soft Tissue Sarcoma,NCIT:C7707
+sarcoma_mskcc_2022,case-control,Sarcoma,NCIT:C9118
+scco_mskcc,case-control,Ovarian Small Cell Carcinoma,NCIT:C27390
+sclc_cancercell_gardner_2017,cross-sectional observational;not case-control,Lung Small Cell Carcinoma,NCIT:C4917
+sclc_clcgp,cross-sectional observational;not case-control,Lung Small Cell Carcinoma,NCIT:C4917
+sclc_jhu,case-control,Lung Small Cell Carcinoma,NCIT:C4917
+sclc_ucologne_2015,case-control,Lung Small Cell Carcinoma,NCIT:C4917
+skcm_broad,case-control,Cutaneous Melanoma,NCIT:C3510
+skcm_broad_brafresist_2012,case-control,Cutaneous Melanoma,NCIT:C3510
+skcm_broad_dfarber,case-control,Melanoma,NCIT:C3224
+skcm_dfci_2015,case-control,Metastatic Melanoma,NCIT:C8925
+skcm_mskcc_2014,case-control,Melanoma,NCIT:C3224
+skcm_tcga,cross-sectional observational;not case-control,Melanoma,NCIT:C3224
+skcm_tcga_pan_can_atlas_2018,meta-analysis;cross-sectional observational;not case-control,Melanoma,NCIT:C3224
+skcm_tcga_pub_2015,cross-sectional observational;not case-control,Melanoma,NCIT:C3224
+skcm_vanderbilt_mskcc_2015,cross-sectional observational;not case-control,Melanoma,NCIT:C3224
+skcm_yale,case-control,Cutaneous Melanoma,NCIT:C3510
+stad_oncosg_2018,case-control,Gastric Carcinoma,NCIT:C4911
+stad_pfizer_uhongkong,case-control,Gastric Adenocarcinoma,NCIT:C4004
+stad_tcga,cross-sectional observational;not case-control,Gastric Adenocarcinoma,NCIT:C4004
+stad_tcga_pan_can_atlas_2018,meta-analysis;cross-sectional observational;not case-control,Gastric Adenocarcinoma,NCIT:C4004
+stad_tcga_pub,case-control,Gastric Adenocarcinoma,NCIT:C4004
+stad_uhongkong,case-control,Gastric Adenocarcinoma,NCIT:C4004
+stad_utokyo,case-control,Gastric Adenocarcinoma,NCIT:C4004
+stes_tcga_pub,case-control,Gastric Carcinoma,NCIT:C4911
+summit_2018,cross-sectional observational;not case-control,ERBB2 Gene Mutation;ERBB3 Gene Mutation;Malignant Neoplasm,NCIT:C96866;NCIT:C138064;NCIT:C9305
+tet_nci_2014,case-control,Thymic Epithelial Neoplasm,NCIT:C6450
+tgct_tcga,cross-sectional observational;not case-control,Testicular Germ Cell Tumor,NCIT:C8591
+tgct_tcga_pan_can_atlas_2018,meta-analysis;cross-sectional observational;not case-control,Testicular Germ Cell Tumor,NCIT:C8591
+thca_tcga,cross-sectional observational;not case-control,Thyroid Gland Carcinoma,NCIT:C4815
+thca_tcga_pan_can_atlas_2018,meta-analysis;cross-sectional observational;not case-control,Thyroid Gland Carcinoma,NCIT:C4815
+thca_tcga_pub,case-control,Thyroid Gland Carcinoma,NCIT:C4815
+thym_tcga,cross-sectional observational;not case-control,Thymoma,NCIT:C3411
+thym_tcga_pan_can_atlas_2018,meta-analysis;cross-sectional observational;not case-control,Thymoma,NCIT:C3411
+thyroid_mskcc_2016,cross-sectional observational;not case-control,Thyroid Gland Anaplastic Carcinoma,NCIT:C3878
+tmb_mskcc_2018,case-control,Malignant Neoplasm,NCIT:C9305
+uccc_nih_2017,case-control,Endometrial Clear Cell Adenocarcinoma,NCIT:C8028
+ucec_ccr_cfdna_msk_2022,cross-sectional observational;not case-control,Endometrial Carcinoma,NCIT:C7558
+ucec_ccr_msk_2022,cross-sectional observational;not case-control,Endometrial Carcinoma,NCIT:C7558
+ucec_cptac_2020,cross-sectional observational;not case-control,Endometrial Carcinoma,NCIT:C7558
+ucec_msk_2018,case-control,Endometrial Carcinoma,NCIT:C7558
+ucec_tcga,cross-sectional observational;not case-control,Endometrial Carcinoma,NCIT:C7558
+ucec_tcga_pan_can_atlas_2018,meta-analysis;cross-sectional observational;not case-control,Endometrial Carcinoma,NCIT:C7558
+ucec_tcga_pub,case-control,Endometrial Carcinoma,NCIT:C7558
+ucs_jhu_2014,case-control,Uterine Carcinosarcoma;Malignant Mixed Mesodermal (Mullerian) Tumor,NCIT:C42700;NCIT:C8975
+ucs_tcga,cross-sectional observational;not case-control,Uterine Carcinosarcoma,NCIT:C42700
+ucs_tcga_pan_can_atlas_2018,meta-analysis;cross-sectional observational;not case-control,Uterine Carcinosarcoma,NCIT:C42700
+um_qimr_2016,case-control,Uveal Melanoma,NCIT:C7712
+urcc_mskcc_2016,case-control,Unclassified Renal Cell Carcinoma,NCIT:C27892
+usarc_msk_2020,case-control,Uterine Corpus Sarcoma;Mesenchymal,NCIT:C6339;NCIT:C25721
+utuc_cornell_baylor_mdacc_2019,cross-sectional observational;not case-control,upper tract urothelial carcinoma,MONDO:0020659
+utuc_igbmc_2021,case-control,upper tract urothelial carcinoma,MONDO:0020659
+utuc_msk_2019,case-control,upper tract urothelial carcinoma,MONDO:0020659
+utuc_mskcc_2015,case-control,upper tract urothelial carcinoma,MONDO:0020659
+utuc_pdx_msk_2019,case-control,upper tract urothelial carcinoma,MONDO:0020659
+uvm_tcga,cross-sectional observational;not case-control,Uveal Melanoma,NCIT:C7712
+uvm_tcga_pan_can_atlas_2018,meta-analysis;cross-sectional observational;not case-control,Uveal Melanoma,NCIT:C7712
+vsc_cuk_2018,case-control,Vulvar Squamous Cell Carcinoma,NCIT:C4052
+wt_target_2018_pub,cross-sectional observational;not case-control,Wilms Tumor,NCIT:C3267
