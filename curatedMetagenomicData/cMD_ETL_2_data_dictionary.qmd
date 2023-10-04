@@ -29,11 +29,11 @@ suppressPackageStartupMessages({
 dir <- "~/OmicsMLRepo/OmicsMLRepoData/curatedMetagenomicData"
 ```
 
-The `merging_schema` table shows the original and curated fields of cMD 
-sampleMetadata.
+The `merging_schema` table shows the original and curated fields of the cMD 
+`sampleMetadata` table.
 
 ```{r merging_schema}
-## Merging_schema table
+## Merging_schema table from Google Drive
 url <- "https://docs.google.com/spreadsheets/d/1xziFB_zBl32BjNarcyEN4GupTYpPtq5aDz0GbRbWvtk/edit?usp=sharing"
 ss <- googledrive::as_id(url)
 merging_schema <- googlesheets4::read_sheet(ss = ss, sheet = "merging_schema")
@@ -106,7 +106,7 @@ curated_all <- do.call("rbind", list(curated_age_all,
                                      curated_abx_current_use))
 ```
 
-```{r eval=FALSE}
+```{r save_data_dictionary, eval=FALSE}
 ## Save for GitHub
 write.csv(curated_all, "~/OmicsMLRepo/OmicsMLRepoData/inst/extdata/cMD_data_dictionary.csv", row.names = FALSE)
 
@@ -122,7 +122,6 @@ We will update original column names by adding prefix (e.g., `legacy_`) to them.
 ```{r}
 ## Load cMD curation template
 ori <- read.csv("https://raw.githubusercontent.com/waldronlab/curatedMetagenomicDataCuration/master/inst/extdata/template.csv")
-# ori <- read.csv("~/OmicsMLRepo/OmicsMLRepoData/inst/extdata/template.csv")
 
 ## Add empty ontology column and `legacy_` prefix
 legacy_ind <- which(ori$col.name %in% old_fields)
@@ -136,6 +135,7 @@ updated <- rbind(updated[id_row_ind,], updated[-id_row_ind,])
 sum(duplicated(updated$col.name)) # should be 0
 ```
 
+The `updated` table has the 'original' columns at the end with the `legacy_` prefix.
 ```{r eval=FALSE}
 ## Save for GitHub
 write.csv(updated, "~/OmicsMLRepo/OmicsMLRepoData/inst/extdata/cMD_data_dictionary_all.csv", row.names = FALSE)

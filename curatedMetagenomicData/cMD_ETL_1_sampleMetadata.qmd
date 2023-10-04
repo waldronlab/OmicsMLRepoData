@@ -22,6 +22,7 @@ knitr::opts_chunk$set(echo = TRUE,
 suppressPackageStartupMessages({
     library(dplyr)
     library(googlesheets4)
+    library(readr)
 })
 ```
 
@@ -59,7 +60,7 @@ curated <- list.files(dataDir)
 curatedDatObj <- gsub(".csv", "", curated)
 
 for (i in seq_along(curated)) {
-    res <- read.csv(file.path(dataDir, curated[i]))
+    res <- read_csv(file.path(dataDir, curated[i]))
     assign(curatedDatObj[i], res)
 }
 ```
@@ -78,12 +79,12 @@ for (i in 2:length(curatedDatObj)) { # assuming there are >= 2 tables to be comb
 }
 ```
 
-### Combine original and curated
+## Combine original and curated sample metadata
 Combine the original sampleMetadata and curated columns
 ```{r original_sampleMetadata}
 ## [Update needed] to get data files directly from the GH repo
 dir <- "~/OmicsMLRepo/OmicsMLRepoData"
-ori <- read.csv(file.path(dir, "inst/extdata/cMD_sampleMetadata.csv"))
+ori <- read_csv(file.path(dir, "inst/extdata/cMD_sampleMetadata.csv"))
 
 allSampleMetadata <- ori %>%
     mutate(curation_id = paste(study_name, sample_id, sep = ":")) %>%
@@ -91,6 +92,41 @@ allSampleMetadata <- ori %>%
 
 allSampleMetadata$last_modified <- Sys.Date() #<<< Can I check this at the sample-level?
 ```
+
+## Update the column names
+```{r}
+schema <- read_csv(file.path(dir, "inst/extdata/cMD_merging_schema.csv"))
+
+## Names of the original fields
+old_fields <- sapply(merging_schema$original_fields, strsplit, split = ";") %>% 
+    unlist %>% 
+    as.character
+old_fields <- old_fields[!is.na(old_fields)]
+
+## Names of the new fields
+new_fields <- sapply(merging_schema$curated_fields, strsplit, split = ";") %>% 
+    unlist %>% 
+    as.character
+
+legacy_ind <- which(colnames(allSampleMetadata) %in% old_fields)
+colnames(allSampleMetadata)[legacy_ind] <- paste0("legacy_", colnames(allSampleMetadata)[legacy_ind])
+formated_ori <- cbind(allSampleMetadata[,-legacy_ind],
+                      allSampleMetadata[,legacy_ind]) # 'legacy_' fields at the end
+
+curated_ind <- grep("^curated_|^original_", colnames(allSampleMetadata))
+colnames(allSampleMetadata)[curated_ind] <- gsub("^curated_|original_", 
+                                                 "", 
+                                                 colnames(allSampleMetadata)[curated_ind])
+updated <- relocate(allSampleMetadata, colnames(allSampleMetadata)[curated_ind], .after = subject_id)
+updated <- relocate(allSampleMetadata, colnames(allSampleMetadata)[legacy_ind], .before = last_modified)
+sum(duplicated(colnames(updated))) # should be 0
+```
+
+The `updated` table has all the additional/updated columns after the three 
+id columns (`study_name`, `sample_id`, `subject_id`) at the beginning and
+the original columns with the `legacy_` prefix at the end before the 
+`last_modified` column.
+
 
 # Save
 ## Full version
@@ -101,9 +137,7 @@ columns. Currently new columns
 ```{r save, eval=FALSE}
 dir <- "~/OmicsMLRepo/OmicsMLRepoData"
 fpath <- file.path(dir, "inst/extdata/cMD_curated_sampleMetadata.csv")
-write.csv(allSampleMetadata, 
-          fpath,
-          row.names = FALSE)
+write.csv(updated, fpath, row.names = FALSE)
 ```
 
 ## Compact version
@@ -120,7 +154,7 @@ write.csv(meta, fpath_compact, row.names = FALSE)
 
 ## Parquet for DuckDB
 ```{r eval=FALSE}
-allSampleMetadata <- read.csv(fpath) # For now, use complete, non-compact version of the sampleMetadata
+allSampleMetadata <- read_csv(fpath) # For now, use complete, non-compact version of the sampleMetadata
 parquet <- gsub(".csv$", ".parquet", fpath)
 arrow::write_parquet(allSampleMetadata, 
                      sink = parquet)
@@ -135,7 +169,7 @@ AnVIL::gsutil_cp(parquet,
 ```{r}
 dir <- "~/OmicsMLRepo/OmicsMLRepoData"
 fpath <- file.path(dir, "inst/extdata/cMD_curated_sampleMetadata.csv")
-allSampleMetadata <- read.csv(fpath)
+allSampleMetadata <- read_csv(fpath)
 ```
 
 ```{r import_gs, eval=FALSE}
@@ -187,7 +221,13 @@ merging_schema <- merging_schema %>%
     dplyr::relocate(curated_fields_unique_vals, .after = curated_fields_completeness)
 ```
 
-```{r save_as_Google_Sheets, echo=FALSE, eval=FALSE}
+```{r updated_GH, eval=FALSE}
+write.csv(merging_schema, 
+          file.path(dir, "cMD_merging_schema.csv"), 
+          row.names = FALSE)
+```
+
+```{r save_as_Google_Sheets, eval=FALSE}
 googlesheets4::write_sheet(merging_schema, ss = ss, sheet = "merging_schema")
 ```
 
