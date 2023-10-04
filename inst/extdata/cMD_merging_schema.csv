@@ -1,8 +1,8 @@
-"original_fields","original_fields_completeness","curated_fields","curated_fields_completeness","curation_activities","curation_guides"
-"study_condition;disease;disease_subtype","100;100;14","curated_control;curated_disease","100;100","Correction, Separate/Augment 'target_phenotype'",NA
-NA,"NULL","curated_target_condition","100","Newly created to supplement the intension of previous 'study_conditon' column",NA
-"age;infant_age","60;13","curated_age_years;curated_age_min;curated_age_max;curated_age_group","61;100;100","Correction","Enter only age and its unit OR Select age group"
-"age_category","100","curated_age_min;curated_age_max;curated_age_group","100;100;100","Correction",NA
-"gender","89","curated_sex","89","Add the missing value",NA
-"body_site;body_subsite","100;10","curated_body_site;curated_body_subsite","100;8","Remove redundant entry from body_subsite",NA
-"treatment;antibiotics_family;antibiotics_current_use","24;2;65","curated_treatment;curated_antibiotics_current_use","26;65","antibiotics_current_use is also updated accordingly","Can you enter a more general term (e.g., insulin example)?"
+"original_fields","original_fields_completeness","original_fields_unique_vals","curated_fields","curated_fields_completeness","curated_fields_unique_vals","curation_activities","curation_guides"
+"study_condition;disease;disease_subtype","100;100;14","57;142;77","curated_control;curated_disease","100;100","3;207","Correction, Separate/Augment 'target_phenotype'",NA
+NA,"NA","NA","curated_target_condition","100","47","Newly created to supplement the intension of previous 'study_conditon' column",NA
+"age;infant_age","60;13","94;376","curated_age_years;curated_age_min;curated_age_max;curated_age_group","61;100;100;100","466;466;467;6","Correction","Enter only age and its unit OR Select age group"
+"age_category","100","6","curated_age_min;curated_age_max;curated_age_group","100;100;100","466;467;6","Correction",NA
+"gender","89","3","curated_sex","89","3","Add the missing value",NA
+"body_site;body_subsite","100;10","6;23","curated_body_site;curated_body_subsite","100;8","6;21","Remove redundant entry from body_subsite",NA
+"treatment;antibiotics_family;antibiotics_current_use","24;2;65","883;69;3","curated_treatment;curated_antibiotics_current_use","26;65","949;3","antibiotics_current_use is also updated accordingly","Can you enter a more general term (e.g., insulin example)?"
