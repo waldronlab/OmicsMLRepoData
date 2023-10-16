@@ -1,0 +1,375 @@
+---
+title: "Harmonize sex information in cbio data"
+author:
+  - Sehyun Oh
+  - Kai Gravel-Pucillo
+date: "`r format(Sys.time(), '%B %d, %Y')`"
+format:
+    html:
+        fontsize: 14pxs
+        toc: true
+        top-depth: 3
+abstract: "Prepare U24 Supplement: AI/ML-ready"
+---
+
+```{r setup, include=FALSE}
+knitr::opts_chunk$set(echo = TRUE, 
+                    warning = FALSE,
+                    message = FALSE,
+                    collapse = TRUE,
+                    eval = TRUE)
+```
+
+
+# Overview
+
+This .qmd file demonstrates a workflow for curating and harmonizing 
+sex data with the cbioportal dataset.
+This file curates information from 12 original columns to produce a curated 
+column relating to the sex of the patient.
+
+
+# Setup
+
+## Load Packages
+
+```{r load}
+suppressPackageStartupMessages({
+ library(dplyr)
+library(tidyverse)
+library(stringr)
+library(rvest)
+library(rols)
+library(vctrs)
+library(hash)
+})
+```
+
+
+## Setup for Curation
+
+We will first add a `curation_id` consisting of study ID and patient ID (`studyId:patientId`) to avoid confusion due to duplicated samples.
+```{r curation_setup}
+# Load cbio data
+cbio <- readRDS("C:\\Users\\Owner\\Desktop\\CUNY Internship\\cBioPortal_all_clinicalData_combined_2022-10-14.rds")
+
+# Add curation ID
+cbio$curation_id <- paste(cbio$studyId, cbio$patientId, sep = ":")
+
+# Setup google sheets link to mapping table
+url <- "https://docs.google.com/spreadsheets/d/1IgrVEdgCZdvBmWrER21A57lSkfDjdRdV3RbK_yoqMl4/edit?usp=sharing"
+
+ss <- googledrive::as_id(url)
+
+# Define a project directory
+proj_dir <- "C:\\Users\\Owner\\Desktop\\CUNY Internship\\cbio\\Sex\\"
+```
+
+
+# Exploratory Data Analysis & Data Curation
+
+## Identifying Relevant Columns & Completeness
+
+Next, we will identify the columns containing values relating to the sex of the 
+patient.
+Due to the large number of feature columns which contain a number of both broad
+and very specific column types, we will first query column names for relevant 
+terms and compile these results into a map of original columns and their
+potential curated columns.
+```{r}
+# Create a list of potentially relevant columns based on search terms
+sex_columns <- select(cbio, contains(c("sex", "gender", "male", "genital", "cervi", "testi", "teste", "peni", "vagin", "uter", "prostat", "endome", "vulv", "fallo", "ovar")))
+
+potential_columns <- data.frame(colnames(sex_columns))
+
+# Iterate through these columns to create a dataframe of each column's unique values and completeness
+for (col in 1:length(sex_columns)){
+  potential_columns$unique_vals[col] <- paste(unlist(unique(sex_columns[,col]), use.names = F), collapse=" ")
+  potential_columns$completeness[col] <- (nrow(sex_columns) - length(which(is.na(sex_columns[,col]))))/nrow(sex_columns)
+}
+
+# Remove rows where unique_vals is NA
+potential_columns <- filter(potential_columns, unique_vals!="NA")
+
+# Sort by completeness
+potential_columns <- arrange(potential_columns, desc(completeness))
+
+# Export to csv file to manually remove irrelevant columns
+write.csv(potential_columns, 
+          file = file.path(proj_dir, "potential_sex_columns_map.csv"),
+          row.names = FALSE)
+```
+
+After manually searching for character and boolean columns with titles pertaining 
+to patient sex and adding them to the map, as well as manually removing and 
+rearranging some columns which were irrelevant to this particular curation or 
+redundant relative to the pre-existing "sex" column, we can then create a tibble 
+dataframe and import the map of columns to include in this curation:
+```{r}
+# Create tibble
+cbio <- tibble(cbio)
+
+# Load Potential columns map csv file
+pot_col_map <- read.csv(file=file.path(proj_dir, "potential_sex_columns_map.csv"))
+
+# Create a subset of cbio containing only relevant columns
+sex_cols_cbio <- cbio[,c("curation_id", pot_col_map$colnames.sex_columns.)]
+```
+
+Before we condense these values into a single merged column, we will need to 
+convert some columns from TRUE/FALSE and Yes/No values into Female/Male values:
+```{r}
+# Convert Yes/No and T/F columns to descriptive values
+# Create a subset of female anatomy indicator columns to process together
+F_indicators <- c("DMETS_DX_OVARY", "DMETS_DX_FEMALE_GENITAL")
+
+# Replace "Yes" values with appropriate Female/Male value
+sex_cols_cbio[,F_indicators] <- data.frame(lapply(sex_cols_cbio[,F_indicators], function(x) gsub("^Yes$", "Female", x)))
+sex_cols_cbio[,"TESTICULAR_INVOLVEMENT"] <- data.frame(lapply(sex_cols_cbio[,"TESTICULAR_INVOLVEMENT"], function(x) gsub("^Yes$", NA, x)))
+sex_cols_cbio[,"DMETS_DX_MALE_GENITAL"] <- data.frame(lapply(sex_cols_cbio[,"DMETS_DX_MALE_GENITAL"], function(x) gsub("^Yes$", "Male", x)))
+
+# Replace "No" values with appropriate Female/Male value
+sex_cols_cbio[,c(F_indicators, "DMETS_DX_MALE_GENITAL", "TESTICULAR_INVOLVEMENT")] <- data.frame(lapply(sex_cols_cbio[,c(F_indicators, "DMETS_DX_MALE_GENITAL", "TESTICULAR_INVOLVEMENT")], function(x) gsub("^No$", NA, x)))
+
+sex_cols_cbio <- data.frame(lapply(sex_cols_cbio, function(x) gsub("FEMALE", "Female", x)))
+sex_cols_cbio <- data.frame(lapply(sex_cols_cbio, function(x) gsub("^MALE$", "Male", x)))
+
+for (val in c("Unknown", "ABSTRACTION_PENDING", "U")){
+  sex_cols_cbio <- data.frame(lapply(sex_cols_cbio, function(x) gsub(val, NA, x)))
+}
+
+```
+
+Now that all columns include descriptive values, we can replace character values
+representing a lack of information with a unique character value ("8X8"), and 
+merge these values into a single column with each distinct value separated by a 
+semicolon.
+```{r}
+# Convert NA values to unique character value (8X8)
+sex_cols_cbio <- sex_cols_cbio %>% replace(is.na(.), "8X8") %>% data.frame()
+
+# Merge all relevant rows
+for (i in 1:nrow(sex_cols_cbio)){
+  sex_cols_cbio$merged[i] <- toupper(paste(sex_cols_cbio[i,2:7], collapse=";"))
+}
+```
+
+Next, we can remove the unique character representing NA values from the merged
+column:
+```{r}
+# Take out NA values
+sex_cols_cbio$merged <- gsub("8X8;", "", sex_cols_cbio$merged)
+sex_cols_cbio$merged <- gsub(";8X8", "", sex_cols_cbio$merged)
+```
+
+Then we can create a list of all unique values included in the merged column,
+and export these values to a csv file to manually develop an ontology map:
+```{r}
+# Count the number of unique values in the merged column
+merged_vals <- list()
+for(r in 1:nrow(sex_cols_cbio)){
+  merged_vals <- append(merged_vals, str_split(sex_cols_cbio$merged[r], ";"))
+}
+unique_merged_vals <- unique(unlist(merged_vals))
+
+# Make a csv file of the unique values in the merged column
+write.csv(unique_merged_vals, 
+          file= file.path(proj_dir, "sex_cols_cbio_unique_vals.csv"), 
+          row.names=F, col.names=F)
+```
+
+
+# Mapping
+
+## Import Maps
+
+To access the necessary sex ontology terms we will load the `sex_ontology_map`.
+```{r import_maps, eval=FALSE}
+# import bodysite ontology map
+mapped_terms <- read_sheet(ss, sheet = "sex_ontology_map")
+
+# import bodysite ontology map
+mapped_terms <-read.csv(file = file.path(proj_dir, "cBioPortal_sex_ontology_map.csv"), header=T)
+```
+
+
+# Curating Sex Columns
+
+Now we can map the values in the merged columns to their corresponding ontology
+terms and propagate these values into the curated columns: 
+```{r}
+# Make a function to remove excess semicolons
+rmv_xtra_semis <- function(x){
+  x <- ifelse(startsWith(x, ";"), sub("^;", "", x), x)
+  return(ifelse(endsWith(x, ";"), sub(";$", "", x), x))
+}
+
+# Iterate through merged column values
+for (x in 1:length(sex_cols_cbio$merged)){
+  # Create a list of terms in the value
+  original_terms <- as.list(unlist(strsplit(sex_cols_cbio$merged[x], ";")))
+  new_terms <- list()
+  new_term_ids <- list()
+  # Search for replacement terms in the ontology map
+  new_terms <- lapply(original_terms, function(y) mapped_terms$curated_ontology[grep(paste("^",y,"$",sep=""), mapped_terms$original_value, fixed=F)])
+  new_term_ids <- lapply(original_terms, function(y) mapped_terms$curated_ontology_term_id[grep(paste("^",y,"$",sep=""), mapped_terms$original_value, fixed=F)])
+  new_terms <- list_drop_empty(new_terms)
+  new_term_ids <- list_drop_empty(new_term_ids)
+  # Concatenate new lists on ";" delimiter to create curated value
+  sex_cols_cbio$curated_sex[x] <- rmv_xtra_semis(paste(as.list(unique(new_terms)), collapse= ";"))
+  sex_cols_cbio$curated_sex_ontology_term_id[x] <- rmv_xtra_semis(paste(as.list(unique(new_term_ids)), collapse= ";"))
+  if(x %% 10000==0){print(x)}
+}
+```
+
+
+## Curated Table Creation
+
+Next, we can clean up the dataframe by replacing the unique character 
+representing NA values with "NA" and updating column names as needed:
+```{r}
+# Replace NA values from original columns with "NA"
+sex_cols_cbio <- data.frame(lapply(sex_cols_cbio, 
+                                          function(x) gsub("8X8", NA, x)))
+
+# Create a column of relevant source columns
+for (i in 1:nrow(sex_cols_cbio)){
+  sex_cols_cbio$source_columns[i] <- paste(colnames(sex_cols_cbio[,2:7][which(!is.na(sex_cols_cbio[i,2:7]))]), collapse=";")
+}
+
+# Create a curated dataframe
+curated_sex <- sex_cols_cbio[,c(1, 8:11)]
+
+# Rename the columns for accuracy & specificity
+colnames(curated_sex)[2] <- "original_sex"
+
+# Replace empty values from curated columns with "NA"
+curated_sex <- data.frame(lapply(curated_sex, function(x) gsub("^$", NA, x)))
+```
+
+
+## Sanity Check
+
+Before we export this curation, we will conduct a sanity check of sex values
+across all patient ids to ensure that they contain the same value. Many patients
+included in this curation contributed multiple samples that were utilized across
+different studies, and this step will help to validate these curated values.
+
+First we will create a dataframe called `chk` which summarizes all patients with
+conflicting values for curated_sex across their samples:
+```{r}
+# Create a dataframe of curated_sex with a patient_id column
+patient_chk <- data.frame(curated_sex, patient_id = cbio$patientId)
+
+# Create a datframe summarizing all patients with more than 1 value listed for curated_sex
+chk <- patient_chk %>% 
+    group_by(patient_id) %>%
+    # Create a column of the number of samples for each patient_id
+    summarise(sampleSize = n(),
+              uniqueVal = length(unique(curated_sex[!is.na(curated_sex)]))) %>%
+    filter(uniqueVal > 1)
+```
+
+Next we will expand the `chk` dataframe to generate a column of "best" curated_sex
+values based on the sex which is most common across the patient's samples.
+Additionally we will track the number of dissenting values and the studies from
+which they originated, as well as any patients with no clear "majority" value 
+for curated_sex:
+```{r}
+# Add summary columns to chk dataframe to identify majority and dissenting values for curated_sex
+for (pat_id in chk$patient_id){
+  # Count the number of "Male" values for the patient_id
+  chk$num_male[which(chk$patient_id==pat_id)] <- length(which(patient_chk$patient_id==pat_id & patient_chk$curated_sex=="Male"))
+  
+  # Count the number of "Female" values for the patient_id
+  chk$num_female[which(chk$patient_id==pat_id)] <- length(which(patient_chk$patient_id==pat_id & patient_chk$curated_sex=="Female"))
+  
+  # Count the number of NA values for the patient_id
+  chk$num_na[which(chk$patient_id==pat_id)] <- length(which(patient_chk$patient_id==pat_id & is.na(patient_chk$curated_sex)))
+  
+  # Set best_value and list studies associated with dissenting value
+  if (chk$num_male[which(chk$patient_id==pat_id)] > chk$num_female[which(chk$patient_id==pat_id)]){
+    chk$best_value[which(chk$patient_id==pat_id)] <- "Male"
+    chk$minority_studies[which(chk$patient_id==pat_id)] <- paste(unlist(lapply(patient_chk$curation_id[which(patient_chk$patient_id==pat_id & patient_chk$curated_sex!="Male")], function(x)sub(":.*", "", x))), collapse=";")
+  }else if(chk$num_male[which(chk$patient_id==pat_id)] < chk$num_female[which(chk$patient_id==pat_id)]){
+    chk$best_value[which(chk$patient_id==pat_id)] <- "Female"
+    chk$minority_studies[which(chk$patient_id==pat_id)] <- paste(unlist(lapply(patient_chk$curation_id[which(patient_chk$patient_id==pat_id & patient_chk$curated_sex!="Female")], function(x)sub(":.*", "", x))), collapse=";")
+  }else{
+    chk$best_value[which(chk$patient_id==pat_id)] <- NA
+    chk$minority_studies[which(chk$patient_id==pat_id)] <- NA
+  }
+}
+
+# Export "chk" dataframe as a csv file
+write.csv(chk, file = file.path(proj_dir, "conflicting_patients.csv"), 
+          row.names=F)
+```
+
+Next we will make a dataframe summarizing the "problem" studies to determine how
+many of the dissenting values originated from each study:
+```{r}
+# Create a datframe summarizing all unique minority_study values
+prob_studies <- chk %>% 
+    group_by(minority_studies) %>%
+    # Create a column of the number of times each study occurs
+    summarise(frequency = n())
+```
+
+After reviewing the problem studies, it is apparent that a significant curation
+error has affected the `luad_msk_npjpo_2021` study, as 303 of the curated_sex 
+values originating from this study are in dissention from the majority value
+of those patients. 
+
+We can create a dataframe of the remaining 119 patient IDs from the 
+`luad_msk_npjpo_2021` study to investigate if all values from the study are 
+in disagreement on curated_sex or if only some values are in disagreement. To do
+this, we will iterate through these remaining patient IDs to find the number of
+additional studies in which each patient ID is present; if it is not present in 
+any additional studies then we cannot confirm if the curated_sex value is accurate,
+however if it is present in addition studies then we know the curated_sex value 
+is accurate because the patient ID was excluded from the original dataframe of
+conflicting values:
+```{r}
+# Create a dataframe of patient_id values which did not have cross-study curated_sex conflicts
+luad_oops <- cbio %>% select(patientId, studyId, SEX) %>% 
+  filter(studyId=="luad_msk_npjpo_2021", !(patientId %in% chk$patient_id))
+
+# Confirm that these patients were featured in multiple other studies
+luad_oops$other_studies <- sapply(luad_oops$patientId, function(x)length(grep(x, curated_sex$curation_id[which(cbio$studyId!="luad_msk_npjpo_2021")])))
+```
+
+Every patient ID was present in at least one additional study, in which the 
+curated_sex value was in agreement with the value listed for the patient in 
+the `luad_msk_npjpo_2021` study. Therefore we can conclude that the "sex" values
+for the entire study were not input incorrectly, and more likely only the 
+previously identified values were incorrect.
+
+Additionally, after email correspondence with the curation team at cBioPortal,
+we have received confirmation that these mismatched sex values in the 
+luad_msk_npjpo_2021 study were curation errors. Therefore we can now replace
+the mismatched values for each patient with the "best value" from the chk 
+dataframe:
+
+```{r}
+# Standardize sex values across all samples for each patient
+for (pat in chk$patient_id){
+  # Set all sex values for a patient to be the majority value
+  curated_sex$curated_sex[which(cbio$patientId==pat)] <- chk$best_value[which(chk$patient_id==pat)]
+  # Set all curated ontology term ids to match the patient's curated sex value
+  if (is.na(chk$best_value[which(chk$patient_id==pat)])){
+    curated_sex$curated_sex_ontology_term_id[which(cbio$patientId==pat)] <- NA
+  }else{
+    curated_sex$curated_sex_ontology_term_id[which(cbio$patientId==pat)] <- mapped_terms$curated_ontology_term_id[which(mapped_terms$curated_ontology==chk$best_value[which(chk$patient_id==pat)])]
+  }
+}
+```
+
+
+## Export
+
+Finally, we will export our completed table to GitHub.
+```{r export_curated_table, eval=FALSE}
+# export to GitHub
+write.csv(curated_sex, file = file.path(proj_dir, "curated_sex.csv"), 
+          row.names=F)
+```
