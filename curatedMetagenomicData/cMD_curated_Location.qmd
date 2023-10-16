@@ -1,0 +1,197 @@
+---
+title: "Harmonize location information in cMD sample metadata"
+author:
+  - Sehyun Oh
+  - Kai Gravel-Pucillo
+date: "`r format(Sys.time(), '%B %d, %Y')`"
+format:
+    html:
+        fontsize: 14pxs
+        toc: true
+        top-depth: 3
+abstract: "Prepare U24 Supplement: AI/ML-ready"
+---
+
+```{r setup, include=FALSE}
+knitr::opts_chunk$set(echo = TRUE, 
+                    warning = FALSE,
+                    message = FALSE,
+                    collapse = TRUE,
+                    eval = TRUE)
+```
+
+# Overview
+
+This .qmd file demonstrates a workflow for curating and harmonizing location data 
+with the curatedMetagenomicData package.
+This file curates information from the original country and location columns to 
+produce the curated location column.
+
+# Setup
+## Load Packages
+
+```{r load}
+suppressPackageStartupMessages({
+  library(curatedMetagenomicData)
+  library(tidyverse)
+  library(googlesheets4)
+  library(rols)
+  library(dplyr)
+  library(hash)
+  library(vctrs)
+  library(rvest)
+})
+```
+
+## Setup for Curation
+
+We will first add a `curation_id` consisting of study name and sample ID (`study_name:sample_id`) to avoid confusion due to duplicated samples.
+
+```{r curation_setup}
+# Add curation ID
+sampleMetadata$curation_id <- paste(sampleMetadata$study_name, sampleMetadata$sample_id, sep = ":")
+
+# Define a project directory
+proj_dir <- "C:\\Users\\Owner\\Desktop\\CUNY Internship\\Location"
+```
+
+# Exploratory Data Analysis & Data Curation
+
+## Manual Data Corrections
+
+Next, we will make some manual corrections to the data.
+We will start by creating a tibble dataframe and checking the completeness of 
+the two original columns as well as reviewing their unique values:
+```{r}
+# Create a tibble object 
+samplemd <- as_tibble(sampleMetadata)
+
+# Review unique values
+unique(sampleMetadata$country)
+unique(sampleMetadata$location)
+
+# Calculate completeness
+length(samplemd$location[which(!is.na(samplemd$location))])/length(samplemd$location)
+length(samplemd$country[which(!is.na(samplemd$country))])/length(samplemd$country)
+```
+
+Now we can replace character values representing a lack of information with a 
+unique character value ("8X8"), and merge these values into a single column with 
+each distinct value separated by a semicolon.
+```{r}
+# Create a dataframe of only the relevant columns
+location_cols <- samplemd %>% select(curation_id, country, location)
+
+# Convert NA values to unique character value (8X8)
+location_cols <- location_cols %>% replace(is.na(.), "8X8") %>% data.frame()
+
+# Merge all relevant rows
+for (i in 1:nrow(location_cols)){
+  location_cols$merged[i] <- toupper(paste(location_cols[i,2:3], collapse=";"))
+}
+```
+
+Next, we can remove the unique character representing NA values from the merged
+column:
+```{r}
+# Take out NA values
+location_cols$merged <- gsub("8X8;", "", location_cols$merged)
+location_cols$merged <- gsub(";8X8", "", location_cols$merged)
+```
+
+Then we can create a list of all unique values included in the merged column,
+and export these values to a csv file to manually develop an ontology map:
+```{r}
+# Count the number of unique values in the merged column
+merged_vals <- list()
+for(r in 1:nrow(location_cols)){
+  merged_vals <- append(merged_vals, str_split(location_cols$merged[r], ";"))
+}
+unique_merged_vals <- unique(unlist(merged_vals))
+
+# Make a csv file of the unique values in the merged column
+write.csv(unique_merged_vals, 
+          file= file.path(proj_dir, "location_cols_unique_vals.csv"), 
+          row.names=F, col.names=F)
+```
+
+# Mapping
+
+## Import Maps
+
+To access the necessary location ontology terms we will load the 
+`location_ontology_map`.
+```{r import_maps, eval=FALSE}
+# import location ontology map
+# mapped_terms <- read_sheet(ss, sheet = "location_ontology_map")
+
+# import location ontology map
+mapped_terms <-read.csv(file = file.path(proj_dir, "cMD_location_ontology_map.csv"), header=T)
+```
+
+
+# Curating Location Column
+
+Now we can map the values in the merged columns to their corresponding ontology
+terms and propagate these values into the curated columns: 
+```{r}
+# Make a function to remove excess semicolons
+rmv_xtra_semis <- function(x){
+  x <- ifelse(startsWith(x, ";"), sub("^;", "", x), x)
+  return(ifelse(endsWith(x, ";"), sub(";$", "", x), x))
+}
+
+# Iterate through merged column values
+for (x in 1:length(location_cols$merged)){
+  # Create a list of terms in the value
+  original_terms <- as.list(unlist(strsplit(location_cols$merged[x], ";")))
+  new_terms <- list()
+  new_term_ids <- list()
+  # Search for replacement terms in the ontology map
+  new_terms <- lapply(original_terms, function(y) mapped_terms$curated_ontology[grep(paste("^",y,"$",sep=""), mapped_terms$original_value, fixed=F)])
+  new_term_ids <- lapply(original_terms, function(y) mapped_terms$curated_ontology_term_id[grep(paste("^",y,"$",sep=""), mapped_terms$original_value, fixed=F)])
+  new_terms <- list_drop_empty(new_terms)
+  new_term_ids <- list_drop_empty(new_term_ids)
+  # Concatenate new lists on ";" delimiter to create curated value
+  location_cols$curated_location[x] <- rmv_xtra_semis(paste(as.list(unique(new_terms)), collapse= ";"))
+  location_cols$curated_location_ontology_term_id[x] <- rmv_xtra_semis(paste(as.list(unique(new_term_ids)), collapse= ";"))
+  if(x %% 10000==0){print(x)}
+}
+```
+
+
+## Curated Table Creation
+
+Next, we can clean up the dataframe by replacing the unique character 
+representing NA values with "NA" and updating column names as needed:
+```{r}
+# Replace NA values from original columns with "NA"
+location_cols <- data.frame(lapply(location_cols, 
+                                          function(x) gsub("8X8", NA, x)))
+
+# Create a column of relevant source columns
+for (i in 1:nrow(location_cols)){
+  location_cols$source_columns[i] <- paste(colnames(location_cols[,2:3][which(!is.na(location_cols[i,2:3]))]), collapse=";")
+}
+
+# Create a curated dataframe
+curated_location <- location_cols[,c(1, 4:7)]
+
+# Rename the columns for accuracy & specificity
+colnames(curated_location)[2] <- "original_location"
+
+# Replace empty values from curated columns with "NA"
+curated_location <- data.frame(lapply(curated_location, 
+                                      function(x) gsub("^$", NA, x)))
+```
+
+
+## Export
+
+Finally, we will export our completed table to GitHub.
+```{r export_curated_table, eval=FALSE}
+# export to GitHub
+write.csv(curated_location, 
+          file = file.path(proj_dir, "curated_location.csv"),
+          row.names = FALSE)
+```
