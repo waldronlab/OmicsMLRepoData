@@ -81,7 +81,7 @@ for (i in 2:length(curatedDatObj)) { # assuming there are >= 2 tables to be comb
 
 ## Combine original and curated sample metadata
 Combine the original sampleMetadata and curated columns
-```{r original_sampleMetadata}
+```{r original_sampleMetadata, message=FALSE}
 ## [Update needed] to get data files directly from the GH repo
 dir <- "~/OmicsMLRepo/OmicsMLRepoData"
 ori <- read_csv(file.path(dir, "inst/extdata/cMD_sampleMetadata.csv"))
@@ -91,11 +91,9 @@ allSampleMetadata <- ori %>%
     dplyr::left_join(., curated_all, by = "curation_id")
 
 allSampleMetadata$last_modified <- Sys.Date() #<<< Can I check this at the sample-level?
-```
 
-## Update the column names
-```{r}
-schema <- read_csv(file.path(dir, "inst/extdata/cMD_merging_schema.csv"))
+##### Update the column names
+merging_schema <- read_csv(file.path(dir, "inst/extdata/cMD_merging_schema.csv"))
 
 ## Names of the original fields
 old_fields <- sapply(merging_schema$original_fields, strsplit, split = ";") %>% 
@@ -118,7 +116,7 @@ colnames(allSampleMetadata)[curated_ind] <- gsub("^curated_|original_",
                                                  "", 
                                                  colnames(allSampleMetadata)[curated_ind])
 updated <- relocate(allSampleMetadata, colnames(allSampleMetadata)[curated_ind], .after = subject_id)
-updated <- relocate(allSampleMetadata, colnames(allSampleMetadata)[legacy_ind], .before = last_modified)
+updated <- relocate(updated, colnames(allSampleMetadata)[legacy_ind], .before = last_modified)
 sum(duplicated(colnames(updated))) # should be 0
 ```
 
@@ -153,20 +151,20 @@ write.csv(meta, fpath_compact, row.names = FALSE)
 ```
 
 ## Parquet for DuckDB
-```{r eval=FALSE}
+```{r eval=FALSE, message=FALSE}
 allSampleMetadata <- read_csv(fpath) # For now, use complete, non-compact version of the sampleMetadata
 parquet <- gsub(".csv$", ".parquet", fpath)
 arrow::write_parquet(allSampleMetadata, 
                      sink = parquet)
 AnVIL::gsutil_cp(parquet,
-                 dest = "gs://omics_ml_repo/cMD_curated_sampleMetadta.parquet")
+                 dest = "gs://omics_ml_repo/cMD_curated_sampleMetadata.parquet")
 ```
 
 
 
 
 # Completeness update
-```{r}
+```{r message=FALSE}
 dir <- "~/OmicsMLRepo/OmicsMLRepoData"
 fpath <- file.path(dir, "inst/extdata/cMD_curated_sampleMetadata.csv")
 allSampleMetadata <- read_csv(fpath)
