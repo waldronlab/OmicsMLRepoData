@@ -57,6 +57,7 @@ qmd files to update the curation data.
 dir <- "~/OmicsMLRepo/OmicsMLRepoData"
 dataDir <- file.path(dir, "curatedMetagenomicData/data")
 curated <- list.files(dataDir)
+curated <- curated[grepl("\\.csv$", curated)] # choose only file
 curatedDatObj <- gsub(".csv", "", curated)
 
 for (i in seq_along(curated)) {
@@ -109,8 +110,6 @@ new_fields <- sapply(merging_schema$curated_fields, strsplit, split = ";") %>%
 ## Add prefix `legacy_` for the legacy columns
 legacy_ind <- which(colnames(allSampleMetadata) %in% old_fields)
 colnames(allSampleMetadata)[legacy_ind] <- paste0("legacy_", colnames(allSampleMetadata)[legacy_ind])
-# formated_ori <- cbind(allSampleMetadata[,-legacy_ind],
-#                       allSampleMetadata[,legacy_ind]) # 'legacy_' fields at the end
 ```
 
 ```{r}
@@ -149,7 +148,7 @@ The `cMD_curated_sampleMetadata.csv` will be a direct replacement of the
 original `sampleMetadata.tsv` because it still contains all the original 
 columns. Currently new columns 
 
-```{r save, eval=FALSE}
+```{r}
 dir <- "~/OmicsMLRepo/OmicsMLRepoData"
 fpath <- file.path(dir, "inst/extdata/cMD_curated_sampleMetadata.csv")
 write.csv(updated, fpath, row.names = FALSE)
@@ -168,7 +167,7 @@ write.csv(meta, fpath_compact, row.names = FALSE)
 ```
 
 ## Parquet for DuckDB
-```{r eval=FALSE, message=FALSE}
+```{r message=FALSE}
 allSampleMetadata <- read_csv(fpath) # For now, use complete, non-compact version of the sampleMetadata
 parquet <- gsub(".csv$", ".parquet", fpath)
 arrow::write_parquet(allSampleMetadata, 
@@ -198,29 +197,42 @@ fields and their curated versions as listed in their column names.
 
 ```{r cal_completness_and_report, eval=FALSE}
 library(OmicsMLRepoCuration)
-original_fields_completeness <- checkCurationStats(
-    fields_list = merging_schema$original_fields,
-    DB = "cMD")
-original_fields_unique_vals <- checkCurationStats(
-    fields_list = merging_schema$original_fields,
-    check = "unique",
-    DB = "cMD")
 
-x <- merging_schema$curated_fields 
-curated_fields_name <- sapply(x, function(x) {
+## Completeness and uniqueness of original/source columns
+a <- merging_schema$original_fields 
+original_fields_name <- sapply(a, function(x) {
+    strsplit(x, split = ";") %>% 
+        unlist %>% 
+        paste0("legacy_", .) %>% 
+        paste0(., collapse = ";")
+}) %>% as.vector
+original_fields_name[which(original_fields_name == "legacy_NA")] <- NA
+
+original_fields_completeness <- checkCurationStats(
+    fields_list = original_fields_name,
+    DB = allSampleMetadata)
+original_fields_unique_vals <- checkCurationStats(
+    fields_list = original_fields_name,
+    check = "unique",
+    DB = allSampleMetadata)
+
+## Completeness and uniqueness of original/source columns
+b <- merging_schema$curated_fields 
+curated_fields_name <- sapply(b, function(x) {
     strsplit(x, split = ";") %>% 
         unlist %>% 
         # paste0("curated_", .) %>% 
+        gsub("curated_", "", .) %>%
         paste0(., collapse = ";")
 }) %>% as.vector
 
 curated_fields_completeness <- checkCurationStats(
     fields_list = curated_fields_name,
-    DB = "cMD")
+    DB = allSampleMetadata)
 curated_fields_unique_vals <- checkCurationStats(
     fields_list = curated_fields_name,
     check = "unique",
-    DB = "cMD")
+    DB = allSampleMetadata)
 ```
 
 ```{r eval=FALSE}

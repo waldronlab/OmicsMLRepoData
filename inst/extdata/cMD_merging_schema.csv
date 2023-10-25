@@ -6,4 +6,3 @@ NA,"NA","NA","curated_target_condition","100","47","Newly created to supplement 
 "gender","89","3","curated_sex","89","3","Add the missing value",NA
 "body_site;body_subsite","100;10","6;23","curated_body_site;curated_body_subsite","100;8","6;21","Remove redundant entry from body_subsite",NA
 "treatment;antibiotics_family;antibiotics_current_use","24;2;65","883;69;3","curated_treatment;curated_antibiotics_current_use","26;65","949;3","antibiotics_current_use is also updated accordingly","Can you enter a more general term (e.g., insulin example)?"
-"location",NA,NA,"curated_location",NA,NA,NA,NA
