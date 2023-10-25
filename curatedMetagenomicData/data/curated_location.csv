@@ -1,4 +1,4 @@
-"curation_id","original_location","curated_location","curated_location_ontology_term_id","source_columns"
+"curation_id","original_location","curated_location","curated_location_ontology_term_id","original_location_source"
 "AsnicarF_2017:MV_FEI1_t1Q14","ITA","Italy","NCIT_C16761","country"
 "AsnicarF_2017:MV_FEI2_t1Q14","ITA","Italy","NCIT_C16761","country"
 "AsnicarF_2017:MV_FEI3_t1Q14","ITA","Italy","NCIT_C16761","country"
