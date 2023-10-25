@@ -13,7 +13,8 @@ suppressPackageStartupMessages({
 
 ## Select the variables to be exposed
 ## I edited this from the Google Sheet
-dir <- system.file("extdata", package = "OmicsMLRepoData")
+# dir <- system.file("extdata", package = "OmicsMLRepoData")
+dir <- "~/OmicsMLRepo/OmicsMLRepoData/inst/extdata"
 map <- read.table(file.path(dir, "cMD_metadata_export_version.csv"),
                   sep = ",", header = TRUE)[,-1]
 

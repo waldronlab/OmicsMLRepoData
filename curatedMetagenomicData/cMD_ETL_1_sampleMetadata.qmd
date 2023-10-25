@@ -1,5 +1,5 @@
 ---
-title: "ETL: cMD sampleMetadata datable"
+title: "ETL: cMD sampleMetadata"
 author:
   - Sehyun Oh
 date: "`r format(Sys.time(), '%B %d, %Y')`"
@@ -106,17 +106,34 @@ new_fields <- sapply(merging_schema$curated_fields, strsplit, split = ";") %>%
     unlist %>% 
     as.character
 
+## Add prefix `legacy_` for the legacy columns
 legacy_ind <- which(colnames(allSampleMetadata) %in% old_fields)
 colnames(allSampleMetadata)[legacy_ind] <- paste0("legacy_", colnames(allSampleMetadata)[legacy_ind])
-formated_ori <- cbind(allSampleMetadata[,-legacy_ind],
-                      allSampleMetadata[,legacy_ind]) # 'legacy_' fields at the end
+# formated_ori <- cbind(allSampleMetadata[,-legacy_ind],
+#                       allSampleMetadata[,legacy_ind]) # 'legacy_' fields at the end
+```
 
-curated_ind <- grep("^curated_|^original_", colnames(allSampleMetadata))
-colnames(allSampleMetadata)[curated_ind] <- gsub("^curated_|original_", 
-                                                 "", 
-                                                 colnames(allSampleMetadata)[curated_ind])
-updated <- relocate(allSampleMetadata, colnames(allSampleMetadata)[curated_ind], .after = subject_id)
-updated <- relocate(updated, colnames(allSampleMetadata)[legacy_ind], .before = last_modified)
+```{r}
+# ## Remove columns start with `original_`
+# updated <- allSampleMetadata %>% 
+#     select(!starts_with("original_"))
+# 
+# ## Update column names for `curated_` columns (remove prefix in the names)
+# name1 <- colnames(allSampleMetadata)[grep("^curated_", colnames(allSampleMetadata))]
+# name2 <-  gsub("^curated_", "", name1)
+# data.table::setnames(updated, old = name1, new = name2)
+
+curated_ind <- grep("^curated_", colnames(allSampleMetadata))
+name1 <- colnames(allSampleMetadata)[curated_ind]
+name2 <-  gsub("^curated_", "", name1)
+
+updated <- relocate(allSampleMetadata, starts_with("curated_"), .after = subject_id)
+updated <- relocate(updated, starts_with("legacy_"), .before = last_modified)
+
+updated <- updated %>%
+    select(!starts_with("original_"))
+
+data.table::setnames(updated, old = name1, new = name2)
 sum(duplicated(colnames(updated))) # should be 0
 ```
 
@@ -220,8 +237,9 @@ merging_schema <- merging_schema %>%
 ```
 
 ```{r updated_GH, eval=FALSE}
+dir <- "~/OmicsMLRepo/OmicsMLRepoData"
 write.csv(merging_schema, 
-          file.path(dir, "cMD_merging_schema.csv"), 
+          file.path(dir, "inst/extdata/cMD_merging_schema.csv"), 
           row.names = FALSE)
 ```
 
