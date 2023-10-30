@@ -34,7 +34,6 @@ column relating to the location of the patient.
 
 ```{r load}
 suppressPackageStartupMessages({
-  library(curatedMetagenomicData)
   library(tidyverse)
   library(googlesheets4)
   library(rols)
@@ -50,10 +49,10 @@ suppressPackageStartupMessages({
 We will first add a `curation_id` consisting of study ID and patient ID (`studyId:patientId`) to avoid confusion due to duplicated samples.
 ```{r curation_setup}
 # Load cbio data
-cbio <- readRDS("C:\\Users\\Owner\\Desktop\\CUNY Internship\\cBioPortal_all_clinicalData_combined_2022-10-14.rds")
+cbio <- readRDS("C:\\Users\\Owner\\Desktop\\CUNY Internship\\cBioPortal_all_clinicalData_combined_2023-05-18.rds")
 
 # Add curation ID
-cbio$curation_id <- paste(cbio$studyId, cbio$patientId, sep = ":")
+cbio$curation_id <- paste(cbio$studyId, cbio$patientId, cbio$sampleId, sep = ":")
 
 # Setup google sheets link to mapping table
 url <- "https://docs.google.com/spreadsheets/d/1OqLt5gBQswFz6HD0T5zYornMmdP_rcplfe5dgyGyN98/edit#gid=0"
