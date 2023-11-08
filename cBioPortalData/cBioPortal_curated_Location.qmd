@@ -34,7 +34,6 @@ column relating to the location of the patient.
 
 ```{r load}
 suppressPackageStartupMessages({
-  library(curatedMetagenomicData)
   library(tidyverse)
   library(googlesheets4)
   library(rols)
@@ -50,10 +49,10 @@ suppressPackageStartupMessages({
 We will first add a `curation_id` consisting of study ID and patient ID (`studyId:patientId`) to avoid confusion due to duplicated samples.
 ```{r curation_setup}
 # Load cbio data
-cbio <- readRDS("C:\\Users\\Owner\\Desktop\\CUNY Internship\\cBioPortal_all_clinicalData_combined_2022-10-14.rds")
+cbio <- readRDS("C:\\Users\\Owner\\Desktop\\CUNY Internship\\cBioPortal_all_clinicalData_combined_2023-05-18.rds")
 
 # Add curation ID
-cbio$curation_id <- paste(cbio$studyId, cbio$patientId, sep = ":")
+cbio$curation_id <- paste(cbio$studyId, cbio$patientId, cbio$sampleId, sep = ":")
 
 # Setup google sheets link to mapping table
 url <- "https://docs.google.com/spreadsheets/d/1OqLt5gBQswFz6HD0T5zYornMmdP_rcplfe5dgyGyN98/edit#gid=0"
@@ -123,7 +122,7 @@ summary_location_cols <- data.frame(colnames(location_cols_cbio[,2:7]))
 
 # Iterate through these columns to create a summary of each column's completeness
 for (col in 1:nrow(summary_location_cols)){
-  summary_location_cols$completeness[col] <- (nrow(location_cols_cbio) - length(which(is.na(location_cols_cbio[,col]))))/nrow(location_cols_cbio)
+  summary_location_cols$completeness[col] <- (nrow(location_cols_cbio) - length(which(is.na(location_cols_cbio[,col+1]))))/nrow(location_cols_cbio)
   summary_location_cols$num_na_vals[col] <- length(which(is.na(location_cols_cbio[,col+1])))
   summary_location_cols$unique[col] <- paste(unlist(unique(location_cols_cbio[,col+1]), use.names=F), collapse=", ")
 }
@@ -227,7 +226,7 @@ location_cols_cbio <- data.frame(lapply(location_cols_cbio,
 
 # Create a column of relevant source columns
 for (i in 1:nrow(location_cols_cbio)){
-  location_cols_cbio$source_columns[i] <- paste(colnames(location_cols_cbio[,2:7][which(!is.na(location_cols_cbio[i,2:7]))]), collapse=";")
+  location_cols_cbio$curated_location_source[i] <- paste(colnames(location_cols_cbio[,2:7][which(!is.na(location_cols_cbio[i,2:7]))]), collapse=";")
 }
 
 # Create a curated dataframe
