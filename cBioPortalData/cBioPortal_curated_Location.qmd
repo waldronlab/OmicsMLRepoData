@@ -46,7 +46,7 @@ suppressPackageStartupMessages({
 
 ## Setup for Curation
 
-We will first add a `curation_id` consisting of study ID and patient ID (`studyId:patientId`) to avoid confusion due to duplicated samples.
+We will first add a `curation_id` consisting of study ID, patient ID, and sample ID (`studyId:patientId:sampleId`) to avoid confusion due to duplicated samples.
 ```{r curation_setup}
 # Load cbio data
 cbio <- readRDS("C:\\Users\\Owner\\Desktop\\CUNY Internship\\cBioPortal_all_clinicalData_combined_2023-05-18.rds")
@@ -175,13 +175,13 @@ write.csv(unique_merged_vals,
 ## Import Maps
 
 To access the necessary location ontology terms we will load the 
-`location_ontology_map`.
+`cBioPortal_location_map`.
 ```{r import_maps, eval=FALSE}
 # import location ontology map
-mapped_terms <- read_sheet(ss, sheet = "location_ontology_map")
+mapped_terms <- read_sheet(ss, sheet = "cBioPortal_location_map")
 
 # import location ontology map
-mapped_terms <-read.csv(file = file.path(proj_dir, "cBioPortal_location_ontology_map.csv"), header=T)
+mapped_terms <-read.csv(file = file.path(proj_dir, "cBioPortal_location_map.csv"), header=T)
 ```
 
 
