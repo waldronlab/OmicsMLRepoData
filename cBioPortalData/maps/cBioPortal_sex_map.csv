@@ -1,0 +1,5 @@
+original_value,curated_ontology,curated_ontology_term_id,curated_ontology_term_db
+MALE,Male,NCIT:C20197,NCIT
+FEMALE,Female,NCIT:C16576,NCIT
+F,Female,NCIT:C16576,NCIT
+M,Male,NCIT:C20197,NCIT

@@ -25,7 +25,7 @@ knitr::opts_chunk$set(echo = TRUE,
 
 This .qmd file demonstrates a workflow for curating and harmonizing 
 sex data with the cbioportal dataset.
-This file curates information from 12 original columns to produce a curated 
+This file curates information from 6 original columns to produce a curated 
 column relating to the sex of the patient.
 
 
@@ -48,16 +48,16 @@ library(hash)
 
 ## Setup for Curation
 
-We will first add a `curation_id` consisting of study ID and patient ID (`studyId:patientId`) to avoid confusion due to duplicated samples.
+We will first add a `curation_id` consisting of study ID, patient ID, and sample ID (`studyId:patientId:sampleId`) to avoid confusion due to duplicated samples.
 ```{r curation_setup}
 # Load cbio data
-cbio <- readRDS("C:\\Users\\Owner\\Desktop\\CUNY Internship\\cBioPortal_all_clinicalData_combined_2022-10-14.rds")
+cbio <- readRDS("C:\\Users\\Owner\\Desktop\\CUNY Internship\\cBioPortal_all_clinicalData_combined_2023-05-18.rds")
 
 # Add curation ID
-cbio$curation_id <- paste(cbio$studyId, cbio$patientId, sep = ":")
+cbio$curation_id <- paste(cbio$studyId, cbio$patientId, cbio$sampleId, sep = ":")
 
 # Setup google sheets link to mapping table
-url <- "https://docs.google.com/spreadsheets/d/1IgrVEdgCZdvBmWrER21A57lSkfDjdRdV3RbK_yoqMl4/edit?usp=sharing"
+url <- "https://docs.google.com/spreadsheets/d/1O_W_QDUZKWRNy4GbDQp3RCObb0FCBSVZPrkQA-0zdPk/edit#gid=0"
 
 ss <- googledrive::as_id(url)
 
@@ -110,7 +110,7 @@ dataframe and import the map of columns to include in this curation:
 cbio <- tibble(cbio)
 
 # Load Potential columns map csv file
-pot_col_map <- read.csv(file=file.path(proj_dir, "potential_sex_columns_map.csv"))
+pot_col_map <- read.csv(file=file.path(proj_dir, "cBioPortal_sex_columns_map.csv"))
 
 # Create a subset of cbio containing only relevant columns
 sex_cols_cbio <- cbio[,c("curation_id", pot_col_map$colnames.sex_columns.)]
@@ -186,10 +186,10 @@ write.csv(unique_merged_vals,
 To access the necessary sex ontology terms we will load the `sex_ontology_map`.
 ```{r import_maps, eval=FALSE}
 # import bodysite ontology map
-mapped_terms <- read_sheet(ss, sheet = "sex_ontology_map")
+mapped_terms <- read_sheet(ss, sheet = "cBioPortal_sex_map")
 
 # import bodysite ontology map
-mapped_terms <-read.csv(file = file.path(proj_dir, "cBioPortal_sex_ontology_map.csv"), header=T)
+mapped_terms <-read.csv(file = file.path(proj_dir, "cBioPortal_sex_map.csv"), header=T)
 ```
 
 
@@ -234,7 +234,7 @@ sex_cols_cbio <- data.frame(lapply(sex_cols_cbio,
 
 # Create a column of relevant source columns
 for (i in 1:nrow(sex_cols_cbio)){
-  sex_cols_cbio$source_columns[i] <- paste(colnames(sex_cols_cbio[,2:7][which(!is.na(sex_cols_cbio[i,2:7]))]), collapse=";")
+  sex_cols_cbio$curated_sex_source[i] <- paste(colnames(sex_cols_cbio[,2:7][which(!is.na(sex_cols_cbio[i,2:7]))]), collapse=";")
 }
 
 # Create a curated dataframe
@@ -364,6 +364,29 @@ for (pat in chk$patient_id){
 }
 ```
 
+Last, we will identify any patient ids with one NA value and one descriptive 
+value, and fill in the missing value with the descriptive one:
+```{r}
+# Create a datframe summarizing all patients with more than 1 value listed for curated_sex
+chk1 <- patient_chk %>% 
+    group_by(patient_id) %>%
+    # Create a column of the number of samples for each patient_id
+    summarise(sampleSize = n(),
+              uniqueVal = length(unique(curated_sex[!is.na(curated_sex)]))) %>%
+    filter(uniqueVal == 1) %>% filter(sampleSize > 1)
+
+# For each patient id, find the descriptive value
+for (pat in chk1$patient_id){
+  # Find the standard value for the patient
+  standard_value <- unlist(unique(curated_sex$curated_sex[which((cbio$patientId==pat) & !is.na(curated_sex$curated_sex))]))
+  # Find the standard id for the patient
+  standard_id <- unlist(unique(curated_sex$curated_sex_ontology_term_id[which((cbio$patientId==pat) & !is.na(curated_sex$curated_sex_ontology_term_id))]))
+  # Set all values for the patient to be the descriptive value
+  curated_sex$curated_sex[which(cbio$patientId==pat)] <- standard_value
+  # Set all curated ontology term ids to match the patient's standardized value
+  curated_sex$curated_pop_ancestry_ontology_term_id[which(cbio$patientId==pat)] <- standard_id
+}
+```
 
 ## Export
 
