@@ -25,7 +25,7 @@ knitr::opts_chunk$set(echo = TRUE,
 
 This .qmd file demonstrates a workflow for curating and harmonizing 
 body site data with the cbioportal dataset.
-This file curates information from 37 original columns to produce a curated 
+This file curates information from 43 original columns to produce a curated 
 column relating to the anatomical location of patients' disease/cancer.
 
 
@@ -48,16 +48,16 @@ library(hash)
 
 ## Setup for Curation
 
-We will first add a `curation_id` consisting of study ID and patient ID (`studyId:patientId`) to avoid confusion due to duplicated samples.
+We will first add a `curation_id` consisting of study ID, patient ID, and sample ID (`studyId:patientId:sampleId`) to avoid confusion due to duplicated samples.
 ```{r curation_setup}
 # Load cbio data
-cbio <- readRDS("C:\\Users\\Owner\\Desktop\\CUNY Internship\\cBioPortal_all_clinicalData_combined_2022-10-14.rds")
+cbio <- readRDS("C:\\Users\\Owner\\Desktop\\CUNY Internship\\cBioPortal_all_clinicalData_combined_2023-05-18.rds")
 
 # Add curation ID
-cbio$curation_id <- paste(cbio$studyId, cbio$patientId, sep = ":")
+cbio$curation_id <- paste(cbio$studyId, cbio$patientId, cbio$sampleId, sep = ":")
 
 # Setup google sheets link to mapping table
-url <- "https://docs.google.com/spreadsheets/d/1IgrVEdgCZdvBmWrER21A57lSkfDjdRdV3RbK_yoqMl4/edit?usp=sharing"
+url <- "https://docs.google.com/spreadsheets/d/1DKuoIt2xgSnkdkhYWffubmwrXLA7V7Z7pcqgb1TUXxo/edit#gid=0"
 
 ss <- googledrive::as_id(url)
 
@@ -113,7 +113,7 @@ cbio <- tibble(cbio)
 # Load Potential columns map csv file
 pot_col_map <- read.csv(file=file.path(proj_dir, "cBioPortal_potential_columns_map.csv"))
 
-# Get list of all columns to combine into new Disease column
+# Get list of all columns to combine into new Bodysite column
 original_cols <- unlist(strsplit(pot_col_map$original_col[8], ";"))
 
 # Create a subset of cbio containing only relevant columns
@@ -125,11 +125,11 @@ columns, and export this dataframe to manually group columns into a smaller set
 of curated columns:
 ```{r}
 # Create a summary dataframe of the relevant columns
-summary_bodysite_cols <- data.frame(colnames(bodysite_cols_cbio[,2:38]))
+summary_bodysite_cols <- data.frame(colnames(bodysite_cols_cbio[,2:44]))
 
 # Iterate through these columns to create a summary of each column's completeness
 for (col in 1:nrow(summary_bodysite_cols)){
-  summary_bodysite_cols$completeness[col] <- (nrow(bodysite_cols_cbio) - length(which(is.na(bodysite_cols_cbio[,col]))))/nrow(bodysite_cols_cbio)
+  summary_bodysite_cols$completeness[col] <- (nrow(bodysite_cols_cbio) - length(which(is.na(bodysite_cols_cbio[,col+1]))))/nrow(bodysite_cols_cbio)
   summary_bodysite_cols$num_na_vals[col] <- length(which(is.na(bodysite_cols_cbio[,col+1])))
   summary_bodysite_cols$unique[col] <- paste(unlist(unique(bodysite_cols_cbio[,col+1]), use.names=F), collapse=", ")
 }
@@ -221,7 +221,7 @@ bodysite_cols_cbio <- bodysite_cols_cbio %>% replace(is.na(.), "8X8") %>% data.f
 
 # Merge all relevant rows
 for (i in 1:nrow(bodysite_cols_cbio)){
-  bodysite_cols_cbio$merged[i] <- toupper(paste(bodysite_cols_cbio[i,2:38], collapse="<;>"))
+  bodysite_cols_cbio$merged[i] <- toupper(paste(bodysite_cols_cbio[i,2:44], collapse="<;>"))
 }
 ```
 
@@ -232,9 +232,6 @@ prevent interpretation of the pipe as a regex character during queries:
 # Take out NA values
 bodysite_cols_cbio$merged <- gsub("8X8<;>", "", bodysite_cols_cbio$merged)
 bodysite_cols_cbio$merged <- gsub("<;>8X8", "", bodysite_cols_cbio$merged)
-bodysite_cols_cbio$merged <- gsub("<;>+", "<;>", bodysite_cols_cbio$merged)
-bodysite_cols_cbio$merged <- gsub("^<;>", "", bodysite_cols_cbio$merged)
-bodysite_cols_cbio$merged <- gsub("<;>$", "", bodysite_cols_cbio$merged)
 
 # Remove pipes and parentheses
 bodysite_cols_cbio <- data.frame(lapply(bodysite_cols_cbio, function(x) gsub("\\|", "", x)))
@@ -246,7 +243,7 @@ bodysite_cols_cbio <- data.frame(lapply(bodysite_cols_cbio, function(x) gsub("\\
 Then we can create a list of all unique values included in the merged column,
 and export these values to a csv file to manually develop an ontology map:
 ```{r}
-# Count the number of unique values in the merged column (692)
+# Count the number of unique values in the merged column (805)
 merged_vals <- list()
 for(r in 1:nrow(bodysite_cols_cbio)){
   merged_vals <- append(merged_vals, str_split(bodysite_cols_cbio$merged[r], "<;>"))
@@ -268,10 +265,10 @@ To access the necessary body site ontology terms we will load the
 `bodysite_ontology_map`.
 ```{r import_maps, eval=FALSE}
 # import bodysite ontology map
-mapped_terms <- read_sheet(ss, sheet = "bodysite_ontology_map")
+mapped_terms <- read_sheet(ss, sheet = "cBioPortal_bodysite_map")
 
 # import bodysite ontology map
-mapped_terms <-read.csv(file = file.path(proj_dir, "cBioPortal_bodysite_ontology_map.csv"), header=T)
+mapped_terms <-read.csv(file = file.path(proj_dir, "cBioPortal_bodysite_map.csv"), header=T)
 ```
 
 
@@ -317,11 +314,11 @@ bodysite_cols_cbio <- data.frame(lapply(bodysite_cols_cbio,
 
 # Create a column of relevant source columns
 for (i in 1:nrow(bodysite_cols_cbio)){
-  bodysite_cols_cbio$source_columns[i] <- paste(colnames(bodysite_cols_cbio[,2:38][which(!is.na(bodysite_cols_cbio[i,2:38]))]), collapse="<;>")
+  bodysite_cols_cbio$curated_bodysite_source[i] <- paste(colnames(bodysite_cols_cbio[,2:44][which(!is.na(bodysite_cols_cbio[i,2:44]))]), collapse="<;>")
 }
 
 # Create a curated dataframe
-curated_bodysite <- bodysite_cols_cbio[,c(1, 39:42)]
+curated_bodysite <- bodysite_cols_cbio[,c(1, 45:48)]
 
 # Rename the columns for accuracy & specificity
 colnames(curated_bodysite)[1:2] <- c("curation_id", "original_bodysite")
