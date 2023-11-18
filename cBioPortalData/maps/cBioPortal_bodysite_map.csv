@@ -1,3 +1,4 @@
+original_value,curated_ontology,curated_ontology_term_id,curated_ontology_term_db
 ABDOMEN,Abdomen,NCIT:C12664,NCIT
 ABDONIMAL NODULE,Abdomen,NCIT:C12664,NCIT
 ABDOMINAL TUMOR NODULES,Abdomen,NCIT:C12664,NCIT
@@ -124,7 +125,6 @@ CIRCULATING TUMOR CELLS,Circulating Tumor Cell Count,NCIT:C96593,NCIT
 COLON,Colon,NCIT:C12382,NCIT
 COLORECTAL CANCER,Colorectal,NCIT:C13363,NCIT
 CORPUS CALLOSUM,Corpus Callosum,NCIT:C12446,NCIT
-original_value,curated_ontology,curated_ontology_term_id,curated_ontology_term_db
 DESCENDING COLON,Descending Colon,NCIT:C12268,NCIT
 DIAPHRAGM,Diaphragm,NCIT:C12702,NCIT
 DIFFUSE,Diffuse,NCIT:C14175,NCIT
