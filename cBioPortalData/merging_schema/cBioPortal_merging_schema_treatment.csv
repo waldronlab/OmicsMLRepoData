@@ -1,0 +1,26 @@
+"label","column_name","description","ontology_term","ontology_id","true_completeness_199","num_unique_values"
+1,"treatment_name","drug/medication/treatment name; surgery name",NA,NA,0.2414184,1555
+2,"treatment_type","radiation, chemotherapy, surgery",NA,NA,0.4796872,538
+3,"treatment_amount_value","unspecified amount",NA,NA,0.1057672,1411
+4,"treatment_amount_unit",NA,NA,NA,NA,NA
+5,"treatment_dose_value","drug/radiation dose",NA,NA,NA,NA
+6,"treatment_dose_unit",NA,NA,NA,NA,NA
+7,"treatment_number_value","number of cycles/lines",NA,NA,NA,NA
+8,"treatment_number_unit",NA,NA,NA,NA,NA
+9,"treatment_start_value","start date/time",NA,NA,0.04925048,1908
+10,"treatment_start_unit",NA,NA,NA,NA,NA
+11,"treatment_end_value","end date/time",NA,NA,NA,NA
+12,"treatment_end_unit",NA,NA,NA,NA,NA
+13,"treatment_duration_value","duration",NA,NA,NA,NA
+14,"treatment_duration_unit",NA,NA,NA,NA,NA
+15,"treatment_frequency_value","frequency/schedule",NA,NA,NA,NA
+16,"treatment_frequency_unit",NA,NA,NA,NA,NA
+17,"treatment_case","prior, adjuvant, concurrent, initial, tertile, line/cycle number",NA,NA,0.43264,458
+18,"treatment_notes","miscellaneous notes",NA,NA,0.1193837,556
+19,"treatment_no","current study columns where the values indicated no treatment",NA,NA,0.827809,NA
+20,"treatment_not_applicable","current study columns not applicable to the current record","Not Applicable","GENEPIO:0001619",0.4056461,NA
+21,"treatment_not_collected","current study columns where the values indicate that data was not collected","Not Collected","GENEPIO:0001620",8.650255e-05,NA
+22,"treatment_not_provided","current study columns where the values indicated data inavailability","Not Provided","GENEPIO:0001668",0.004493044,NA
+23,"treatment_source","columns used within the current study",NA,NA,1,NA
+NA,NA,NA,NA,NA,NA,NA
+NA,NA,NA,NA,NA,NA,NA
