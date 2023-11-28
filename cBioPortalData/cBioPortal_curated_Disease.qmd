@@ -305,9 +305,9 @@ term id columns:
 ```{r}
 # Loop through curations to initialize curated columns
 for (curcol in keys(cols_to_curate)){
-  original_curcol_source <- paste("original", curcol, "source", sep="_")
+  curated_curcol_source <- paste("curated", curcol, "source", sep="_")
   # Initialize all relevant rows
-  disease_curated_cols[i,original_curcol_source] <- NA
+  disease_curated_cols[i,curated_curcol_source] <- NA
 }
 for (curcol in keys(cols_to_curate)){
   curated_curcol <- paste("curated", curcol, sep="_")
