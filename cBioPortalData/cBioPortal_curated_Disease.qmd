@@ -381,6 +381,10 @@ disease_curated_cols <- data.frame(lapply(disease_curated_cols,
 disease_curated_cols <- data.frame(lapply(disease_curated_cols, 
                                           function(x) gsub("^$", NA, x)))
 
+# Revert "Cancer Type" column name
+disease_curated_cols <- data.frame(lapply(disease_curated_cols, 
+                                          function(x) gsub("CANCER.TYPE", "CANCER TYPE", x)))
+
 # Rename the columns for accuracy & specificity
 colnames(disease_curated_cols)[1:9] <- c("curation_id", "original_acronym_value", 
     "original_cancer_status_value", "original_cancer_subtype_value", 
