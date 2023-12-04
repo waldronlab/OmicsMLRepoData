@@ -435,6 +435,8 @@ curated_bodysite$curated_body_subsite_ontology_term_id <- curated_bodysite$merge
 # Replace "8X8" values with "NA"
 curated_bodysite <- data.frame(lapply(curated_bodysite, 
                                       function(x) gsub("8X8", NA, x)))
+curated_bodysite <- data.frame(lapply(curated_bodysite, 
+                                      function(x) gsub("^$", NA, x)))
 
 # Select relevant columns
 curated_bodysite <- curated_bodysite[,c(1:5, 10)]
