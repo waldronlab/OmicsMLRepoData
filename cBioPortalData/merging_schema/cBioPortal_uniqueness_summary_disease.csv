@@ -1,0 +1,9 @@
+"curated_field","num_unique_original_fields","cnum_unique_curated_field","percent_uniqueness_reduction"
+"acronym",51,50,98.04
+"cancer_status",5,3,60
+"cancer_subtype",1041,790,75.89
+"cancer_type",199,164,82.41
+"cancer_type_detailed",986,878,89.05
+"disease",258,225,87.21
+"metastasis",8,3,37.5
+"specimen_type",84,67,79.76
