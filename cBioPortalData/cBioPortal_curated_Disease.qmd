@@ -114,7 +114,7 @@ cbio <- tibble(cbio)
 cbio <- cbio %>% rename("CANCER.TYPE" = "CANCER TYPE")
 
 # Load Potential columns map csv file
-pot_col_map <- read.csv(file=file.path(proj_dir, "cBioPortal_curation_schema.csv"))
+pot_col_map <- read.csv(file=file.path(proj_dir, "cBioPortal_merging_schema_multi.csv"))
 
 # Get list of all columns to combine into new Disease column
 original_cols <- unlist(strsplit(pot_col_map$original_columns[1], ";"))
@@ -380,10 +380,6 @@ disease_curated_cols <- data.frame(lapply(disease_curated_cols,
 # Replace empty values from curated columns with "NA"
 disease_curated_cols <- data.frame(lapply(disease_curated_cols, 
                                           function(x) gsub("^$", NA, x)))
-
-# Revert "Cancer Type" column name
-disease_curated_cols <- data.frame(lapply(disease_curated_cols, 
-                                          function(x) gsub("CANCER.TYPE", "CANCER TYPE", x)))
 
 # Rename the columns for accuracy & specificity
 colnames(disease_curated_cols)[1:9] <- c("curation_id", "original_acronym_value", 
