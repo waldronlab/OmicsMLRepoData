@@ -1,9 +1,9 @@
-"curated_field","num_unique_original_fields","cnum_unique_curated_field","percent_uniqueness_reduction"
-"acronym",51,50,98.04
+"curated_field","num_unique_original_fields","num_unique_curated_field","percent_uniqueness_reduction"
+"acronym",53,50,94.34
 "cancer_status",5,3,60
-"cancer_subtype",1041,790,75.89
-"cancer_type",199,164,82.41
-"cancer_type_detailed",986,878,89.05
-"disease",258,225,87.21
-"metastasis",8,3,37.5
-"specimen_type",84,67,79.76
+"cancer_subtype",1171,790,67.46
+"cancer_type",219,164,74.89
+"cancer_type_detailed",1060,878,82.83
+"disease",309,225,72.82
+"metastasis",11,3,27.27
+"specimen_type",89,67,75.28

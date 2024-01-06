@@ -319,7 +319,7 @@ bodysite_map
 ```
 
 Double-check whether the curation is correct. Any curated ontology terms
-returned with `corret == FLASE` in `validation_tb` are reviewed.
+returned with `corret == FLASE` in `validation_tb` should be reviewed.
 
 ```{r}
 validation_tb <- data.frame(matrix(NA, nrow = nrow(bodysite_map), ncol = 4))

@@ -90,6 +90,10 @@ x_percent <- round(((nrow(sampleMetadata)-x)/nrow(sampleMetadata))*100, 1)
 head(x_percent, 20)
 ```
 
+```{r echo=FALSE, eval=FALSE}
+write.csv(stack(x_percent), "cMD_metadata_completeness.csv")
+```
+
 Plot the percentage of completeness for 35 out of 136 metadata fields, which 
 have >= 10% value available.
 
@@ -147,14 +151,16 @@ myVars <- c(
 catVars <- c("antibiotics_current_use", "gender")
 ```
 
-```{r save_table_csv, eval=FALSE}
+```{r}
 z <- CreateTableOne(vars = myVars,
                     data = sampleMetadata, 
                     strata = "study_name", 
                     factorVars = catVars,
                     includeNA = TRUE) %>%
     print(., showAllLevels = TRUE)
+```
 
+```{r save_table_csv, eval=FALSE}
 ## Export
 tabMat <- print(t(z), showAllLevels = TRUE, quote = FALSE, 
                 noSpaces = TRUE, printToggle = FALSE)
@@ -181,6 +187,9 @@ as old/new processing of the same dataset. This merging is different from
 creating MultiAssayExperiment object. 
 
 ### Study-level missingness of the major variables
+There are two studies that have the same `study_name` even though they are
+different studies (i.e. different PMID)
+
 ```{r percentage_missing, eval=FALSE}
 x <- sampleMetadata %>%
     group_by(study_name) %>%
