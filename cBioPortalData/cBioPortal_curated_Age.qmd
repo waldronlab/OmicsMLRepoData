@@ -47,7 +47,7 @@ suppressPackageStartupMessages({
 
 ## Setup for Curation
 
-We will first add a `curation_id` consisting of study ID and patient ID (`studyId:patientId`) to avoid confusion due to duplicated samples.
+We will first add a `curation_id` consisting of study ID, patient ID, and sample ID (`studyId:patientId:sampleId`) to avoid confusion due to duplicated samples.
 ```{r curation_setup}
 # Load cbio data
 cbio <- readRDS("C:\\Users\\Owner\\Desktop\\CUNY Internship\\cBioPortal_all_clinicalData_combined_2023-05-18.rds")
@@ -116,9 +116,19 @@ pot_col_map <- read.csv(file=file.path(proj_dir, "potential_age_columns_map.csv"
 age_cols_cbio <- cbio[,c("curation_id", pot_col_map$colnames.age_columns.[which(pot_col_map$curated_col!="other")])]
 ```
 
+Then we will create a dictionary of curated column keys with the list of their 
+corresponding original columns as the value:
+```{r}
+# Put cols into a list
+cols_to_curate <- hash()
+for (col in unique(pot_col_map$curated_col)){
+  col_name <- paste(col)
+  cols_to_curate[[col_name]] <- unlist(str_split(pot_col_map$colnames.age_columns.[which(pot_col_map$curated_col==col_name)], ";"))
+}
+```
+
 Then we will evaluate the completeness and unique values of each of the relevant
-columns, and export this dataframe to manually group columns into a smaller set
-of curated columns:
+columns:
 ```{r}
 # Create a summary dataframe of the relevant columns
 summary_age_cols <- data.frame(colnames(age_cols_cbio[,2:ncol(age_cols_cbio)]))
@@ -128,22 +138,6 @@ for (col in 1:nrow(summary_age_cols)){
   summary_age_cols$completeness[col] <- (nrow(age_cols_cbio) - length(which(is.na(age_cols_cbio[,col+1]))))/nrow(age_cols_cbio)
   summary_age_cols$num_na_vals[col] <- length(which(is.na(age_cols_cbio[,col+1])))
   summary_age_cols$unique[col] <- paste(unlist(unique(age_cols_cbio[,col+1]), use.names=F), collapse=", ")
-}
-
-# Create a csv file for manual curation
-write.csv(summary_age_cols, 
-          file = file.path(proj_dir, "curated_columns_map.csv"),
-          row.names = FALSE)
-```
-
-Then we will create a dictionary of curated column keys with the list of their 
-corresponding original columns as the value:
-```{r}
-# Put cols into a list
-cols_to_curate <- hash()
-for (col in unique(pot_col_map$curated_col)){
-  col_name <- paste(col)
-  cols_to_curate[[col_name]] <- unlist(str_split(pot_col_map$colnames.age_columns.[which(pot_col_map$curated_col==col_name)], ";"))
 }
 ```
 
@@ -165,6 +159,24 @@ for (curcol in keys(cols_to_curate)){
   }
   print(curcol)
 }
+```
+
+Then we will evaluate the minimum and maximum vaues of each of the relevant
+columns, and export this full summary dataframe to manually group columns into a
+smaller set of curated columns:
+```{r}
+# Iterate through these columns to create a summary of each column's completeness
+for (col in 1:nrow(summary_age_cols)){
+  summary_age_cols$min[col] <- min(as.numeric(age_cols_cbio[,col+1]), na.rm=T)
+  summary_age_cols$max[col] <- max(as.numeric(age_cols_cbio[,col+1]), na.rm=T)
+  summary_age_cols$over_100s[col] <- length(which(130 <= as.numeric(age_cols_cbio[,col+1])))
+  summary_age_cols$under_0[col] <- length(which(0 > as.numeric(age_cols_cbio[,col+1])))
+}
+
+# Create a csv file for manual curation
+write.csv(summary_age_cols, 
+          file = file.path(proj_dir, "curated_columns_map.csv"),
+          row.names = FALSE)
 ```
 
 Next, we can remove the unique character representing NA values from the merged
@@ -196,6 +208,22 @@ days_cols <- pot_col_map[which(pot_col_map$unit=="day"),]
 # Convert columns from days to years
 for (i in 1:nrow(days_cols)){
   age_cols_cbio[,days_cols$colnames.age_columns.[i]] <- data.frame(sapply(cbio[,days_cols$colnames.age_columns.[i]], function(x) as.integer(x)/365))
+}
+```
+
+Additionally, some values are outside of the reasonable age range of 0 -130. 
+Further investigation of these values detected a curation error in all of the 
+values from the `AGE_AT_DIAGNOSIS` column of the `nbl_msk_2023` study, which we 
+will remove from the curation. Once this has been done we will filter the 
+remaining values by the accepted realistic age range:
+```{r}
+# Set AGE_AT_DIAGNOSIS values from nbl_msk_2023 study to NA
+age_cols_cbio$AGE_AT_DIAGNOSIS[which(cbio$studyId=="nbl_msk_2023")] <- "8X8"
+
+# Set values less than 0 or greater than 100 to NA
+for (col in colnames(age_cols_cbio[,2:34])){
+  age_cols_cbio[which(130 < as.numeric(age_cols_cbio[,col])),col] <- "8X8"
+  age_cols_cbio[which(0 > as.numeric(age_cols_cbio[,col])),col] <- "8X8"
 }
 ```
 
@@ -343,11 +371,54 @@ units <- function(x, curcol){
 # Loop through merged column names
 for (curcol in keys(cols_to_curate)){
   # Create a column of relevant source columns for each merged column
-  age_curated_cols[,paste("curated", curcol,"source", sep="_")] <- data.frame(sapply(1:nrow(age_curated_cols), function(x) ifelse(sources(x, curcol)=="", NA, sources(x, curcol))))
+  age_curated_cols[,paste("curated", curcol,"source", sep="_")] <- data.frame(sapply(1:nrow(age_curated_cols), function(x) ifelse(sources(x, curcol)=="", "8X8", sources(x, curcol))))
   # Create a column of relevant source column units for each merged column
-  age_curated_cols[,paste("original", curcol,"unit", sep="_")] <- data.frame(sapply(1:nrow(age_curated_cols), function(x) ifelse(units(x, curcol)=="", NA, units(x, curcol))))
+  age_curated_cols[,paste("original", curcol,"unit", sep="_")] <- data.frame(sapply(1:nrow(age_curated_cols), function(x) ifelse(units(x, curcol)=="", "8X8", units(x, curcol))))
   # Print check-in
   print(curcol)
+}
+```
+
+Before exporting we will need to clean up some final errant values which were 
+outliers unaddressed in their original columns:
+```{r}
+# 
+for (row in 1:nrow(age_curated_cols)){
+  if ((age_curated_cols$curated_age_at_diagnosis_source[row] == "AGE_D") & 
+      (age_curated_cols$age_at_diagnosis[row] == "NAN")){
+    age_curated_cols$curated_age_at_diagnosis[row] <- "8X8"
+    age_curated_cols$curated_age_at_diagnosis_min[row] <- "8X8"
+    age_curated_cols$curated_age_at_diagnosis_max[row] <- "8X8"
+  }
+  
+  if ((age_curated_cols$curated_age_at_diagnosis_source[row] == "AGE_AT_DIAGNOSIS") & 
+      (age_curated_cols$age_at_diagnosis[row] == "<25")){
+    age_curated_cols$curated_age_at_diagnosis[row] <- "8X8"
+    age_curated_cols$curated_age_at_diagnosis_min[row] <- 0
+    age_curated_cols$curated_age_at_diagnosis_max[row] <- 24
+  }  
+  
+  if ((age_curated_cols$curated_age_at_procurement_source[row] == "AGE_AT_SAMPLE_COLLECTION") & 
+      (age_curated_cols$age_at_procurement[row] == "<45")){
+    age_curated_cols$curated_age_at_procurement[row] <- "8X8"
+    age_curated_cols$curated_age_at_procurement_min[row] <- 0
+    age_curated_cols$curated_age_at_procurement_max[row] <- 44
+  } 
+  
+  if ((age_curated_cols$curated_age_at_procurement_source[row] == "AGE_AT_SAMPLE_COLLECTION") & 
+      (age_curated_cols$age_at_procurement[row] == ">85")){
+    age_curated_cols$curated_age_at_procurement[row] <- "8X8"
+    age_curated_cols$curated_age_at_procurement_min[row] <- 86
+    age_curated_cols$curated_age_at_procurement_max[row] <- 130
+  } 
+  
+  if (((age_curated_cols$curated_age_at_procurement_source[row] == "AGE_AT_SEQ_REPORTED_YEARS") | 
+       (age_curated_cols$curated_age_at_procurement_source[row] == "AGE_AT_SEQ_REPORT")) & 
+      (age_curated_cols$age_at_procurement[row] == ">90")){
+    age_curated_cols$curated_age_at_procurement[row] <- "8X8"
+    age_curated_cols$curated_age_at_procurement_min[row] <- 91
+    age_curated_cols$curated_age_at_procurement_max[row] <- 130
+  } 
 }
 ```
 

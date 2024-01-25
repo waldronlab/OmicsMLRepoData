@@ -55,9 +55,23 @@ new_fields
 # Build a schema for curated fields
 ## Age
 - [Feature Request] Conditional requirement?
+- [Update] Automatically select the common ancester for dynamic enum and update the allowed values
 - Use dynamic enums for age_unit (NCIT:C50400)?
 ```{r}
 source(file.path(dir, "R/template_age.R"))
+curated_age_all
+```
+
+Manual update for dynamic enum: Age
+```{r}
+ind <- curated_age_all$col.name == "age_unit"
+curated_age_all$dynamic_enum[ind] <- "NCIT:C50400"
+curated_age_all$dynamic_enum_property[ind] <- "descendent"
+
+ind <- curated_age_all$col.name == "age_group"
+curated_age_all$dynamic_enum[ind] <- "NCIT:C20587"
+curated_age_all$dynamic_enum_property[ind] <- "descendent"
+
 curated_age_all
 ```
 
@@ -84,6 +98,13 @@ curated_bodysite
 curated_bodysubsite
 ```
 
+Manual update for dynamic enum: Age
+```{r}
+curated_bodysite$dynamic_enum <- "UBERON:0001062"
+curated_bodysite$dynamic_enum_property <- "descendent"
+
+curated_bodysite
+```
 
 ## Others
 `sex` and `antibiotics_current_use`
@@ -97,7 +118,7 @@ curated_abx_current_use
 # Save
 Combine data schema for all the curated attributes
 ```{r}
-curated_all <- do.call("rbind", list(curated_age_all, 
+curated_all <- dplyr::bind_rows(list(curated_age_all, 
                                      curated_disease_all, 
                                      curated_treatment,
                                      curated_bodysite,
@@ -129,7 +150,7 @@ ori$col.name[legacy_ind] <- paste0("legacy_", ori$col.name[legacy_ind])
 ori$ontology <- NA
 formated_ori <- rbind(ori[-legacy_ind,], ori[legacy_ind,]) # 'legacy_' fields at the end
 
-updated <- rbind(curated_all, formated_ori)
+updated <- dplyr::bind_rows(curated_all, formated_ori)
 id_row_ind <- which(updated$col.name %in% c("study_name", "sample_id", "subject_id"))
 updated <- rbind(updated[id_row_ind,], updated[-id_row_ind,])
 sum(duplicated(updated$col.name)) # should be 0

@@ -132,12 +132,27 @@ for(x in 1:length(studydesign_cols_cbio$study_id)){
 }
 ```
 
+Now we can separate the curated study_design table from the curated target_phenotype
+table:
+```{r}
+# Copy the study_design table to create the target_phenotype table
+target_phenotype_cols_cbio <- studydesign_cols_cbio %>% select(-c(curated_study_design, study_id))
+
+# Remove curated target_phenotype features from the study_design curation 
+studydesign_cols_cbio <- studydesign_cols_cbio %>% 
+  select(-c(curated_target_phenotype, curated_target_phenotype_term_id, study_id))
+```
+
 
 ## Export
 
-Finally, we will export our completed table to GitHub.
+Finally, we will export our completed tables to GitHub.
 ```{r export_curated_table, eval=FALSE}
 # export to GitHub
 write.csv(studydesign_cols_cbio, file = file.path(proj_dir, "curated_study_design.csv"), 
+          row.names=F)
+
+# export to GitHub
+write.csv(target_phenotype_cols_cbio, file = file.path(proj_dir, "curated_target_phenotype.csv"), 
           row.names=F)
 ```

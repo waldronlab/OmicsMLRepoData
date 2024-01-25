@@ -16,6 +16,7 @@ knitr::opts_chunk$set(echo = TRUE, warning = FALSE, message = FALSE,
 ```
 
 ```{r load_data, echo=FALSE, eval=TRUE}
+library(cBioPortalData)
 cbio <- cBioPortal()
 cbioStudies <- getStudies(cbio) 
 studyIds <- cbioStudies$studyId
@@ -26,8 +27,9 @@ fnames <- list.files(getwd())
 fname <- fnames[grep("cBioPortal_all_clinicalData_2", fnames)]
 clinical_var_all <- readRDS(fname)
 
-fname <- fnames[grep("cBioPortal_all_clinicalData_combined_", fnames)]
-template <- readRDS(fname) # our curation/harmonization starts from this table
+dir <- system.file("extdata", package = "OmicsMLRepoData")
+fpath <- file.path(dir, "cBioPortal_all_clinicalData_combined_2022-10-14.rds")
+template <- readRDS(fpath) # our curation/harmonization starts from this table
 
 allCols <- colnames(template)
 ```
@@ -48,20 +50,46 @@ paste(round(percent_unique), "percent of patients are unique.")
 ```
 
 ```{r}
-dup_sampleId <- sort(table(template$sampleId), decreasing = TRUE)
+## Sample-level redundancy
+sampleId_summary <- sort(table(template$sampleId), decreasing = TRUE)
 no_meta <- sum(is.na(template$sampleId)) # the number of entries without sampleId
-one_meta <- sum(dup_sampleId == 1) # the number of samples with only one metadata entry
-multi_meta <- sum(dup_sampleId >= 2) # the number of samples with more than one metadata entries
+one_meta <- sum(sampleId_summary == 1) # the number of samples with only one metadata entry
+multi_meta <- sampleId_summary[sampleId_summary >= 2] 
+length(multi_meta) # the number of samples with more than one metadata entries
 
 paste(no_meta, "out of", nrow(template), "entries doesn't have sampleId assigned.")
 paste(one_meta, "samples out of", unique_sample, "have a single entry.")
-paste(multi_meta, "samples out of", unique_sample, "have multiple entries.")
+paste(length(multi_meta), "samples out of", unique_sample, "have multiple entries.")
+
+## Patient-level redundancy
+patientId_summary <- sort(table(template$patientId), decreasing = TRUE)
+no_meta <- sum(is.na(template$patientId)) # the number of entries without patientId
+one_meta <- sum(patientId_summary == 1) # the number of patients with only one metadata entry
+multi_meta <- patientId_summary[patientId_summary >= 2] 
+length(multi_meta) # the number of patients with more than one metadata entries
+
+paste(no_meta, "out of", nrow(template), "entries doesn't have patientId assigned.")
+paste(one_meta, "patients out of", unique_patient, "have a single entry.")
+paste(length(multi_meta), "patients out of", unique_patient, "have multiple entries.")
 ```
 
 For example, there are 8 entries with the sampleId 'P-0005045-T01-IM5'. 
 ```{r}
 ## The number of multiplicates for a given samples
-head(dup_sampleId)
+head(sampleId_summary)
+```
+
+For example, there are 24 entries with the sampleId 'P-0005045-T01-IM5'. 
+```{r}
+## The number of multiplicates for a given samples
+head(patientId_summary)
+```
+
+For a given patient, I think we can infer SEX, RACE, ETHNICITY, PRIMARY_SITE.
+```{r}
+rowInd <- which(template$patientId == names(multi_meta)[1])
+colInd <- which(colSums(is.na(template[rowInd,])) != length(rowInd)) # column with >1 value available
+template[rowInd, colInd]
 ```
 
 # Empty Columns
@@ -129,8 +157,15 @@ names(empty_age_col)
 
 ## Race/Ethnicity
 ```{r}
+race_colnames <- allCols[grep("RACE|ETHNICITY", allCols, ignore.case = TRUE)]
+race_colnames
 
+test <- template[,grep("RACE|ETHNICITY", allCols, ignore.case = TRUE)]
+rowSums(is.na(test)) %>% table
 ```
+
+
+
 
 ## Disease
 ```{r}
