@@ -1,4 +1,4 @@
-"original_fields","original_fields_completeness","original_fields_unique_vals","curated_fields","curated_fields_completeness","curated_fields_unique_vals","curation_activities","curation_guides"
+"original_field","original_field_completeness","original_field_unique_vals","curated_field","curated_field_completeness","curated_field_unique_vals","curation_activities","curation_guides"
 "study_condition;disease;disease_subtype","100;100;14","57;142;77","curated_control;curated_disease","100;100","3;207","Correction, Separate/Augment 'target_phenotype'",NA
 NA,"NA","NA","curated_target_condition","100","47","Newly created to supplement the intension of previous 'study_conditon' column",NA
 "age;infant_age","60;13","94;376","curated_age_years;curated_age_min;curated_age_max;curated_age_group","61;100;100;100","466;466;467;6","Correction","Enter only age and its unit OR Select age group"
@@ -6,3 +6,15 @@ NA,"NA","NA","curated_target_condition","100","47","Newly created to supplement 
 "gender","89","3","curated_sex","89","3","Add the missing value",NA
 "body_site;body_subsite","100;10","6;23","curated_body_site;curated_body_subsite","100;8","6;21","Remove redundant entry from body_subsite",NA
 "treatment;antibiotics_family;antibiotics_current_use","24;2;65","883;69;3","curated_treatment;curated_antibiotics_current_use","26;65","949;3","antibiotics_current_use is also updated accordingly","Can you enter a more general term (e.g., insulin example)?"
+"fmt_id","1","46","FMT_id",NA,NA,NA,NA
+"FMT_role","1","5","FMT_role",NA,NA,NA,NA
+"glp_1;cd163;il_1;fgf_19;triglycerides;hba1c;cholesterol;ldl;hdl;LDL;hsCRP;dyastolic_p;systolic_p;creatinine;albumine;bilubirin;glucose;hscrp;urea_nitrogen;creatine;ast;globulin;alt;prothrombin_time;c_peptide;wbc;rbc;hemoglobinometry;fasting_glucose;glutamate_decarboxylase_2_antibody;adiponectin;leptin;inr;eGFR;ALT;fasting_insulin;ESR;autoantibody_positive;hla_dqa11;hla_dqa12;hla_drb11;hla_drb12;HLA","1;1;1;1;8;7;5;4;4;4;4;4;4;3;2;2;2;2;2;1;1;1;1;1;1;1;1;1;1;1;1;1;1;0;0;0;0;0;2;2;1;1;1","44;131;33;131;655;242;633;495;313;342;588;59;90;208;201;134;134;208;137;96;48;86;64;36;148;50;95;50;104;26;117;129;67;109;31;64;44;7;4;4;6;5;13","biomarkers",NA,NA,NA,NA
+"PPD_M;PPD_B;PPD_D;PPD_L;history_of_periodontitis","1;1;1;1;0","15;13;13;12;3","dental_phenotype",NA,NA,NA,NA
+"diet","2","4","dietary_restriction",NA,NA,NA,NA
+"ajcc;tnm;disease_stage","2;1;1","7;25;6","disease_stage",NA,NA,NA,NA
+"bristol_score;calprotectin;HBI","4;1;0","8;250;10","feces_phenotype",NA,NA,NA,NA
+"born_method;gestational_age;premature;birth_weight;lactating;c_section_type;feeding_practice;formula_first_day;breastfeeding_duration","13;10;10;10;4;3;3;1;1","3;39;3;134;3;3;6;23;30","neonatal",NA,NA,NA,NA
+"pregnant;menopausal_status;birth_control_pil","16;2;1","3;4;3","obgyn",NA,NA,NA,NA
+"RECIST;ORR;PFS12","1;1;1","5;3;3","response_to_therapy",NA,NA,NA,NA
+"smoker;smoke;ever_smoker","7;6;5","3;3;3","smoker",NA,NA,NA,NA
+"fobt;protein_intake;BASDAI;BASFI;SCCAI","1;0;0;0;0","3;103;56;34;9","uncurated_metadata",NA,NA,NA,NA
