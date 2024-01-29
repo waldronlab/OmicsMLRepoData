@@ -1,0 +1,4 @@
+original_value,curated_ontology,curated_ontology_term_id,curated_ontology_term_db
+ajcc,American Joint Committee on Cancer (tumor staging),SNOMED:258236004,SNOMED
+tnm,Tumor-node-metastasis (TNM) tumor staging system (tumor staging),SNOMED:254293002,SNOMED
+disease_stage,American Joint Committee on Cancer (tumor staging),SNOMED:258236004,SNOMED
