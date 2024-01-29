@@ -102,10 +102,10 @@ write.csv(unique_merged_cols,
 To access the necessary feces phenotype ontology terms we will load the 
 `cMD_feces_phenotype_map`.
 ```{r import_maps, eval=FALSE}
-# import smoker ontology map
+# import feces_phenotype ontology map
 # mapped_terms <- read_sheet(ss, sheet = "feces_phenotype_ontology")
 
-# import smoker ontology map
+# import feces_phenotype ontology map
 mapped_terms <-read.csv(file = file.path(proj_dir, "cMD_feces_phenotype_map.csv"), header=T)
 ```
 
