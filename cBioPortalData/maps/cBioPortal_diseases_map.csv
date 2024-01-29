@@ -1,5 +1,5 @@
 original_value,curated_ontology,curated_ontology_term_id,curated_ontology_term_db
-GCB,germinal center B cell,CL:0000844,NCIT
+GCB,germinal center B cell,CL:0000844,CL
 FIBROBLAST_LUNG,fibroblast of lung,CL:0002553,CL
 FIBROBLAST_BREAST,fibroblast of breast,CL:4006000,CL
 IMMORTALIZED_EPITHELIAL,immortal epithelial cell line cell,CLO:0000129,CLO
@@ -138,7 +138,7 @@ T-CELL,T-Lymphocyte,NCIT:C12476,NCIT
 T_CELL,T-Lymphocyte,NCIT:C12476,NCIT
 PDAC-CLEAR CELL,Clear Cell,NCIT:C12478,NCIT
 CLEAR_CELL,Clear Cell,NCIT:C12478,NCIT
-FIBROBLAST_UPPER_AERODIGESTIVE,Fibroblast<;>upper aerodigestive tract,NCIT:C12482<;>MONDO:0005398,NCIT
+FIBROBLAST_UPPER_AERODIGESTIVE,Fibroblast<;>upper aerodigestive tract,NCIT:C12482<;>MONDO:0005398,NCIT;MONDO
 FIBROBLAST_URINARY_TRACT,Fibroblast<;>Urinary System,NCIT:C12482<;>NCIT:C12413,NCIT
 FIBROBLAST_SOFT_TISSUE,Fibroblast<;>Soft Tissue,NCIT:C12482<;>NCIT:C12471,NCIT
 FIBROBLAST_LYMPHOCYTE,Fibroblast<;>Lymphocyte,NCIT:C12482<;>NCIT:C12535,NCIT
@@ -2127,7 +2127,7 @@ HEREDITARY SPHEROCYTOSIS,Hereditary Spherocytosis,NCIT:C97074,NCIT
 COMPLEX CYTOGENETICS,Complex Karyotype,NCIT:C97138,NCIT
 EMT,Epithelial-to-Mesenchymal Transition,NCIT:C97304,NCIT
 PAX3/FOXO1-FUSION,PAX3/FOXO1 Fusion Gene,NCIT:C99712,NCIT
-MANUBRIUM,Manubrium,OMIT:0009442,OMIT_0009442
+MANUBRIUM,Manubrium,OMIT:0009442,OMIT
 LOCAL RECURRENCE,"Neoplasm Recurrence, Local",OMIT:0010392,OMIT
 GS,Genomic Stability,,
 NBNC,"Non-B, Non-C Hepatitis",,
