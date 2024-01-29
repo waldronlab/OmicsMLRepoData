@@ -1,5 +1,5 @@
 ---
-title: "Harmonize smoker status information in cMD sample metadata"
+title: "Harmonize HLA allele information in cMD sample metadata"
 author:
   - Sehyun Oh
   - Kai Gravel-Pucillo
@@ -22,10 +22,10 @@ knitr::opts_chunk$set(echo = TRUE,
 
 # Overview
 
-This .qmd file demonstrates a workflow for curating and harmonizing smoker status
+This .qmd file demonstrates a workflow for curating and harmonizing HLA allele
 data with the curatedMetagenomicData package.
-This file curates information from the original smoker, ever_smoker, and smoke
-columns to produce the curated smoker column.
+This file curates information from the HLA, hla_drb12, hla_dqa12, hla_dqa11, and 
+hla_drb11 columns to produce the curated HLA column.
 
 # Setup
 ## Load Packages
@@ -45,14 +45,15 @@ suppressPackageStartupMessages({
 
 ## Setup for Curation
 
-We will first add a `curation_id` consisting of study name and sample ID (`study_name:sample_id`) to avoid confusion due to duplicated samples.
+We will first add a `curation_id` consisting of study name and sample ID 
+(`study_name:sample_id`) to avoid confusion due to duplicated samples.
 
 ```{r curation_setup}
 # Add curation ID
 sampleMetadata$curation_id <- paste(sampleMetadata$study_name, sampleMetadata$sample_id, sep = ":")
 
 # Define a project directory
-proj_dir <- "C:\\Users\\Owner\\Desktop\\CUNY Internship\\Smoker"
+proj_dir <- "C:\\Users\\Owner\\Desktop\\CUNY Internship\\cMD"
 ```
 
 # Exploratory Data Analysis & Data Curation
@@ -61,40 +62,41 @@ proj_dir <- "C:\\Users\\Owner\\Desktop\\CUNY Internship\\Smoker"
 
 Next, we will make some manual corrections to the data.
 We will start by creating a tibble dataframe and checking the completeness of 
-the three original columns as well as reviewing their unique values:
+the five original columns as well as reviewing their unique values:
 ```{r}
 # Create a tibble object 
 samplemd <- as_tibble(sampleMetadata)
 
 # Review unique values
-unique(sampleMetadata$smoker)
-unique(sampleMetadata$ever_smoker)
-unique(sampleMetadata$smoke)
+unique(sampleMetadata$HLA)
+unique(sampleMetadata$hla_dqa11)
+unique(sampleMetadata$hla_dqa12)
+unique(sampleMetadata$hla_drb11)
+unique(sampleMetadata$hla_drb12)
 
 # Calculate completeness
-length(samplemd$smoker[which(!is.na(samplemd$smoker))])/length(samplemd$smoker)
-length(samplemd$ever_smoker[which(!is.na(samplemd$ever_smoker))])/length(samplemd$ever_smoker)
-length(samplemd$smoke[which(!is.na(samplemd$smoke))])/length(samplemd$smoke)
+length(samplemd$HLA[which(!is.na(samplemd$HLA))])/length(samplemd$HLA)
+length(samplemd$hla_dqa11[which(!is.na(samplemd$hla_dqa11))])/length(samplemd$hla_dqa11)
+length(samplemd$hla_dqa12[which(!is.na(samplemd$hla_dqa12))])/length(samplemd$hla_dqa12)
+length(samplemd$hla_drb11[which(!is.na(samplemd$hla_drb11))])/length(samplemd$hla_drb11)
+length(samplemd$hla_drb12[which(!is.na(samplemd$hla_drb12))])/length(samplemd$hla_drb12)
 ```
 
-Next we can convert binary values into descriptive values by imputing positive
-values with the corresponding column name:
+Next we can convert numeric values into descriptive values by imputing them
+with the corresponding column name followed by the numeric value:
 ```{r}
 # Create a dataframe of only the relevant columns
-smoker_cols <- samplemd %>% select(curation_id, smoker, ever_smoker, smoke)
+hla_cols <- samplemd %>% 
+  select(curation_id, HLA, hla_drb12, hla_dqa12, hla_dqa11, hla_drb11)
 
-# Update binary columns with descriptive values
-present_vals <- c("yes", "1.0", 1.0, "YES", "Yes")
-absent_vals <- c("no", "NO", "No")
-for(col in colnames(smoker_cols[,2:4])){
-  for (val in 1:nrow(smoker_cols)){
-    if (smoker_cols[val,col] %in% present_vals){
-      smoker_cols[val,col] <- paste(col, "YES", collapse="<<")
-    }else if (smoker_cols[val,col] %in% absent_vals){
-      smoker_cols[val,col] <- paste(col, "NO", collapse="<<")
-    }
-  }
+# Update numeric columns with descriptive values
+for (col in c("hla_drb12", "hla_dqa12", "hla_dqa11", "hla_drb11")){
+  hla_cols[,col] <- sapply(hla_cols[,col], function(val) 
+    ifelse(is.na(val), val, paste(col, "<<", val, ">>", sep="")))
 }
+
+hla_cols$HLA <- gsub("-", ";", hla_cols$HLA)
+hla_cols$HLA <- gsub("\\*", "<<>>", hla_cols$HLA)
 ```
 
 Now we can replace character values representing a lack of information with a 
@@ -102,11 +104,11 @@ unique character value ("8X8"), and merge these values into a single column with
 each distinct value separated by a semicolon.
 ```{r}
 # Convert NA values to unique character value (8X8)
-smoker_cols <- smoker_cols %>% replace(is.na(.), "8X8") %>% data.frame()
+hla_cols <- hla_cols %>% replace(is.na(.), "8X8") %>% data.frame()
 
 # Merge all relevant rows
-for (i in 1:nrow(smoker_cols)){
-  smoker_cols$merged[i] <- toupper(paste(smoker_cols[i,2:4], collapse=";"))
+for (i in 1:nrow(hla_cols)){
+  hla_cols$merged[i] <- toupper(paste(hla_cols[i,2:6], collapse=";"))
 }
 ```
 
@@ -114,8 +116,8 @@ Next, we can remove the unique character representing NA values from the merged
 column:
 ```{r}
 # Take out NA values
-smoker_cols$merged <- gsub("8X8;", "", smoker_cols$merged)
-smoker_cols$merged <- gsub(";8X8", "", smoker_cols$merged)
+hla_cols$merged <- gsub("8X8;", "", hla_cols$merged)
+hla_cols$merged <- gsub(";8X8", "", hla_cols$merged)
 ```
 
 Then we can create a list of all unique values included in the merged column,
@@ -123,14 +125,14 @@ and export these values to a csv file to manually develop an ontology map:
 ```{r}
 # Count the number of unique values in the merged column
 merged_vals <- list()
-for(r in 1:nrow(smoker_cols)){
-  merged_vals <- append(merged_vals, str_split(smoker_cols$merged[r], ";"))
+for(r in 1:nrow(hla_cols)){
+  merged_vals <- append(merged_vals, str_split(hla_cols$merged[r], ";"))
 }
 unique_merged_vals <- unique(unlist(merged_vals))
 
 # Make a csv file of the unique values in the merged column
 write.csv(unique_merged_vals, 
-          file= file.path(proj_dir, "smoker_cols_unique_vals.csv"), 
+          file= file.path(proj_dir, "hla_cols_unique_vals.csv"), 
           row.names=F, col.names=F)
 ```
 
@@ -138,18 +140,18 @@ write.csv(unique_merged_vals,
 
 ## Import Maps
 
-To access the necessary smoker ontology terms we will load the 
-`cMD_smoker_map`.
+To access the necessary HLA ontology terms we will load the 
+`cMD_hla_map`.
 ```{r import_maps, eval=FALSE}
-# import smoker ontology map
-# mapped_terms <- read_sheet(ss, sheet = "cMD_smoker_map")
+# import HLA ontology map
+# mapped_terms <- read_sheet(ss, sheet = "hla_ontology")
 
-# import smoker ontology map
-mapped_terms <-read.csv(file = file.path(proj_dir, "cMD_smoker_map.csv"), header=T)
+# import HLA ontology map
+mapped_terms <-read.csv(file = file.path(proj_dir, "cMD_hla_map.csv"), header=T)
 ```
 
 
-# Curating Smoker Column
+# Curating HLA Column
 
 Now we can map the values in the merged columns to their corresponding ontology
 terms and propagate these values into the curated columns: 
@@ -161,9 +163,9 @@ rmv_xtra_semis <- function(x){
 }
 
 # Iterate through merged column values
-for (x in 1:length(smoker_cols$merged)){
+for (x in 1:length(hla_cols$merged)){
   # Create a list of terms in the value
-  original_terms <- as.list(unlist(strsplit(smoker_cols$merged[x], ";")))
+  original_terms <- as.list(unlist(strsplit(hla_cols$merged[x], ";")))
   new_terms <- list()
   new_term_ids <- list()
   # Search for replacement terms in the ontology map
@@ -172,12 +174,8 @@ for (x in 1:length(smoker_cols$merged)){
   new_terms <- list_drop_empty(new_terms)
   new_term_ids <- list_drop_empty(new_term_ids)
   # Concatenate new lists on ";" delimiter to create curated value
-  smoker_cols$curated_smoker[x] <- rmv_xtra_semis(paste(as.list(unique(new_terms)), collapse= ";"))
-  smoker_cols$curated_smoker_ontology_term_id[x] <- rmv_xtra_semis(paste(as.list(unique(new_term_ids)), collapse= ";"))
-  if (smoker_cols$curated_smoker[x]=="Smoker (finding);Ex-smoker (finding)"){
-    smoker_cols$curated_smoker[x] <- "Smoker (finding)"
-    smoker_cols$curated_smoker_ontology_term_id[x] <- "SNOMED:77176002"
-  }
+  hla_cols$curated_hla[x] <- rmv_xtra_semis(paste(as.list(new_terms), collapse= ";"))
+  hla_cols$curated_hla_ontology_term_id[x] <- rmv_xtra_semis(paste(as.list(new_term_ids), collapse= ";"))
   if(x %% 2000==0){print(x)}
 }
 ```
@@ -189,23 +187,25 @@ Next, we can clean up the dataframe by replacing the unique character
 representing NA values with "NA" and updating column names as needed:
 ```{r}
 # Replace NA values from original columns with "NA"
-smoker_cols <- data.frame(lapply(smoker_cols, 
-                                          function(x) gsub("8X8", NA, x)))
+hla_cols <- data.frame(lapply(hla_cols, function(x) gsub("8X8", NA, x)))
 
 # Create a column of relevant source columns
-for (i in 1:nrow(smoker_cols)){
-  smoker_cols$curated_smoker_source[i] <- paste(colnames(smoker_cols[,2:4][which(!is.na(smoker_cols[i,2:4]))]), collapse=";")
+for (i in 1:nrow(hla_cols)){
+  hla_cols$curated_hla_source[i] <- paste(colnames(hla_cols[,2:6][which(!is.na(hla_cols[i,2:6]))]), collapse=";")
 }
 
+# Revert the HLA values in the merged column to original values
+hla_cols$merged <- gsub("<<>>", "*", hla_cols$merged)
+hla_cols$merged <- gsub(";D", "-D", hla_cols$merged)
+
 # Create a curated dataframe
-curated_smoker <- smoker_cols[,c(1, 5:8)]
+curated_hla <- hla_cols[,c(1, 7:10)]
 
 # Rename the columns for accuracy & specificity
-colnames(curated_smoker)[2] <- "original_smoker"
+colnames(curated_hla)[2] <- "original_hla"
 
 # Replace empty values from curated columns with "NA"
-curated_smoker <- data.frame(lapply(curated_smoker, 
-                                      function(x) gsub("^$", NA, x)))
+curated_hla <- data.frame(lapply(curated_hla, function(x) gsub("^$", NA, x)))
 ```
 
 
@@ -214,7 +214,7 @@ curated_smoker <- data.frame(lapply(curated_smoker,
 Finally, we will export our completed table to GitHub.
 ```{r export_curated_table, eval=FALSE}
 # export to GitHub
-write.csv(curated_smoker, 
-          file = file.path(proj_dir, "curated_smoker.csv"),
+write.csv(curated_hla, 
+          file = file.path(proj_dir, "curated_hla.csv"),
           row.names = FALSE)
 ```
