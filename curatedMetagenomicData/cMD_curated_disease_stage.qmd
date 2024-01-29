@@ -1,0 +1,202 @@
+---
+title: "Harmonize disease stage information in cMD sample metadata"
+author:
+  - Sehyun Oh
+  - Kai Gravel-Pucillo
+date: "`r format(Sys.time(), '%B %d, %Y')`"
+format:
+    html:
+        fontsize: 14pxs
+        toc: true
+        top-depth: 3
+abstract: "Prepare U24 Supplement: AI/ML-ready"
+---
+
+```{r setup, include=FALSE}
+knitr::opts_chunk$set(echo = TRUE, 
+                    warning = FALSE,
+                    message = FALSE,
+                    collapse = TRUE,
+                    eval = TRUE)
+```
+
+# Overview
+
+This .qmd file demonstrates a workflow for curating and harmonizing disease
+stage data with the curatedMetagenomicData package.
+This file curates information from the original ajcc, tnm, and 
+disease_stage columns to produce the curated disease_stage column.
+
+# Setup
+## Load Packages
+
+```{r load}
+suppressPackageStartupMessages({
+  library(curatedMetagenomicData)
+  library(tidyverse)
+  library(googlesheets4)
+  library(rols)
+  library(dplyr)
+  library(hash)
+  library(vctrs)
+  library(rvest)
+})
+```
+
+## Setup for Curation
+
+We will first add a `curation_id` consisting of study name and sample ID (`study_name:sample_id`) to avoid confusion due to duplicated samples.
+
+```{r curation_setup}
+# Add curation ID
+sampleMetadata$curation_id <- paste(sampleMetadata$study_name, sampleMetadata$sample_id, sep = ":")
+
+# Define a project directory
+proj_dir <- "C:\\Users\\Owner\\Desktop\\CUNY Internship\\cMD"
+```
+
+# Exploratory Data Analysis & Data Curation
+
+## Manual Data Corrections
+
+Next, we will make some manual corrections to the data.
+We will start by creating a tibble dataframe and checking the completeness of 
+the three original columns as well as reviewing their unique values:
+```{r}
+# Create a tibble object 
+samplemd <- as_tibble(sampleMetadata)
+
+# Review unique values
+unique(sampleMetadata$ajcc)
+unique(sampleMetadata$tnm)
+unique(sampleMetadata$disease_stage)
+
+# Calculate completeness
+length(samplemd$ajcc[which(!is.na(samplemd$ajcc))])/length(samplemd$ajcc)
+length(samplemd$tnm[which(!is.na(samplemd$tnm))])/length(samplemd$tnm)
+length(samplemd$disease_stage[which(!is.na(samplemd$disease_stage))])/length(samplemd$disease_stage)
+```
+
+Then we can create a list of the names of the columns which will be included in 
+the merged column,and export these values to a csv file to manually develop an 
+ontology map:
+```{r}
+# Create a dataframe of only the relevant columns
+dis_st_cols <- samplemd %>% select(curation_id, ajcc, tnm, disease_stage)
+dis_st_cols <- as.data.frame(sapply( dis_st_cols, as.character))
+
+# Get column names for ontology map
+unique_merged_cols <- colnames(dis_st_cols[2:4])
+
+# Make a csv file of the unique values in the merged column
+write.csv(unique_merged_cols, 
+          file= file.path(proj_dir, "dis_st_cols_unique_vals.csv"), 
+          row.names=F, col.names=F)
+```
+
+
+# Mapping
+
+## Import Maps
+
+To access the necessary feces phenotype ontology terms we will load the 
+`cMD_disease_stage_map`.
+```{r import_maps, eval=FALSE}
+# import disease_stage ontology map
+# mapped_terms <- read_sheet(ss, sheet = "disease_stage_ontology")
+
+# import disease_stage ontology map
+mapped_terms <-read.csv(file = file.path(proj_dir, "cMD_disease_stage_map.csv"), header=T)
+```
+
+# Curating disease_stage Column
+
+Next we can convert plain numeric values into a combined descriptive and numeric 
+value pair by adding the corresponding column name. We will also take this 
+opportunity to map the new values associated with each column metric and their
+corresponding ontology term IDs:
+```{r}
+# Initiate an ontology_term_id column
+dis_st_cols$curated_disease_stage_ontology_term_id <- "8X8"
+
+# Merge all relevant rows into an original_disease_stage column
+for (i in 1:nrow(dis_st_cols)){
+  dis_st_cols$original_disease_stage[i] <- paste(dis_st_cols[i,2:4], collapse=";")
+}
+# Take out NA values
+dis_st_cols$original_disease_stage <- gsub("NA;", "", dis_st_cols$original_disease_stage)
+dis_st_cols$original_disease_stage <- gsub(";NA", "", dis_st_cols$original_disease_stage)
+dis_st_cols$original_disease_stage <- gsub("NA", NA, dis_st_cols$original_disease_stage)
+
+
+# Update numeric columns with additional ontology values for metric type
+for(col in colnames(dis_st_cols[,2:4])){
+  new_col <- mapped_terms$curated_ontology[grep(paste("^",col,"$",sep=""), mapped_terms$original_value, fixed=F)]
+  new_col_onto <- mapped_terms$curated_ontology_term_id[grep(paste("^",col,"$",sep=""), mapped_terms$original_value, fixed=F)]
+  for (row in 1:nrow(dis_st_cols)){
+    val <- dis_st_cols[row,col]
+    if (!is.na(val)){
+      dis_st_cols[row,col] <- paste(new_col, ":", dis_st_cols[row,col], sep="")
+      dis_st_cols$curated_disease_stage_ontology_term_id[row] <- 
+        paste(dis_st_cols$curated_disease_stage_ontology_term_id[row], new_col_onto, sep=";")
+    }
+  }
+}
+```
+
+Now we can replace character values representing a lack of information with a 
+unique character value ("8X8"), and merge these values into a single column with 
+each distinct value separated by a semicolon.
+```{r}
+# Convert NA values to unique character value (8X8)
+dis_st_cols[,2:4] <- dis_st_cols[,2:4] %>% replace(is.na(.), "8X8") %>% data.frame()
+
+# Merge all relevant rows
+for (i in 1:nrow(dis_st_cols)){
+  dis_st_cols$curated_disease_stage[i] <- paste(dis_st_cols[i,2:4], collapse=";")
+}
+```
+
+Next, we can remove the unique character representing NA values from the merged
+column:
+```{r}
+# Take out NA values
+dis_st_cols$curated_disease_stage <- gsub("8X8;", "", dis_st_cols$curated_disease_stage)
+dis_st_cols$curated_disease_stage <- gsub(";8X8", "", dis_st_cols$curated_disease_stage)
+dis_st_cols$curated_disease_stage_ontology_term_id <- 
+  gsub("8X8;", "", dis_st_cols$curated_disease_stage_ontology_term_id)
+```
+
+
+## Curated Table Creation
+
+Next, we can clean up the dataframe by replacing the unique character 
+representing NA values with "NA" and updating column names as needed:
+```{r}
+# Replace NA values from original columns with "NA"
+dis_st_cols <- data.frame(lapply(dis_st_cols, 
+                                          function(x) gsub("8X8", NA, x)))
+
+# Create a column of relevant source columns
+for (i in 1:nrow(dis_st_cols)){
+  dis_st_cols$curated_disease_stage_source[i] <- paste(colnames(dis_st_cols[,2:4][which(!is.na(dis_st_cols[i,2:4]))]), collapse=";")
+}
+
+# Create a curated dataframe
+curated_disease_stage <- dis_st_cols[,c(1, 6, 7, 5, 8)]
+
+# Replace empty values from curated columns with "NA"
+curated_disease_stage <- data.frame(lapply(curated_disease_stage, 
+                                      function(x) gsub("^$", NA, x)))
+```
+
+
+## Export
+
+Finally, we will export our completed table to GitHub.
+```{r export_curated_table, eval=FALSE}
+# export to GitHub
+write.csv(curated_disease_stage, 
+          file = file.path(proj_dir, "curated_disease_stage.csv"),
+          row.names = FALSE)
+```
