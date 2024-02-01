@@ -442,6 +442,37 @@ curated_age <- data.frame(lapply(curated_age,
                                       function(x) gsub("^$", NA, x)))
 ```
 
+Now we will add a curated_age_group column and corresponding ontology term id column:
+```{r}
+# Load age group map
+age_group_map <- read.csv(file=file.path(proj_dir, "cBioPortal_age_category_ontology.csv"))
+
+# Create a function to determine age category from the map
+get_age_group <- function(x, y){
+  if (!(is.na(x) | is.na(y))){
+    for (i in 1:5){
+      if ((x >= as.numeric(age_group_map$curated_age_min[i])) & (y < as.numeric(age_group_map$curated_age_max[i]))){
+        age_group <- i
+        break
+      }
+    age_group <- 6
+    }
+  }else{
+    age_group <- 6
+  }
+
+  return(age_group)
+}
+
+# Initialize columns for curated age group and the ontology term id
+curated_age$curated_age_group <- NA
+curated_age$curated_age_group_ontology_term_id <- NA
+
+# Add values based on curated_age_at_procurement
+curated_age$curated_age_group <- as.character(lapply(1:nrow(curated_age), function(x) age_group_map$curated_ontology[get_age_group(as.numeric(curated_age$curated_age_at_procurement_min[x]), as.numeric(curated_age$curated_age_at_procurement_max[x]))]))
+curated_age$curated_age_group_ontology_term_id <- as.character(lapply(1:nrow(curated_age), function(x) age_group_map$curated_ontology_term_id[which(age_group_map$curated_ontology==curated_age$curated_age_group[x])]))
+```
+
 
 ## Export
 
