@@ -47,6 +47,17 @@ write.csv(map, file = "maps/cMD_study_condition_ontology.csv", row.names = FALSE
 ## Push the change to the GitHub repo
 ```
 
+```{r updating_maps, echo=FALSE, eval=FALS}
+## Same as the above chunk
+url <- "https://docs.google.com/spreadsheets/d/1QSbB_b1DkfqOc7q5eHE0IDHSiGqNUyTE8d4GzbSEzjM/edit?usp=sharing"
+ss <- googledrive::as_id(url)
+
+attribute <- "treatment"
+map <- read_sheet(ss, sheet = paste0(attribute, "_ontology"))
+write.csv(map, file = paste0("maps/cMD_", attribute, "_ontology.csv"), row.names = FALSE)
+```
+
+
 # Update curated sampleMetadata
 Curation/mapping process of a given attributes are documented in the `.qmd`
 files under `curatedMetagenomicData/` directory. Please find and run proper
@@ -142,6 +153,7 @@ the original columns with the `legacy_` prefix at the end before the
 `last_modified` column.
 
 
+
 # Save
 ## Full version
 The `cMD_curated_sampleMetadata.csv` will be a direct replacement of the 
@@ -178,84 +190,4 @@ AnVIL::gsutil_cp(parquet,
 
 
 
-
-# Completeness update
-```{r message=FALSE}
-dir <- "~/OmicsMLRepo/OmicsMLRepoData"
-fpath <- file.path(dir, "inst/extdata/cMD_curated_sampleMetadata.csv")
-allSampleMetadata <- read_csv(fpath)
-```
-
-```{r import_gs, eval=FALSE}
-url <- "https://docs.google.com/spreadsheets/d/1xziFB_zBl32BjNarcyEN4GupTYpPtq5aDz0GbRbWvtk/edit?usp=sharing"
-ss <- googledrive::as_id(url)
-merging_schema <- googlesheets4::read_sheet(ss = ss, sheet = "merging_schema")
-```
-
-From the harmonization/curation merging_schema table, which contains the original
-fields and their curated versions as listed in their column names.
-
-```{r cal_completness_and_report, eval=FALSE}
-library(OmicsMLRepoCuration)
-
-## Completeness and uniqueness of original/source columns
-a <- merging_schema$original_fields 
-original_fields_name <- sapply(a, function(x) {
-    strsplit(x, split = ";") %>% 
-        unlist %>% 
-        paste0("legacy_", .) %>% 
-        paste0(., collapse = ";")
-}) %>% as.vector
-original_fields_name[which(original_fields_name == "legacy_NA")] <- NA
-
-original_fields_completeness <- checkCurationStats(
-    fields_list = original_fields_name,
-    DB = allSampleMetadata)
-original_fields_unique_vals <- checkCurationStats(
-    fields_list = original_fields_name,
-    check = "unique",
-    DB = allSampleMetadata)
-
-## Completeness and uniqueness of original/source columns
-b <- merging_schema$curated_fields 
-curated_fields_name <- sapply(b, function(x) {
-    strsplit(x, split = ";") %>% 
-        unlist %>% 
-        # paste0("curated_", .) %>% 
-        gsub("curated_", "", .) %>%
-        paste0(., collapse = ";")
-}) %>% as.vector
-
-curated_fields_completeness <- checkCurationStats(
-    fields_list = curated_fields_name,
-    DB = allSampleMetadata)
-curated_fields_unique_vals <- checkCurationStats(
-    fields_list = curated_fields_name,
-    check = "unique",
-    DB = allSampleMetadata)
-```
-
-```{r eval=FALSE}
-merging_schema$original_fields_completeness <- original_fields_completeness
-merging_schema$curated_fields_completeness <- curated_fields_completeness
-merging_schema$original_fields_unique_vals <- original_fields_unique_vals
-merging_schema$curated_fields_unique_vals <- curated_fields_unique_vals
-
-merging_schema <- merging_schema %>% 
-    # dplyr::relocate(original_fields_completeness, .after = original_fields) %>%
-    # dplyr::relocate(curated_fields_completeness, .after = curated_fields) %>%
-    dplyr::relocate(original_fields_unique_vals, .after = original_fields_completeness) %>%
-    dplyr::relocate(curated_fields_unique_vals, .after = curated_fields_completeness)
-```
-
-```{r updated_GH, eval=FALSE}
-dir <- "~/OmicsMLRepo/OmicsMLRepoData"
-write.csv(merging_schema, 
-          file.path(dir, "inst/extdata/cMD_merging_schema.csv"), 
-          row.names = FALSE)
-```
-
-```{r save_as_Google_Sheets, eval=FALSE}
-googlesheets4::write_sheet(merging_schema, ss = ss, sheet = "merging_schema")
-```
 

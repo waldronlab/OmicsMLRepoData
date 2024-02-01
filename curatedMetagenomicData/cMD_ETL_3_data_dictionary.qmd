@@ -21,12 +21,14 @@ knitr::opts_chunk$set(echo = TRUE,
 ```{r echo=FALSE}
 suppressPackageStartupMessages({
     library(dplyr)
+    library(OmicsMLRepoR)
 })
 ```
 
 ```{r echo=FALSE}
 ## [Update needed] to get data files directly from the GH repo
 dir <- "~/OmicsMLRepo/OmicsMLRepoData/curatedMetagenomicData"
+ext_dir <- "~/OmicsMLRepo/OmicsMLRepoData/inst/extdata"
 ```
 
 The `merging_schema` table shows the original and curated fields of the cMD 
@@ -39,13 +41,13 @@ ss <- googledrive::as_id(url)
 merging_schema <- googlesheets4::read_sheet(ss = ss, sheet = "merging_schema")
 
 ## Names of the original fields
-old_fields <- sapply(merging_schema$original_fields, strsplit, split = ";") %>% 
+old_fields <- sapply(merging_schema$original_field, strsplit, split = ";") %>% 
     unlist %>% 
     as.character
 old_fields[!is.na(old_fields)]
 
 ## Names of the new fields
-new_fields <- sapply(merging_schema$curated_fields, strsplit, split = ";") %>% 
+new_fields <- sapply(merging_schema$curated_field, strsplit, split = ";") %>% 
     unlist %>% 
     as.character
 new_fields
@@ -62,22 +64,8 @@ source(file.path(dir, "R/template_age.R"))
 curated_age_all
 ```
 
-Manual update for dynamic enum: Age
-```{r}
-ind <- curated_age_all$col.name == "age_unit"
-curated_age_all$dynamic_enum[ind] <- "NCIT:C50400"
-curated_age_all$dynamic_enum_property[ind] <- "descendent"
-
-ind <- curated_age_all$col.name == "age_group"
-curated_age_all$dynamic_enum[ind] <- "NCIT:C20587"
-curated_age_all$dynamic_enum_property[ind] <- "descendent"
-
-curated_age_all
-```
-
 ## study_condition
 - [Todo] Compare 'disease_stage' column with that of cBioPortalData
-- [Feature Request] Adopt dynamic enums?
 ```{r}
 source(file.path(dir, "R/template_condition.R"))
 curated_disease_all
@@ -91,20 +79,12 @@ curated_treatment
 
 ## bodysite
 - [Feature Request] Use the same dictionary for both bodysite and bodysubsite?   
-- [Feature Request] Adopt dynamic enums?
 ```{r}
 source(file.path(dir, "R/template_bodysite.R"))
 curated_bodysite
 curated_bodysubsite
 ```
 
-Manual update for dynamic enum: Age
-```{r}
-curated_bodysite$dynamic_enum <- "UBERON:0001062"
-curated_bodysite$dynamic_enum_property <- "descendent"
-
-curated_bodysite
-```
 
 ## Others
 `sex` and `antibiotics_current_use`
@@ -136,6 +116,15 @@ url <- "https://docs.google.com/spreadsheets/d/1xziFB_zBl32BjNarcyEN4GupTYpPtq5a
 ss <- googledrive::as_id(url)
 googlesheets4::sheet_write(curated_all, ss = ss, sheet = "data_dictionary")
 ```
+
+```{r impoty_data_dictionary, eval=FALSE}
+## Export to Google Sheet
+url <- "https://docs.google.com/spreadsheets/d/1xziFB_zBl32BjNarcyEN4GupTYpPtq5aDz0GbRbWvtk/edit?usp=sharing"
+ss <- googledrive::as_id(url)
+curated_all <- googlesheets4::read_sheet(ss = ss, sheet = "data_dictionary")
+```
+
+
 
 
 # Sucession plan
