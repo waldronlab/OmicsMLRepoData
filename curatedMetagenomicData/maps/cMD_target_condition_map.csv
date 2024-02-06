@@ -1,4 +1,4 @@
-"study_name","target_condition","target_condition_term_id","target_condition_term_db"
+"study_name","curated_ontology_term","curated_ontology_term_id","curated_ontology_term_db"
 "AsnicarF_2017","human gut microbiome","OHMI:0000020","OHMI"
 "AsnicarF_2021","human gut microbiome","OHMI:0000020","OHMI"
 "BackhedF_2015","human gut microbiome","OHMI:0000020","OHMI"

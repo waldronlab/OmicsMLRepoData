@@ -1,32 +1,32 @@
-original_value,curated_ontology,curated_ontology_term_id,curated_ontology_term_db
-DQB1<<>>0302/<<>>0501,HLA-DQB1*03:02 protein complex;HLA-DQB1*05:01 protein complex,MRO:0001240;MRO:0001247,MRO
-DRB1<<>>0404,HLA-DRB1*04:04 protein complex,MRO:0001293,MRO
-DQA1<<>>05,HLA protein complex with DQ5 serotype,MRO:0001626,MRO
-DQB1<<>>02/<<>>0604,HLA protein complex with DQ2 serotype;HLA-DQB1*06:04 protein complex,MRO:0001620;MRO:0001253,MRO
-DQA1<<>>05/<<>>03,HLA protein complex with DQ5 serotype;HLA protein complex with DQ3 serotype,MRO:0001626;MRO:0001622,MRO
-DQB1<<>>02/<<>>0302,HLA protein complex with DQ2 serotype;HLA-DQB1*03:02 protein complex,MRO:0001620;MRO:0001240,MRO
-DRB1<<>>0401,HLA-DRB1*04:01 protein complex,MRO:0001290,MRO
-DQB1<<>>0302/<<>>04,HLA-DQB1*03:02 protein complex;HLA protein complex with DQ4 serotype,MRO:0001240;MRO:0001625,MRO
-DRB<<>>0401,HLA-DRB1*04:01 protein complex,MRO:0001290,MRO
-DQB1<<>>02/<<>>04,HLA protein complex with DQ2 serotype;HLA protein complex with DQ4 serotype,MRO:0001620;MRO:0001625,MRO
-DQB1<<>>02/<<>>0301,HLA protein complex with DQ2 serotype;HLA-DQB1*03:01 protein complex,MRO:0001620;MRO:0001239,MRO
-DQA1<<>>0201/<<>>03,HLA-DQA1*02:01 protein complex;HLA protein complex with DQ3 serotype,MRO:0001211;MRO:0001622,MRO
-DQB1<<>>0302/<<>>0<<>>01,HLA-DQB1*03:02 protein complex;HLA protein complex with DQ1 serotype,MRO:0001240;MRO:0001619,MRO
-DQA1<<>>05/<<>>0201,HLA protein complex with DQ5 serotype;HLA-DQA1*02:01 protein complex,MRO:0001626;MRO:0001211,MRO
-DQB1<<>>02/<<>>02,HLA protein complex with DQ2 serotype;HLA protein complex with DQ2 serotype,MRO:0001620;MRO:0001620,MRO
-DQB1<<>>0302/<<>>0604,HLA-DQB1*03:02 protein complex;HLA-DQB1*06:04 protein complex,MRO:0001240;MRO:0001253,MRO
-HLA_DQA11<<5>>,HLA protein complex with DQ5 serotype,MRO:0001626,MRO
-HLA_DQA12<<3>>,HLA protein complex with DQ3 serotype,MRO:0001622,MRO
-HLA_DRB12<<401>>,HLA-DRB1*04:01 protein complex,MRO:0001290,MRO
-HLA_DRB11<<404>>,HLA-DRB1*04:04 protein complex,MRO:0001293,MRO
-HLA_DRB12<<404>>,HLA-DRB1*04:04 protein complex,MRO:0001293,MRO
-HLA_DQA12<<5>>,HLA protein complex with DQ5 serotype,MRO:0001626,MRO
-HLA_DQA11<<3>>,HLA protein complex with DQ3 serotype,MRO:0001622,MRO
-HLA_DQA12<<201>>,HLA-DQA1*02:01 protein complex,MRO:0001211,MRO
-HLA_DRB11<<401>>,HLA-DRB1*04:01 protein complex,MRO:0001290,MRO
-HLA_DQA11<<201>>,HLA-DQA1*02:01 protein complex,MRO:0001211,MRO
-HLA_DRB12<<402>>,HLA-DRB1*04:02 protein complex,MRO:0001291,MRO
-HLA_DRB11<<405>>,HLA-DRB1*04:05 protein complex,MRO:0001294,MRO
-HLA_DRB11<<402>>,HLA-DRB1*04:02 protein complex,MRO:0001291,MRO
-HLA_DRB11<<408>>,HLA-DRB1*04:08 protein complex,MRO:0001297,MRO
-HLA_DRB12<<405>>,HLA-DRB1*04:05 protein complex,MRO:0001294,MRO
+"original_value","curated_ontology_term","curated_ontology_term_id","curated_ontology_term_db"
+"DQB1<<>>0302/<<>>0501","HLA-DQB1*03:02 protein complex;HLA-DQB1*05:01 protein complex","MRO:0001240;MRO:0001247","MRO"
+"DRB1<<>>0404","HLA-DRB1*04:04 protein complex","MRO:0001293","MRO"
+"DQA1<<>>05","HLA protein complex with DQ5 serotype","MRO:0001626","MRO"
+"DQB1<<>>02/<<>>0604","HLA protein complex with DQ2 serotype;HLA-DQB1*06:04 protein complex","MRO:0001620;MRO:0001253","MRO"
+"DQA1<<>>05/<<>>03","HLA protein complex with DQ5 serotype;HLA protein complex with DQ3 serotype","MRO:0001626;MRO:0001622","MRO"
+"DQB1<<>>02/<<>>0302","HLA protein complex with DQ2 serotype;HLA-DQB1*03:02 protein complex","MRO:0001620;MRO:0001240","MRO"
+"DRB1<<>>0401","HLA-DRB1*04:01 protein complex","MRO:0001290","MRO"
+"DQB1<<>>0302/<<>>04","HLA-DQB1*03:02 protein complex;HLA protein complex with DQ4 serotype","MRO:0001240;MRO:0001625","MRO"
+"DRB<<>>0401","HLA-DRB1*04:01 protein complex","MRO:0001290","MRO"
+"DQB1<<>>02/<<>>04","HLA protein complex with DQ2 serotype;HLA protein complex with DQ4 serotype","MRO:0001620;MRO:0001625","MRO"
+"DQB1<<>>02/<<>>0301","HLA protein complex with DQ2 serotype;HLA-DQB1*03:01 protein complex","MRO:0001620;MRO:0001239","MRO"
+"DQA1<<>>0201/<<>>03","HLA-DQA1*02:01 protein complex;HLA protein complex with DQ3 serotype","MRO:0001211;MRO:0001622","MRO"
+"DQB1<<>>0302/<<>>0<<>>01","HLA-DQB1*03:02 protein complex;HLA protein complex with DQ1 serotype","MRO:0001240;MRO:0001619","MRO"
+"DQA1<<>>05/<<>>0201","HLA protein complex with DQ5 serotype;HLA-DQA1*02:01 protein complex","MRO:0001626;MRO:0001211","MRO"
+"DQB1<<>>02/<<>>02","HLA protein complex with DQ2 serotype;HLA protein complex with DQ2 serotype","MRO:0001620;MRO:0001620","MRO"
+"DQB1<<>>0302/<<>>0604","HLA-DQB1*03:02 protein complex;HLA-DQB1*06:04 protein complex","MRO:0001240;MRO:0001253","MRO"
+"HLA_DQA11<<5>>","HLA protein complex with DQ5 serotype","MRO:0001626","MRO"
+"HLA_DQA12<<3>>","HLA protein complex with DQ3 serotype","MRO:0001622","MRO"
+"HLA_DRB12<<401>>","HLA-DRB1*04:01 protein complex","MRO:0001290","MRO"
+"HLA_DRB11<<404>>","HLA-DRB1*04:04 protein complex","MRO:0001293","MRO"
+"HLA_DRB12<<404>>","HLA-DRB1*04:04 protein complex","MRO:0001293","MRO"
+"HLA_DQA12<<5>>","HLA protein complex with DQ5 serotype","MRO:0001626","MRO"
+"HLA_DQA11<<3>>","HLA protein complex with DQ3 serotype","MRO:0001622","MRO"
+"HLA_DQA12<<201>>","HLA-DQA1*02:01 protein complex","MRO:0001211","MRO"
+"HLA_DRB11<<401>>","HLA-DRB1*04:01 protein complex","MRO:0001290","MRO"
+"HLA_DQA11<<201>>","HLA-DQA1*02:01 protein complex","MRO:0001211","MRO"
+"HLA_DRB12<<402>>","HLA-DRB1*04:02 protein complex","MRO:0001291","MRO"
+"HLA_DRB11<<405>>","HLA-DRB1*04:05 protein complex","MRO:0001294","MRO"
+"HLA_DRB11<<402>>","HLA-DRB1*04:02 protein complex","MRO:0001291","MRO"
+"HLA_DRB11<<408>>","HLA-DRB1*04:08 protein complex","MRO:0001297","MRO"
+"HLA_DRB12<<405>>","HLA-DRB1*04:05 protein complex","MRO:0001294","MRO"

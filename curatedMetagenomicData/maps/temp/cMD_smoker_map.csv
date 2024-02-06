@@ -1,0 +1,7 @@
+original_value,curated_ontology,curated_ontology_term_id,curated_ontology_term_db
+SMOKER NO,Non-smoker (finding),SNOMED:8392000,SNOMED
+EVER_SMOKER NO,Never smoked tobacco (finding),SNOMED:266919005,SNOMED
+SMOKER YES,Smoker (finding),SNOMED:77176002,SNOMED
+EVER_SMOKER YES,Ex-smoker (finding),SNOMED:8517006,SNOMED
+SMOKE NO,Non-smoker (finding),SNOMED:8392000,SNOMED
+SMOKE YES,Smoker (finding),SNOMED:77176002,SNOMED
