@@ -1,0 +1,220 @@
+---
+title: "Harmonize 'response to therapy' information in cMD sample metadata"
+author:
+  - Sehyun Oh
+  - Kai Gravel-Pucillo
+date: "`r format(Sys.time(), '%B %d, %Y')`"
+format:
+    html:
+        fontsize: 14pxs
+        toc: true
+        top-depth: 3
+abstract: "Prepare U24 Supplement: AI/ML-ready"
+---
+
+```{r setup, include=FALSE}
+knitr::opts_chunk$set(echo = TRUE, 
+                    warning = FALSE,
+                    message = FALSE,
+                    collapse = TRUE,
+                    eval = TRUE)
+```
+
+# Overview
+
+This .qmd file demonstrates a workflow for curating and harmonizing 'response to 
+therapy' data with the curatedMetagenomicData package.This file curates 
+information from the original ORR, PFS12, and RECIST columns to produce the 
+curated response_to_therapy column.
+
+# Setup
+## Load Packages
+
+```{r load}
+suppressPackageStartupMessages({
+  library(curatedMetagenomicData)
+  library(tidyverse)
+  library(googlesheets4)
+  library(rols)
+  library(dplyr)
+  library(hash)
+  library(vctrs)
+  library(rvest)
+})
+```
+
+## Setup for Curation
+
+We will first add a `curation_id` consisting of study name and sample ID (`study_name:sample_id`) to avoid confusion due to duplicated samples.
+
+```{r curation_setup}
+# Add curation ID
+sampleMetadata$curation_id <- paste(sampleMetadata$study_name, sampleMetadata$sample_id, sep = ":")
+
+# Define a project directory
+proj_dir <- "C:\\Users\\Owner\\Desktop\\CUNY Internship\\cMD"
+```
+
+# Exploratory Data Analysis & Data Curation
+
+## Manual Data Corrections
+
+Next, we will make some manual corrections to the data.
+We will start by creating a tibble dataframe and checking the completeness of 
+the three original columns as well as reviewing their unique values:
+```{r}
+# Create a tibble object 
+samplemd <- as_tibble(sampleMetadata)
+
+# Review unique values
+unique(sampleMetadata$ORR)
+unique(sampleMetadata$PFS12)
+unique(sampleMetadata$RECIST)
+
+# Calculate completeness
+length(samplemd$ORR[which(!is.na(samplemd$ORR))])/length(samplemd$ORR)
+length(samplemd$PFS12[which(!is.na(samplemd$PFS12))])/length(samplemd$PFS12)
+length(samplemd$RECIST[which(!is.na(samplemd$RECIST))])/length(samplemd$RECIST)
+```
+
+Then we can create a list of the names of the columns which will be included in 
+the merged column,and export these values to a csv file to manually develop an 
+ontology map:
+```{r}
+# Create a dataframe of only the relevant columns
+resp_thrpy_cols <- samplemd %>% select(curation_id, ORR, PFS12, RECIST)
+resp_thrpy_cols <- as.data.frame(sapply(resp_thrpy_cols, as.character))
+
+# Get column names for ontology map
+unique_merged_cols <- colnames(resp_thrpy_cols[2:4])
+
+# Make a csv file of the unique values in the merged column
+write.csv(unique_merged_cols, 
+          file= file.path(proj_dir, "resp_thrpy_cols_unique_vals.csv"), 
+          row.names=F, col.names=F)
+```
+
+
+# Mapping
+
+## Import Maps
+
+To access the necessary feces phenotype ontology terms we will load the 
+`cMD_response_to_therapy_map`.
+```{r import_maps, eval=FALSE}
+# import response_to_therapy ontology map
+# mapped_terms <- read_sheet(ss, sheet = "response_to_therapy_ontology")
+
+# import response_to_therapy ontology map
+mapped_terms <-read.csv(file = file.path(proj_dir, "cMD_response_to_therapy_map.csv"), header=T)
+```
+
+# Curating response_to_therapy Column
+
+Next we can convert plain numeric values into a combined descriptive and numeric 
+value pair by adding the corresponding column name. We will also take this 
+opportunity to map the new values associated with each column metric and their
+corresponding ontology term IDs:
+```{r}
+# Initialize an ontology_term_id column
+resp_thrpy_cols$curated_response_to_therapy_ontology_term_id <- "8X8"
+
+# Merge all relevant rows into an original_response_to_therapy column
+for (i in 1:nrow(resp_thrpy_cols)){
+  resp_thrpy_cols$original_response_to_therapy[i] <- paste(resp_thrpy_cols[i,2:4], collapse=";")
+}
+# Take out NA values
+resp_thrpy_cols$original_response_to_therapy <- gsub("NA;", "", resp_thrpy_cols$original_response_to_therapy)
+resp_thrpy_cols$original_response_to_therapy <- gsub(";NA", "", resp_thrpy_cols$original_response_to_therapy)
+resp_thrpy_cols$original_response_to_therapy <- gsub("NA", NA, resp_thrpy_cols$original_response_to_therapy)
+
+# Update numeric columns with additional ontology values for metric type
+for(col in colnames(resp_thrpy_cols[,2:4])){
+  new_col <- mapped_terms$curated_ontology[grep(paste("^",col,"$",sep=""), mapped_terms$original_value, fixed=F)]
+  new_col_onto <- mapped_terms$curated_ontology_term_id[grep(paste("^",col,"$",sep=""), mapped_terms$original_value, fixed=F)]
+  for (row in 1:nrow(resp_thrpy_cols)){
+    val <- resp_thrpy_cols[row,col]
+    if (!is.na(val)){
+      resp_thrpy_cols[row,col] <- paste(new_col, ":", toupper(resp_thrpy_cols[row,col]), sep="")
+      resp_thrpy_cols$curated_response_to_therapy_ontology_term_id[row] <- 
+        paste(resp_thrpy_cols$curated_response_to_therapy_ontology_term_id[row], new_col_onto, sep=";")
+    }
+  }
+}
+
+# Prep RECIST column for curation
+resp_thrpy_cols$RECIST <- resp_thrpy_cols$RECIST %>% replace(is.na(.), "8X8") %>% as.vector()
+
+# Update ontology term and replace abbreviations with curated ontology terms
+for(row in 1:nrow(resp_thrpy_cols)){
+    recist <- unlist(strsplit(resp_thrpy_cols$RECIST[row], ":"))
+    new_val_onto <- mapped_terms$curated_ontology_term_id[grep(tail(recist, n=1), mapped_terms$original_value, fixed=F)]
+    resp_thrpy_cols$curated_response_to_therapy_ontology_term_id[row] <- 
+        paste(resp_thrpy_cols$curated_response_to_therapy_ontology_term_id[row], new_val_onto, sep=";")
+    resp_thrpy_cols$RECIST[row] <- paste(recist[1], 
+                                         mapped_terms$curated_ontology[mapped_terms$original_value==tail(recist, n=1)], sep=":")
+}
+
+# Revert RECIST NA values
+resp_thrpy_cols$RECIST <- sapply(resp_thrpy_cols$RECIST, function(x) ifelse(x=="8X8:8X8", NA, x))
+unique(resp_thrpy_cols$RECIST)
+```
+
+Now we can replace character values representing a lack of information with a 
+unique character value ("8X8"), and merge these values into a single column with 
+each distinct value separated by a semicolon.
+```{r}
+# Convert NA values to unique character value (8X8)
+resp_thrpy_cols[,2:4] <- resp_thrpy_cols[,2:4] %>% replace(is.na(.), "8X8") %>% data.frame()
+
+# Merge all relevant rows
+for (i in 1:nrow(resp_thrpy_cols)){
+  resp_thrpy_cols$curated_response_to_therapy[i] <- paste(resp_thrpy_cols[i,2:4], collapse=";")
+}
+```
+
+Next, we can remove the unique character representing NA values from the merged
+column:
+```{r}
+# Take out NA values
+resp_thrpy_cols$curated_response_to_therapy <- gsub("8X8;", "", resp_thrpy_cols$curated_response_to_therapy)
+resp_thrpy_cols$curated_response_to_therapy <- gsub(";8X8", "", resp_thrpy_cols$curated_response_to_therapy)
+resp_thrpy_cols$curated_response_to_therapy_ontology_term_id <- 
+  gsub("8X8;", "", resp_thrpy_cols$curated_response_to_therapy_ontology_term_id)
+resp_thrpy_cols$curated_response_to_therapy_ontology_term_id <- 
+  gsub(";8X8", "", resp_thrpy_cols$curated_response_to_therapy_ontology_term_id)
+```
+
+
+## Curated Table Creation
+
+Next, we can clean up the dataframe by replacing the unique character 
+representing NA values with "NA" and updating column names as needed:
+```{r}
+# Replace NA values from original columns with "NA"
+resp_thrpy_cols <- data.frame(lapply(resp_thrpy_cols, 
+                                          function(x) gsub("8X8", NA, x)))
+
+# Create a column of relevant source columns
+for (i in 1:nrow(resp_thrpy_cols)){
+  resp_thrpy_cols$curated_response_to_therapy_source[i] <- paste(colnames(resp_thrpy_cols[,2:4][which(!is.na(resp_thrpy_cols[i,2:4]))]), collapse=";")
+}
+
+# Create a curated dataframe
+curated_response_to_therapy <- resp_thrpy_cols[,c(1, 6, 7, 5, 8)]
+
+# Replace empty values from curated columns with "NA"
+curated_response_to_therapy <- data.frame(lapply(curated_response_to_therapy, 
+                                      function(x) gsub("^$", NA, x)))
+```
+
+
+## Export
+
+Finally, we will export our completed table to GitHub.
+```{r export_curated_table, eval=FALSE}
+# export to GitHub
+write.csv(curated_response_to_therapy, 
+          file = file.path(proj_dir, "curated_response_to_therapy.csv"),
+          row.names = FALSE)
+```
