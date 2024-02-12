@@ -1,0 +1,9 @@
+original_value,curated_ontology,curated_ontology_term_id,curated_ontology_term_db
+ORR,Overall Response,NCIT:C96613,NCIT
+PFS12,Progression Free Survival,EFO:0004920,EFO
+RECIST,RECIST,DICOM:112022,DICOM
+SD,Stable Disease,NCIT:C159546,NCIT
+PR,Partial Response,NCIT:C159547,NCIT
+CR,Complete Response,NCIT:C159715,NCIT
+PD,Progressive Disease,NCIT:C159716,NCIT
+8X8,8X8,8X8,
