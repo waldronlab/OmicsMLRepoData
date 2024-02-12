@@ -128,7 +128,6 @@ dis_st_cols$original_disease_stage <- gsub("NA;", "", dis_st_cols$original_disea
 dis_st_cols$original_disease_stage <- gsub(";NA", "", dis_st_cols$original_disease_stage)
 dis_st_cols$original_disease_stage <- gsub("NA", NA, dis_st_cols$original_disease_stage)
 
-
 # Update numeric columns with additional ontology values for metric type
 for(col in colnames(dis_st_cols[,2:4])){
   new_col <- mapped_terms$curated_ontology[grep(paste("^",col,"$",sep=""), mapped_terms$original_value, fixed=F)]
@@ -136,7 +135,7 @@ for(col in colnames(dis_st_cols[,2:4])){
   for (row in 1:nrow(dis_st_cols)){
     val <- dis_st_cols[row,col]
     if (!is.na(val)){
-      dis_st_cols[row,col] <- paste(new_col, ":", dis_st_cols[row,col], sep="")
+      dis_st_cols[row,col] <- paste(new_col, ":", toupper(dis_st_cols[row,col]), sep="")
       dis_st_cols$curated_disease_stage_ontology_term_id[row] <- 
         paste(dis_st_cols$curated_disease_stage_ontology_term_id[row], new_col_onto, sep=";")
     }

@@ -1,0 +1,102 @@
+---
+title: "Harmonize FMT information in cMD sample metadata"
+author:
+  - Sehyun Oh
+  - Kai Gravel-Pucillo
+date: "`r format(Sys.time(), '%B %d, %Y')`"
+format:
+    html:
+        fontsize: 14pxs
+        toc: true
+        top-depth: 3
+abstract: "Prepare U24 Supplement: AI/ML-ready"
+---
+
+```{r setup, include=FALSE}
+knitr::opts_chunk$set(echo = TRUE, 
+                    warning = FALSE,
+                    message = FALSE,
+                    collapse = TRUE,
+                    eval = TRUE)
+```
+
+# Overview
+
+This .qmd file demonstrates a workflow for curating and harmonizing FMT data 
+with the curatedMetagenomicData package.
+This file curates information from the original fmt_id and FMT_role columns to 
+produce the curated FMT_id and FMT_role columns.
+
+# Setup
+## Load Packages
+
+```{r load}
+suppressPackageStartupMessages({
+  library(curatedMetagenomicData)
+  library(tidyverse)
+  library(googlesheets4)
+  library(rols)
+  library(dplyr)
+  library(hash)
+  library(vctrs)
+  library(rvest)
+})
+```
+
+## Setup for Curation
+
+We will first add a `curation_id` consisting of study name and sample ID (`study_name:sample_id`) to avoid confusion due to duplicated samples.
+
+```{r curation_setup}
+# Add curation ID
+sampleMetadata$curation_id <- paste(sampleMetadata$study_name, sampleMetadata$sample_id, sep = ":")
+
+# Define a project directory
+proj_dir <- "C:\\Users\\Owner\\Desktop\\CUNY Internship\\cMD"
+```
+
+# Exploratory Data Analysis & Data Curation
+
+## Manual Data Corrections
+
+Next, we will make some manual corrections to the data.
+We will start by creating a tibble dataframe and checking the completeness of 
+the two original columns as well as reviewing their unique values:
+```{r}
+# Create a tibble object 
+samplemd <- as_tibble(sampleMetadata)
+
+# Review unique values
+unique(sampleMetadata$fmt_id)
+unique(sampleMetadata$FMT_role)
+
+# Calculate completeness
+length(samplemd$fmt_id[which(!is.na(samplemd$fmt_id))])/length(samplemd$fmt_id)
+length(samplemd$FMT_role[which(!is.na(samplemd$FMT_role))])/length(samplemd$FMT_role)
+```
+
+Now we can replace the miss-typed value "recipient-before" with the correct
+format "recipient_before" and rename the `fmt_id` column to `FMT_id`.
+```{r}
+# Subset fmt cols
+fmt_cols <- samplemd %>% select(curation_id, fmt_id, FMT_role)
+
+# Fix the typo in the FMT_role column
+fmt_cols$curated_FMT_role <- gsub("recipient-before", "recipient_before", fmt_cols$FMT_role)
+unique(fmt_cols$curated_FMT_role)
+
+# Change column name 
+fmt_cols <- fmt_cols %>% rename(curated_FMT_id = "fmt_id", original_FMT_role = "FMT_role")
+
+```
+
+
+## Export
+
+Finally, we will export our completed table to GitHub.
+```{r export_curated_table, eval=FALSE}
+# export to GitHub
+write.csv(fmt_cols, 
+          file = file.path(proj_dir, "curated_FMT.csv"),
+          row.names = FALSE)
+```
