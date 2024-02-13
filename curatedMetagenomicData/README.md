@@ -1,16 +1,17 @@
-### cMD_ETL_1_sampleMetadata
-- Update the `sampleMetadata` table in three versions:
-    1) Full-version to replace original cMD `sampleMetadata` table with the 
-    additional harmonized columns
-    2) Compact version with the `uncurated` column combining all the uncurated
-    columns
-    3) Parquet version of 1) for DuckDB
+## ETL
+Scripts for Extract, Transform, and Load (ETL) process to summarize and 
+maintain cMD metadata curation/harmonization.
 
-- Completeness update: calculate the completeness of original and curated 
-columns, then save it in Google Sheet.
+## data
+Curated/harmonized version of metadata tables (`csv`) per attributes.
 
+## maps
+Ontology mapping tables (`csv`). Four main columns are labeled as 
+`original_value`, `curated_ontology`, `curated_contology_term_id`, and 
+`curated_ontology_term_db`.
 
-### cMD_ETL_2_data_dictionary
-- Building a schema table from map files and save it at GitHub repo and 
-Google Sheet.   
-- Also combined with the new schema table with the original data dictionary
+## markdown
+Markdown files describing the initial curation/harmonization (`qmd`). 
+
+## `cMD_ETL.qmd`
+Describes and executes the overall ETL processes/scripts. 
