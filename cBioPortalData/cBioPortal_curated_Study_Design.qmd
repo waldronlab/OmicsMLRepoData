@@ -104,9 +104,11 @@ load the `cBioPortal_study_design_map` ontology map file.
 ```{r import_maps, eval=FALSE}
 # import bodysite ontology map
 mapped_terms <- read_sheet(ss, sheet = "cBioPortal_study_design_map")
+mapped_terms <- read_sheet(ss, sheet = "cBioPortal_target_phenotype_map")
 
 # import bodysite ontology map
 mapped_terms <-read.csv(file = file.path(proj_dir, "cBioPortal_study_design_map.csv"), header=T)
+mapped_terms_x <-read.csv(file = file.path(proj_dir, "cBioPortal_target_phenotype_map.csv"), header=T)
 ```
 
 
@@ -124,9 +126,9 @@ studydesign_cols_cbio$curated_study_design <- NA
 
 # Iterate through merged column values
 for(x in 1:length(studydesign_cols_cbio$study_id)){
-  studydesign_cols_cbio$curated_study_design[x] <- paste(mapped_terms$study_design[which(studydesign_cols_cbio$study_id[x]==mapped_terms$study_id)])
-  studydesign_cols_cbio$curated_target_phenotype[x] <- paste(mapped_terms$target_phenotype[which(studydesign_cols_cbio$study_id[x]==mapped_terms$study_id)])
-  studydesign_cols_cbio$curated_target_phenotype_term_id[x] <- paste(mapped_terms$target_phenotype_term_id[which(studydesign_cols_cbio$study_id[x]==mapped_terms$study_id)])
+  studydesign_cols_cbio$curated_study_design[x] <- paste(mapped_terms$curated_ontology[which(studydesign_cols_cbio$study_id[x]==mapped_terms$study_id)])
+  studydesign_cols_cbio$curated_target_phenotype[x] <- paste(mapped_terms_x$curated_ontology[which(studydesign_cols_cbio$study_id[x]==mapped_terms_x$study_id)])
+  studydesign_cols_cbio$curated_target_phenotype_term_id[x] <- paste(mapped_terms_x$curated_ontology_term_id[which(studydesign_cols_cbio$study_id[x]==mapped_terms_x$study_id)])
   # Processing Checkpoints
   if(x %% 10000==0){print(x)}
 }
