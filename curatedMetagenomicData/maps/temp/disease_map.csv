@@ -1,0 +1,133 @@
+original_value,curated_ontology_term,curated_ontology_term_id,curated_ontology_term_id_link
+abdominalhernia,Hernia of the abdominal wall,HP_0004299,http://purl.obolibrary.org/obo/HP_0004299
+acute_diarrhoea,acute diarrhea,DOID_0050140,http://purl.obolibrary.org/obo/DOID_0050140
+ACVD,atherosclerosis,EFO_0003914,http://www.ebi.ac.uk/efo/EFO_0003914
+AD,Alzheimer's disease,EFO_0000249,http://www.ebi.ac.uk/efo/EFO_0000249
+adenocarcinoma,adenocarcinoma,EFO_0000228,http://www.ebi.ac.uk/efo/EFO_0000228
+adenoma,Adenoma,NCIT_C2855,http://purl.obolibrary.org/obo/NCIT_C2855
+advancedadenoma,Adenoma,NCIT_C2855,http://purl.obolibrary.org/obo/NCIT_C2855
+AR,Allergic rhinitis,HP_0003193,http://purl.obolibrary.org/obo/HP_0003193
+arthritis,arthritis,EFO_0005856,http://www.ebi.ac.uk/efo/EFO_0005856
+AS,ankylosing spondylitis,EFO_0003898,http://www.ebi.ac.uk/efo/EFO_0003898
+ascaris_lumbricoides,Ascaris lumbricoides,NCIT_C122177,http://purl.obolibrary.org/obo/NCIT_C122177
+ascites,Ascites,HP_0001541,http://purl.obolibrary.org/obo/HP_0001541
+asthma,Asthma,NCIT_C28397,http://purl.obolibrary.org/obo/NCIT_C28397
+BD,Behcet's syndrome,EFO_0003780,http://www.ebi.ac.uk/efo/EFO_0003780
+bronchitis,bronchitis,EFO_0009661,http://www.ebi.ac.uk/efo/EFO_0009661
+CAD,coronary artery disease,EFO_0001645,http://www.ebi.ac.uk/efo/EFO_0001645
+carcinoma,carcinoma,EFO_0000313,http://www.ebi.ac.uk/efo/EFO_0000313
+carcinoma_surgery_history,"carcinoma,History of surgery (situation)",EFO_0000313;161615003,"http://www.ebi.ac.uk/efo/EFO_0000313,http://snomed.info/id/161615003"
+CD,Crohn's disease,EFO_0000384,http://www.ebi.ac.uk/efo/EFO_0000384
+CDI,clostridium difficile infection,EFO_0009130,http://www.ebi.ac.uk/efo/EFO_0009130
+cellulitis,cellulitis,EFO_0003035,http://www.ebi.ac.uk/efo/EFO_0003035
+cephalosporins,Cephalosporin Antibiotic,NCIT_C357,http://purl.obolibrary.org/obo/NCIT_C357
+cholera,Cholera,NCIT_C157812,http://purl.obolibrary.org/obo/NCIT_C157812
+cholesterolemia,Hypercholesterolemia,HP_0003124,http://purl.obolibrary.org/obo/HP_0003124
+chorioamnionitis,chorioamnionitis,EFO_0009948,http://www.ebi.ac.uk/efo/EFO_0009948
+cirrhosis,cirrhosis of liver,EFO_0001422,http://www.ebi.ac.uk/efo/EFO_0001422
+CMV,cytomegalovirus infection,EFO_0001062,http://www.ebi.ac.uk/efo/EFO_0001062
+coeliac,celiac disease,EFO_0001060,http://www.ebi.ac.uk/efo/EFO_0001060
+control,Study Control,NCIT_C142703,http://purl.obolibrary.org/obo/NCIT_C142703
+cough,Cough,HP_0012735,http://purl.obolibrary.org/obo/HP_0012735
+CRC,colorectal cancer,EFO_0005842,http://www.ebi.ac.uk/efo/EFO_0005842
+cystitis,cystitis,EFO_1000025,http://www.ebi.ac.uk/efo/EFO_1000025
+donor,Donor,NCIT_C48284,http://purl.obolibrary.org/obo/NCIT_C48284
+entamoeba_histolytica,Entamoeba histolytica,NCIT_C122297,http://purl.obolibrary.org/obo/NCIT_C122297
+fatty_liver,Fatty Liver,OMIT_0006456,http://purl.obolibrary.org/obo/OMIT_0006456
+fever,Fever,HP_0001945,http://purl.obolibrary.org/obo/HP_0001945
+few_polyps,Polyps,OMIT_0012094,http://purl.obolibrary.org/obo/OMIT_0012094
+first_episode_schizofrenia,"Schizophrenia,First episode (qualifier value)",NCIT_C3362;255217005,"http://purl.obolibrary.org/obo/NCIT_C3362,http://snomed.info/id/255217005"
+FMT,Fecal Microbiota Transplantation,NCIT_C118643,http://purl.obolibrary.org/obo/NCIT_C118643
+gangrene,gangrene,EFO_0008574,http://www.ebi.ac.uk/efo/EFO_0008574
+generic_diabetes,Diabetes Mellitus,NCIT_C2985,http://purl.obolibrary.org/obo/NCIT_C2985
+gestational_diabetes,gestational diabetes,EFO_0004593,http://www.ebi.ac.uk/efo/EFO_0004593
+HBV,hepatitis B virus infection,EFO_0004197,http://www.ebi.ac.uk/efo/EFO_0004197
+HCV,Hepatitis C Infection,NCIT_C3098,http://purl.obolibrary.org/obo/NCIT_C3098
+HDV,hepatitis D virus infection,EFO_0007304,http://www.ebi.ac.uk/efo/EFO_0007304
+healthy,Healthy,NCIT_C115935,http://purl.obolibrary.org/obo/NCIT_C115935
+hepatitis,Hepatitis,HP_0012115,http://purl.obolibrary.org/obo/HP_0012115
+HEV,hepatitis E virus infection,EFO_0007303,http://www.ebi.ac.uk/efo/EFO_0007303
+HF,Heart Failure,NCIT_C50577,http://purl.obolibrary.org/obo/NCIT_C50577
+hookworm,Hookworm Infection,NCIT_C34702,http://purl.obolibrary.org/obo/NCIT_C34702
+human gut microbiome,human gut microbiome,OHMI_0000020,http://purl.obolibrary.org/obo/OHMI_0000020
+human microbiome,human microbiome,OHMI_0000002,http://purl.obolibrary.org/obo/OHMI_0000002
+human skin microbiome interaction,human skin microbiome interaction,OHMI_0000121,http://purl.obolibrary.org/obo/OHMI_0000121
+hypercholesterolemia,Hypercholesterolemia,HP_0003124,http://purl.obolibrary.org/obo/HP_0003124
+hypertension,hypertension,EFO_0000537,http://www.ebi.ac.uk/efo/EFO_0000537
+IBD,Inflammatory Bowel Disease,NCIT_C3138,http://purl.obolibrary.org/obo/NCIT_C3138
+IGT,abnormal glucose tolerance,EFO_0002546,http://www.ebi.ac.uk/efo/EFO_0002546
+Indeterminate_colitis,indeterminate colitis,EFO_1000034,http://www.ebi.ac.uk/efo/EFO_1000034
+infectiousgastroenteritis,gastroenteritis,EFO_1001463,http://www.ebi.ac.uk/efo/EFO_1001463
+intestinal microbiome,Intestinal Flora,NCIT_C93019,http://purl.obolibrary.org/obo/NCIT_C93019
+irritable_bowel,Irritable Bowel Syndrome,NCIT_C82343,http://purl.obolibrary.org/obo/NCIT_C82343
+largeadenoma,large intestine adenoma,DOID_0050914,http://purl.obolibrary.org/obo/DOID_0050914
+MA,Metabolic Syndrome,NCIT_C84442,http://purl.obolibrary.org/obo/NCIT_C84442
+mansonella_perstans,Mansonella perstans,NCIT_C119326,http://purl.obolibrary.org/obo/NCIT_C119326
+MDRB,Multidrug-resistant bacteria (organism),713351000,http://snomed.info/id/713351000
+ME/CFS,myalgic encephalomeyelitis/chronic fatigue syndrome,MONDO_0005404,http://purl.obolibrary.org/obo/MONDO_0005404
+melanoma,melanoma,EFO_0000756,http://www.ebi.ac.uk/efo/EFO_0000756
+melanoma_surgery,Melanoma Surgery,NCIT_C157920,http://purl.obolibrary.org/obo/NCIT_C157920
+metabolic_syndrome,metabolic syndrome,EFO_0000195,http://www.ebi.ac.uk/efo/EFO_0000195
+metastases,Metastases status (attribute),260874000,http://snomed.info/id/260874000
+metastases_adrenal,Metastatic Malignant Neoplasm in the Adrenal Gland,NCIT_C8610,http://purl.obolibrary.org/obo/NCIT_C8610
+metastases_bone,Metastatic Malignant Neoplasm in the Bone,NCIT_C3580,http://purl.obolibrary.org/obo/NCIT_C3580
+metastases_liver,Metastatic Malignant Neoplasm in the Liver,NCIT_C4758,http://purl.obolibrary.org/obo/NCIT_C4758
+metastases_lung,Metastatic Malignant Neoplasm in the Lung,NCIT_C3577,http://purl.obolibrary.org/obo/NCIT_C3577
+metastases_nodes,Metastatic Malignant Neoplasm in the Lymph Nodes,NCIT_C4904,http://purl.obolibrary.org/obo/NCIT_C4904
+metastases_SQ,Metastatic Squamous Cell Carcinoma,NCIT_C4104,http://purl.obolibrary.org/obo/NCIT_C4104
+microfilaria_loa_loa,"Loa loa,Microfilaria",NCIT_C123512;OMIT_0009896,"http://purl.obolibrary.org/obo/NCIT_C123512,http://purl.obolibrary.org/obo/OMIT_0009896"
+microfilaria_spp,Microfilaria,OMIT_0009896,http://purl.obolibrary.org/obo/OMIT_0009896
+migraine,Migraine,NCIT_C89715,http://purl.obolibrary.org/obo/NCIT_C89715
+MS,Metabolic Syndrome,NCIT_C84442,http://purl.obolibrary.org/obo/NCIT_C84442
+mucositis,Mucositis,NCIT_C115965,http://purl.obolibrary.org/obo/NCIT_C115965
+NAFLD,Non-alcoholic Fatty Liver Disease,OMIT_0028679,http://purl.obolibrary.org/obo/OMIT_0028679
+necator_americanus,Necator americanus,OMIT_0017611,http://purl.obolibrary.org/obo/OMIT_0017611
+NK,Natural Killer Cell,NCIT_C12536,http://purl.obolibrary.org/obo/NCIT_C12536
+Oral Microbiome,Oral Microbiome,NCIT_C125208,http://purl.obolibrary.org/obo/NCIT_C125208
+osteoarthritis,Osteoarthritis,NCIT_C3293,http://purl.obolibrary.org/obo/NCIT_C3293
+otitis,otitis,SYMP_0000873,http://purl.obolibrary.org/obo/SYMP_0000873
+PD,Parkinson disease,MONDO_0005180,http://purl.obolibrary.org/obo/MONDO_0005180
+peri-implantitis,Peri-Implantitis,OMIT_0027030,http://purl.obolibrary.org/obo/OMIT_0027030
+perianal_fistula,Perianal fistula (disorder),58103005,http://snomed.info/id/58103005
+periodontitis,periodontitis,EFO_0000649,http://www.ebi.ac.uk/efo/EFO_0000649
+plasmodium_falciparum,Plasmodium falciparum,NCBITaxon_5833,http://purl.obolibrary.org/obo/NCBITaxon_5833
+pneumonia,pneumonia,EFO_0003106,http://www.ebi.ac.uk/efo/EFO_0003106
+pre-eclampsia,preeclampsia,EFO_0000668,http://www.ebi.ac.uk/efo/EFO_0000668
+pre-hypertension,Pre-capillary pulmonary hypertension,HP_0033578,http://purl.obolibrary.org/obo/HP_0033578
+premature_born,premature birth,EFO_0003917,http://www.ebi.ac.uk/efo/EFO_0003917
+Prevotella copri,Prevotella copri,NCBITaxon_165179,http://purl.obolibrary.org/obo/NCBITaxon_165179
+psoriasis,psoriasis,EFO_0000676,http://www.ebi.ac.uk/efo/EFO_0000676
+pyelonefritis,pyelonephritis,EFO_1001141,http://www.ebi.ac.uk/efo/EFO_1001141
+pyelonephritis,pyelonephritis,EFO_1001141,http://www.ebi.ac.uk/efo/EFO_1001141
+RA,rheumatoid arthritis,EFO_0000685,http://www.ebi.ac.uk/efo/EFO_0000685
+repeated_episodes_shizofrenia,"Schizophrenia,repeated",NCIT_C3362;EUPATH_0001011,"http://purl.obolibrary.org/obo/NCIT_C3362,http://purl.obolibrary.org/obo/EUPATH_0001011"
+respiratoryinf,Respiratory tract infection,HP_0011947,http://purl.obolibrary.org/obo/HP_0011947
+salmonellosis,salmonellosis,MONDO_0000827,http://purl.obolibrary.org/obo/MONDO_0000827
+schistosoma,Schistosoma,NCIT_C124285,http://purl.obolibrary.org/obo/NCIT_C124285
+schizofrenia,Schizophrenia,NCIT_C3362,http://purl.obolibrary.org/obo/NCIT_C3362
+schizophrenia,Schizophrenia,NCIT_C3362,http://purl.obolibrary.org/obo/NCIT_C3362
+sepsis,sepsis,MP_0005044,http://purl.obolibrary.org/obo/MP_0005044
+skininf,Skin Infection,NCIT_C35025,http://purl.obolibrary.org/obo/NCIT_C35025
+smalladenoma,Small Intestinal Adenoma,NCIT_C5340,http://purl.obolibrary.org/obo/NCIT_C5340
+SRP,Periodontal Scaling and Root Planing,NCIT_C63714,http://purl.obolibrary.org/obo/NCIT_C63714
+STEC,Shiga Toxin-producing Escherichia coli,NCIT_C184689,http://purl.obolibrary.org/obo/NCIT_C184689
+STH,"Helminth,Transmitted,soil",NCIT_C125642;ENVO_00001998,"http://purl.obolibrary.org/obo/NCIT_C125642,https://w3id.org/reproduceme#Transmitted,http://purl.obolibrary.org/obo/ENVO_00001998"
+stomatitis,stomatitis,EFO_0009688,http://www.ebi.ac.uk/efo/EFO_0009688
+suspinf,"Infection,Suspected",NCIT_C128320;NCIT_C71458,"http://purl.obolibrary.org/obo/NCIT_C128320,http://purl.obolibrary.org/obo/NCIT_C71458"
+T1D,Type 1 Diabetes Mellitus,NCIT_C2986,http://purl.obolibrary.org/obo/NCIT_C2986
+T1D_nonconverter,Type 1 Diabetes Mellitus,NCIT_C2986,http://purl.obolibrary.org/obo/NCIT_C2986
+T1D_seroconverter,Type 1 Diabetes Mellitus,NCIT_C2986,http://purl.obolibrary.org/obo/NCIT_C2986
+T2D,Type 2 Diabetes Mellitus,NCIT_C26747,http://purl.obolibrary.org/obo/NCIT_C26747
+TKI_dependent_diarrhoea,diarrhea,MP_0005036,http://purl.obolibrary.org/obo/MP_0005036
+tonsillitis,Tonsillitis,NCIT_C116006,http://purl.obolibrary.org/obo/NCIT_C116006
+treatment_colitis,Colitis,OMIT_0004401,http://purl.obolibrary.org/obo/OMIT_0004401
+trichomonas_intestinalis,Trichomonas,NCIT_C89825,http://purl.obolibrary.org/obo/NCIT_C89825
+trichuris_trichiura,Trichuris trichiura,NCIT_C125973,http://purl.obolibrary.org/obo/NCIT_C125973
+UC,ulcerative colitis,EFO_0000729,http://www.ebi.ac.uk/efo/EFO_0000729
+undetermined_colitis,undetermined colitis,MONDO_0015176,http://purl.obolibrary.org/obo/MONDO_0015176
+ureteralstone,Ureteric stone (disorder),31054009,http://snomed.info/id/31054009
+uveitis,uveitis,EFO_1001231,http://www.ebi.ac.uk/efo/EFO_1001231
+VKH,Vogt-Koyanagi-Harada disease,MONDO_0018092,http://purl.obolibrary.org/obo/MONDO_0018092
+Weight loss,Weight loss,HP_0001824,http://purl.obolibrary.org/obo/HP_0001824
+wilson,Wilson disease,MONDO_0010200,http://purl.obolibrary.org/obo/MONDO_0010200
+wuchereria_bancrofti,Wuchereria bancrofti,NCIT_C122328,http://purl.obolibrary.org/obo/NCIT_C122328

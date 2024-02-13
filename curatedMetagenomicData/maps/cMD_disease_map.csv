@@ -1,8 +1,8 @@
 "original_value","curated_ontology_term","curated_ontology_term_id","curated_ontology_term_db","Notes"
 "abdominalhernia","Hernia of the abdominal wall","HP:0004299","HP",NA
-"acute_diarrhoea","acute diarrhea","DOID:0050140","DOID",NA
+"acute_diarrhoea","acute diarrhea","MONDO:0000257","MONDO",NA
 "ACVD","atherosclerosis","EFO:0003914","EFO",NA
-"AD","Alzheimer's disease","EFO:0000249","EFO",NA
+"AD","Alzheimer's Disease","NCIT:C2866","NCIT",NA
 "adenocarcinoma","adenocarcinoma","EFO:0000228","EFO",NA
 "adenoma","Adenoma","NCIT:C2855","NCIT",NA
 "advancedadenoma","Adenoma","NCIT:C2855","NCIT",NA
@@ -29,7 +29,7 @@
 "coeliac","celiac disease","EFO:0001060","EFO",NA
 "control","Study Control","NCIT:C142703","NCIT",NA
 "cough","Cough","HP:0012735","HP",NA
-"CRC","colorectal cancer","EFO:0005842","EFO",NA
+"CRC","Colorectal Carcinoma","NCIT:C2955","NCIT",NA
 "cystitis","cystitis","EFO:1000025","EFO",NA
 "donor","Donor","NCIT:C48284","NCIT",NA
 "entamoeba_histolytica","Entamoeba histolytica","NCIT:C122297","NCIT",NA
@@ -85,7 +85,7 @@
 "NK","Natural Killer Cell","NCIT:C12536","NCIT",NA
 "Oral Microbiome","Oral Microbiome","NCIT:C125208","NCIT",NA
 "osteoarthritis","Osteoarthritis","NCIT:C3293","NCIT",NA
-"otitis","otitis","SYMP:0000873","SYMP",NA
+"otitis","Otitis Media","NCIT:C34885","NCIT",NA
 "PD","Parkinson disease","MONDO:0005180","MONDO",NA
 "peri-implantitis","Peri-Implantitis","OMIT:0027030","OMIT",NA
 "perianal_fistula","Perianal fistula (disorder)","58103005","SNOMED",NA
@@ -96,29 +96,29 @@
 "pre-hypertension","Pre-capillary pulmonary hypertension","HP:0033578","HP",NA
 "premature_born","premature birth","EFO:0003917","EFO",NA
 "Prevotella copri","Prevotella copri","NCBITaxon:165179","NCBITaxon",NA
-"psoriasis","Schizophrenia","NCIT:C3362","NCIT","Schizophrenia,repeated"
+"psoriasis","psoriasis","EFO:0000676","EFO",NA
 "pyelonefritis","pyelonephritis","EFO:1001141","EFO",NA
 "pyelonephritis","pyelonephritis","EFO:1001141","EFO",NA
 "RA","rheumatoid arthritis","EFO:0000685","EFO",NA
-"repeated_episodes_shizofrenia","Schizophrenia,repeated","EUPATH:0001011","EUPATH",NA
+"repeated_episodes_shizofrenia","Schizophrenia,repeated","NCIT:C3362","NCIT","Schizophrenia,repeated"
 "respiratoryinf","Respiratory tract infection","HP:0011947","HP",NA
 "salmonellosis","salmonellosis","MONDO:0000827","MONDO",NA
 "schistosoma","Schistosoma","NCIT:C124285","NCIT",NA
 "schizofrenia","Schizophrenia","NCIT:C3362","NCIT",NA
 "schizophrenia","Schizophrenia","NCIT:C3362","NCIT",NA
-"sepsis","sepsis","MP:0005044","MP",NA
-"skininf","Helminth","NCIT:C125642","NCIT","Helminth,Transmitted,soil"
+"sepsis","Sepsis","HP:0100806","HP",NA
+"skininf","Skin Infection","NCIT:C35025","NCIT",NA
 "smalladenoma","Small Intestinal Adenoma","NCIT:C5340","NCIT",NA
-"SRP","Infection","NCIT:C128320","NCIT","Infection,Suspected"
+"SRP","Periodontal Scaling and Root Planing","NCIT:C63714","NCIT",NA
 "STEC","Shiga Toxin-producing Escherichia coli","NCIT:C184689","NCIT",NA
-"STH","Helminth,Transmitted,soil","ENVO:00001998","ENVO",NA
+"STH","Helminth","NCIT:C125642","NCIT","Helminth,Transmitted,soil"
 "stomatitis","stomatitis","EFO:0009688","EFO",NA
-"suspinf","Infection,Suspected","NCIT:C71458","NCIT",NA
+"suspinf","Infection","NCIT:C128320","NCIT","Infection,Suspected"
 "T1D","Type 1 Diabetes Mellitus","NCIT:C2986","NCIT",NA
 "T1D_nonconverter","Type 1 Diabetes Mellitus","NCIT:C2986","NCIT",NA
 "T1D_seroconverter","Type 1 Diabetes Mellitus","NCIT:C2986","NCIT",NA
 "T2D","Type 2 Diabetes Mellitus","NCIT:C26747","NCIT",NA
-"TKI_dependent_diarrhoea","diarrhea","MP:0005036","MP",NA
+"TKI_dependent_diarrhoea","Diarrhea","HP:0002014","HP",NA
 "tonsillitis","Tonsillitis","NCIT:C116006","NCIT",NA
 "treatment_colitis","Colitis","OMIT:0004401","OMIT",NA
 "trichomonas_intestinalis","Trichomonas","NCIT:C89825","NCIT",NA

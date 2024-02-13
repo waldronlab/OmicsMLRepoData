@@ -22,6 +22,7 @@ knitr::opts_chunk$set(echo = TRUE,
 suppressPackageStartupMessages({
     library(googlesheets4)
     library(readr)
+    library(OmicsMLRepoR)
 })
 ```
 
@@ -43,33 +44,29 @@ source(file.path(cmd_etl_dir, "0_assemble_curated_metadata.R"))
 
 ```{r save_curated_tb, eval=FALSE}
 dir <- "~/OmicsMLRepo/OmicsMLRepoData"
-fpath <- file.path(dir, "inst/extdata/cMD_curated_sampleMetadata_only.csv")
+fpath <- file.path(dir, "inst/extdata/cMD_curated_metadata_all.csv")
 write.csv(curated_all, fpath, row.names = FALSE)
 ```
 
 
+
+
 # Sync curation maps
-Curation maps are tables manually created in Google Sheet by assigning 
-appropriate ontology terms to original values. These tables contain four 
+Curation maps are tables manually created and maintained in Google Sheet. We
+assign appropriate ontology terms to original values. These tables contain four 
 main columns with some additional columns depending on a attribute.
 
 Four main columns are labeled as `original_value`, `curated_ontology`,
 `curated_contology_term_id`, and `curated_ontology_term_db`.
 
-```{r}
-source(file.path(cmd_etl_dir, "1_sync_curation_map.R"))
-```
+The script below (`1_sync_curation_map.R`) syncs all the cMD curations maps
+from Google Sheet under the `cmd_maps_dir` (a diretory under the local git 
+project).
 
-```{r save_curation_maps, eval=FALSE}
+```{r cmd_save_curation_maps, eval=FALSE}
 # Directory to save curation_maps from Google Sheet
 cmd_maps_dir <- "~/OmicsMLRepo/OmicsMLRepoData/curatedMetagenomicData/maps"
-
-for (attribute in attributes) {
-    map <- get(attribute)
-    fname <- paste0(attribute, ".csv")
-    write.csv(map, file.path(cmd_maps_dir, fname), row.names = FALSE)
-
-}
+source(file.path(cmd_etl_dir, "1_sync_curation_map.R"))
 ```
 
 
@@ -97,12 +94,13 @@ googlesheets4::write_sheet(cmd_ms, ss = ss, sheet = "cMD_merging_schema")
 
 # Data dictionary
 ## Initial assembly
-The resulting table from the below script, `final_data_dictionary`, contains
-all the columns in the final version of cMD sampleMetadata in the `col.name`
-column. This table is exported 
+The resulting table from the below script, `template_dd`, contains
+all the columns in the final version of cMD sampleMetadata (under the 
+`col.name` column). 
 
 ```{r}
-source(file.path(cmd_etl_dir, "3_assemble_data_dictionary_template.R"))
+# returns: `template_dd`
+source(file.path(cmd_etl_dir, "3_assemble_data_dictionary_template.R")) 
 ```
 
 ## Populate template data dictionary
@@ -111,28 +109,87 @@ scripts within the `~/OmicsMLRepo/OmicsMLRepoData/curatedMetagenomicData/ETL/R`
 directory.
 
 ```{r}
-final_dd <- template_dd # from `3_assemble_data_dictionary_template.R`
+## From `3_assemble_data_dictionary_template.R`
+# duplicate object at the beginning because manipulations should be assigned 
+# back to the original object, i.e., make modifications on the original object
+filled_dd <- template_dd 
+
 
 projDir <- "~/OmicsMLRepo/OmicsMLRepoData/curatedMetagenomicData"
 mapDir <- file.path(projDir, "maps")
 dataDir <- file.path(projDir, "data")
 scriptDir <- file.path(projDir, "ETL/R")
 
-source(file.path(cmd_etl_dir, "4_populate_data_dictionary.R"))
+# requires: `filled_dd` and paths to three directories (`mapDir`, `dataDir`, `scriptDir`)
+# returns: the updated `filled_dd`
+source(file.path(cmd_etl_dir, "4_populate_data_dictionary.R")) 
 ```
 
 ## Save
-```{r save_cmd_merging_schema, eval=FALSE}
+```{r save_cmd_dd_schema, eval=FALSE}
+## GitHub project
+extDir <- "~/OmicsMLRepo/OmicsMLRepoData/inst/extdata"
+write_csv(filled_dd, file.path(extDir, "cMD_data_dictionary.csv"))
+
 ## Google Sheet
 url <- "https://docs.google.com/spreadsheets/d/1xziFB_zBl32BjNarcyEN4GupTYpPtq5aDz0GbRbWvtk/edit?usp=sharing"
 ss <- googledrive::as_id(url)
-googlesheets4::write_sheet(final_dd, ss = ss, sheet = "cMD_data_dictionary")
+googlesheets4::write_sheet(filled_dd, ss = ss, sheet = "cMD_data_dictionary")
 ```
 
+
+# Dynamic Enum
 ```{r}
+enum_dd <- filled_dd
+enum_dd$dynamic_enum <- NA
+enum_dd$dynamic_enum_property <- NA
+```
+
+This script populate the dynamic enum nodes for the selected attributes. 
+Target attributes are inside the script, so if you want to add/remove target
+attributes to extract dynamic enum nodes for, make a modification in this
+script. 
+
+```{r eval=FALSE}
+# requires: `enum_dd`
+# returns: `cmd_dd`
+source(file.path(cmd_etl_dir, "5_dynamic_enum.R"))  
+```
+
+```{r eval=FALSE, echo=FALSE}
+## Test individual dynamic enum
+curated_col <- "biomarker"
+dd <- read_csv("~/OmicsMLRepo/OmicsMLRepoData/inst/extdata/cMD_data_dictionary.csv")
+colnames <- c(curated_col, paste0("curated_", curated_col))
+ind <- which(dd$col.name %in% colnames)
+terms <- dd[[ind, "ontology"]] %>% 
+    strsplit(split = "\\|") %>% 
+    unlist %>% na.omit %>% as.vector
+terms <- gsub("SNOMED:", "", terms)
+onto <- sapply(terms, function(x) unlist(strsplit(x, split = ":"))[1])
+topNodes <- commonNodes(ids = terms, dbs = onto)
+topNodes
+```
+
+```{r save_cmd_dd_schema, eval=FALSE}
 ## GitHub project
 extDir <- "~/OmicsMLRepo/OmicsMLRepoData/inst/extdata"
-write_csv(final_dd, file.path(extDir, "cMD_data_dictionary.csv"))
+write_csv(cmd_dd, file.path(extDir, "cMD_data_dictionary.csv"))
+
+## Google Sheet
+url <- "https://docs.google.com/spreadsheets/d/1xziFB_zBl32BjNarcyEN4GupTYpPtq5aDz0GbRbWvtk/edit?usp=sharing"
+ss <- googledrive::as_id(url)
+googlesheets4::write_sheet(cmd_dd, ss = ss, sheet = "cMD_data_dictionary")
 ```
 
+
+# Format for release
+This script creates a `cmd_meta_release` table, which containing only 
+the curated attributes formatted in an user-facing version (e.g., no legacy/
+source columns, no ontology term id).
+
+```{r}
+# requires: `curated_all` from `0_assemble_curated_metadata.R`
+source(file.path(cmd_etl_dir, "6_format_for_release.R"))
+```
 

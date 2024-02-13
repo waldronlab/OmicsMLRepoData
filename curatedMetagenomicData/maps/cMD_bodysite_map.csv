@@ -28,14 +28,14 @@
 "throat","throat","UBERON:0000341","UBERON","No"
 "tongue_dorsum","dorsum of tongue","UBERON:0009471","UBERON","No"
 "vagina","vagina","UBERON:0000996","UBERON","Yes"
-"teeth","dentition","UBERON:0003672","UBERON",NA
-"rectum","rectum","UBERON:0001052","UBERON",NA
-"colon","colon","UBERON:0001155","UBERON",NA
-"sigmoid colon","sigmoid colon","UBERON:0001159","UBERON",NA
-"L2","lumbar vertebra 2","UBERON:0004618","UBERON",NA
-"L3","lumbar vertebra 3","UBERON:0004619","UBERON",NA
-"L4","lumbar vertebra 4","UBERON:0004620","UBERON",NA
-"left_colon","left colon","UBERON:0008971","UBERON",NA
-"right_colon","right colon","UBERON:0008972","UBERON",NA
-"lc","left colon","UBERON:0008971","UBERON",NA
-"rc","right colon","UBERON:0008972","UBERON",NA
+"teeth","dentition","UBERON:0003672","UBERON","No"
+"rectum","rectum","UBERON:0001052","UBERON","No"
+"colon","colon","UBERON:0001155","UBERON","No"
+"sigmoid colon","sigmoid colon","UBERON:0001159","UBERON","No"
+"L2","lumbar vertebra 2","UBERON:0004618","UBERON","No"
+"L3","lumbar vertebra 3","UBERON:0004619","UBERON","No"
+"L4","lumbar vertebra 4","UBERON:0004620","UBERON","No"
+"left_colon","left colon","UBERON:0008971","UBERON","No"
+"right_colon","right colon","UBERON:0008972","UBERON","No"
+"lc","left colon","UBERON:0008971","UBERON","No"
+"rc","right colon","UBERON:0008972","UBERON","No"

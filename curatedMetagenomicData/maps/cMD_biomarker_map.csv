@@ -1,0 +1,39 @@
+"original_value","curated_acronym","curated_ontology","curated_ontology_term_id","curated_unit","curated_ontology_term_db","curated_column_names","Notes"
+"adiponectin",NA,"Adiponectin Measurement","NCIT:C74839","ug/mL","NCIT","Adiponectin_in_ug/mL","Unit updated from mg/L to ug/ml"
+"albumine",NA,"Albumin Measurement","NCIT:C64431","g/dL","NCIT","Albumin_in_g/dL","Unit updated from g/L to g/dL"
+"alt","ALT","Alanine Aminotransferase Measurement","NCIT:C64433","U/L","NCIT","Alanine_Aminotransferase_in_U/L","Relabel to ALT (diagnose liver disorders) and combine with ALT column"
+"ALT","ALT","Alanine Aminotransferase Measurement","NCIT:C64433","U/L","NCIT","Alanine_Aminotransferase_in_U/L","determinant of liver disease"
+"ast","AST","Aspartate Aminotransferase Measurement","NCIT:C64467","U/L","NCIT","Aspartate_Aminotransferase_in_U/L","Relabel to AST (diagnose liver disorders)"
+"autoantibody_positive",NA,"Autoantibody titer measurement (procedure)","SNOMED:165848009","n.a.","SNOMED","Autoantibody_titer_measurement_(procedure)_in_n.a.","presence of autoantibodies"
+"bilubirin",NA,"Direct Bilirubin Measurement","NCIT:C64481","umol/L","NCIT","Direct_Bilirubin_in_umol/L",NA
+"c_peptide",NA,"C-peptide Measurement","NCIT:C74736","ng/ml","NCIT","C-peptide_in_ng/ml","insulin indicator"
+"cd163","CD163","Scavenger Receptor Cysteine-Rich Type 1 Protein M130 Measurement","NCIT:C154728","ng/ml","NCIT","Scavenger_Receptor_Cysteine-Rich_Type_1_Protein_M130_in_ng/ml","cluster of differentiation 163?"
+"cholesterol",NA,"Cholesterol Measurement","NCIT:C105586","mg/dL","NCIT","Cholesterol_in_mg/dL",NA
+"creatine",NA,"Creatine Measurement","NCIT:C201455","umol/L","NCIT","Creatine_in_umol/L","Unit updated from mmol/L to umol/L"
+"creatinine",NA,"Creatinine Measurement","NCIT:C64547","umol/L","NCIT","Creatinine_in_umol/L","Creatinine is a byproduct of creatine. The amino acid creatine is a natural part of the muscles, and is processed to store energy for muscular contraction."
+"dyastolic_p",NA,"Diastolic Blood Pressure","NCIT:C25299","mm/Hg","NCIT","Diastolic_Blood_Pressure_in_mm/Hg","blood pressure metric"
+"eGFR","eGFR","Estimated Glomerular Filtration Rate","NCIT:C110935","mL/min/1.73m2","NCIT","Estimated_Glomerular_Filtration_Rate_in_mL/min/1.73m2","determinant of kidney disease stage, Unit added"
+"ESR","ESR","Erythrocyte Sedimentation Rate Measurement","NCIT:C74611","mm/hr","NCIT","Erythrocyte_Sedimentation_Rate_in_mm/hr",NA
+"fasting_glucose",NA,"fasting blood glucose measurement","EFO:0004465","mg/dL","EFO","fasting_blood_glucose_measurement_in_mg/dL",NA
+"fasting_insulin",NA,"fasting blood insulin measurement","EFO:0004466","uU/ml","EFO","fasting_blood_insulin_measurement_in_uU/ml",NA
+"fgf_19","FGF-19","Fibroblast Growth Factor 19 Measurement","NCIT:C154727","pg/ml","NCIT","Fibroblast_Growth_Factor_19_in_pg/ml",NA
+"globulin",NA,"Globulin Protein Measurement","NCIT:C74738","g/L","NCIT","Globulin_Protein_in_g/L",NA
+"glp_1","GLP-1","Glucagon-like Peptide-1 Measurement","NCIT:C80183","pmol/L","NCIT","Glucagon-like_Peptide-1_in_pmol/L","glucagon-like peptide 1"
+"glucose",NA,"Glucose Measurement","NCIT:C105585","mg/dL","NCIT","Glucose_in_mg/dL",NA
+"glutamate_decarboxylase_2_antibody","GAD65","Measurement of glutamate decarboxylase 65 antibody (procedure)","SNOMED:117907009","n.a.","SNOMED","Measurement_of_glutamate_decarboxylase_65_antibody_(procedure)_in_n.a.","diabetes indicator"
+"hba1c","HbA1C","Glycosylated Hemoglobin Measurement","NCIT:C64849","mmol/mol","NCIT","Glycosylated_Hemoglobin_in_mmol/mol","Relabel to HbA1C, Unit updated from % to mmol/mol"
+"hdl","HDL","High Density Lipoprotein Cholesterol Measurement","NCIT:C105587","mg/dL","NCIT","High_Density_Lipoprotein_Cholesterol_in_mg/dL",NA
+"hemoglobinometry",NA,"Hemoglobinometry","OMIT:0007621","g/dL","OMIT","Hemoglobinometry_in_g/dL","hemoglobin concentration metric"
+"hsCRP","hsCRP","High Sensitivity C-Reactive Protein Measurement","NCIT:C157114","mg/L","NCIT","High_Sensitivity_C-Reactive_Protein_in_mg/L","High-sensitivity C-reactive protein (a marker of inflammation that predicts heart issues such as heart attack, stroke, etc.)"
+"hscrp","hsCRP","High Sensitivity C-Reactive Protein Measurement","NCIT:C157114","mg/L","NCIT","High_Sensitivity_C-Reactive_Protein_in_mg/L","High-sensitivity C-reactive protein (a marker of inflammation that predicts heart issues such as heart attack, stroke, etc.)"
+"il_1",NA,"Interleukin 1 Measurement","NCIT:C74805","pg/ml","NCIT","Interleukin_1_in_pg/ml",NA
+"inr","INR","International Normalized Ratio of Prothrombin Time","NCIT:C64805","sec","NCIT","International_Normalized_Ratio_of_Prothrombin_Time_in_sec","blood clot time metric"
+"ldl","LDL","LDL Particles Measurement","NCIT:C120636","mg/dL","NCIT","LDL_Particles_in_mg/dL",NA
+"LDL","LDL","LDL Particles Measurement","NCIT:C120636","mg/dL","NCIT","LDL_Particles_in_mg/dL","risk for heart disease, stroke"
+"leptin",NA,"Leptin Measurement","NCIT:C74866","ug/L","NCIT","Leptin_in_ug/L",NA
+"prothrombin_time","PT","Prothrombin Time","NCIT:C62656","sec","NCIT","Prothrombin_Time_in_sec","blood clotting test, prothrombin time (PT) test"
+"rbc","RBC","Red blood cell count (procedure)","SNOMED:14089001","x10^6 counts/ul","SNOMED","Red_blood_cell_count_(procedure)_in_x10^6_counts/ul","red blood cell counts, Erythrocyte Count (OMIT:0006139)"
+"systolic_p",NA,"Systolic Blood Pressure","NCIT:C25298","mm/Hg","NCIT","Systolic_Blood_Pressure_in_mm/Hg","blood pressure metric"
+"triglycerides",NA,"Triglyceride Measurement","NCIT:C64812","mg/dL","NCIT","Triglyceride_in_mg/dL",NA
+"urea_nitrogen","BUN","Urea Nitrogen Measurement","NCIT:C125949","mmol/L","NCIT","Urea_Nitrogen_in_mmol/L","BUN (Blood Urea Nitrogen) test"
+"wbc","WBC","White blood cell count (procedure)","SNOMED:767002","x10^3 counts/ul","SNOMED","White_blood_cell_count_(procedure)_in_x10^3_counts/ul","white blood cell counts, Leukocyte Count (OMIT:0009044)"
