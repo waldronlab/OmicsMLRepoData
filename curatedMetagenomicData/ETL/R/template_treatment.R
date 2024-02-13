@@ -1,5 +1,5 @@
 ### Data dictionary for: `treatment`, `antibiotics_current_use`
-### Required input: `mapDir` and `final_dd`
+### Required input: `mapDir` and `filled_dd`
 ### dir <- "~/OmicsMLRepo/OmicsMLRepoData/curatedMetagenomicData"
 
 
@@ -39,5 +39,5 @@ curated_abx_current_use <- data.frame(
 # Data dictionary for curated attributes ----
 attr_dd <- do.call("rbind", list(curated_treatment, curated_abx_current_use))
 
-# Add the content to data dictionary template, `final_dd` ----
-final_dd <- fillDataDictionary(final_dd, attr_dd)
+# Add the content to data dictionary template, `filled_dd` ----
+filled_dd <- fillDataDictionary(filled_dd, attr_dd)

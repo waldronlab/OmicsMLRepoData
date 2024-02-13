@@ -8,5 +8,6 @@ attributes <- all_sheets[grep("cMD_", all_sheets)]
 
 for (attribute in attributes) {
     res <- googlesheets4::read_sheet(ss, sheet = attribute)
-    assign(attribute, res)
+    fname <- paste0(attribute, ".csv")
+    write.csv(res, file.path(cmd_maps_dir, fname), row.names = FALSE)
 }

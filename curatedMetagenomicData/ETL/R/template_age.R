@@ -1,5 +1,5 @@
 ### Data dictionary for: `age`, `age_unit`, `age_group`
-### Required input: `mapDir` and `final_dd`
+### Required input: `mapDir` and `filled_dd`
 ### dir <- "~/OmicsMLRepo/OmicsMLRepoData/curatedMetagenomicData"
 
 age <- read.csv(file.path(mapDir, "cMD_age_group_map.csv"))
@@ -45,5 +45,5 @@ curated_age_group <- data.frame(
 # Data dictionary for curated attributes ----
 attr_dd <- do.call("rbind", list(curated_age, curated_age_unit, curated_age_group))
 
-# Add the content to data dictionary template, `final_dd` ----
-final_dd <- fillDataDictionary(final_dd, attr_dd)
+# Add the content to data dictionary template, `filled_dd` ----
+filled_dd <- fillDataDictionary(filled_dd, attr_dd)

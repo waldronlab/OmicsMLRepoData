@@ -1,5 +1,5 @@
-### This script collect all the curated cMD metadata data files and
-### combine them into a single `curated_all` table. 
+### This script collect all the curated cMD metadata data files per attribute
+### and combine them into a single `curated_all` table. 
 
 
 # Import curated/harmonized attributes ----

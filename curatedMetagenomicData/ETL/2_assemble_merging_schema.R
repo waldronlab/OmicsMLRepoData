@@ -60,7 +60,7 @@ original_field_unique_values <- checkCurationStats(
     DB = originalSampleMetadata)
 
 # Completeness and uniqueness of curated fields -----
-source(file.path(etl_script_dir, "0_assemble_curated_metadata.R"))
+source(file.path(cmd_etl_dir, "0_assemble_curated_metadata.R"))
 colnames(curated_all) <- gsub("curated_", "", colnames(curated_all)) #<<<<<<<<<<<< remove `curated_` prefix for now
 b <- map_to_ms$curated_field 
 curated_field_name <- sapply(b, function(x) {

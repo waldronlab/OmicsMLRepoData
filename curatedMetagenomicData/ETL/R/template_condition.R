@@ -1,8 +1,10 @@
 ### Data dictionary for: `control`, `disease`, `target_condition`
-### Required input: `mapDir` and `final_dd`
-### dir <- "~/OmicsMLRepo/OmicsMLRepoData/curatedMetagenomicData"
+### Required input: `mapDir` and `filled_dd`
 
-disease_map <- read.csv(file.path(mapDir, "cMD_study_condition_map.csv"))
+### projDir <- "~/OmicsMLRepo/OmicsMLRepoData/curatedMetagenomicData"
+### mapDir <- file.path(projDir, "maps")
+
+disease_map <- read.csv(file.path(mapDir, "cMD_disease_map.csv"))
 
 # control ----
 control <- data.frame(
@@ -29,9 +31,9 @@ disease <- data.frame(
 )
 
 # target_condition ----
-pheno_map <- read.csv(file.path(mapDir, "cMD_target_condition_map.csv"))
+target_condition_map <- read.csv(file.path(mapDir, "cMD_target_condition_map.csv"))
 
-phenotype <- data.frame(
+target_condition <- data.frame(
     col.name = "target_condition",
     col.class = "character",
     uniqueness = "non-unique", 
@@ -39,12 +41,12 @@ phenotype <- data.frame(
     multiplevalues = TRUE,
     description = "Main phenotype(s)/condition(s) of interest for a given study",
     # Because target_condition can take multiple values
-    allowedvalues = paste(unique(pheno_map$curated_ontology_term), collapse = ";") %>% 
+    allowedvalues = paste(unique(target_condition_map$curated_ontology_term), collapse = ";") %>% 
         strsplit(., ";") %>% 
         unlist %>% 
         unique %>% 
         paste(., collapse = "|"),
-    ontology = paste(unique(pheno_map$curated_ontology_term_id), collapse = ";") %>% 
+    ontology = paste(unique(target_condition_map$curated_ontology_term_id), collapse = ";") %>% 
         strsplit(., ";") %>% 
         unlist %>% 
         unique %>% 
@@ -53,7 +55,7 @@ phenotype <- data.frame(
 
 
 # Data dictionary for curated attributes ----
-attr_dd <- do.call("rbind", list(control, disease, phenotype))
+attr_dd <- do.call("rbind", list(control, disease, target_condition))
 
-# Add the content to data dictionary template, `final_dd` ----
-final_dd <- fillDataDictionary(final_dd, attr_dd)
+# Add the content to data dictionary template, `filled_dd` ----
+filled_dd <- fillDataDictionary(filled_dd, attr_dd)

@@ -1,5 +1,5 @@
 ### Data dictionary for: `location`
-### Required input: `mapDir` and `final_dd`
+### Required input: `mapDir` and `filled_dd`
 ### dir <- "~/OmicsMLRepo/OmicsMLRepoData/curatedMetagenomicData"
 
 # Load the map
@@ -10,7 +10,7 @@ curated_location <- data.frame(
     col.name = "location",
     col.class = "character",
     uniqueness = "unique", 
-    requiredness = "optional",
+    requiredness = "required",
     multiplevalues = FALSE,
     description = "Location where subject lives",
     allowedvalues = paste(unique(location_map$curated_ontology_term), 
@@ -19,5 +19,5 @@ curated_location <- data.frame(
                      collapse = "|")     
 )
 
-# Add the content to data dictionary template, `final_dd` ----
-final_dd <- fillDataDictionary(final_dd, attr_dd)
+# Add the content to data dictionary template, `filled_dd` ----
+filled_dd <- fillDataDictionary(filled_dd, attr_dd)

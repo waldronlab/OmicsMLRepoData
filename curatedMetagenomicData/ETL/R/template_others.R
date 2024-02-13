@@ -1,50 +1,9 @@
 ### Data dictionary for consolidated cMD attributes
-### Required input: `mapDir`, `dataDir`, and `final_dd`
+### Required input: `mapDir`, `dataDir`, and `filled_dd`
 ### dir <- "~/OmicsMLRepo/OmicsMLRepoData/curatedMetagenomicData"
 
-library(googlesheets4)
-url <- "https://docs.google.com/spreadsheets/d/1xziFB_zBl32BjNarcyEN4GupTYpPtq5aDz0GbRbWvtk/edit?usp=sharing"
-ss <- googledrive::as_id(url)
-map <- read_sheet(ss, sheet = "merging_schema_allCols")
 
-# biomarkers ----
-biomarkers_map <- dplyr::filter(map, classification == "biomarker_name;biomarker_value;biomarker_unit")
-biomarker_name <- data.frame(
-    col.name = "biomarker_name",
-    col.class = "character",
-    uniqueness = "non-unique", 
-    requiredness = "optional",
-    multiplevalues = FALSE,
-    description = "",
-    allowedvalues = paste(unique(biomarkers_map$ontology), collapse = "|"),
-    ontology = paste(unique(biomarkers_map$ontology_term_id), collapse = "|")     
-) 
 
-biomarker_value <- data.frame(
-    col.name = "biomarker_value",
-    col.class = "numeric",
-    uniqueness = "non-unique", 
-    requiredness = "optional",
-    multiplevalues = FALSE,
-    description = "",
-    allowedvalues = "^[1-9]\\d*(\\.\\d+)?$",
-    ontology = NA    
-) 
-
-biomarker_unit <- data.frame(
-    col.name = "biomarker_unit",
-    col.class = "character",
-    uniqueness = "non-unique", 
-    requiredness = "optional",
-    multiplevalues = FALSE,
-    description = "",
-    allowedvalues = NA,
-    ontology = NA     
-) 
-
-curated_biomarkers <- bind_rows(biomarker_name,
-                                biomarker_value,
-                                biomarker_unit)
 
 # dietary_restriction -----
 curated_dietary_restriction <- data.frame(
@@ -58,17 +17,6 @@ curated_dietary_restriction <- data.frame(
     ontology = NA
 )
 
-# disease_stage ------
-curated_disease_stage <- data.frame(
-    col.name = "disease_stage",
-    col.class = "character",
-    uniqueness = "non-unique", 
-    requiredness = "optional",
-    multiplevalues = FALSE,
-    description = "",
-    allowedvalues = "0|I|II|III|IV|III/IV",
-    ontology = NA     
-) 
 
 # fmt_id -----
 curated_fmt_id <- data.frame(
@@ -94,18 +42,6 @@ curated_fmt_role <- data.frame(
     ontology = NA     
 )
 
-# neonatal ------
-curated_neonatal <- data.frame(
-    col.name = "neonatal",
-    col.class = "character",
-    uniqueness = "non-unique", 
-    requiredness = "optional",
-    multiplevalues = FALSE,
-    description = NA,
-    allowedvalues = NA,
-    ontology = NA     
-)
-
 # westernized ------
 curated_westernized <- data.frame(
     col.name = "westernized",
@@ -113,46 +49,10 @@ curated_westernized <- data.frame(
     uniqueness = "non-unique", 
     requiredness = "optional",
     multiplevalues = FALSE,
-    description = "The typical Western (American) diet charactered by low in fruits and vegetables, and high in fat and sodium. Also, refers the diet consists of large portions, high calories, and excess sugar",
+    description = "Subject adopt or be influenced by the cultural, economic, or political systems of Europe and North America.",
     allowedvalues = "Yes|No",
     ontology = NA     
 )
-
-# obgyn_pregnancy -----
-curated_obgyn_pregnancy <- data.frame(
-    col.name = "obgyn_pregnancy",
-    col.class = "character",
-    uniqueness = "non-unique", 
-    requiredness = "optional",
-    multiplevalues = FALSE,
-    description = "The pregnancy status of an individual.",
-    allowedvalues = "Pregnant|Not Pregnant",
-    ontology = "NCIT:C124295|NCIT:C82475"     
-) 
-
-# obgyn_birth_control ----
-curated_obgyn_birth_control <- data.frame(
-    col.name = "obgyn_birth_control",
-    col.class = "character",
-    uniqueness = "non-unique", 
-    requiredness = "optional",
-    multiplevalues = FALSE,
-    description = "Use of birth control pill (Oral Contraceptive)",
-    allowedvalues = "Yes|No",
-    ontology = NA     
-) 
-
-## obgyn_menopause
-curated_obgyn_menopause <- data.frame(
-    col.name = "obgyn_menopause",
-    col.class = "character",
-    uniqueness = "non-unique", 
-    requiredness = "optional",
-    multiplevalues = FALSE,
-    description = "An indicator as to whether the female subject is in menopause",
-    allowedvalues = "Premenopausal|Postmenopausal",
-    ontology = "NCIT:C15491|NCIT:C15421"     
-) 
 
 # probing_pocket_depth -----
 curated_probing_pocket_depth <- data.frame(
@@ -246,23 +146,17 @@ curated_feces_phenotype <- bind_rows(feces_phenotype_metric,
 
 
 # Data dictionary for curated attributes ----
-attr_dd <- do.call("rbind", list(curated_biomarkers,
-                                 curated_dietary_restriction,
-                                 curated_disease_stage,
+attr_dd <- do.call("rbind", list(curated_dietary_restriction,
                                  curated_feces_phenotype,
                                  curated_fmt_id,
                                  curated_fmt_role,
                                  curated_hla,
-                                 curated_neonatal,
                                  curated_westernized,
-                                 curated_obgyn_birth_control,
-                                 curated_obgyn_menopause,
-                                 curated_obgyn_pregnancy,
                                  curated_probing_pocket_depth,
                                  # curated_response_to_therapy,
                                  curated_smoker,
                                  curated_sex,
                                  uncurated_metadata))
 
-# Add the content to data dictionary template, `final_dd` ----
-final_dd <- fillDataDictionary(final_dd, attr_dd)
+# Add the content to data dictionary template, `filled_dd` ----
+filled_dd <- fillDataDictionary(filled_dd, attr_dd)
