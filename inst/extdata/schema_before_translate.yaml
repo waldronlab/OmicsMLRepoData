@@ -1,0 +1,3624 @@
+name: Waldron_Lab_Curated_Schema_test
+id: https://waldronlab.io
+prefixes:
+  linkml:
+    prefix_prefix: linkml
+    prefix_reference: https://w3id.org/linkml/
+  schema:
+    prefix_prefix: schema
+    prefix_reference: http://schema.org/
+  ORCID:
+    prefix_prefix: ORCID
+    prefix_reference: https://orcid.org/
+  EFO:
+    prefix_prefix: EFO
+    prefix_reference: http://www.ebi.ac.uk/efo/EFO_
+  UBERON:
+    prefix_prefix: UBERON
+    prefix_reference: http://purl.obolibrary.org/obo/UBERON_
+  NCIT:
+    prefix_prefix: NCIT
+    prefix_reference: http://purl.obolibrary.org/obo/NCIT_
+  HP:
+    prefix_prefix: HP
+    prefix_reference: http://purl.obolibrary.org/obo/HP_
+  PATO:
+    prefix_prefix: PATO
+    prefix_reference: http://purl.obolibrary.org/obo/PATO_
+  DOID:
+    prefix_prefix: DOID
+    prefix_reference: http://purl.obolibrary.org/obo/DOID_
+  MONDO:
+    prefix_prefix: MONDO
+    prefix_reference: http://purl.obolibrary.org/obo/MONDO_
+  CHEBI:
+    prefix_prefix: CHEBI
+    prefix_reference: http://purl.obolibrary.org/obo/CHEBI_
+  xsd:
+    prefix_prefix: xsd
+    prefix_reference: http://www.w3.org/2001/XMLSchema#
+  shex:
+    prefix_prefix: shex
+    prefix_reference: http://www.w3.org/ns/shex#
+default_prefix: https://waldronlab.io/
+default_range: string
+types:
+  string:
+    name: string
+    description: A character string
+    from_schema: https://waldronlab.io
+    base: str
+    uri: xsd:string
+  integer:
+    name: integer
+    description: An integer
+    from_schema: https://waldronlab.io
+    base: int
+    uri: xsd:integer
+  boolean:
+    name: boolean
+    description: A binary (true or false) value
+    from_schema: https://waldronlab.io
+    base: Bool
+    uri: xsd:boolean
+    repr: bool
+  float:
+    name: float
+    description: A real number that conforms to the xsd:float specification
+    from_schema: https://waldronlab.io
+    base: float
+    uri: xsd:float
+  double:
+    name: double
+    description: A real number that conforms to the xsd:double specification
+    from_schema: https://waldronlab.io
+    base: float
+    uri: xsd:double
+  decimal:
+    name: decimal
+    description: >-
+      A real number with arbitrary precision that conforms to the xsd:decimal
+      specification
+    from_schema: https://waldronlab.io
+    base: Decimal
+    uri: xsd:decimal
+  time:
+    name: time
+    description: >-
+      A time object represents a (local) time of day, independent of any
+      particular day
+    notes:
+      - >-
+        URI is dateTime because OWL reasoners do not work with straight date or
+        time
+    from_schema: https://waldronlab.io
+    base: XSDTime
+    uri: xsd:dateTime
+    repr: str
+  date:
+    name: date
+    description: a date (year, month and day) in an idealized calendar
+    notes:
+      - >-
+        URI is dateTime because OWL reasoners don't work with straight date or
+        time
+    from_schema: https://waldronlab.io
+    base: XSDDate
+    uri: xsd:date
+    repr: str
+  datetime:
+    name: datetime
+    description: The combination of a date and time
+    from_schema: https://waldronlab.io
+    base: XSDDateTime
+    uri: xsd:dateTime
+    repr: str
+  date_or_datetime:
+    name: date_or_datetime
+    description: Either a date or a datetime
+    from_schema: https://waldronlab.io
+    base: str
+    uri: linkml:DateOrDatetime
+    repr: str
+  uriorcurie:
+    name: uriorcurie
+    description: a URI or a CURIE
+    from_schema: https://waldronlab.io
+    base: URIorCURIE
+    uri: xsd:anyURI
+    repr: str
+  uri:
+    name: uri
+    description: a complete URI
+    from_schema: https://waldronlab.io
+    base: URI
+    uri: xsd:anyURI
+    repr: str
+  ncname:
+    name: ncname
+    description: Prefix part of CURIE
+    from_schema: https://waldronlab.io
+    base: NCName
+    uri: xsd:string
+    repr: str
+  objectidentifier:
+    name: objectidentifier
+    description: A URI or CURIE that represents an object in the model.
+    comments:
+      - Used for inheritence and type checking
+    from_schema: https://waldronlab.io
+    base: ElementIdentifier
+    uri: shex:iri
+    repr: str
+  nodeidentifier:
+    name: nodeidentifier
+    description: A URI, CURIE or BNODE that represents a node in a model.
+    from_schema: https://waldronlab.io
+    base: NodeIdentifier
+    uri: shex:nonLiteral
+    repr: str
+enums:
+  age_unit_enums:
+    name: age_unit_enums
+    source_ontology: ncit
+    source_nodes: NCIT:C50400
+    include_self: "false"
+    relationship_types: descendants
+  age_group_enums:
+    name: age_group_enums
+    source_ontology: ncit
+    source_nodes: NCIT:C20587
+    include_self: "false"
+    relationship_types: descendants
+  control_enums:
+    name: control_enums
+    permissible_values:
+      Study Control:
+        text: Study Control
+      Case:
+        text: Case
+      Not Used:
+        text: Not Used
+  disease_enums:
+    name: disease_enums
+    permissible_values:
+      Hernia of the abdominal wall:
+        text: Hernia of the abdominal wall
+      acute diarrhea:
+        text: acute diarrhea
+      atherosclerosis:
+        text: atherosclerosis
+      Alzheimer's disease:
+        text: Alzheimer's disease
+      adenocarcinoma:
+        text: adenocarcinoma
+      Adenoma:
+        text: Adenoma
+      Allergic rhinitis:
+        text: Allergic rhinitis
+      arthritis:
+        text: arthritis
+      ankylosing spondylitis:
+        text: ankylosing spondylitis
+      Ascaris lumbricoides:
+        text: Ascaris lumbricoides
+      Ascites:
+        text: Ascites
+      Asthma:
+        text: Asthma
+      Behcet's syndrome:
+        text: Behcet's syndrome
+      bronchitis:
+        text: bronchitis
+      coronary artery disease:
+        text: coronary artery disease
+      carcinoma:
+        text: carcinoma
+      Crohn's disease:
+        text: Crohn's disease
+      clostridium difficile infection:
+        text: clostridium difficile infection
+      cellulitis:
+        text: cellulitis
+      Cephalosporin Antibiotic:
+        text: Cephalosporin Antibiotic
+      Cholera:
+        text: Cholera
+      Hypercholesterolemia:
+        text: Hypercholesterolemia
+      chorioamnionitis:
+        text: chorioamnionitis
+      cirrhosis of liver:
+        text: cirrhosis of liver
+      cytomegalovirus infection:
+        text: cytomegalovirus infection
+      celiac disease:
+        text: celiac disease
+      Study Control:
+        text: Study Control
+      Cough:
+        text: Cough
+      colorectal cancer:
+        text: colorectal cancer
+      cystitis:
+        text: cystitis
+      Donor:
+        text: Donor
+      Entamoeba histolytica:
+        text: Entamoeba histolytica
+      Fatty Liver:
+        text: Fatty Liver
+      Fever:
+        text: Fever
+      Polyps:
+        text: Polyps
+      Schizophrenia:
+        text: Schizophrenia
+      Fecal Microbiota Transplantation:
+        text: Fecal Microbiota Transplantation
+      gangrene:
+        text: gangrene
+      Diabetes Mellitus:
+        text: Diabetes Mellitus
+      gestational diabetes:
+        text: gestational diabetes
+      hepatitis B virus infection:
+        text: hepatitis B virus infection
+      Hepatitis C Infection:
+        text: Hepatitis C Infection
+      hepatitis D virus infection:
+        text: hepatitis D virus infection
+      Healthy:
+        text: Healthy
+      Hepatitis:
+        text: Hepatitis
+      hepatitis E virus infection:
+        text: hepatitis E virus infection
+      Heart Failure:
+        text: Heart Failure
+      Hookworm Infection:
+        text: Hookworm Infection
+      human gut microbiome:
+        text: human gut microbiome
+      human microbiome:
+        text: human microbiome
+      human skin microbiome interaction:
+        text: human skin microbiome interaction
+      hypertension:
+        text: hypertension
+      Inflammatory Bowel Disease:
+        text: Inflammatory Bowel Disease
+      abnormal glucose tolerance:
+        text: abnormal glucose tolerance
+      indeterminate colitis:
+        text: indeterminate colitis
+      gastroenteritis:
+        text: gastroenteritis
+      Intestinal Flora:
+        text: Intestinal Flora
+      Irritable Bowel Syndrome:
+        text: Irritable Bowel Syndrome
+      large intestine adenoma:
+        text: large intestine adenoma
+      Metabolic Syndrome:
+        text: Metabolic Syndrome
+      Mansonella perstans:
+        text: Mansonella perstans
+      Multidrug-resistant bacteria (organism):
+        text: Multidrug-resistant bacteria (organism)
+      myalgic encephalomeyelitis/chronic fatigue syndrome:
+        text: myalgic encephalomeyelitis/chronic fatigue syndrome
+      melanoma:
+        text: melanoma
+      Melanoma Surgery:
+        text: Melanoma Surgery
+      metabolic syndrome:
+        text: metabolic syndrome
+      Metastatic Malignant Neoplasm:
+        text: Metastatic Malignant Neoplasm
+      Metastatic Malignant Neoplasm in the Adrenal Gland:
+        text: Metastatic Malignant Neoplasm in the Adrenal Gland
+      Metastatic Malignant Neoplasm in the Bone:
+        text: Metastatic Malignant Neoplasm in the Bone
+      Metastatic Malignant Neoplasm in the Liver:
+        text: Metastatic Malignant Neoplasm in the Liver
+      Metastatic Malignant Neoplasm in the Lung:
+        text: Metastatic Malignant Neoplasm in the Lung
+      Metastatic Malignant Neoplasm in the Lymph Nodes:
+        text: Metastatic Malignant Neoplasm in the Lymph Nodes
+      Metastatic Squamous Cell Carcinoma:
+        text: Metastatic Squamous Cell Carcinoma
+      Loa loa:
+        text: Loa loa
+      Microfilaria:
+        text: Microfilaria
+      Migraine:
+        text: Migraine
+      Mucositis:
+        text: Mucositis
+      Non-alcoholic Fatty Liver Disease:
+        text: Non-alcoholic Fatty Liver Disease
+      Necator americanus:
+        text: Necator americanus
+      Natural Killer Cell:
+        text: Natural Killer Cell
+      Oral Microbiome:
+        text: Oral Microbiome
+      Osteoarthritis:
+        text: Osteoarthritis
+      otitis:
+        text: otitis
+      Parkinson disease:
+        text: Parkinson disease
+      Peri-Implantitis:
+        text: Peri-Implantitis
+      Perianal fistula (disorder):
+        text: Perianal fistula (disorder)
+      periodontitis:
+        text: periodontitis
+      Plasmodium falciparum:
+        text: Plasmodium falciparum
+      pneumonia:
+        text: pneumonia
+      preeclampsia:
+        text: preeclampsia
+      Pre-capillary pulmonary hypertension:
+        text: Pre-capillary pulmonary hypertension
+      premature birth:
+        text: premature birth
+      Prevotella copri:
+        text: Prevotella copri
+      pyelonephritis:
+        text: pyelonephritis
+      rheumatoid arthritis:
+        text: rheumatoid arthritis
+      Schizophrenia,repeated:
+        text: Schizophrenia,repeated
+      Respiratory tract infection:
+        text: Respiratory tract infection
+      salmonellosis:
+        text: salmonellosis
+      Schistosoma:
+        text: Schistosoma
+      sepsis:
+        text: sepsis
+      Helminth:
+        text: Helminth
+      Small Intestinal Adenoma:
+        text: Small Intestinal Adenoma
+      Infection:
+        text: Infection
+      Shiga Toxin-producing Escherichia coli:
+        text: Shiga Toxin-producing Escherichia coli
+      Helminth,Transmitted,soil:
+        text: Helminth,Transmitted,soil
+      stomatitis:
+        text: stomatitis
+      Infection,Suspected:
+        text: Infection,Suspected
+      Type 1 Diabetes Mellitus:
+        text: Type 1 Diabetes Mellitus
+      Type 2 Diabetes Mellitus:
+        text: Type 2 Diabetes Mellitus
+      diarrhea:
+        text: diarrhea
+      Tonsillitis:
+        text: Tonsillitis
+      Colitis:
+        text: Colitis
+      Trichomonas:
+        text: Trichomonas
+      Trichuris trichiura:
+        text: Trichuris trichiura
+      ulcerative colitis:
+        text: ulcerative colitis
+      undetermined colitis:
+        text: undetermined colitis
+      Ureteric Stone:
+        text: Ureteric Stone
+      uveitis:
+        text: uveitis
+      Vogt-Koyanagi-Harada disease:
+        text: Vogt-Koyanagi-Harada disease
+      Weight loss:
+        text: Weight loss
+      Wilson disease:
+        text: Wilson disease
+      Wuchereria bancrofti:
+        text: Wuchereria bancrofti
+  target_condition_enums:
+    name: target_condition_enums
+    permissible_values:
+      human gut microbiome:
+        text: human gut microbiome
+      Parkinson disease:
+        text: Parkinson disease
+      Oral Microbiome:
+        text: Oral Microbiome
+      premature birth:
+        text: premature birth
+      Schizophrenia:
+        text: Schizophrenia
+      rheumatoid arthritis:
+        text: rheumatoid arthritis
+      ankylosing spondylitis:
+        text: ankylosing spondylitis
+      Alzheimer's disease:
+        text: Alzheimer's disease
+      gestational diabetes:
+        text: gestational diabetes
+      chorioamnionitis:
+        text: chorioamnionitis
+      preeclampsia:
+        text: preeclampsia
+      acute diarrhea:
+        text: acute diarrhea
+      Cholera:
+        text: Cholera
+      Prevotella copri:
+        text: Prevotella copri
+      colorectal cancer:
+        text: colorectal cancer
+      carcinoma:
+        text: carcinoma
+      Adenoma:
+        text: Adenoma
+      melanoma:
+        text: melanoma
+      Metastases status (attribute):
+        text: Metastases status (attribute)
+      Peri-Implantitis:
+        text: Peri-Implantitis
+      Mucositis:
+        text: Mucositis
+      adenocarcinoma:
+        text: adenocarcinoma
+      Inflammatory Bowel Disease:
+        text: Inflammatory Bowel Disease
+      Intestinal Flora:
+        text: Intestinal Flora
+      Type 1 Diabetes Mellitus:
+        text: Type 1 Diabetes Mellitus
+      human microbiome:
+        text: human microbiome
+      abnormal glucose tolerance:
+        text: abnormal glucose tolerance
+      Type 2 Diabetes Mellitus:
+        text: Type 2 Diabetes Mellitus
+      diarrhea:
+        text: diarrhea
+      clostridium difficile infection:
+        text: clostridium difficile infection
+      Multidrug-resistant bacteria (organism):
+        text: Multidrug-resistant bacteria (organism)
+      Crohn's disease:
+        text: Crohn's disease
+      atherosclerosis:
+        text: atherosclerosis
+      hypertension:
+        text: hypertension
+      metabolic syndrome:
+        text: metabolic syndrome
+      Shiga Toxin-producing Escherichia coli:
+        text: Shiga Toxin-producing Escherichia coli
+      Non-alcoholic Fatty Liver Disease:
+        text: Non-alcoholic Fatty Liver Disease
+      Weight loss:
+        text: Weight loss
+      Metabolic Syndrome:
+        text: Metabolic Syndrome
+      control:
+        text: control
+      Heart Failure:
+        text: Heart Failure
+      myalgic encephalomeyelitis/chronic fatigue syndrome:
+        text: myalgic encephalomeyelitis/chronic fatigue syndrome
+      human skin microbiome interaction:
+        text: human skin microbiome interaction
+      cirrhosis of liver:
+        text: cirrhosis of liver
+      Cephalosporin Antibiotic:
+        text: Cephalosporin Antibiotic
+      Helminth:
+        text: Helminth
+      periodontitis:
+        text: periodontitis
+      arthritis:
+        text: arthritis
+      psoriasis:
+        text: psoriasis
+      otitis:
+        text: otitis
+      pneumonia:
+        text: pneumonia
+      bronchitis:
+        text: bronchitis
+      Respiratory tract infection:
+        text: Respiratory tract infection
+      sepsis:
+        text: sepsis
+      Skin Infection:
+        text: Skin Infection
+      Cough:
+        text: Cough
+      gastroenteritis:
+        text: gastroenteritis
+      Tonsillitis:
+        text: Tonsillitis
+      pyelonephritis:
+        text: pyelonephritis
+      cystitis:
+        text: cystitis
+      Fever:
+        text: Fever
+      Infection:
+        text: Infection
+      stomatitis:
+        text: stomatitis
+      salmonellosis:
+        text: salmonellosis
+      Migraine:
+        text: Migraine
+      Asthma:
+        text: Asthma
+      Behcet's syndrome:
+        text: Behcet's syndrome
+  treatment_enums:
+    name: treatment_enums
+    permissible_values:
+      Mesalamine:
+        text: Mesalamine
+      Acarbose:
+        text: Acarbose
+      Angiotensin-Converting Enzyme Inhibitors:
+        text: Angiotensin-Converting Enzyme Inhibitors
+      Albendazole:
+        text: Albendazole
+      Amiodarone:
+        text: Amiodarone
+      EC 3.4.23.15 (renin) inhibitor:
+        text: EC 3.4.23.15 (renin) inhibitor
+      Antihelminthic Agent:
+        text: Antihelminthic Agent
+      Antihypertensive Agents:
+        text: Antihypertensive Agents
+      Anti-Retroviral Agents:
+        text: Anti-Retroviral Agents
+      antiviral drug:
+        text: antiviral drug
+      Anti-diabetic Agent:
+        text: Anti-diabetic Agent
+      Antilipidemic Agent:
+        text: Antilipidemic Agent
+      Antineoplastic Agent:
+        text: Antineoplastic Agent
+      Thrombolytic Agent:
+        text: Thrombolytic Agent
+      Aspirin:
+        text: Aspirin
+      Angiotensin II Receptor Antagonist:
+        text: Angiotensin II Receptor Antagonist
+      Azathioprine:
+        text: Azathioprine
+      Beta-Adrenergic Antagonist:
+        text: Beta-Adrenergic Antagonist
+      Calcium Channel Blocker:
+        text: Calcium Channel Blocker
+      Clopidogrel:
+        text: Clopidogrel
+      Corticosteroid:
+        text: Corticosteroid
+      Anti-CTLA-4 Monoclonal Antibody:
+        text: Anti-CTLA-4 Monoclonal Antibody
+      Centrally acting hypotensive agent (substance):
+        text: Centrally acting hypotensive agent (substance)
+      Coumarin:
+        text: Coumarin
+      Digitalis:
+        text: Digitalis
+      Diuretic:
+        text: Diuretic
+      Dopamine Antagonist:
+        text: Dopamine Antagonist
+      Dipeptidyl-Peptidase IV Inhibitors:
+        text: Dipeptidyl-Peptidase IV Inhibitors
+      Enteral Nutrition:
+        text: Enteral Nutrition
+      Ezetimibe:
+        text: Ezetimibe
+      fibrate:
+        text: fibrate
+      Folate:
+        text: Folate
+      Dietary Supplement:
+        text: Dietary Supplement
+      Insulin Glargine:
+        text: Insulin Glargine
+      Thiazolidinedione Antidiabetic Agent:
+        text: Thiazolidinedione Antidiabetic Agent
+      glucagon-like peptide-1 receptor agonist:
+        text: glucagon-like peptide-1 receptor agonist
+      Heparin:
+        text: Heparin
+      Insulin:
+        text: Insulin
+      Ipilimumab:
+        text: Ipilimumab
+      Iron:
+        text: Iron
+      Isophane Insulin, Human:
+        text: Isophane Insulin, Human
+      Potassium-Sparing Diuretic:
+        text: Potassium-Sparing Diuretic
+      lactulose:
+        text: lactulose
+      Laxative:
+        text: Laxative
+      Metformin:
+        text: Metformin
+      Metformin Hydrochloride:
+        text: Metformin Hydrochloride
+      Methotrexate:
+        text: Methotrexate
+      Pediatric Nutritional Supplement Drink:
+        text: Pediatric Nutritional Supplement Drink
+      Nitrate:
+        text: Nitrate
+      Nivolumab:
+        text: Nivolumab
+      None:
+        text: None
+      Insulin Aspart:
+        text: Insulin Aspart
+      Nonsteroidal Antiinflammatory Drug:
+        text: Nonsteroidal Antiinflammatory Drug
+      Opioid:
+        text: Opioid
+      Anti-Arrhythmia Agents:
+        text: Anti-Arrhythmia Agents
+      Anti-PD1 Monoclonal Antibody:
+        text: Anti-PD1 Monoclonal Antibody
+      Pembrolizumab:
+        text: Pembrolizumab
+      Phenylpiperidine derivative (substance):
+        text: Phenylpiperidine derivative (substance)
+      Proton Pump Inhibitor:
+        text: Proton Pump Inhibitor
+      Probiotics:
+        text: Probiotics
+      red yeast rice:
+        text: red yeast rice
+      Reverse Transcriptase Inhibitor:
+        text: Reverse Transcriptase Inhibitor
+      sodium-glucose transport protein subtype 2 inhibitor:
+        text: sodium-glucose transport protein subtype 2 inhibitor
+      Sitagliptin:
+        text: Sitagliptin
+      statin:
+        text: statin
+      Steroid Compound:
+        text: Steroid Compound
+      Sulfonylurea Antidiabetic Agent:
+        text: Sulfonylurea Antidiabetic Agent
+      Thiazide Diuretic:
+        text: Thiazide Diuretic
+      second generation antipsychotic:
+        text: second generation antipsychotic
+      Citrate-containing Alkalinizing Agent:
+        text: Citrate-containing Alkalinizing Agent
+      Xanthine Oxidase Inhibitor:
+        text: Xanthine Oxidase Inhibitor
+  bodysite_enums:
+    name: bodysite_enums
+    source_ontology: uberon
+    source_nodes: UBERON:0001062
+    include_self: "false"
+    relationship_types: descendants
+  body_subsite_enums:
+    name: body_subsite_enums
+    permissible_values:
+      anterior naris:
+        text: anterior naris
+      buccal mucosa:
+        text: buccal mucosa
+      chest:
+        text: chest
+      hard palate:
+        text: hard palate
+      gingiva:
+        text: gingiva
+      Entire skin of postauricular region (body structure):
+        text: Entire skin of postauricular region (body structure)
+      left ear:
+        text: left ear
+      Left elbow:
+        text: Left elbow
+      lung:
+        text: lung
+      median vaginal canal:
+        text: median vaginal canal
+      palatine tonsil:
+        text: palatine tonsil
+      posterior fornix of vagina:
+        text: posterior fornix of vagina
+      rectum:
+        text: rectum
+      right ear:
+        text: right ear
+      Right elbow:
+        text: Right elbow
+      saliva:
+        text: saliva
+      sputum:
+        text: sputum
+      subgingival dental plaque:
+        text: subgingival dental plaque
+      supragingival dental plaque:
+        text: supragingival dental plaque
+      throat:
+        text: throat
+      dorsum of tongue:
+        text: dorsum of tongue
+      Vaginal introitus structure (body structure):
+        text: Vaginal introitus structure (body structure)
+  sex_enums:
+    name: sex_enums
+    permissible_values:
+      Female:
+        text: Female
+      Male:
+        text: Male
+      NA:
+        text: NA
+  antibiotics_current_use_enums:
+    name: antibiotics_current_use_enums
+    permissible_values:
+      "Yes":
+        text: "Yes"
+      "No":
+        text: "No"
+      NA:
+        text: NA
+  country_enums:
+    name: country_enums
+    permissible_values:
+      COL:
+        text: COL
+      ARG:
+        text: ARG
+      GNB:
+        text: GNB
+      LBR:
+        text: LBR
+      SLV:
+        text: SLV
+      CAN:
+        text: CAN
+      DNK:
+        text: DNK
+      EST:
+        text: EST
+      FJI:
+        text: FJI
+      FIN:
+        text: FIN
+      FRA:
+        text: FRA
+      DEU:
+        text: DEU
+      ITA:
+        text: ITA
+      MNG:
+        text: MNG
+      NLD:
+        text: NLD
+      NOR:
+        text: NOR
+      JPN:
+        text: JPN
+      ESP:
+        text: ESP
+      KOR:
+        text: KOR
+      BRA:
+        text: BRA
+      IRL:
+        text: IRL
+      PHL:
+        text: PHL
+      SWE:
+        text: SWE
+      USA:
+        text: USA
+      GBR:
+        text: GBR
+      CHN:
+        text: CHN
+      RUS:
+        text: RUS
+      LUX:
+        text: LUX
+      AUT:
+        text: AUT
+      TZA:
+        text: TZA
+      PER:
+        text: PER
+      MDG:
+        text: MDG
+      ISL:
+        text: ISL
+      BRN:
+        text: BRN
+      IDN:
+        text: IDN
+      MYS:
+        text: MYS
+      HUN:
+        text: HUN
+      SVK:
+        text: SVK
+      SGP:
+        text: SGP
+      ISR:
+        text: ISR
+      BGD:
+        text: BGD
+      KAZ:
+        text: KAZ
+      IND:
+        text: IND
+      GHA:
+        text: GHA
+      ETH:
+        text: ETH
+      CMR:
+        text: CMR
+  travel_destination_enums:
+    name: travel_destination_enums
+    permissible_values:
+      CMR:
+        text: CMR
+      ETH:
+        text: ETH
+      KEN:
+        text: KEN
+      TZA:
+        text: TZA
+      RWA:
+        text: RWA
+      IND:
+        text: IND
+      LKA:
+        text: LKA
+      NPL:
+        text: NPL
+  non_westernized_enums:
+    name: non_westernized_enums
+    permissible_values:
+      "yes":
+        text: "yes"
+      "no":
+        text: "no"
+  lifestyle_enums:
+    name: lifestyle_enums
+    permissible_values:
+      Hunter-gatherer:
+        text: Hunter-gatherer
+      Agriculturalist:
+        text: Agriculturalist
+      Agropastoralist:
+        text: Agropastoralist
+      Pastoralist:
+        text: Pastoralist
+      Fisher:
+        text: Fisher
+  sequencing_platform_enums:
+    name: sequencing_platform_enums
+    permissible_values:
+      IlluminaHiSeq:
+        text: IlluminaHiSeq
+      IlluminaMiSeq:
+        text: IlluminaMiSeq
+      IlluminaNextSeq:
+        text: IlluminaNextSeq
+      IlluminaNovaSeq:
+        text: IlluminaNovaSeq
+      IonProton:
+        text: IonProton
+  DNA_extraction_kit_enums:
+    name: DNA_extraction_kit_enums
+    permissible_values:
+      Qiagen:
+        text: Qiagen
+      Gnome:
+        text: Gnome
+      MoBio:
+        text: MoBio
+      MPBio:
+        text: MPBio
+      NorgenBiotek:
+        text: NorgenBiotek
+      Illuminakit:
+        text: Illuminakit
+      Maxwell_LEV:
+        text: Maxwell_LEV
+      PSP_Spin_Stool:
+        text: PSP_Spin_Stool
+      Tiangen:
+        text: Tiangen
+      PowerSoil:
+        text: PowerSoil
+      Chemagen:
+        text: Chemagen
+      other:
+        text: other
+      PowerSoilPro:
+        text: PowerSoilPro
+      ZR_Fecal_DNA_MiniPrep:
+        text: ZR_Fecal_DNA_MiniPrep
+      KAMA_Hyper_Prep:
+        text: KAMA_Hyper_Prep
+      thermo_fisher:
+        text: thermo_fisher
+      QIAamp:
+        text: QIAamp
+  pregnant_enums:
+    name: pregnant_enums
+    permissible_values:
+      "yes":
+        text: "yes"
+      "no":
+        text: "no"
+  lactating_enums:
+    name: lactating_enums
+    permissible_values:
+      "yes":
+        text: "yes"
+      "no":
+        text: "no"
+  birth_control_pil_enums:
+    name: birth_control_pil_enums
+    permissible_values:
+      "yes":
+        text: "yes"
+      "no":
+        text: "no"
+  smoker_enums:
+    name: smoker_enums
+    permissible_values:
+      "yes":
+        text: "yes"
+      "no":
+        text: "no"
+  ever_smoker_enums:
+    name: ever_smoker_enums
+    permissible_values:
+      "yes":
+        text: "yes"
+      "no":
+        text: "no"
+  alcohol_enums:
+    name: alcohol_enums
+    permissible_values:
+      "yes":
+        text: "yes"
+      "no":
+        text: "no"
+  mumps_enums:
+    name: mumps_enums
+    permissible_values:
+      "yes":
+        text: "yes"
+      "no":
+        text: "no"
+  ajcc_enums:
+    name: ajcc_enums
+    permissible_values:
+      "0":
+        text: "0"
+      i:
+        text: i
+      ii:
+        text: ii
+      iii:
+        text: iii
+      iv:
+        text: iv
+      iii/iv:
+        text: iii/iv
+      iv-a:
+        text: iv-a
+      iv-b:
+        text: iv-b
+      iv-c:
+        text: iv-c
+      iv-d:
+        text: iv-d
+  fobt_enums:
+    name: fobt_enums
+    permissible_values:
+      "yes":
+        text: "yes"
+      "no":
+        text: "no"
+  tnm_enums:
+    name: tnm_enums
+    permissible_values:
+      t4n1m1:
+        text: t4n1m1
+      t3nxm1:
+        text: t3nxm1
+      t2n0m1:
+        text: t2n0m1
+      tnm:
+        text: tnm
+      t3n3m1:
+        text: t3n3m1
+      t2n1m1:
+        text: t2n1m1
+      t4n2m1:
+        text: t4n2m1
+      t3n0m1:
+        text: t3n0m1
+      t3n2m0:
+        text: t3n2m0
+      t4n0m1:
+        text: t4n0m1
+      t4n1m0:
+        text: t4n1m0
+      "no":
+        text: "no"
+      t4n0m0:
+        text: t4n0m0
+      t3n0m0:
+        text: t3n0m0
+      t3n1m0:
+        text: t3n1m0
+      ptis:
+        text: ptis
+      t1n0m0:
+        text: t1n0m0
+      t4n2m0:
+        text: t4n2m0
+      t3n1m1:
+        text: t3n1m1
+      t3n2m1:
+        text: t3n2m1
+      tisn0m0:
+        text: tisn0m0
+      t2n0m0:
+        text: t2n0m0
+      t1n0m1:
+        text: t1n0m1
+      t2n1m0:
+        text: t2n1m0
+      t2m0n0:
+        text: t2m0n0
+      t2n2m0:
+        text: t2n2m0
+  stec_count_enums:
+    name: stec_count_enums
+    permissible_values:
+      high:
+        text: high
+      low:
+        text: low
+      moderate:
+        text: moderate
+  shigatoxin_2_elisa_enums:
+    name: shigatoxin_2_elisa_enums
+    permissible_values:
+      positive:
+        text: positive
+      negative:
+        text: negative
+  stool_texture_enums:
+    name: stool_texture_enums
+    permissible_values:
+      smooth:
+        text: smooth
+      watery:
+        text: watery
+      bloody:
+        text: bloody
+  insulin_cat_enums:
+    name: insulin_cat_enums
+    permissible_values:
+      "yes":
+        text: "yes"
+      "no":
+        text: "no"
+  flg_genotype_enums:
+    name: flg_genotype_enums
+    permissible_values:
+      wt:
+        text: wt
+      s1515x:
+        text: s1515x
+      e2422x:
+        text: e2422x
+      e2422x/3321dela:
+        text: e2422x/3321dela
+  hitchip_probe_class_enums:
+    name: hitchip_probe_class_enums
+    permissible_values:
+      lpc:
+        text: lpc
+      hpc:
+        text: hpc
+  ferm_milk_prod_consumer_enums:
+    name: ferm_milk_prod_consumer_enums
+    permissible_values:
+      dfmp:
+        text: dfmp
+  family_role_enums:
+    name: family_role_enums
+    permissible_values:
+      child:
+        text: child
+      mother:
+        text: mother
+      father:
+        text: father
+  born_method_enums:
+    name: born_method_enums
+    permissible_values:
+      c_section:
+        text: c_section
+      vaginal:
+        text: vaginal
+  c_section_type_enums:
+    name: c_section_type_enums
+    permissible_values:
+      Elective_CS:
+        text: Elective_CS
+      Emergency_CS:
+        text: Emergency_CS
+  premature_enums:
+    name: premature_enums
+    permissible_values:
+      "yes":
+        text: "yes"
+      "no":
+        text: "no"
+  feeding_practice_enums:
+    name: feeding_practice_enums
+    permissible_values:
+      exclusively_breastfeeding:
+        text: exclusively_breastfeeding
+      no_breastfeeding:
+        text: no_breastfeeding
+      "":
+        text: ""
+      mixed_feeding:
+        text: mixed_feeding
+      any_breastfeeding:
+        text: any_breastfeeding
+      exclusively_formula_feeding:
+        text: exclusively_formula_feeding
+  disease_stage_enums:
+    name: disease_stage_enums
+    permissible_values:
+      "0":
+        text: "0"
+      I:
+        text: I
+      II:
+        text: II
+      III:
+        text: III
+      IV:
+        text: IV
+  disease_location_enums:
+    name: disease_location_enums
+    permissible_values:
+      right_sided:
+        text: right_sided
+      left_sided:
+        text: left_sided
+      transverse:
+        text: transverse
+      sigmoid_colon:
+        text: sigmoid_colon
+      colon:
+        text: colon
+      rectum:
+        text: rectum
+  remission_enums:
+    name: remission_enums
+    permissible_values:
+      "no":
+        text: "no"
+      "yes":
+        text: "yes"
+  anti_PD_1_enums:
+    name: anti_PD_1_enums
+    permissible_values:
+      responder:
+        text: responder
+      non_responder:
+        text: non_responder
+  dental_sample_type_enums:
+    name: dental_sample_type_enums
+    permissible_values:
+      teeth:
+        text: teeth
+      implant:
+        text: implant
+  history_of_periodontitis_enums:
+    name: history_of_periodontitis_enums
+    permissible_values:
+      "yes":
+        text: "yes"
+      "no":
+        text: "no"
+  zigosity_enums:
+    name: zigosity_enums
+    permissible_values:
+      monozygotic:
+        text: monozygotic
+      dizygotic:
+        text: dizygotic
+  menopausal_status_enums:
+    name: menopausal_status_enums
+    permissible_values:
+      pre:
+        text: pre
+      going_through:
+        text: going_through
+      post:
+        text: post
+  diet_enums:
+    name: diet_enums
+    permissible_values:
+      omnivore:
+        text: omnivore
+      vegan:
+        text: vegan
+      vegetarian:
+        text: vegetarian
+      high_fibers:
+        text: high_fibers
+      low_fibers:
+        text: low_fibers
+      high_gluten:
+        text: high_gluten
+      low_gluten:
+        text: low_gluten
+  RECIST_enums:
+    name: RECIST_enums
+    permissible_values:
+      SD:
+        text: SD
+      PR:
+        text: PR
+      PD:
+        text: PD
+      CR:
+        text: CR
+  ORR_enums:
+    name: ORR_enums
+    permissible_values:
+      "yes":
+        text: "yes"
+      "no":
+        text: "no"
+  PFS12_enums:
+    name: PFS12_enums
+    permissible_values:
+      "yes":
+        text: "yes"
+      "no":
+        text: "no"
+  history_of_therapy_enums:
+    name: history_of_therapy_enums
+    permissible_values:
+      "yes":
+        text: "yes"
+      "no":
+        text: "no"
+  curator_enums:
+    name: curator_enums
+    permissible_values:
+      Paolo_Manghi:
+        text: Paolo_Manghi
+      Valentina_Giunchiglia:
+        text: Valentina_Giunchiglia
+      Pamela_Ferretti:
+        text: Pamela_Ferretti
+      Marisa_Metzger:
+        text: Marisa_Metzger
+      Giacomo_DAmato:
+        text: Giacomo_DAmato
+      Jacob_Wirbel:
+        text: Jacob_Wirbel
+      Arianna_Bonetti:
+        text: Arianna_Bonetti
+      Anna_Pedrotti:
+        text: Anna_Pedrotti
+      Francesca_DeFilippis:
+        text: Francesca_DeFilippis
+      Aitor_Blanco_Miguez:
+        text: Aitor_Blanco_Miguez
+      Arianna_Bonetti;Anna_Pedrotti:
+        text: Arianna_Bonetti;Anna_Pedrotti
+      Francesco_Asnicar;Paolo_Manghi:
+        text: Francesco_Asnicar;Paolo_Manghi
+      Ilya_Likhotkin;Paolo_Manghi:
+        text: Ilya_Likhotkin;Paolo_Manghi
+      Aitor_Blanco_Miguez;Paolo_Manghi:
+        text: Aitor_Blanco_Miguez;Paolo_Manghi
+      Giacomo_Damato;Paolo_Manghi:
+        text: Giacomo_Damato;Paolo_Manghi
+      Anna_Pedrotti;Paolo_Manghi:
+        text: Anna_Pedrotti;Paolo_Manghi
+      Mireia_VallesColomer:
+        text: Mireia_VallesColomer
+      Andrew_Malthez_Thomas:
+        text: Andrew_Malthez_Thomas
+      Andrea_Zen:
+        text: Andrea_Zen
+      Bryan_Merrill:
+        text: Bryan_Merrill
+slots:
+  project_name:
+    name: project_name
+    from_schema: https://waldronlab.io
+  samples:
+    name: samples
+    from_schema: https://waldronlab.io
+    multivalued: true
+    inlined: true
+    inlined_as_list: true
+  studies:
+    name: studies
+    from_schema: https://waldronlab.io
+    multivalued: true
+    inlined: true
+    inlined_as_list: true
+  study_name:
+    name: study_name
+    description: Dataset name.
+    from_schema: https://waldronlab.io
+    multivalued: false
+    range: string
+    required: false
+    pattern: >-
+      [a-zA-Z-]+_[0-9]4} | [a-zA-Z-]+_[0-9]4}[a-zA-Z-]+ |
+      [a-zA-Z-]+_[0-9]4}_[a-zA-Z-]+ | [a-zA-Z-]+_[0-9]4}_[a-zA-Z0-9]+
+  sample_id:
+    name: sample_id
+    description: Sample identifier.
+    from_schema: https://waldronlab.io
+    multivalued: false
+    range: string
+    required: true
+    pattern: "[0-9a-zA-Z_]"
+  subject_id:
+    name: subject_id
+    description: Subject identifier.
+    from_schema: https://waldronlab.io
+    multivalued: false
+    range: string
+    required: true
+    pattern: "[0-9a-zA-Z_]"
+  body_site:
+    name: body_site
+    description: Bodysite of acquisition.
+    from_schema: https://waldronlab.io
+    aliases:
+      - host_anatomy
+      - host_anatomy_ontology
+    multivalued: false
+    range: Body_Site
+    required: false
+  body_subsite:
+    name: body_subsite
+    description: Subsite of body site of acquisition.
+    from_schema: https://waldronlab.io
+    multivalued: false
+    range: Body_Subsite
+    required: false
+  antibiotics_current_use:
+    name: antibiotics_current_use
+    description: Subject is currently taking antibiotics.
+    from_schema: https://waldronlab.io
+    multivalued: false
+    range: YesNo
+    required: false
+  antibiotics_family:
+    name: antibiotics_family
+    description: Family of antibiotics currently used; Semicolon-separated.
+    from_schema: https://waldronlab.io
+    aliases:
+      - drug_ontology
+    multivalued: true
+    range: Antibiotics
+    required: false
+  study_condition:
+    name: study_condition
+    description: >-
+      The main disease or condition under study; control for
+      controls;STEC=Shiga-toxigenic E.coli;CDI=Clostridium difficile
+      infection;IBD=Inflammatory bowel disease;T2D= Type-2 diabetes;T1D=Type-1
+      diabetes;AD=Atopic dermatitis;AR=Allergic rhinitis;IGT=Impaired glucose
+      tolerance;AS=Ankylosing spondylitis;RA=rheumatic arthritis;FMT=fecal
+      microbiota transplantaion;SRP=Scaling and root
+      planing;CMV=Cytomegalovirus;HBV_HDV_HEV= Hepatitis viruses;BD=
+      Bechet-disease;ACVD= Artheriosclerotic Cardiovalscular Disease
+    from_schema: https://waldronlab.io
+    aliases:
+      - main_clinical_condition
+      - condition_under_study
+      - study_condition_ontology
+    multivalued: false
+    range: Condition
+    required: false
+  disease:
+    name: disease
+    description: >-
+      Semicolon-delimited vector of conditions; Use healthy only if subject is
+      known to be healthy; CRC=colorectal cancer;CD=Crohn's disease; for other
+      abbreviations see study_condition
+    from_schema: https://waldronlab.io
+    aliases:
+      - condition
+      - condition_ontology
+    multivalued: true
+    range: Disease
+    required: false
+  disease_subtype:
+    name: disease_subtype
+    description: >-
+      Disease subtype; CD=Chrohn's Disease;AS=Ankylosing
+      spondylitis;NAFLD=nonalcoholic fatty liver disease;for other abbreviations
+      see study_condition
+    from_schema: https://waldronlab.io
+    multivalued: true
+    range: Disease_subtype
+    required: false
+  age:
+    name: age
+    description: Subject age (years).
+    from_schema: https://waldronlab.io
+    multivalued: false
+    range: integer
+    required: false
+  infant_age:
+    name: infant_age
+    description: Infant age (days); should be used for infants < 2 years old.
+    from_schema: https://waldronlab.io
+    multivalued: false
+    range: integer
+    required: false
+  age_category:
+    name: age_category
+    description: >-
+      Age category: newborn < 1 year; 1 <= child < 12; 12 <= schoolage < 19; 19
+      <= adult <= 65; senior > 65.
+    from_schema: https://waldronlab.io
+    aliases:
+      - age_category_ontology
+    multivalued: false
+    range: cat_age
+    required: false
+  gender:
+    name: gender
+    description: Subject gender.
+    from_schema: https://waldronlab.io
+    multivalued: false
+    range: Gender
+    required: false
+  visit_number:
+    name: visit_number
+    description: Visit number for studies with repeated visits.
+    from_schema: https://waldronlab.io
+    multivalued: false
+    range: integer
+    required: false
+  BMI:
+    name: BMI
+    description: Body mass index (kg/m2).
+    from_schema: https://waldronlab.io
+    multivalued: false
+    range: float
+    required: false
+  country:
+    name: country
+    description: >-
+      Country of acquisition using ISO3 code from
+      http://www.fao.org/countryprofiles/iso3list/en/.
+    from_schema: https://waldronlab.io
+    aliases:
+      - country_ontology
+    multivalued: false
+    range: Country
+    required: true
+  location:
+    name: location
+    description: Free-form additional location information.
+    from_schema: https://waldronlab.io
+    multivalued: false
+    required: false
+  population:
+    name: population
+    description: can describe the belonging to a specific population
+    from_schema: https://waldronlab.io
+    multivalued: false
+    range: string
+    required: false
+    pattern: '[a-zA-Z]\\S+'
+  travel_destination:
+    name: travel_destination
+    description: >-
+      travel destination using ISO3 code from
+      http://www.fao.org/countryprofiles/iso3list/en/.
+    from_schema: https://waldronlab.io
+    multivalued: false
+    range: Travel_Destination
+    required: false
+  non_westernized:
+    name: non_westernized
+    description: Subject belongs to a non-westernized community.
+    from_schema: https://waldronlab.io
+    multivalued: false
+    range: YesNo
+    required: false
+  lifestyle:
+    name: lifestyle
+    description: to describe the lifestyle of non-westernized people
+    from_schema: https://waldronlab.io
+    multivalued: false
+    range: Life_style
+    required: false
+  brinkman_index:
+    name: brinkman_index
+    description: The Brinkman index if provided
+    from_schema: https://waldronlab.io
+    multivalued: false
+    range: float
+    required: false
+  days_from_first_collection:
+    name: days_from_first_collection
+    description: Used for time series studies.
+    from_schema: https://waldronlab.io
+    multivalued: false
+    range: integer
+    required: false
+  sequencing_platform:
+    name: sequencing_platform
+    description: >-
+      This will be modified as new sequencing platforms are added to the
+      database.
+    from_schema: https://waldronlab.io
+    multivalued: false
+    range: Sequencing_Platform
+    required: true
+  DNA_extraction_kit:
+    name: DNA_extraction_kit
+    description: DNA extraction kit.
+    from_schema: https://waldronlab.io
+    multivalued: false
+    range: DNA_Extraction_Kit
+    required: false
+  PMID:
+    name: PMID
+    description: Identifier of the main publication in PubMed.
+    from_schema: https://waldronlab.io
+    multivalued: false
+    range: integer
+    required: false
+    pattern: "{[0-9]8}"
+  number_reads:
+    name: number_reads
+    description: Number of final reads - calculated from raw data.
+    from_schema: https://waldronlab.io
+    multivalued: false
+    range: integer
+    required: true
+  number_bases:
+    name: number_bases
+    description: Total number of bases sequenced in the sample - calculated from raw data.
+    from_schema: https://waldronlab.io
+    multivalued: false
+    range: integer
+    required: true
+  minimum_read_length:
+    name: minimum_read_length
+    description: Minimum read length - calculated from raw data.
+    from_schema: https://waldronlab.io
+    multivalued: false
+    range: integer
+    required: true
+  median_read_length:
+    name: median_read_length
+    description: Median read length - calculated from raw data.
+    from_schema: https://waldronlab.io
+    multivalued: false
+    range: integer
+    required: true
+  NCBI_accession:
+    name: NCBI_accession
+    description: Semicolon-separated vector of NCBI accessions.
+    from_schema: https://waldronlab.io
+    multivalued: true
+    required: false
+    pattern: "[ES]R[SR][0-9]+"
+  pregnant:
+    name: pregnant
+    description: "Pregnancy of the subject (men: no)."
+    from_schema: https://waldronlab.io
+    multivalued: false
+    range: YesNo
+    required: false
+  lactating:
+    name: lactating
+    description: "Lactating subjects (men: no)."
+    from_schema: https://waldronlab.io
+    multivalued: false
+    range: YesNo
+    required: false
+  birth_control_pil:
+    name: birth_control_pil
+    description: "Use of the birth-control-pils at the sampling time (men: no)."
+    from_schema: https://waldronlab.io
+    multivalued: false
+    range: YesNo
+    required: false
+  smoker:
+    name: smoker
+    description: Currently a smoker at sampling.
+    from_schema: https://waldronlab.io
+    multivalued: false
+    range: YesNo
+    required: false
+  ever_smoker:
+    name: ever_smoker
+    description: Ever been a smoker.
+    from_schema: https://waldronlab.io
+    multivalued: false
+    range: YesNo
+    required: false
+  alcohol:
+    name: alcohol
+    description: Subject is reported as a drinker.
+    from_schema: https://waldronlab.io
+    multivalued: false
+    range: YesNo
+    required: false
+  alcohol_numeric:
+    name: alcohol_numeric
+    description: Alcohol consumption reported as a float.
+    from_schema: https://waldronlab.io
+    multivalued: false
+    range: float
+    required: false
+  mumps:
+    name: mumps
+    description: Subject has been through mumps in life.
+    from_schema: https://waldronlab.io
+    multivalued: false
+    range: YesNo
+    required: false
+  ajcc:
+    name: ajcc
+    description: AJCC staging for colorectal-cancer.
+    from_schema: https://waldronlab.io
+    multivalued: false
+    range: Ajcc_enum
+    required: false
+  fobt:
+    name: fobt
+    description: Fecal occult blood test.
+    from_schema: https://waldronlab.io
+    multivalued: false
+    range: YesNo
+    required: false
+  tnm:
+    name: tnm
+    description: TNM classification for colorectal-cancer.
+    from_schema: https://waldronlab.io
+    multivalued: false
+    required: false
+    pattern: >-
+      t4n1m1|t3nxm1|t2n0m1|tnm|t3n3m1|t2n1m1|t4n2m1|t3n0m1|t3n2m0|t4n0m1|t4n1m0|no|t4n0m0|t3n0m0|t3n1m0|ptis|t1n0m0|t4n2m0|t3n1m1|t3n2m1|tisn0m0|t2n0m0|t1n0m1|t2n1m0|t2m0n0|t2n2m0
+  days_after_onset:
+    name: days_after_onset
+    description: Days from the onset of the disease.
+    from_schema: https://waldronlab.io
+    multivalued: false
+    range: integer
+    required: false
+  stec_count:
+    name: stec_count
+    description: Amount of STEC colonies detected.
+    from_schema: https://waldronlab.io
+    multivalued: false
+    range: Stec_count_enum
+    required: false
+  shigatoxin_2_elisa:
+    name: shigatoxin_2_elisa
+    description: Enzyme-linked immunosorbent assay for Shiga-toxigenic E.coli.
+    from_schema: https://waldronlab.io
+    multivalued: false
+    range: Pos_neg
+    required: false
+  stool_texture:
+    name: stool_texture
+    description: Texture of the stool at sampling time.
+    from_schema: https://waldronlab.io
+    multivalued: false
+    range: Texture
+    required: false
+  insulin_cat:
+    name: insulin_cat
+    description: Insulin intake (yes/no)
+    from_schema: https://waldronlab.io
+    multivalued: false
+    range: YesNo
+    required: false
+  inr:
+    name: inr
+    description: International normalized ratio.
+    from_schema: https://waldronlab.io
+    multivalued: false
+    range: float
+    required: false
+  protein_intake:
+    name: protein_intake
+    description: Indication about the protein intake in the Mongolians diet.
+    from_schema: https://waldronlab.io
+    multivalued: false
+    range: float
+    required: false
+  flg_genotype:
+    name: flg_genotype
+    description: Any term for filaggrin-protein genotype.
+    from_schema: https://waldronlab.io
+    multivalued: false
+    required: false
+    pattern: wt|s1515x|e2422x|e2422x/3321dela
+  momeducat:
+    name: momeducat
+    description: Years of education of the mother of the subject.
+    from_schema: https://waldronlab.io
+    multivalued: false
+    range: integer
+    required: false
+  hitchip_probe_class:
+    name: hitchip_probe_class
+    description: High/Low species content onthe HIT-chip probe.
+    from_schema: https://waldronlab.io
+    multivalued: false
+    required: false
+    pattern: lpc|hpc
+  hitchip_probe_number:
+    name: hitchip_probe_number
+    description: HIT-chip probe score.
+    from_schema: https://waldronlab.io
+    multivalued: false
+    range: integer
+    required: false
+  mgs_richness:
+    name: mgs_richness
+    description: Metagenomic species richness.
+    from_schema: https://waldronlab.io
+    multivalued: false
+    range: float
+    required: false
+  hla_drb12:
+    name: hla_drb12
+    description: Hla_drb12 allele.
+    from_schema: https://waldronlab.io
+    multivalued: false
+    range: integer
+    required: false
+  hla_dqa12:
+    name: hla_dqa12
+    description: Hla_dqa12 allele.
+    from_schema: https://waldronlab.io
+    multivalued: false
+    range: integer
+    required: false
+  hla_dqa11:
+    name: hla_dqa11
+    description: Hla_dqa11 allele.
+    from_schema: https://waldronlab.io
+    multivalued: false
+    range: integer
+    required: false
+  hla_drb11:
+    name: hla_drb11
+    description: Hla_drb11 allele.
+    from_schema: https://waldronlab.io
+    multivalued: false
+    range: integer
+    required: false
+  hla_dbq12:
+    name: hla_dbq12
+    description: Hla_dbq12 allele.
+    from_schema: https://waldronlab.io
+    multivalued: false
+    range: integer
+    required: false
+  hla_dbq11:
+    name: hla_dbq11
+    description: Hla_dbq11 allele.
+    from_schema: https://waldronlab.io
+    multivalued: false
+    range: integer
+    required: false
+  ctp:
+    name: ctp
+    description: Cytidine triphosphate level.
+    from_schema: https://waldronlab.io
+    multivalued: false
+    range: integer
+    required: false
+  start_solidfood:
+    name: start_solidfood
+    description: First day of solid food introduction (newborns).
+    from_schema: https://waldronlab.io
+    multivalued: false
+    range: integer
+    required: false
+  triglycerides:
+    name: triglycerides
+    description: Curators must use mg/dl.
+    from_schema: https://waldronlab.io
+    multivalued: false
+    range: float
+    required: false
+  cholesterol:
+    name: cholesterol
+    description: Curators must use mg/dl.
+    from_schema: https://waldronlab.io
+    multivalued: false
+    range: float
+    required: false
+  hdl:
+    name: hdl
+    description: Curators must use mg/dl.
+    from_schema: https://waldronlab.io
+    multivalued: false
+    range: float
+    required: false
+  ldl:
+    name: ldl
+    description: Curators must use mg/dl.
+    from_schema: https://waldronlab.io
+    multivalued: false
+    range: float
+    required: false
+  ALT:
+    name: ALT
+    description: The Alanine aminotransferase test. STD. results of the test are allowed.
+    from_schema: https://waldronlab.io
+    multivalued: false
+    range: float
+    required: false
+  eGFR:
+    name: eGFR
+    description: >-
+      The Estimated Glomerular Filtration Rate. STD. estimate of the test
+      allowed.
+    from_schema: https://waldronlab.io
+    multivalued: false
+    range: float
+    required: false
+  adiponectin:
+    name: adiponectin
+    description: Curators must use mg/l.
+    from_schema: https://waldronlab.io
+    multivalued: false
+    range: float
+    required: false
+  fasting_insulin:
+    name: fasting_insulin
+    description: Curators must use micro-units/ml.
+    from_schema: https://waldronlab.io
+    multivalued: false
+    range: float
+    required: false
+  hba1c:
+    name: hba1c
+    description: Curators must use %.
+    from_schema: https://waldronlab.io
+    multivalued: false
+    range: float
+    required: false
+  c_peptide:
+    name: c_peptide
+    description: Curators must use ng/ml.
+    from_schema: https://waldronlab.io
+    multivalued: false
+    range: float
+    required: false
+  glp_1:
+    name: glp_1
+    description: Curators must use pmol/l.
+    from_schema: https://waldronlab.io
+    multivalued: false
+    range: float
+    required: false
+  cd163:
+    name: cd163
+    description: Curators must use ng/ml.
+    from_schema: https://waldronlab.io
+    multivalued: false
+    range: float
+    required: false
+  il_1:
+    name: il_1
+    description: Curators must use pg/ml.
+    from_schema: https://waldronlab.io
+    multivalued: false
+    range: float
+    required: false
+  leptin:
+    name: leptin
+    description: Curators must use micrograms/l.
+    from_schema: https://waldronlab.io
+    multivalued: false
+    range: float
+    required: false
+  glucose:
+    name: glucose
+    description: Curators must use mg/dl.
+    from_schema: https://waldronlab.io
+    multivalued: false
+    range: float
+    required: false
+  fasting_glucose:
+    name: fasting_glucose
+    description: Curators must use mg/dl.
+    from_schema: https://waldronlab.io
+    multivalued: false
+    range: float
+    required: false
+  fgf_19:
+    name: fgf_19
+    description: Curators must use pg/ml.
+    from_schema: https://waldronlab.io
+    multivalued: false
+    range: float
+    required: false
+  glutamate_decarboxylase_2_antibody:
+    name: glutamate_decarboxylase_2_antibody
+    description: Glutamic acid decarboxylase (GAD65) antibody assay.
+    from_schema: https://waldronlab.io
+    multivalued: false
+    range: float
+    required: false
+  creatinine:
+    name: creatinine
+    description: Curators must use micro-mol/l.
+    from_schema: https://waldronlab.io
+    multivalued: false
+    range: float
+    required: false
+  creatine:
+    name: creatine
+    comments:
+      - Curators must use micro-mol/l.
+    from_schema: https://waldronlab.io
+    multivalued: false
+    range: float
+    required: false
+  albumine:
+    name: albumine
+    description: Albumine level; curators must use g/l.
+    from_schema: https://waldronlab.io
+    multivalued: false
+    range: float
+    required: false
+  bilubirin:
+    name: bilubirin
+    description: Bilubirin; curators must use mg/dl.
+    from_schema: https://waldronlab.io
+    multivalued: false
+    range: float
+    required: false
+  prothrombin_time:
+    name: prothrombin_time
+    description: Prothrombin time in seconds.
+    from_schema: https://waldronlab.io
+    multivalued: false
+    range: float
+    required: false
+  dyastolic_p:
+    name: dyastolic_p
+    description: Measured in mm/Hg.
+    from_schema: https://waldronlab.io
+    multivalued: false
+    range: float
+    required: false
+  systolic_p:
+    name: systolic_p
+    description: Measured in mm/Hg.
+    from_schema: https://waldronlab.io
+    multivalued: false
+    range: float
+    required: false
+  hscrp:
+    name: hscrp
+    description: High-sensitivity C-reactive protein test result;curator have to use mg/L
+    from_schema: https://waldronlab.io
+    multivalued: false
+    range: float
+    required: false
+  ferm_milk_prod_consumer:
+    name: ferm_milk_prod_consumer
+    description: Dfmp means yes (defined milk product).
+    from_schema: https://waldronlab.io
+    multivalued: false
+    required: false
+    pattern: dfmp
+  family:
+    name: family
+    description: >-
+      A number identifying the family subjects belong; not corrected for
+      meta-analyses.
+    from_schema: https://waldronlab.io
+    multivalued: false
+    required: false
+    pattern: .+
+  family_role:
+    name: family_role
+    description: >-
+      Role in the family when multiple samples come from the same family but
+      different persons.
+    from_schema: https://waldronlab.io
+    multivalued: false
+    range: Family_Role
+    required: false
+  born_method:
+    name: born_method
+    description: C-section vs vaginal birth.
+    from_schema: https://waldronlab.io
+    multivalued: false
+    range: Born_method_enum
+    required: false
+  c_section_type:
+    name: c_section_type
+    description: C-section main decision reason.
+    from_schema: https://waldronlab.io
+    multivalued: false
+    required: false
+    pattern: Elective_CS Emergency_CS
+  premature:
+    name: premature
+    description: If premature at birth.
+    from_schema: https://waldronlab.io
+    multivalued: false
+    range: YesNo
+    required: false
+  birth_order:
+    name: birth_order
+    description: Can be used for multiple birth.
+    from_schema: https://waldronlab.io
+    multivalued: false
+    range: integer
+    required: false
+  age_twins_started_to_live_apart:
+    name: age_twins_started_to_live_apart
+    description: Age at which twins started to live apart (years).
+    from_schema: https://waldronlab.io
+    multivalued: false
+    range: integer
+    required: false
+  feeding_practice:
+    name: feeding_practice
+    description: Feeding practice.
+    from_schema: https://waldronlab.io
+    multivalued: false
+    range: Feeding_Practice
+    required: false
+  breastfeeding_duration:
+    name: breastfeeding_duration
+    description: curator must use days
+    from_schema: https://waldronlab.io
+    multivalued: false
+    range: integer
+    required: false
+  formula_first_day:
+    name: formula_first_day
+    description: the age infants get the first formula feeding in days
+    from_schema: https://waldronlab.io
+    multivalued: false
+    range: integer
+    required: false
+  ESR:
+    name: ESR
+    description: Erythrocyte sedimentation rate (ESR) in mm/H.
+    from_schema: https://waldronlab.io
+    multivalued: false
+    range: float
+    required: false
+  HLA:
+    name: HLA
+    description: HLA DR-DQ alleles conferring risk of Typ-1-Diabetes (T1D)
+    from_schema: https://waldronlab.io
+    multivalued: true
+    required: false
+    pattern: .+
+  autoantibody_positive:
+    name: autoantibody_positive
+    description: Tested positive for AAB.
+    from_schema: https://waldronlab.io
+    multivalued: true
+    required: false
+    pattern: .+
+  age_seroconversion:
+    name: age_seroconversion
+    description: Age at seroconvention was detected (days).
+    from_schema: https://waldronlab.io
+    multivalued: false
+    range: float
+    required: false
+  age_T1D_diagnosis:
+    name: age_T1D_diagnosis
+    description: Age at which T1D was diagnosed (days).
+    from_schema: https://waldronlab.io
+    multivalued: false
+    range: float
+    required: false
+  disease_stage:
+    name: disease_stage
+    description: Stage information for diseases that can be divided into multiple stages.
+    from_schema: https://waldronlab.io
+    multivalued: false
+    required: false
+    pattern: "[A-Z]1"
+  disease_location:
+    name: disease_location
+    description: Can be used for diseases which occur on different body parts like CD.
+    from_schema: https://waldronlab.io
+    multivalued: true
+    required: false
+    pattern: .+
+  calprotectin:
+    name: calprotectin
+    description: >-
+      Higher calprotectin is an indicator for inflammation in the
+      gastrointestinal tract.
+    from_schema: https://waldronlab.io
+    multivalued: false
+    range: float
+    required: false
+  treatment:
+    name: treatment
+    description: medications or treatments against the diseases.
+    from_schema: https://waldronlab.io
+    multivalued: true
+    range: Treatment
+    required: false
+  remission:
+    name: remission
+    description: Remission of the disease.
+    from_schema: https://waldronlab.io
+    multivalued: false
+    range: YesNo
+    required: false
+  anti_PD_1:
+    name: anti_PD_1
+    description: >-
+      The patient results to be a responder/non-responder to the anti-PD1
+      treatment.
+    from_schema: https://waldronlab.io
+    multivalued: false
+    required: false
+    pattern: responder non_responder
+  wbc:
+    name: wbc
+    description: White blood cells count; curators must use *1000counts/µL
+    from_schema: https://waldronlab.io
+    multivalued: false
+    range: float
+    required: false
+  rbc:
+    name: rbc
+    description: Red blood cells count; curators must use *million_counts/µL
+    from_schema: https://waldronlab.io
+    multivalued: false
+    range: float
+    required: false
+  blood_platelet:
+    name: blood_platelet
+    description: Curators must use *1000counts/µl
+    from_schema: https://waldronlab.io
+    multivalued: false
+    range: float
+    required: false
+  hemoglobinometry:
+    name: hemoglobinometry
+    description: Hemoglobin concentration in blood; curators must use g/dl
+    from_schema: https://waldronlab.io
+    multivalued: false
+    range: float
+    required: false
+  ast:
+    name: ast
+    description: Aspartate transaminase; curator must use U/l
+    from_schema: https://waldronlab.io
+    multivalued: false
+    range: float
+    required: false
+  alt:
+    name: alt
+    description: Alanine aminotransferase; curator must use U/l
+    from_schema: https://waldronlab.io
+    multivalued: false
+    range: float
+    required: false
+  globulin:
+    name: globulin
+    description: Curator must use g/l
+    from_schema: https://waldronlab.io
+    multivalued: false
+    range: float
+    required: false
+  urea_nitrogen:
+    name: urea_nitrogen
+    description: Curator must use mmol/l
+    from_schema: https://waldronlab.io
+    multivalued: false
+    range: float
+    required: false
+  ASO:
+    name: ASO
+    description: Antistreptolysin O; curator must use IU/ml
+    from_schema: https://waldronlab.io
+    multivalued: false
+    range: float
+    required: false
+  anti_ccp_antibody:
+    name: anti_ccp_antibody
+    description: Curator must use U/ml
+    from_schema: https://waldronlab.io
+    multivalued: false
+    range: float
+    required: false
+  rheumatoid_factor:
+    name: rheumatoid_factor
+    description: Curator must use IU/ml
+    from_schema: https://waldronlab.io
+    multivalued: false
+    range: float
+    required: false
+  dental_sample_type:
+    name: dental_sample_type
+    description: Dental sample type.
+    from_schema: https://waldronlab.io
+    multivalued: false
+    range: Dental_Samples
+    required: false
+  history_of_periodontitis:
+    name: history_of_periodontitis
+    description: >-
+      If the patients has been reported having previously suffered of
+      periodontitis in one of more sites.
+    from_schema: https://waldronlab.io
+    multivalued: false
+    range: YesNo
+    required: false
+  PPD_M:
+    name: PPD_M
+    description: Depth of the pocket reached by the probe in a dental implant ('M').
+    from_schema: https://waldronlab.io
+    multivalued: false
+    range: float
+    required: false
+  PPD_B:
+    name: PPD_B
+    description: Depth of the pocket reached by the probe in a dental implant ('B').
+    from_schema: https://waldronlab.io
+    multivalued: false
+    range: float
+    required: false
+  PPD_D:
+    name: PPD_D
+    description: Depth of the pocket reached by the probe in a dental implant ('D').
+    from_schema: https://waldronlab.io
+    multivalued: false
+    range: float
+    required: false
+  PPD_L:
+    name: PPD_L
+    description: Depth of the pocket reached by the probe in a dental implant ('L').
+    from_schema: https://waldronlab.io
+    multivalued: false
+    range: float
+    required: false
+  zigosity:
+    name: zigosity
+    description: Zigosity.
+    from_schema: https://waldronlab.io
+    multivalued: false
+    range: Zigosity
+    required: false
+  menopausal_status:
+    name: menopausal_status
+    description: Menopausal status.
+    from_schema: https://waldronlab.io
+    multivalued: false
+    range: Menopausual_Status
+    required: false
+  BASDAI:
+    name: BASDAI
+    description: Bath Ankylosing Spondylitis Disease Activity Index
+    from_schema: https://waldronlab.io
+    multivalued: false
+    range: float
+    required: false
+  BASFI:
+    name: BASFI
+    description: Bath Ankylosing Spondylitis Functional Index
+    from_schema: https://waldronlab.io
+    multivalued: false
+    range: float
+    required: false
+  HBI:
+    name: HBI
+    description: >-
+      Harvey-Bradshaw Index clinical indication of active disease and
+      inflammation
+    from_schema: https://waldronlab.io
+    multivalued: false
+    range: float
+    required: false
+  SCCAI:
+    name: SCCAI
+    description: simple clinical colitis activity index
+    from_schema: https://waldronlab.io
+    multivalued: false
+    range: float
+    required: false
+  birth_weight:
+    name: birth_weight
+    description: curators must use gramms
+    from_schema: https://waldronlab.io
+    multivalued: false
+    range: float
+    required: false
+  gestational_age:
+    name: gestational_age
+    description: duration time of pregnancy;curatos must use weeks
+    from_schema: https://waldronlab.io
+    multivalued: false
+    range: float
+    required: false
+  diet:
+    name: diet
+    description: type of diet
+    from_schema: https://waldronlab.io
+    multivalued: false
+    range: Diet
+    required: false
+  subcohort:
+    name: subcohort
+    description: Identifier of a sub-set of the cohort. Can be everything.
+    from_schema: https://waldronlab.io
+    multivalued: false
+    required: false
+    pattern: '[0-9a-zA-Z]\\S+'
+  RECIST:
+    name: RECIST
+    description: >-
+      RECIST classification for response to cancer-therapy: SD=Stable Disease;
+      PR=Partial Response; PD=Progression Disease; CR=Complete Response
+    from_schema: https://waldronlab.io
+    multivalued: false
+    required: false
+    pattern: RECIST_enum
+  ORR:
+    name: ORR
+    description: Overall Response Rate (see also RECIST)
+    from_schema: https://waldronlab.io
+    multivalued: false
+    range: YesNo
+    required: false
+  PFS12:
+    name: PFS12
+    description: Progression-free survival in 12 months.
+    from_schema: https://waldronlab.io
+    multivalued: false
+    range: YesNo
+    required: false
+  change_in_tumor_size:
+    name: change_in_tumor_size
+    description: ""
+    from_schema: https://waldronlab.io
+    multivalued: false
+    range: integer
+    required: false
+  performance_status:
+    name: performance_status
+    description: ""
+    from_schema: https://waldronlab.io
+    multivalued: false
+    range: float
+    required: false
+  previous_therapy:
+    name: previous_therapy
+    description: ""
+    from_schema: https://waldronlab.io
+    multivalued: false
+    range: YesNo
+    required: false
+  toxicity_above_zero:
+    name: toxicity_above_zero
+    description: ""
+    from_schema: https://waldronlab.io
+    multivalued: false
+    range: YesNo
+    required: false
+  curator:
+    name: curator
+    description: Curator name.
+    from_schema: https://waldronlab.io
+    multivalued: true
+    range: Curator
+    required: true
+  uncurated_metadata:
+    name: uncurated_metadata
+    description: A row for whatever field has not be included here.
+    from_schema: https://waldronlab.io
+    multivalued: false
+    required: false
+    pattern: .+
+classes:
+  dh_interface:
+    name: dh_interface
+    description: A DataHarmonizer interface
+    from_schema: https://waldronlab.io
+  Project:
+    name: Project
+    from_schema: https://waldronlab.io
+    attributes:
+      project_name:
+        name: project_name
+        from_schema: https://waldronlab.io
+        alias: project_name
+        owner: Project
+        domain_of:
+          - Project
+        range: string
+      studies:
+        name: studies
+        from_schema: https://waldronlab.io
+        multivalued: true
+        alias: studies
+        owner: Project
+        domain_of:
+          - Project
+        range: string
+        inlined_as_list: true
+    tree_root: true
+  Study:
+    name: Study
+    from_schema: https://waldronlab.io
+    attributes:
+      samples:
+        name: samples
+        from_schema: https://waldronlab.io
+        multivalued: true
+        alias: samples
+        owner: Study
+        domain_of:
+          - Study
+        range: string
+        inlined_as_list: true
+      study_name:
+        name: study_name
+        description: Dataset name.
+        from_schema: https://waldronlab.io
+        multivalued: false
+        alias: study_name
+        owner: Study
+        domain_of:
+          - Study
+        range: string
+        required: false
+        pattern: >-
+          [a-zA-Z-]+_[0-9]4} | [a-zA-Z-]+_[0-9]4}[a-zA-Z-]+ |
+          [a-zA-Z-]+_[0-9]4}_[a-zA-Z-]+ | [a-zA-Z-]+_[0-9]4}_[a-zA-Z0-9]+
+  Sample:
+    name: Sample
+    from_schema: https://waldronlab.io
+    is_a: dh_interface
+    attributes:
+      study_name:
+        name: study_name
+        range: string
+        required: false
+        multivalued: false
+        description: Dataset name.
+        pattern: >-
+          ^[a-zA-Z-]+_[0-9]{4}$|^[a-zA-Z-]+_[0-9]{4}[a-zA-Z-]+$|^[a-zA-Z-]+_[0-9]{4}_[a-zA-Z-]+$|^[a-zA-Z-]+_[0-9]{4}_[a-zA-Z0-9]+$
+      sample_id:
+        name: sample_id
+        range: string
+        required: true
+        multivalued: false
+        description: Sample identifier.
+        pattern: ^[0-9a-zA-Z]\S+$
+      subject_id:
+        name: subject_id
+        range: string
+        required: true
+        multivalued: false
+        description: Subject identifier.
+        pattern: ^[0-9a-zA-Z]\S+$
+      age:
+        name: age
+        range: integer
+        required: false
+        multivalued: false
+        description: Age of the subject using the unit specified under 'age_unit' column
+        pattern: ^[0-9]+$
+      age_unit:
+        name: age_unit
+        range: age_unit_enums
+        required: false
+        multivalued: false
+        description: Unit of the subject's age specified under 'age' column
+      age_group:
+        name: age_group
+        range: age_group_enums
+        required: false
+        multivalued: false
+        description: >-
+          11 <= Adolescent < 18|18 <= Adult < 65|2 <= Children 2-11 Years Old <
+          11|65 <= Elderly < 130|0 <= Infant < 2
+      control:
+        name: control
+        range: control_enums
+        required: true
+        multivalued: false
+        description: Whether the sample is control, case, or not used in the study
+      disease:
+        name: disease
+        range: disease_enums
+        required: false
+        multivalued: true
+        description: >-
+          Reported disease/condition type(s) for a participant. 'Healthy' if
+          disease(s)/condition(s) assessed under a given study is not detected
+      target_condition:
+        name: target_condition
+        range: target_condition_enums
+        required: true
+        multivalued: true
+        description: Main phenotype(s)/condition(s) of interest for a given study
+      treatment:
+        name: treatment
+        range: treatment_enums
+        required: false
+        multivalued: true
+        description: Medication(s)/treatment(s) applied to the subject
+      bodysite:
+        name: bodysite
+        range: bodysite_enums
+        required: false
+        multivalued: false
+        description: Subject's bodysite the given sample was collected from
+      body_subsite:
+        name: body_subsite
+        range: body_subsite_enums
+        required: false
+        multivalued: false
+        description: >-
+          Subject's body subsite the given sample was collected from. Should be
+          more specific information than bodysite
+      sex:
+        name: sex
+        range: sex_enums
+        required: false
+        multivalued: false
+        description: Biological sex of the subject
+      antibiotics_current_use:
+        name: antibiotics_current_use
+        range: antibiotics_current_use_enums
+        required: false
+        multivalued: false
+        description: >-
+          Antibiotics current usage. `Yes` for currently using and `No` for not
+          using
+      visit_number:
+        name: visit_number
+        range: integer
+        required: false
+        multivalued: false
+        description: Visit number for studies with repeated visits.
+        pattern: ^[0-9]+$
+      BMI:
+        name: BMI
+        range: double
+        required: false
+        multivalued: false
+        description: Body mass index (kg/m2).
+        pattern: ^[0-9]+\.?[0-9]*$
+      country:
+        name: country
+        range: country_enums
+        required: true
+        multivalued: false
+        description: >-
+          Country of acquisition using ISO3 code from
+          http://www.fao.org/countryprofiles/iso3list/en/.
+      location:
+        name: location
+        range: string
+        required: false
+        multivalued: false
+        description: Free-form additional location information.
+        pattern: ^.+$
+      population:
+        name: population
+        range: string
+        required: false
+        multivalued: false
+        description: can describe the belonging to a specific population
+        pattern: ^[a-zA-Z]\S+$
+      travel_destination:
+        name: travel_destination
+        range: travel_destination_enums
+        required: false
+        multivalued: false
+        description: >-
+          travel destination using ISO3 code from
+          http://www.fao.org/countryprofiles/iso3list/en/.
+      non_westernized:
+        name: non_westernized
+        range: non_westernized_enums
+        required: false
+        multivalued: false
+        description: Subject belongs to a non-westernized community.
+      lifestyle:
+        name: lifestyle
+        range: lifestyle_enums
+        required: false
+        multivalued: false
+        description: to describe the lifestyle of non-westernized people
+      brinkman_index:
+        name: brinkman_index
+        range: double
+        required: false
+        multivalued: false
+        description: The Brinkman index if provided
+        pattern: ^[0-9]+\.?[0-9]*$
+      days_from_first_collection:
+        name: days_from_first_collection
+        range: integer
+        required: false
+        multivalued: false
+        description: Used for time series studies.
+        pattern: ^[0-9]+$
+      sequencing_platform:
+        name: sequencing_platform
+        range: sequencing_platform_enums
+        required: true
+        multivalued: false
+        description: >-
+          This will be modified as new sequencing platforms are added to the
+          database.
+      DNA_extraction_kit:
+        name: DNA_extraction_kit
+        range: DNA_extraction_kit_enums
+        required: false
+        multivalued: false
+        description: DNA extraction kit.
+      PMID:
+        name: PMID
+        range: string
+        required: false
+        multivalued: false
+        description: Identifier of the main publication in PubMed.
+        pattern: ^[0-9]{8}$|^NA$
+      number_reads:
+        name: number_reads
+        range: integer
+        required: true
+        multivalued: false
+        description: Number of final reads - calculated from raw data.
+        pattern: ^[0-9]+$
+      number_bases:
+        name: number_bases
+        range: double
+        required: true
+        multivalued: false
+        description: >-
+          Total number of bases sequenced in the sample - calculated from raw
+          data.
+        pattern: ^[0-9]+$
+      minimum_read_length:
+        name: minimum_read_length
+        range: integer
+        required: true
+        multivalued: false
+        description: Minimum read length - calculated from raw data.
+        pattern: ^[0-9]+$|^NA$
+      median_read_length:
+        name: median_read_length
+        range: integer
+        required: true
+        multivalued: false
+        description: Median read length - calculated from raw data.
+        pattern: ^[0-9]+$|^NA$
+      NCBI_accession:
+        name: NCBI_accession
+        range: string
+        required: false
+        multivalued: true
+        description: Semicolon-separated vector of NCBI accessions.
+        pattern: ^[ES]R[SR][0-9]+$
+      bristol_score:
+        name: bristol_score
+        range: double
+        required: false
+        multivalued: false
+        description: >-
+          The Brisol scale (feces-consistentcy scale) for the stool sample
+          collected.
+        pattern: ^[0-9]+$
+      pregnant:
+        name: pregnant
+        range: pregnant_enums
+        required: false
+        multivalued: false
+        description: "Pregnancy of the subject (men: no)."
+      lactating:
+        name: lactating
+        range: lactating_enums
+        required: false
+        multivalued: false
+        description: "Lactating subjects (men: no)."
+      birth_control_pil:
+        name: birth_control_pil
+        range: birth_control_pil_enums
+        required: false
+        multivalued: false
+        description: "Use of the birth-control-pils at the sampling time (men: no)."
+      smoker:
+        name: smoker
+        range: smoker_enums
+        required: false
+        multivalued: false
+        description: Currently a smoker at sampling.
+      ever_smoker:
+        name: ever_smoker
+        range: ever_smoker_enums
+        required: false
+        multivalued: false
+        description: Ever been a smoker.
+      alcohol:
+        name: alcohol
+        range: alcohol_enums
+        required: false
+        multivalued: false
+        description: Subject is reported as a drinker.
+      alcohol_numeric:
+        name: alcohol_numeric
+        range: double
+        required: false
+        multivalued: false
+        description: "Alcohol consumption reported as a float. "
+        pattern: ^[0-9]+\.?[0-9]*$
+      mumps:
+        name: mumps
+        range: mumps_enums
+        required: false
+        multivalued: false
+        description: Subject has been through mumps in life.
+      ajcc:
+        name: ajcc
+        range: ajcc_enums
+        required: false
+        multivalued: false
+        description: AJCC staging for colorectal-cancer.
+      fobt:
+        name: fobt
+        range: fobt_enums
+        required: false
+        multivalued: false
+        description: Fecal occult blood test.
+      tnm:
+        name: tnm
+        range: tnm_enums
+        required: false
+        multivalued: false
+        description: TNM classification for colorectal-cancer.
+      days_after_onset:
+        name: days_after_onset
+        range: integer
+        required: false
+        multivalued: false
+        description: Days from the onset of the disease.
+        pattern: ^[0-9]+$
+      stec_count:
+        name: stec_count
+        range: stec_count_enums
+        required: false
+        multivalued: false
+        description: Amount of STEC colonies detected.
+      shigatoxin_2_elisa:
+        name: shigatoxin_2_elisa
+        range: shigatoxin_2_elisa_enums
+        required: false
+        multivalued: false
+        description: Enzyme-linked immunosorbent assay for Shiga-toxigenic E.coli.
+      stool_texture:
+        name: stool_texture
+        range: stool_texture_enums
+        required: false
+        multivalued: false
+        description: Texture of the stool at sampling time.
+      insulin_cat:
+        name: insulin_cat
+        range: insulin_cat_enums
+        required: false
+        multivalued: false
+        description: Insulin intake (yes/no)
+      inr:
+        name: inr
+        range: double
+        required: false
+        multivalued: false
+        description: International normalized ratio.
+        pattern: ^[0-9]+\.?[0-9]*$
+      protein_intake:
+        name: protein_intake
+        range: double
+        required: false
+        multivalued: false
+        description: Indication about the protein intake in the Mongolians diet.
+        pattern: ^[0-9]+\.?[0-9]*$
+      flg_genotype:
+        name: flg_genotype
+        range: flg_genotype_enums
+        required: false
+        multivalued: false
+        description: Any term for filaggrin-protein genotype.
+      momeducat:
+        name: momeducat
+        range: integer
+        required: false
+        multivalued: false
+        description: Years of education of the mother of the subject.
+        pattern: ^[0-9]+$
+      hitchip_probe_class:
+        name: hitchip_probe_class
+        range: hitchip_probe_class_enums
+        required: false
+        multivalued: false
+        description: High/Low species content onthe HIT-chip probe.
+      hitchip_probe_number:
+        name: hitchip_probe_number
+        range: integer
+        required: false
+        multivalued: false
+        description: HIT-chip probe score.
+        pattern: ^[0-9]+$
+      mgs_richness:
+        name: mgs_richness
+        range: double
+        required: false
+        multivalued: false
+        description: Metagenomic species richness.
+        pattern: ^[0-9]+\.?[0-9]*$
+      hla_drb12:
+        name: hla_drb12
+        range: integer
+        required: false
+        multivalued: false
+        description: Hla_drb12 allele.
+        pattern: ^[0-9]+$
+      hla_dqa12:
+        name: hla_dqa12
+        range: integer
+        required: false
+        multivalued: false
+        description: Hla_dqa12 allele.
+        pattern: ^[0-9]+$
+      hla_dqa11:
+        name: hla_dqa11
+        range: integer
+        required: false
+        multivalued: false
+        description: Hla_dqa11 allele.
+        pattern: ^[0-9]+$
+      hla_drb11:
+        name: hla_drb11
+        range: integer
+        required: false
+        multivalued: false
+        description: Hla_drb11 allele.
+        pattern: ^[0-9]+$
+      hla_dbq12:
+        name: hla_dbq12
+        range: integer
+        required: false
+        multivalued: false
+        description: Hla_dbq12 allele.
+        pattern: ^[0-9]+$
+      hla_dbq11:
+        name: hla_dbq11
+        range: integer
+        required: false
+        multivalued: false
+        description: Hla_dbq11 allele.
+        pattern: ^[0-9]+$
+      ctp:
+        name: ctp
+        range: integer
+        required: false
+        multivalued: false
+        description: Cytidine triphosphate level.
+        pattern: ^[0-9]+$
+      start_solidfood:
+        name: start_solidfood
+        range: integer
+        required: false
+        multivalued: false
+        description: First day of solid food introduction (newborns).
+        pattern: ^[0-9]+$
+      triglycerides:
+        name: triglycerides
+        range: double
+        required: false
+        multivalued: false
+        description: Curators must use mg/dl.
+        pattern: ^[0-9]+\.?[0-9]*$
+      cholesterol:
+        name: cholesterol
+        range: double
+        required: false
+        multivalued: false
+        description: Curators must use mg/dl.
+        pattern: ^[0-9]+\.?[0-9]*$
+      hdl:
+        name: hdl
+        range: double
+        required: false
+        multivalued: false
+        description: Curators must use mg/dl.
+        pattern: ^[0-9]+\.?[0-9]*$
+      ldl:
+        name: ldl
+        range: double
+        required: false
+        multivalued: false
+        description: Curators must use mg/dl.
+        pattern: ^[0-9]+\.?[0-9]*$
+      ALT:
+        name: ALT
+        range: double
+        required: false
+        multivalued: false
+        description: >-
+          The Alanine aminotransferase test. STD. results of the test are
+          allowed.
+        pattern: ^[0-9]+\.?[0-9]*$
+      eGFR:
+        name: eGFR
+        range: double
+        required: false
+        multivalued: false
+        description: >-
+          The Estimated Glomerular Filtration Rate. STD. estimate of the test
+          allowed.
+        pattern: ^[0-9]+\.?[0-9]*$
+      adiponectin:
+        name: adiponectin
+        range: double
+        required: false
+        multivalued: false
+        description: Curators must use mg/l.
+        pattern: ^[0-9]+\.?[0-9]*$
+      fasting_insulin:
+        name: fasting_insulin
+        range: double
+        required: false
+        multivalued: false
+        description: Curators must use micro-units/ml.
+        pattern: ^[0-9]+\.?[0-9]*$
+      hba1c:
+        name: hba1c
+        range: double
+        required: false
+        multivalued: false
+        description: Curators must use %.
+        pattern: ^[0-9]+\.?[0-9]*$
+      c_peptide:
+        name: c_peptide
+        range: double
+        required: false
+        multivalued: false
+        description: Curators must use ng/ml.
+        pattern: ^[0-9]+\.?[0-9]*$
+      glp_1:
+        name: glp_1
+        range: double
+        required: false
+        multivalued: false
+        description: Curators must use pmol/l.
+        pattern: ^[0-9]+\.?[0-9]*$
+      cd163:
+        name: cd163
+        range: double
+        required: false
+        multivalued: false
+        description: Curators must use ng/ml.
+        pattern: ^[0-9]+\.?[0-9]*$
+      il_1:
+        name: il_1
+        range: double
+        required: false
+        multivalued: false
+        description: Curators must use pg/ml.
+        pattern: ^[0-9]+\.?[0-9]*$
+      leptin:
+        name: leptin
+        range: double
+        required: false
+        multivalued: false
+        description: Curators must use micrograms/l.
+        pattern: ^[0-9]+\.?[0-9]*$
+      glucose:
+        name: glucose
+        range: double
+        required: false
+        multivalued: false
+        description: Curators must use mg/dl.
+        pattern: ^[0-9]+\.?[0-9]*$
+      fasting_glucose:
+        name: fasting_glucose
+        range: double
+        required: false
+        multivalued: false
+        description: Curators must use mg/dl.
+        pattern: ^[0-9]+\.?[0-9]*$
+      fgf_19:
+        name: fgf_19
+        range: double
+        required: false
+        multivalued: false
+        description: Curators must use pg/ml.
+        pattern: ^[0-9]+\.?[0-9]*$
+      glutamate_decarboxylase_2_antibody:
+        name: glutamate_decarboxylase_2_antibody
+        range: double
+        required: false
+        multivalued: false
+        description: Glutamic acid decarboxylase (GAD65) antibody assay.
+        pattern: ^[0-9]+\.?[0-9]*$
+      creatinine:
+        name: creatinine
+        range: double
+        required: false
+        multivalued: false
+        description: Curators must use micro-mol/l.
+        pattern: ^[0-9]+\.?[0-9]*$
+      creatine:
+        name: creatine
+        range: double
+        required: false
+        multivalued: false
+        description: Curators must use micro-mol/l.
+        pattern: ^[0-9]+\.?[0-9]*$
+      albumine:
+        name: albumine
+        range: double
+        required: false
+        multivalued: false
+        description: Albumine level; curators must use g/l.
+        pattern: ^[0-9]+\.?[0-9]*$
+      bilirubin:
+        name: bilirubin
+        range: double
+        required: false
+        multivalued: false
+        description: Bilirubin; curators must use mg/dl.
+        pattern: ^[0-9]+\.?[0-9]*$
+      prothrombin_time:
+        name: prothrombin_time
+        range: double
+        required: false
+        multivalued: false
+        description: Prothrombin time in seconds.
+        pattern: ^[0-9]+\.?[0-9]*$
+      dyastolic_p:
+        name: dyastolic_p
+        range: double
+        required: false
+        multivalued: false
+        description: Measured in mm/Hg.
+        pattern: ^[0-9]+\.?[0-9]*$
+      systolic_p:
+        name: systolic_p
+        range: double
+        required: false
+        multivalued: false
+        description: Measured in mm/Hg.
+        pattern: ^[0-9]+\.?[0-9]*$
+      hscrp:
+        name: hscrp
+        range: double
+        required: false
+        multivalued: false
+        description: >-
+          High-sensitivity C-reactive protein test result;curator have to use
+          mg/L
+        pattern: ^[0-9]+\.?[0-9]*$
+      ferm_milk_prod_consumer:
+        name: ferm_milk_prod_consumer
+        range: ferm_milk_prod_consumer_enums
+        required: false
+        multivalued: false
+        description: Dfmp means yes (defined milk product).
+      family:
+        name: family
+        range: string
+        required: false
+        multivalued: false
+        description: >-
+          A number identifying the family subjects belong; not corrected for
+          meta-analyses.
+        pattern: ^.+$
+      family_role:
+        name: family_role
+        range: family_role_enums
+        required: false
+        multivalued: false
+        description: >-
+          Role in the family when multiple samples come from the same family but
+          different persons.
+      born_method:
+        name: born_method
+        range: born_method_enums
+        required: false
+        multivalued: false
+        description: C-section vs vaginal birth.
+      c_section_type:
+        name: c_section_type
+        range: c_section_type_enums
+        required: false
+        multivalued: false
+        description: C-section main decision reason.
+      premature:
+        name: premature
+        range: premature_enums
+        required: false
+        multivalued: false
+        description: If premature at birth.
+      birth_order:
+        name: birth_order
+        range: integer
+        required: false
+        multivalued: false
+        description: Can be used for multiple birth.
+        pattern: ^[0-9]+$
+      age_twins_started_to_live_apart:
+        name: age_twins_started_to_live_apart
+        range: integer
+        required: false
+        multivalued: false
+        description: Age at which twins started to live apart (years).
+        pattern: ^[0-9]+$
+      feeding_practice:
+        name: feeding_practice
+        range: feeding_practice_enums
+        required: false
+        multivalued: false
+        description: Feeding practice.
+      breastfeeding_duration:
+        name: breastfeeding_duration
+        range: integer
+        required: false
+        multivalued: false
+        description: curator must use days
+        pattern: ^[0-9]+$
+      formula_first_day:
+        name: formula_first_day
+        range: integer
+        required: false
+        multivalued: false
+        description: " the age infants get the first formula feeding in days"
+        pattern: ^[0-9]+$
+      ESR:
+        name: ESR
+        range: double
+        required: false
+        multivalued: false
+        description: Erythrocyte sedimentation rate (ESR) in mm/H.
+        pattern: ^[0-9]+\.?[0-9]*$
+      HLA:
+        name: HLA
+        range: string
+        required: false
+        multivalued: true
+        description: HLA DR-DQ alleles conferring risk of Typ-1-Diabetes (T1D)
+        pattern: ^.+$
+      autoantibody_positive:
+        name: autoantibody_positive
+        range: string
+        required: false
+        multivalued: true
+        description: Tested positive for AAB.
+        pattern: ^.+$
+      age_seroconversion:
+        name: age_seroconversion
+        range: double
+        required: false
+        multivalued: false
+        description: Age at seroconvention was detected (days).
+        pattern: ^[0-9]+\.?[0-9]*$
+      age_T1D_diagnosis:
+        name: age_T1D_diagnosis
+        range: double
+        required: false
+        multivalued: false
+        description: Age at which T1D was diagnosed (days).
+        pattern: ^[0-9]+\.?[0-9]*$
+      disease_stage:
+        name: disease_stage
+        range: disease_stage_enums
+        required: false
+        multivalued: false
+        description: >-
+          Stage information for diseases that can be divided into multiple
+          stages.
+      disease_location:
+        name: disease_location
+        range: disease_location_enums
+        required: false
+        multivalued: true
+        description: Can be used for diseases which occur on different body parts like CD.
+      calprotectin:
+        name: calprotectin
+        range: double
+        required: false
+        multivalued: false
+        description: >-
+          Higher calprotectin is an indicator for inflammation in the
+          gastrointestinal tract.
+        pattern: ^[0-9]+\.?[0-9]*$
+      remission:
+        name: remission
+        range: remission_enums
+        required: false
+        multivalued: false
+        description: Remission of the disease.
+      anti_PD_1:
+        name: anti_PD_1
+        range: anti_PD_1_enums
+        required: false
+        multivalued: false
+        description: >-
+          The patient results to be a responder/non-responder to the anti-PD1
+          treatment.
+      wbc:
+        name: wbc
+        range: double
+        required: false
+        multivalued: false
+        description: White blood cells count; curators must use *1000counts/µL
+        pattern: ^[0-9]+\.?[0-9]*$
+      rbc:
+        name: rbc
+        range: double
+        required: false
+        multivalued: false
+        description: Red blood cells count; curators must use *million_counts/µL
+        pattern: ^[0-9]+\.?[0-9]*$
+      blood_platelet:
+        name: blood_platelet
+        range: double
+        required: false
+        multivalued: false
+        description: Curators must use *1000counts/µl
+        pattern: ^[0-9]+\.?[0-9]*$
+      hemoglobinometry:
+        name: hemoglobinometry
+        range: double
+        required: false
+        multivalued: false
+        description: Hemoglobin concentration in blood; curators must use g/dl
+        pattern: ^[0-9]+\.?[0-9]*$
+      ast:
+        name: ast
+        range: double
+        required: false
+        multivalued: false
+        description: Aspartate transaminase; curator must use U/l
+        pattern: ^[0-9]+\.?[0-9]*$
+      alt:
+        name: alt
+        range: double
+        required: false
+        multivalued: false
+        description: Alanine aminotransferase; curator must use U/l
+        pattern: ^[0-9]+\.?[0-9]*$
+      globulin:
+        name: globulin
+        range: double
+        required: false
+        multivalued: false
+        description: Curator must use g/l
+        pattern: ^[0-9]+\.?[0-9]*$
+      urea_nitrogen:
+        name: urea_nitrogen
+        range: double
+        required: false
+        multivalued: false
+        description: Curator must use mmol/l
+        pattern: ^[0-9]+\.?[0-9]*$
+      ASO:
+        name: ASO
+        range: double
+        required: false
+        multivalued: false
+        description: Antistreptolysin O; curator must use IU/ml
+        pattern: ^[0-9]+\.?[0-9]*$
+      anti_ccp_antibody:
+        name: anti_ccp_antibody
+        range: double
+        required: false
+        multivalued: false
+        description: Curator must use U/ml
+        pattern: ^[0-9]+\.?[0-9]*$
+      rheumatoid_factor:
+        name: rheumatoid_factor
+        range: double
+        required: false
+        multivalued: false
+        description: Curator must use IU/ml
+        pattern: ^[0-9]+\.?[0-9]*$
+      dental_sample_type:
+        name: dental_sample_type
+        range: dental_sample_type_enums
+        required: false
+        multivalued: false
+        description: Dental sample type.
+      history_of_periodontitis:
+        name: history_of_periodontitis
+        range: history_of_periodontitis_enums
+        required: false
+        multivalued: false
+        description: >-
+          If the patients has been reported having previously suffered of
+          periodontitis in one of more sites.
+      PPD_M:
+        name: PPD_M
+        range: double
+        required: false
+        multivalued: false
+        description: Depth of the pocket reached by the probe in a dental implant ('M').
+        pattern: ^[0-9]+\.?[0-9]*$
+      PPD_B:
+        name: PPD_B
+        range: double
+        required: false
+        multivalued: false
+        description: Depth of the pocket reached by the probe in a dental implant ('B').
+        pattern: ^[0-9]+\.?[0-9]*$
+      PPD_D:
+        name: PPD_D
+        range: double
+        required: false
+        multivalued: false
+        description: Depth of the pocket reached by the probe in a dental implant ('D').
+        pattern: ^[0-9]+\.?[0-9]*$
+      PPD_L:
+        name: PPD_L
+        range: double
+        required: false
+        multivalued: false
+        description: Depth of the pocket reached by the probe in a dental implant ('L').
+        pattern: ^[0-9]+\.?[0-9]*$
+      zigosity:
+        name: zigosity
+        range: zigosity_enums
+        required: false
+        multivalued: false
+        description: Zigosity.
+      menopausal_status:
+        name: menopausal_status
+        range: menopausal_status_enums
+        required: false
+        multivalued: false
+        description: Menopausal status.
+      BASDAI:
+        name: BASDAI
+        range: double
+        required: false
+        multivalued: false
+        description: Bath Ankylosing Spondylitis Disease Activity Index
+        pattern: ^[0-9]+\.?[0-9]*$
+      BASFI:
+        name: BASFI
+        range: double
+        required: false
+        multivalued: false
+        description: Bath Ankylosing Spondylitis Functional Index
+        pattern: ^[0-9]+\.?[0-9]*$
+      HBI:
+        name: HBI
+        range: double
+        required: false
+        multivalued: false
+        description: >-
+          Harvey-Bradshaw Index clinical indication of active disease and
+          inflammation
+        pattern: ^[0-9]+\.?[0-9]*$
+      SCCAI:
+        name: SCCAI
+        range: double
+        required: false
+        multivalued: false
+        description: simple clinical colitis activity index
+        pattern: ^[0-9]+\.?[0-9]*$
+      birth_weight:
+        name: birth_weight
+        range: double
+        required: false
+        multivalued: false
+        description: "curators must use gramms "
+        pattern: ^[0-9]+\.?[0-9]*$
+      gestational_age:
+        name: gestational_age
+        range: double
+        required: false
+        multivalued: false
+        description: duration time of pregnancy;curatos must use weeks
+        pattern: ^[0-9]+\.?[0-9]*$
+      diet:
+        name: diet
+        range: diet_enums
+        required: false
+        multivalued: false
+        description: type of diet; low_fiber defined in SpencerCN_2021 as <20 g/day
+      subcohort:
+        name: subcohort
+        range: string
+        required: false
+        multivalued: false
+        description: Identifier of a sub-set of the cohort. Can be everything.
+        pattern: ^[0-9a-zA-Z]\S+$
+      RECIST:
+        name: RECIST
+        range: RECIST_enums
+        required: false
+        multivalued: false
+        description: >-
+          RECIST classification for response to cancer-therapy: SD=Stable
+          Disease; PR=Partial Response; PD=Progression Disease; CR=Complete
+          Response
+      ORR:
+        name: ORR
+        range: ORR_enums
+        required: false
+        multivalued: false
+        description: Overall Response Rate (see also RECIST)
+      PFS12:
+        name: PFS12
+        range: PFS12_enums
+        required: false
+        multivalued: false
+        description: Progression-free survival in 12 months.
+      history_of_therapy:
+        name: history_of_therapy
+        range: history_of_therapy_enums
+        required: false
+        multivalued: false
+        description: >-
+          If the patient has been reported having previously undergone a
+          standard therapy for the dataset disease.
+      curator:
+        name: curator
+        range: curator_enums
+        required: true
+        multivalued: true
+        description: Curator name.
+      uncurated_metadata:
+        name: uncurated_metadata
+        range: string
+        required: false
+        multivalued: false
+        description: A row for whatever field has not be included here.
+        pattern: ^.+$
+      legacy_body_site:
+        name: legacy_body_site
+        range: legacy_body_site_enums
+        required: true
+        multivalued: false
+        description: Bodysite of acquisition.
+      legacy_body_subsite:
+        name: legacy_body_subsite
+        range: legacy_body_subsite_enums
+        required: false
+        multivalued: false
+        description: Subsite of body site of acquisition.
+      legacy_antibiotics_current_use:
+        name: legacy_antibiotics_current_use
+        range: legacy_antibiotics_current_use_enums
+        required: false
+        multivalued: false
+        description: Subject is currently taking antibiotics.
+      legacy_antibiotics_family:
+        name: legacy_antibiotics_family
+        range: legacy_antibiotics_family_enums
+        required: false
+        multivalued: true
+        description: Family of antibiotics currently used; Semicolon-separated.
+      legacy_study_condition:
+        name: legacy_study_condition
+        range: legacy_study_condition_enums
+        required: false
+        multivalued: false
+        description: >-
+          The main disease or condition under study; control for
+          controls;STEC=Shiga-toxigenic E.coli;CDI=Clostridium difficile
+          infection;IBD=Inflammatory bowel disease;T2D= Type-2
+          diabetes;T1D=Type-1 diabetes;AD=Atopic dermatitis;AR=Allergic
+          rhinitis;IGT=Impaired glucose tolerance;AS=Ankylosing
+          spondylitis;RA=rheumatic arthritis;FMT=fecal microbiota
+          transplantaion;SRP=Scaling and root
+          planing;CMV=Cytomegalovirus;HBV_HDV_HEV= Hepatitis viruses;BD=
+          Bechet-disease;ACVD= Artheriosclerotic Cardiovalscular Disease
+      legacy_disease:
+        name: legacy_disease
+        range: legacy_disease_enums
+        required: false
+        multivalued: true
+        description: >-
+          Semicolon-delimited vector of conditions; Use healthy only if subject
+          is known to be healthy; CRC=colorectal cancer;CD=Crohn's disease; for
+          other abbreviations see study_condition
+      legacy_disease_subtype:
+        name: legacy_disease_subtype
+        range: legacy_disease_subtype_enums
+        required: false
+        multivalued: true
+        description: >-
+          Disease subtype; CD=Chrohn's Disease;AS=Ankylosing
+          spondylitis;NAFLD=nonalcoholic fatty liver disease;for other
+          abbreviations see study_condition
+      legacy_age:
+        name: legacy_age
+        range: integer
+        required: false
+        multivalued: false
+        description: Subject age (years).
+        pattern: ^[0-9]+$
+      legacy_infant_age:
+        name: legacy_infant_age
+        range: integer
+        required: false
+        multivalued: false
+        description: Infant age (days); should be used for infants < 2 years old.
+        pattern: ^[0-9]+$
+      legacy_age_category:
+        name: legacy_age_category
+        range: legacy_age_category_enums
+        required: false
+        multivalued: false
+        description: >-
+          Age category: newborn < 1 year; 1 <= child < 12; 12 <= schoolage < 19;
+          19 <= adult <= 65; senior > 65.
+      legacy_gender:
+        name: legacy_gender
+        range: legacy_gender_enums
+        required: false
+        multivalued: false
+        description: Subject gender.
+      legacy_treatment:
+        name: legacy_treatment
+        range: legacy_treatment_enums
+        required: false
+        multivalued: true
+        description: Medications or treatments against the diseases.
+source_file: cmgd.yaml
+"@type": SchemaDefinition
