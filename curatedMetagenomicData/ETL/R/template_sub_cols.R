@@ -162,7 +162,7 @@ curated_obgyn <- bind_rows(obgyn_pregnancy,
 
 # disease_response ----
 RECIST <- data.frame(
-    col.name = "RECIST",
+    col.name = "recist",
     col.class = "character",
     uniqueness = "non-unique", 
     requiredness = "optional",
@@ -173,7 +173,7 @@ RECIST <- data.frame(
 ) 
 
 overall_response <- data.frame(
-    col.name = "ORR",
+    col.name = "orr",
     col.class = "character",
     uniqueness = "non-unique", 
     requiredness = "optional",
@@ -184,7 +184,7 @@ overall_response <- data.frame(
 ) 
 
 progression_free_survival <- data.frame(
-    col.name = "PFS",
+    col.name = "pfs",
     col.class = "character",
     uniqueness = "non-unique", 
     requiredness = "optional",
@@ -195,7 +195,7 @@ progression_free_survival <- data.frame(
 ) 
 
 progression_free_survival_timepoint <- data.frame(
-    col.name = "PFS_month",
+    col.name = "pfs_month",
     col.class = "character",
     uniqueness = "non-unique", 
     requiredness = "optional",  #<<<<<<<< required if `progression_free_survival` is entered
@@ -213,7 +213,7 @@ curated_response_to_therapy <- bind_rows(RECIST,
 
 # tumor_staging ------
 ajcc <- data.frame(
-    col.name = "AJCC",
+    col.name = "ajcc",
     col.class = "character",
     uniqueness = "non-unique", 
     requiredness = "optional",
@@ -224,13 +224,13 @@ ajcc <- data.frame(
 ) 
 
 tnm <- data.frame(
-    col.name = "TNM",
+    col.name = "tnm",
     col.class = "character",
     uniqueness = "non-unique", 
     requiredness = "optional",
     multiplevalues = FALSE,
     description = "A system to describe the amount and spread of cancer in a patient's body",
-    allowedvalues = "",
+    allowedvalues = "t[1-4]n[0-3]m[0-1]",
     ontology = NA     
 )
 

@@ -25,6 +25,8 @@ source(file.path(scriptDir, "template_treatment.R"))
 # # Populate data dictionary per attributes -----
 # ## The scripts sourced below requires two inputs: `mapDir`, `scriptDir`, and `final_dd`
 # templates <- list.files(scriptDir)
+# templates <- templates[grep(".R$", templates)]
+#
 # for (template in templates) {
 #     source(file.path(scriptDir, template))
 # }

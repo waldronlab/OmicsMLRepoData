@@ -1042,61 +1042,6 @@ enums:
         text: "yes"
       "no":
         text: "no"
-  tnm_enums:
-    name: tnm_enums
-    permissible_values:
-      t4n1m1:
-        text: t4n1m1
-      t3nxm1:
-        text: t3nxm1
-      t2n0m1:
-        text: t2n0m1
-      tnm:
-        text: tnm
-      t3n3m1:
-        text: t3n3m1
-      t2n1m1:
-        text: t2n1m1
-      t4n2m1:
-        text: t4n2m1
-      t3n0m1:
-        text: t3n0m1
-      t3n2m0:
-        text: t3n2m0
-      t4n0m1:
-        text: t4n0m1
-      t4n1m0:
-        text: t4n1m0
-      "no":
-        text: "no"
-      t4n0m0:
-        text: t4n0m0
-      t3n0m0:
-        text: t3n0m0
-      t3n1m0:
-        text: t3n1m0
-      ptis:
-        text: ptis
-      t1n0m0:
-        text: t1n0m0
-      t4n2m0:
-        text: t4n2m0
-      t3n1m1:
-        text: t3n1m1
-      t3n2m1:
-        text: t3n2m1
-      tisn0m0:
-        text: tisn0m0
-      t2n0m0:
-        text: t2n0m0
-      t1n0m1:
-        text: t1n0m1
-      t2n1m0:
-        text: t2n1m0
-      t2m0n0:
-        text: t2m0n0
-      t2n2m0:
-        text: t2n2m0
   stec_count_enums:
     name: stec_count_enums
     permissible_values:
@@ -1122,36 +1067,6 @@ enums:
         text: watery
       bloody:
         text: bloody
-  insulin_cat_enums:
-    name: insulin_cat_enums
-    permissible_values:
-      "yes":
-        text: "yes"
-      "no":
-        text: "no"
-  flg_genotype_enums:
-    name: flg_genotype_enums
-    permissible_values:
-      wt:
-        text: wt
-      s1515x:
-        text: s1515x
-      e2422x:
-        text: e2422x
-      e2422x/3321dela:
-        text: e2422x/3321dela
-  hitchip_probe_class_enums:
-    name: hitchip_probe_class_enums
-    permissible_values:
-      lpc:
-        text: lpc
-      hpc:
-        text: hpc
-  ferm_milk_prod_consumer_enums:
-    name: ferm_milk_prod_consumer_enums
-    permissible_values:
-      dfmp:
-        text: dfmp
   family_role_enums:
     name: family_role_enums
     permissible_values:
@@ -1161,20 +1076,17 @@ enums:
         text: mother
       father:
         text: father
-  born_method_enums:
-    name: born_method_enums
+  neonatal_delivery_procedure_enum:
+    name: neonatal_delivery_procedure_enum	
     permissible_values:
-      c_section:
-        text: c_section
-      vaginal:
-        text: vaginal
-  c_section_type_enums:
-    name: c_section_type_enums
-    permissible_values:
-      Elective_CS:
-        text: Elective_CS
-      Emergency_CS:
-        text: Emergency_CS
+      Elective Cesarean Delivery:
+        text: NCIT:C114141
+      Emergency Cesarean Delivery:
+        text: NCIT:C92772
+      Cesarean Section:
+        text: NCIT:C46088
+      Vaginal Delivery:
+        text: NCIT:C81303
   premature_enums:
     name: premature_enums
     permissible_values:
@@ -1210,21 +1122,6 @@ enums:
         text: III
       IV:
         text: IV
-  disease_location_enums:
-    name: disease_location_enums
-    permissible_values:
-      right_sided:
-        text: right_sided
-      left_sided:
-        text: left_sided
-      transverse:
-        text: transverse
-      sigmoid_colon:
-        text: sigmoid_colon
-      colon:
-        text: colon
-      rectum:
-        text: rectum
   remission_enums:
     name: remission_enums
     permissible_values:
@@ -1721,8 +1618,7 @@ slots:
     from_schema: https://waldronlab.io
     multivalued: false
     required: false
-    pattern: >-
-      t4n1m1|t3nxm1|t2n0m1|tnm|t3n3m1|t2n1m1|t4n2m1|t3n0m1|t3n2m0|t4n0m1|t4n1m0|no|t4n0m0|t3n0m0|t3n1m0|ptis|t1n0m0|t4n2m0|t3n1m1|t3n2m1|tisn0m0|t2n0m0|t1n0m1|t2n1m0|t2m0n0|t2n2m0
+    pattern: t[1-4]n[0-3]m[0-1]
   days_after_onset:
     name: days_after_onset
     description: Days from the onset of the disease.
@@ -2073,20 +1969,13 @@ slots:
     multivalued: false
     range: Family_Role
     required: false
-  born_method:
-    name: born_method
-    description: C-section vs vaginal birth.
-    from_schema: https://waldronlab.io
-    multivalued: false
-    range: Born_method_enum
-    required: false
-  c_section_type:
-    name: c_section_type
-    description: C-section main decision reason.
+  neonatal_delivery_procedure:
+    name: neonatal_delivery_procedure
+    description: Description of the method by which a fetus is delivered. (NCIT:C81179)
     from_schema: https://waldronlab.io
     multivalued: false
     required: false
-    pattern: Elective_CS Emergency_CS
+    range: neonatal_delivery_procedure_enum
   premature:
     name: premature
     description: If premature at birth.
@@ -3529,96 +3418,5 @@ classes:
         multivalued: false
         description: A row for whatever field has not be included here.
         pattern: ^.+$
-      legacy_body_site:
-        name: legacy_body_site
-        range: legacy_body_site_enums
-        required: true
-        multivalued: false
-        description: Bodysite of acquisition.
-      legacy_body_subsite:
-        name: legacy_body_subsite
-        range: legacy_body_subsite_enums
-        required: false
-        multivalued: false
-        description: Subsite of body site of acquisition.
-      legacy_antibiotics_current_use:
-        name: legacy_antibiotics_current_use
-        range: legacy_antibiotics_current_use_enums
-        required: false
-        multivalued: false
-        description: Subject is currently taking antibiotics.
-      legacy_antibiotics_family:
-        name: legacy_antibiotics_family
-        range: legacy_antibiotics_family_enums
-        required: false
-        multivalued: true
-        description: Family of antibiotics currently used; Semicolon-separated.
-      legacy_study_condition:
-        name: legacy_study_condition
-        range: legacy_study_condition_enums
-        required: false
-        multivalued: false
-        description: >-
-          The main disease or condition under study; control for
-          controls;STEC=Shiga-toxigenic E.coli;CDI=Clostridium difficile
-          infection;IBD=Inflammatory bowel disease;T2D= Type-2
-          diabetes;T1D=Type-1 diabetes;AD=Atopic dermatitis;AR=Allergic
-          rhinitis;IGT=Impaired glucose tolerance;AS=Ankylosing
-          spondylitis;RA=rheumatic arthritis;FMT=fecal microbiota
-          transplantaion;SRP=Scaling and root
-          planing;CMV=Cytomegalovirus;HBV_HDV_HEV= Hepatitis viruses;BD=
-          Bechet-disease;ACVD= Artheriosclerotic Cardiovalscular Disease
-      legacy_disease:
-        name: legacy_disease
-        range: legacy_disease_enums
-        required: false
-        multivalued: true
-        description: >-
-          Semicolon-delimited vector of conditions; Use healthy only if subject
-          is known to be healthy; CRC=colorectal cancer;CD=Crohn's disease; for
-          other abbreviations see study_condition
-      legacy_disease_subtype:
-        name: legacy_disease_subtype
-        range: legacy_disease_subtype_enums
-        required: false
-        multivalued: true
-        description: >-
-          Disease subtype; CD=Chrohn's Disease;AS=Ankylosing
-          spondylitis;NAFLD=nonalcoholic fatty liver disease;for other
-          abbreviations see study_condition
-      legacy_age:
-        name: legacy_age
-        range: integer
-        required: false
-        multivalued: false
-        description: Subject age (years).
-        pattern: ^[0-9]+$
-      legacy_infant_age:
-        name: legacy_infant_age
-        range: integer
-        required: false
-        multivalued: false
-        description: Infant age (days); should be used for infants < 2 years old.
-        pattern: ^[0-9]+$
-      legacy_age_category:
-        name: legacy_age_category
-        range: legacy_age_category_enums
-        required: false
-        multivalued: false
-        description: >-
-          Age category: newborn < 1 year; 1 <= child < 12; 12 <= schoolage < 19;
-          19 <= adult <= 65; senior > 65.
-      legacy_gender:
-        name: legacy_gender
-        range: legacy_gender_enums
-        required: false
-        multivalued: false
-        description: Subject gender.
-      legacy_treatment:
-        name: legacy_treatment
-        range: legacy_treatment_enums
-        required: false
-        multivalued: true
-        description: Medications or treatments against the diseases.
 source_file: cmgd.yaml
 "@type": SchemaDefinition

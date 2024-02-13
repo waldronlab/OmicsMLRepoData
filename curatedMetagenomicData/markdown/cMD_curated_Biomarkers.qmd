@@ -11,7 +11,7 @@ format:
 
 ```{r setup, include=FALSE}
 knitr::opts_chunk$set(echo = TRUE, warning = FALSE, message = FALSE, 
-                      collapse = TRUE, eval = FALSE)
+                      collapse = TRUE)
 ```
 
 # Load data
@@ -140,11 +140,11 @@ ntb <- getNarrowMetaTb(sub, newCol = "curated_biomarker",
 This narrow, compressed version of the biomarker will be released:
 ```{r}
 ntb <- read_csv(file.path(cmd_dir, "data/curated_biomarker.csv"))
+nonNAInd <- which(!is.na(ntb$curated_biomarker))
 ```
 
 ```{r echo=FALSE}
 write_csv(ntb, file.path(cmd_dir, "data/curated_biomarker.csv"))
-nonNAInd <- which(!is.na(ntb$curated_biomarker))
 ```
 
 ```{r}

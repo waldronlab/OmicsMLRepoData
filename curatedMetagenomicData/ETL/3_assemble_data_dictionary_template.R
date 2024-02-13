@@ -22,12 +22,12 @@ dd$merge <- as.character(dd$merge)
 ori_dd <- read_csv("https://raw.githubusercontent.com/waldronlab/curatedMetagenomicDataCuration/master/inst/extdata/template.csv")
 
 # Data dictionary for non-merging columns ----
-cols_to_keep <- dd[which(dd$merge %in% c("FALSE")),]$columns # not-affected columns
-cols_to_keep_names <- map$all_columns[map$classification %in% cols_to_keep]
+cols_to_keep <- dd[which(dd$merge %in% c("FALSE")),]$curated_column # not-affected columns
+cols_to_keep_names <- map$ori_column[map$curated_column %in% cols_to_keep]
 kept_dd <- dplyr::filter(ori_dd, col.name %in% cols_to_keep_names) # subset of the original data dictionary to be kept
 
 # Data dictionary for to-be-merged columns ----
-cols_to_merge <- dd[which(dd$merge %in% c("TRUE", "Uncurated")),]$columns %>% strsplit(., ";") %>% unlist
+cols_to_merge <- dd[which(dd$merge %in% c("TRUE", "Uncurated")),]$curated_column %>% strsplit(., ";") %>% unlist
 merged_cols_dd <- as.data.frame(matrix(nrow = length(cols_to_merge), ncol = ncol(kept_dd)))
 colnames(merged_cols_dd) <- colnames(kept_dd)
 merged_cols_dd$col.name <- cols_to_merge

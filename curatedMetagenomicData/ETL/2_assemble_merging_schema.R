@@ -22,12 +22,12 @@ dd$merge <- as.character(dd$merge)
 
 # Summarize consolidated columns as merging schema ---- 
 ## `map_to_ms` is a two-column table with `curated_field` and `original_field` columns
-new_cols <- dd[which(dd$merge == "TRUE"),]$columns
+new_cols <- dd[which(dd$merge == "TRUE"),]$curated_column
 map_to_ms <- map %>%
-    dplyr::filter(classification %in% new_cols) %>%
-    dplyr::group_by(classification) %>%
-    dplyr::summarise(original_field = paste0(all_columns, collapse = ";")) %>%
-    dplyr::rename(curated_field = classification)
+    dplyr::filter(curated_column %in% new_cols) %>%
+    dplyr::group_by(curated_column) %>%
+    dplyr::summarise(original_field = paste0(ori_column, collapse = ";")) %>%
+    dplyr::rename(curated_field = curated_column)
 
 
 # Completeness and uniqueness of original fields -----
