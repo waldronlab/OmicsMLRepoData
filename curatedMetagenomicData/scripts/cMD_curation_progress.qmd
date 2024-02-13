@@ -1,0 +1,210 @@
+---
+title: "Curation progress status summary"
+author: "Sehyun Oh"
+date: "`r format(Sys.time(), '%B %d, %Y')`"
+format:
+    html:
+        fontsize: 14px
+        toc: true
+        top-depth: 3
+---
+
+```{r setup, include=FALSE}
+knitr::opts_chunk$set(echo = TRUE, 
+                      warning = FALSE, 
+                      message = FALSE, 
+                      collapse = TRUE)
+```
+
+```{r}
+library(dplyr)
+library(ggplot2)
+```
+
+
+# Load the original and curated metadata tables
+```{r}
+dir <- "~/OmicsMLRepo/OmicsMLRepoData"
+sampleMetadata <- read_csv(file.path(dir, "inst/extdata/cMD_sampleMetadata.csv"))
+curated <- read_csv(file.path(dir, "inst/extdata/cMD_curated_metadata_all.csv"))
+```
+
+# Curated attributes
+```{r echo=FALSE}
+idCols <- c("study_name", "sample_id", "subject_id", "PMID", 
+            "number_bases", "number_reads", "minimum_read_length", 
+            "median_read_length", "curator")
+curatedColnames <- c("body_site", "disease", "age_category", 
+                     "study_condition", "gender", "antibiotics_current_use",
+                     "age", "treatment", "disease_subtype", "infant_age",
+                     "body_subsite", "population")
+
+subMeta <- select(sampleMetadata, -idCols)
+nonNAs <- colSums(!is.na(subMeta))/nrow(subMeta)*100
+nonNAs <- nonNAs[nonNAs > 5]
+nonNAs <- sort(nonNAs, decreasing = TRUE)
+nonNAs <- stack(nonNAs)
+
+
+p <- nonNAs %>%
+    mutate(curatedCols = ifelse(ind %in% curatedColnames, TRUE, FALSE)) %>%
+    ggplot(aes(x = ind, y = values)) +
+    geom_bar(stat = "identity",
+             aes(fill = curatedCols)) +
+    scale_fill_manual(values = c('#595959', 'red')) +
+    labs(x = "", y = "Completeness (%)") + 
+    theme(axis.text.x = element_text(angle = 45, vjust = 1, hjust=1),
+          legend.position = "none")
+p
+```
+
+# Curation Schema
+```{r merging_schema, eval=FALSE}
+## Merging_schema table
+url <- "https://docs.google.com/spreadsheets/d/1xziFB_zBl32BjNarcyEN4GupTYpPtq5aDz0GbRbWvtk/edit?usp=sharing"
+ss <- googledrive::as_id(url)
+merging_schema <- googlesheets4::read_sheet(ss = ss, sheet = "merging_schema")
+merging_schema <- apply(merging_schema, 2, as.character)
+
+## Save the updated version in the local GitHub branch
+write.csv(merging_schema, 
+          file = file.path(dir, "inst/extdata/cMD_merging_schema.csv"), 
+          row.names = FALSE)
+
+## Push the change to the GitHub repo
+```
+
+## Completeness
+```{r echo=FALSE}
+merging_schema <- read.csv(file.path(dir, "inst/extdata/cMD_merging_schema.csv"))
+old_fields <- sapply(merging_schema$original_fields, strsplit, split = ";") 
+new_fields <- sapply(merging_schema$curated_fields, strsplit, split = ";")
+fields_ls <- new_fields
+names(fields_ls) <- names(old_fields)
+
+res_all <- c()
+for (i in seq_along(fields_ls)) {
+    val <- strsplit(names(fields_ls)[i], split = ";") %>% unlist
+    res <- rep(fields_ls[i], length(val))
+    names(res) <- val
+    res_all <- append(res_all, res)
+}
+
+res_long_all <- as.data.frame(matrix(nrow = 0, ncol = 2))
+colnames(res_long_all) <- c("source", "target")
+for (i in seq_along(res_all)) {
+    res_long <- data.frame(source = names(res_all[i]), target = res_all[[i]])
+    res_long_all <- rbind(res_long_all, res_long)
+}
+res_long_all$value <- 1
+
+## Merging schema including completeness
+merging_schema
+```
+
+## Plot
+```{r sankey_plot, echo=FALSE}
+# Libraries
+library(tidyverse)
+library(viridis)
+library(patchwork)
+library(hrbrthemes)
+library(circlize)
+
+# Package
+library(networkD3)
+
+# From these flows we need to create a node data frame: it lists every entities involved in the flow
+nodes <- data.frame(name = c(as.character(res_long_all$source), 
+                             as.character(res_long_all$target)) 
+                    %>% unique())
+ 
+# With networkD3, connection must be provided using id, not using real name like in the links dataframe. So we need to reformat it.
+res_long_all$IDsource = match(res_long_all$source, nodes$name) - 1 
+res_long_all$IDtarget = match(res_long_all$target, nodes$name) - 1
+res_long_all
+
+# prepare color scale
+ColourScal <- 'd3.scaleOrdinal() .range(["#FDE725FF","#B4DE2CFF","#6DCD59FF","#35B779FF","#1F9E89FF","#26828EFF","#31688EFF","#3E4A89FF","#482878FF","#440154FF"])'
+nodes$group <- as.factor(c("a","a","a",
+                           "b",
+                           "c","c","c",
+                           "d",
+                           "e","e",
+                           "f","f","f",
+                           "a","a",
+                           "b",
+                           "c","c","c","c",
+                           "d",
+                           "e","e",
+                           "f","f"))
+my_color <- 'd3.scaleOrdinal() .domain(["a","b","c","d","e","f"]) .range(["red","grey","orange","yellow","green","blue"])'
+
+# Make the Network
+sankeyNetwork(Links = res_long_all, 
+              Nodes = nodes,
+              Source = "IDsource", 
+              Target = "IDtarget", 
+              Value = "value", 
+              NodeID = "name", 
+              sinksRight = FALSE, 
+              # colourScale = ColourScal, 
+              colourScale = my_color,
+              NodeGroup = "group",
+              nodeWidth = 40, 
+              fontSize = 13, 
+              nodePadding = 20)
+```
+
+
+# Curation Summary Statitics
+## Proportion of updates
+```{r collapse=TRUE}
+sum(curated$study_condition != curated$curated_control, na.rm = TRUE)/sum(!is.na(curated$study_condition))*100 %>% round()
+sum(curated$study_condition != curated$curated_disease, na.rm = TRUE)/sum(!is.na(curated$study_condition))*100 %>% round()
+sum(curated$disease != curated$curated_control, na.rm = TRUE)/sum(!is.na(curated$disease))*100 %>% round()
+sum(curated$disease != curated$curated_disease, na.rm = TRUE)/sum(!is.na(curated$disease))*100 %>% round()
+sum(curated$disease_subtype != curated$curated_control, na.rm = TRUE)/sum(!is.na(curated$disease_subtype))*100 %>% round()
+sum(curated$disease_subtype != curated$curated_disease, na.rm = TRUE)/sum(!is.na(curated$disease_subtype))*100 %>% round()
+```
+
+```{r}
+sum(curated$treatment != curated$curated_treatment, na.rm = TRUE)/sum(!is.na(curated$treatment))*100 %>% round()
+sum(curated$antibiotics_current_use != curated$curated_antibiotics_current_use, na.rm = TRUE)/sum(!is.na(curated$antibiotics_current_use))*100 %>% round()
+```
+
+
+
+
+
+
+# Curated output examples
+```{r}
+## Example of updated age-related attributes
+age_dat <- read.csv(file.path(dir, "curatedMetagenomicData/data/curated_age.csv"))
+head(age_dat)
+```
+
+```{r}
+## Example of updated disease-related attributes
+disease_dat <- read.csv(file.path(dir, "curatedMetagenomicData/data/curated_study_condition.csv"))
+head(disease_dat)
+```
+
+```{r}
+## Example of updated entry
+treatment_map <- read.csv(file.path(dir, "curatedMetagenomicData/maps/cMD_treatment_ontology.csv"))
+insulin_ind <- grep("insulin", treatment_map$curated_ontology_term, ignore.case = TRUE)
+treatment_map[insulin_ind,]
+```
+
+```{r}
+ind <- c(13441, 20191)
+curated[ind, c("treatment", "curated_treatment")]
+```
+
+```{r}
+data <- read.csv(file.path(dir, "curatedMetagenomicData/data/curated_treatment.csv"))
+map <- read.csv(file.path(dir, "curatedMetagenomicData/maps/cMD_treatment_ontology.csv"))
+```
+

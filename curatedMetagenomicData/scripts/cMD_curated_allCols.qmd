@@ -1,0 +1,131 @@
+---
+title: "Harmonize biomarker-related attributes in cMD metadata"
+author:
+  - Sehyun Oh
+date: "`r format(Sys.time(), '%B %d, %Y')`"
+format:
+    html:
+        fontsize: 14pxs
+        toc: true
+        top-depth: 3
+---
+
+```{r setup, include=FALSE}
+knitr::opts_chunk$set(echo = TRUE, 
+                      warning = FALSE,
+                      message = FALSE,
+                      collapse = TRUE)
+```
+
+```{r echo=FALSE}
+suppressPackageStartupMessages({
+    library(dplyr)
+    library(googlesheets4)
+    library(readr)
+})
+```
+
+```{r}
+# ## Connect to the cMD_curation table in Google Drive
+# url <- "https://docs.google.com/spreadsheets/d/1xziFB_zBl32BjNarcyEN4GupTYpPtq5aDz0GbRbWvtk/edit?usp=sharing"
+# ss <- googledrive::as_id(url)
+# 
+# ## Import the curation map from Google Sheet to update GitHub repo version
+# map <- read_sheet(ss, sheet = "merging_schema_allCols")
+# dd <- read_sheet(ss, sheet = "data_dictionary_allCols")
+# dd$merge <- as.character(dd$merge)
+# ms <- read_sheet(ss, sheet = "merging_schema")
+```
+
+# Merging Schema
+```{r initial_merging, eval=FALSE}
+# ## Format new harmonized columns for merging schema
+# new_cols <- dd[which(dd$merge == "TRUE"),]$columns
+# map_to_ms <- map %>%
+#     dplyr::filter(classification %in% new_cols) %>%
+#     dplyr::group_by(classification) %>%
+#     dplyr::summarise(original_field = paste0(all_columns, collapse = ";")) %>%
+#     dplyr::rename(curated_field = classification)
+# map_to_ms
+# 
+# ## Merging schema for all
+# merging_schema <- bind_rows(ms, map_to_ms)
+# merging_schema
+```
+
+# Data dictionary for non-merging columns
+```{r}
+# ## Columns not affected by 
+# cols_to_keep <- dd[which(dd$merge == "FALSE"),]$columns
+# cols_to_keep_names <- map$all_columns[map$classification %in% cols_to_keep]
+# 
+# ## Load cMD curation template/ data dictionary
+# ori_dd <- read_csv("https://raw.githubusercontent.com/waldronlab/curatedMetagenomicDataCuration/master/inst/extdata/template.csv")
+# kept_dd <- filter(ori_dd, col.name %in% cols_to_keep_names) # subset of the original data dictionary to be kept
+# 
+# ## Curated/Harmonized metadata dictionary
+# # curated_dd <- read_csv("https://raw.githubusercontent.com/waldronlab/OmicsMLRepoData/master/inst/extdata/cMD_data_dictionary.csv?token=GHSAT0AAAAAACHEXOIPXAKD24X6NWN4X6FCZNV5WLQ")
+# curated_dd <- read_csv("~/OmicsMLRepo/OmicsMLRepoData/inst/extdata/cMD_data_dictionary.csv")
+```
+
+
+# Data dictionary for columns to be merged 
+```{r}
+# cols_to_merge <- dd[which(dd$merge == "TRUE"),]$columns
+# merged_cols <- paste0("curated_", cols_to_merge)
+# 
+# merged_cols_dd <- curated_biomarkers
+# for (i in merged_cols[-1]) {
+#     x <- get(i)
+#     merged_cols_dd <- bind_rows(merged_cols_dd, x)
+# }
+```
+
+```{r}
+# id_ind <- which(kept_dd$col.name %in% c("study_name", "sample_id", "subject_id"))
+# final_data_dictionary <- bind_rows(kept_dd[id_ind,], 
+#                                    curated_dd, 
+#                                    merged_cols_dd,
+#                                    kept_dd[-id_ind,])
+```
+
+
+# Save
+```{r updated_GH, eval=FALSE}
+dir <- "~/OmicsMLRepo/OmicsMLRepoData"
+write.csv(final_data_dictionary, 
+          file.path(dir, "inst/extdata/cMD_data_dictionary_final.csv"), 
+          row.names = FALSE)
+```
+
+```{r save_as_Google_Sheets, eval=FALSE}
+url <- "https://docs.google.com/spreadsheets/d/1xziFB_zBl32BjNarcyEN4GupTYpPtq5aDz0GbRbWvtk/edit?usp=sharing"
+ss <- googledrive::as_id(url)
+googlesheets4::write_sheet(final_data_dictionary, 
+                           ss = ss, 
+                           sheet = "data_dictionary_final")
+```
+
+
+
+
+
+
+
+
+```{r temp, eval=FALSE}
+## Quick browse
+merged_col <- "response_to_therapy"
+a <- map$all_columns[map$classification == merged_col]
+apply(sampleMetadata[a], 2, unique)
+```
+
+```{r temp2, eval=FALSE}
+## How the uncurated_metadata value looks like
+head(sampleMetadata[which(!is.na(sampleMetadata$uncurated_metadata)),
+                    c("study_name", "uncurated_metadata")])
+
+ind <- grep("gluten", sampleMetadata$uncurated_metadata)
+head(sampleMetadata[ind, c("study_name", "uncurated_metadata")])
+```
+
