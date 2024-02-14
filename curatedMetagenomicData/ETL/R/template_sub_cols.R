@@ -98,14 +98,12 @@ gestational_age <- data.frame(
     ontology = NA  
 )
 
-
 # Data dictionary for curated attributes ----
 curated_neonatal <- do.call("rbind", list(preterm_birth, 
                                           birth_weight, 
                                           delivery_procedure, 
                                           feeding_method,
                                           gestational_age))
-
 
 
 # curated_obgyn -----
@@ -162,7 +160,7 @@ curated_obgyn <- bind_rows(obgyn_pregnancy,
 
 # disease_response ----
 RECIST <- data.frame(
-    col.name = "recist",
+    col.name = "disease_response_recist",
     col.class = "character",
     uniqueness = "non-unique", 
     requiredness = "optional",
@@ -173,7 +171,7 @@ RECIST <- data.frame(
 ) 
 
 overall_response <- data.frame(
-    col.name = "orr",
+    col.name = "disease_response_orr",
     col.class = "character",
     uniqueness = "non-unique", 
     requiredness = "optional",
@@ -184,7 +182,7 @@ overall_response <- data.frame(
 ) 
 
 progression_free_survival <- data.frame(
-    col.name = "pfs",
+    col.name = "disease_response_pfs",
     col.class = "character",
     uniqueness = "non-unique", 
     requiredness = "optional",
@@ -195,7 +193,7 @@ progression_free_survival <- data.frame(
 ) 
 
 progression_free_survival_timepoint <- data.frame(
-    col.name = "pfs_month",
+    col.name = "disease_response_pfs_month",
     col.class = "character",
     uniqueness = "non-unique", 
     requiredness = "optional",  #<<<<<<<< required if `progression_free_survival` is entered
@@ -213,7 +211,7 @@ curated_response_to_therapy <- bind_rows(RECIST,
 
 # tumor_staging ------
 ajcc <- data.frame(
-    col.name = "ajcc",
+    col.name = "tumor_staging_ajcc",
     col.class = "character",
     uniqueness = "non-unique", 
     requiredness = "optional",
@@ -224,7 +222,7 @@ ajcc <- data.frame(
 ) 
 
 tnm <- data.frame(
-    col.name = "tnm",
+    col.name = "tumor_staging_tnm",
     col.class = "character",
     uniqueness = "non-unique", 
     requiredness = "optional",

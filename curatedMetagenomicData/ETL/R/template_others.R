@@ -3,8 +3,6 @@
 ### dir <- "~/OmicsMLRepo/OmicsMLRepoData/curatedMetagenomicData"
 
 
-
-
 # dietary_restriction -----
 curated_dietary_restriction <- data.frame(
     col.name = "dietary_restriction",
@@ -16,7 +14,6 @@ curated_dietary_restriction <- data.frame(
     allowedvalues = "omnivore|vegan|vegetarian",
     ontology = NA
 )
-
 
 # fmt_id -----
 curated_fmt_id <- data.frame(
@@ -144,9 +141,24 @@ feces_phenotype_value <- data.frame(
 curated_feces_phenotype <- bind_rows(feces_phenotype_metric,
                                      feces_phenotype_value)
 
+# country ----
+country_map <- read.csv(file.path(mapDir, "cMD_country_map.csv"))
+curated_country <- data.frame(
+    col.name = "country",
+    col.class = "character",
+    uniqueness = "non-unique", 
+    requiredness = "required",
+    multiplevalues = FALSE,
+    description = "Location where subject lives and/or data was collected",
+    allowedvalues = paste(unique(country_map$curated_ontology_term), 
+                          collapse = "|"),
+    ontology = paste(unique(basename(country_map$curated_ontology_term_id)), 
+                     collapse = "|")     
+)
 
 # Data dictionary for curated attributes ----
-attr_dd <- do.call("rbind", list(curated_dietary_restriction,
+attr_dd <- do.call("rbind", list(curated_country,
+                                 curated_dietary_restriction,
                                  curated_feces_phenotype,
                                  curated_fmt_id,
                                  curated_fmt_role,

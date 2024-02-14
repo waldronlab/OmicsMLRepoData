@@ -16,7 +16,7 @@ suppressPackageStartupMessages({
 source(file.path(scriptDir, "template_age.R"))
 source(file.path(scriptDir, "template_bodysite.R"))
 source(file.path(scriptDir, "template_condition.R"))
-source(file.path(scriptDir, "template_location.R"))
+source(file.path(scriptDir, "template_minor.R"))
 source(file.path(scriptDir, "template_others.R"))
 source(file.path(scriptDir, "template_sub_cols.R"))
 source(file.path(scriptDir, "template_treatment.R"))

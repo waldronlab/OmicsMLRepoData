@@ -114,7 +114,6 @@ directory.
 # back to the original object, i.e., make modifications on the original object
 filled_dd <- template_dd 
 
-
 projDir <- "~/OmicsMLRepo/OmicsMLRepoData/curatedMetagenomicData"
 mapDir <- file.path(projDir, "maps")
 dataDir <- file.path(projDir, "data")

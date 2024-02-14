@@ -1,0 +1,171 @@
+---
+title: "Harmonize biomarker information in cMD sample metadata"
+author: "Sehyun Oh"
+date: "`r format(Sys.time(), '%B %d, %Y')`"
+format:
+    html:
+        fontsize: 14px
+        toc: true
+        top-depth: 3
+---
+
+```{r setup, include=FALSE}
+knitr::opts_chunk$set(echo = TRUE, warning = FALSE, message = FALSE, 
+                      collapse = TRUE)
+```
+
+# Load data
+## Original cMD sampleMetadata
+```{r}
+dir <- "~/OmicsMLRepo/OmicsMLRepoData/"
+ori <- read_csv(file.path(dir, "inst/extdata/cMD_sampleMetadata.csv"))
+```
+
+## cMD curated_biomarker map
+Ontology mapping for biomarkers is included in cMD merging schema.
+```{r}
+# url <- "https://docs.google.com/spreadsheets/d/1xziFB_zBl32BjNarcyEN4GupTYpPtq5aDz0GbRbWvtk/edit?usp=sharing"
+# ss <- googledrive::as_id(url)
+# x <- googlesheets4::read_sheet(ss = ss, sheet = "merging_schema_allCols")
+```
+
+Format the curated_biomarker_map
+```{r initial_formatting, eval=FALSE}
+# biomarker_map <- x %>% 
+#     filter(classification == "biomarker") %>%
+#     select(all_columns, ontology, ontology_term_id, unit) %>%
+#     mutate(curated_ontology_term_db = OmicsMLRepoR::get_ontologies(ontology_term_id, ":")) %>%
+#     dplyr::rename(original_value = all_columns,
+#                   curated_ontology = ontology,
+#                   curated_ontology_term_id = ontology_term_id,
+#                   curated_unit = unit) %>%
+#     mutate(curated_ontology = trimws(curated_ontology))
+# 
+# ## Format the column name as 'biomarker_name [unit]'
+# unitColNames <- paste0(gsub(" Measurement", "", biomarker_map$curated_ontology), 
+#                        "_in_", biomarker_map$curated_unit) %>%
+#     gsub(" ", "_", .)
+# 
+# biomarker_map$curated_column_names <- unitColNames
+# 
+# ## Save in Google Sheet
+# url <- "https://docs.google.com/spreadsheets/d/1QSbB_b1DkfqOc7q5eHE0IDHSiGqNUyTE8d4GzbSEzjM/edit?usp=sharing"
+# ss <- googledrive::as_id(url)
+# googlesheets4::write_sheet(biomarker_map, ss = ss, sheet = "cMD_biomarker_map")
+```
+
+# Load biomarker_map
+```{r}
+url <- "https://docs.google.com/spreadsheets/d/1QSbB_b1DkfqOc7q5eHE0IDHSiGqNUyTE8d4GzbSEzjM/edit?usp=sharing"
+ss <- googledrive::as_id(url)
+biomarker_map <- googlesheets4::read_sheet(ss = ss, sheet = "cMD_biomarker_map")
+```
+
+```{r}
+## Format the column name as 'biomarker_name [unit]'
+unitColNames <- paste0(gsub(" Measurement", "", biomarker_map$curated_ontology),
+                       "_in_", biomarker_map$curated_unit) %>%
+    gsub(" ", "_", .)
+
+biomarker_map$curated_column_names <- unitColNames
+```
+
+```{r save, eval=FALSE}
+cmd_dir <- "~/OmicsMLRepo/OmicsMLRepoData/curatedMetagenomicData"
+write_csv(biomarker_map, 
+          file.path(cmd_dir, "maps/cMD_biomarker_map.csv"))
+```
+
+
+
+Duplicated columns (different original column names mapped to the same
+curated ontology term) don't have any duplicated values. So we can simply
+merge them.
+```{r}
+## Curated_ontology of the duplicated original columns
+dup_terms <- biomarker_map$curated_ontology_term_id[duplicated(biomarker_map$curated_ontology_term_id)]
+## Names of the original columns mapped to the same curated_ontology
+dupOriColName <- biomarker_map %>%
+    filter(curated_ontology_term_id %in% dup_terms) %>%
+    select(original_value) %>% .[[1]]
+
+## Check whether there is any sample that has value in duplicated columns
+rowSums(!is.na(ori[dupOriColName[1:2]])) %>% table
+rowSums(!is.na(ori[dupOriColName[3:4]])) %>% table
+rowSums(!is.na(ori[dupOriColName[5:6]])) %>% table
+```
+
+Create the `curation_id` columns and merge duplicated columns, i.e. alt/ALT,
+hscrp/hsCRP, and ldl/LDL.
+
+```{r}
+## Subset of sampleMetadata containing only biomarker columns
+sub <- ori %>%
+    mutate(curation_id = paste(study_name, sample_id, sep = ":")) %>%
+    select(c(curation_id, biomarker_map$original_value)) %>% 
+    ## Unite duplicated columns (alt/ALT and ldl/LDL)
+    tidyr::unite(hsCRP, c(hscrp, hsCRP), sep = "", remove = TRUE, na.rm = TRUE) %>%
+    tidyr::unite(ALT, c(alt, ALT), sep = "", remove = TRUE, na.rm = TRUE) %>%
+    tidyr::unite(LDL, c(ldl, LDL), sep = "", remove = TRUE, na.rm = TRUE)
+
+sub[sub == ""] <- NA
+```
+
+```{r}
+## The number of biomarkers measured per sample: most sample don't have any 
+## biomarker information and 150 samples have 18 biomarkers reported
+table(rowSums(!is.na(sub[-1])))
+# ind <- which(rowSums(!is.na(sub[-1])) == 18)
+
+## Check the look of `sub` table with biomarker value
+sub[which(rowSums(!is.na(sub)) > 1),]
+```
+
+```{r}
+## Update column names with the `curated_ontology_term [unit]` format
+curatedColNames <- plyr::mapvalues(x = colnames(sub), 
+                                   from = biomarker_map$original_value, 
+                                   to = biomarker_map$curated_column_names, 
+                                   warn_missing = TRUE) %>% gsub("_in_n.a.", "", .)
+colnames(sub) <- curatedColNames
+sub[which(rowSums(!is.na(sub)) > 1),]
+```
+
+## Consolidate all the bimarker columns
+```{r}
+ntb <- getNarrowMetaTb(sub, newCol = "curated_biomarker",
+                       targetCols = colnames(sub)[-1])
+```
+
+This narrow, compressed version of the biomarker will be released:
+```{r}
+ntb <- read_csv(file.path(cmd_dir, "data/curated_biomarker.csv"))
+nonNAInd <- which(!is.na(ntb$curated_biomarker))
+```
+
+```{r echo=FALSE}
+write_csv(ntb, file.path(cmd_dir, "data/curated_biomarker.csv"))
+```
+
+```{r}
+ntb[c(1:3, nonNAInd[1:3]),]
+```
+
+This wide, expanded version of the biomarker data will be used for curation.
+```{r}
+wtb <- getWideMetaTb(ntb, "curated_biomarker")
+
+## Column indexes to convert character to double
+coerceToDouble <- grep("_in_", colnames(wtb))
+for (i in coerceToDouble) {
+    wtb[i] <- as.numeric(wtb[[i]])
+}
+```
+
+```{r}
+wtb[c(1:3, nonNAInd[1:3]),]
+```
+
+```{r}
+sub[c(1:3, nonNAInd[1:3]),]
+```

@@ -16,7 +16,6 @@ ss <- googledrive::as_id(url)
 map <- read_sheet(ss, sheet = "merging_schema_allCols")
 dd <- read_sheet(ss, sheet = "data_dictionary_allCols")
 dd$merge <- as.character(dd$merge)
-# curated_dd <- read_sheet(ss, sheet = "data_dictionary_curated")
 
 # Load original cMD data dictionary
 ori_dd <- read_csv("https://raw.githubusercontent.com/waldronlab/curatedMetagenomicDataCuration/master/inst/extdata/template.csv")
@@ -34,9 +33,9 @@ merged_cols_dd$col.name <- cols_to_merge
 
 # Combine data dictionary drafts ----
 id_ind <- which(kept_dd$col.name %in% c("study_name", "sample_id", "subject_id"))
-template_dd <- dplyr::bind_rows(kept_dd[id_ind,], 
-                         # curated_dd,
-                         merged_cols_dd,
-                         kept_dd[-id_ind,]) %>%
+template_dd <- dplyr::bind_rows(merged_cols_dd,
+                                kept_dd[-id_ind,]) %>%
+    dplyr::arrange(., col.name) %>% # alphabetical ordering of columns except the ID cols
+    dplyr::bind_rows(kept_dd[id_ind,], .) %>%
     dplyr::relocate(description, .after = multiplevalues) %>%
     dplyr::mutate(ontology = NA) # introduce ontology column

@@ -20,8 +20,8 @@ knitr::opts_chunk$set(echo = TRUE,
 
 
 ```{r}
-etl_script_dir <- "~/OmicsMLRepo/OmicsMLRepoData/cBioPortalData/ETL"
-list.files(etl_script_dir)
+cbio_etl_dir <- "~/OmicsMLRepo/OmicsMLRepoData/cBioPortalData/ETL"
+list.files(cbio_etl_dir)
 ```
 
 
@@ -31,7 +31,12 @@ create the `curated_all` table, which containing 189,439 sample for 146 newly
 created curated columns.
 
 ```{r}
-source(file.path(etl_script_dir, "0_assemble_curated_metadata.R"))
+source(file.path(cbio_etl_dir, "0_assemble_curated_metadata.R"))
+```
+
+```{r save, eval=FALSE}
+extDir <- "~/OmicsMLRepo/OmicsMLRepoData/inst/extdata"
+write_csv(curated_all, file.path(extDir, "cBioPortal_curated_metadata.csv")) ## 189439 x 146
 ```
 
 
@@ -44,7 +49,7 @@ Four main columns are labeled as `original_value`, `curated_ontology`,
 `curated_contology_term_id`, and `curated_ontology_term_db`.
 
 ```{r}
-source(file.path(etl_script_dir, "1_sync_curation_map.R"))
+source(file.path(cbio_etl_dir, "1_sync_curation_map.R"))
 ```
 
 ```{r save_curation_maps, eval=FALSE, echo=FALSE}
@@ -65,10 +70,10 @@ write.csv(treatment_case_map, file.path(cbio_maps_dir, "cBioPortal_treatment_cas
 Because there are quite a lot of columns involved in cBioPortal metadata 
 harmonization, its merging schema is created per attribute first. 
 ```{r}
-source(file.path(etl_script_dir, "1_sync_merging_schema.R"))
+source(file.path(cbio_etl_dir, "1_sync_merging_schema.R"))
 ```
 
-```{r save_ms, eval=FALSE, echo=FALSE}
+```{r save_ms, eval=FALSE}
 write.csv(age_ms, file.path(cbio_ms_dir, "cBioPortal_merging_schema_age.csv"), row.names = FALSE)
 write.csv(disease_ms, file.path(cbio_ms_dir, "cBioPortal_merging_schema_disease.csv"), row.names = FALSE)
 write.csv(treatment_ms, file.path(cbio_ms_dir, "cBioPortal_merging_schema_treatment.csv"), row.names = FALSE)
@@ -82,7 +87,7 @@ merging schema table, `cbio_ms`.
 
 ```{r}
 ## Need to run the `0_assemble_curated_metadata.R` script first before running this
-source(file.path(etl_script_dir, "2_populate_merging_schema_from_data.R"))
+source(file.path(cbio_etl_dir, "2_populate_merging_schema_from_data.R"))
 ```
 
 ```{r eval=FALSE}
@@ -93,14 +98,14 @@ write_csv(cbio_ms, file.path(extDir, "cBioPortal_merging_schema.csv"))
 ## Google Sheet
 url <- "https://docs.google.com/spreadsheets/d/1t2GTvDpgIrR84_ECoft6bQbb2qUr9RoeFtLZWM-ZRDI/edit?usp=sharing"
 ss <- googledrive::as_id(url)
-googlesheets4::write_sheet(cbio_ms, ss = ss, sheet = "merging_schema")
+googlesheets4::write_sheet(cbio_ms, ss = ss, sheet = "cBioPortal_merging_schema")
 ```
 
 
 
 
 ```{r}
-source(file.path(etl_script_dir, "3_sync_data_dictionary.R"))
+source(file.path(cbio_etl_dir, "3_sync_data_dictionary.R"))
 ```
 
 

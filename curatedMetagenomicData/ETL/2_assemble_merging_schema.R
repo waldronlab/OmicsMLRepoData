@@ -41,8 +41,8 @@ original_field_name <- sapply(a, function(x) {
         paste0(., collapse = ";")
 }) %>% as.vector
 
-original_field_name[which(original_field_name == "legacy_NA")] <- NA
-original_field_name[which(original_field_name == "NA")] <- NA
+# original_field_name[which(original_field_name == "legacy_NA")] <- NA
+# original_field_name[which(original_field_name == "NA")] <- NA
 original_field_num <- sapply(original_field_name, 
                              function(x) {
                                  strsplit(x, ";") %>% unlist %>% na.omit %>% length
