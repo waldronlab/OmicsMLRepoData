@@ -781,120 +781,12 @@ enums:
         text: NA
   country_enums:
     name: country_enums
-    permissible_values:
-      COL:
-        text: COL
-      ARG:
-        text: ARG
-      GNB:
-        text: GNB
-      LBR:
-        text: LBR
-      SLV:
-        text: SLV
-      CAN:
-        text: CAN
-      DNK:
-        text: DNK
-      EST:
-        text: EST
-      FJI:
-        text: FJI
-      FIN:
-        text: FIN
-      FRA:
-        text: FRA
-      DEU:
-        text: DEU
-      ITA:
-        text: ITA
-      MNG:
-        text: MNG
-      NLD:
-        text: NLD
-      NOR:
-        text: NOR
-      JPN:
-        text: JPN
-      ESP:
-        text: ESP
-      KOR:
-        text: KOR
-      BRA:
-        text: BRA
-      IRL:
-        text: IRL
-      PHL:
-        text: PHL
-      SWE:
-        text: SWE
-      USA:
-        text: USA
-      GBR:
-        text: GBR
-      CHN:
-        text: CHN
-      RUS:
-        text: RUS
-      LUX:
-        text: LUX
-      AUT:
-        text: AUT
-      TZA:
-        text: TZA
-      PER:
-        text: PER
-      MDG:
-        text: MDG
-      ISL:
-        text: ISL
-      BRN:
-        text: BRN
-      IDN:
-        text: IDN
-      MYS:
-        text: MYS
-      HUN:
-        text: HUN
-      SVK:
-        text: SVK
-      SGP:
-        text: SGP
-      ISR:
-        text: ISR
-      BGD:
-        text: BGD
-      KAZ:
-        text: KAZ
-      IND:
-        text: IND
-      GHA:
-        text: GHA
-      ETH:
-        text: ETH
-      CMR:
-        text: CMR
-  travel_destination_enums:
-    name: travel_destination_enums
-    permissible_values:
-      CMR:
-        text: CMR
-      ETH:
-        text: ETH
-      KEN:
-        text: KEN
-      TZA:
-        text: TZA
-      RWA:
-        text: RWA
-      IND:
-        text: IND
-      LKA:
-        text: LKA
-      NPL:
-        text: NPL
-  non_westernized_enums:
-    name: non_westernized_enums
+    source_ontology: ncit
+    source_nodes: NCIT:C25464
+    include_self: "false"
+    relationship_types: descendants
+  westernized_enums:
+    name: westernized_enums
     permissible_values:
       "yes":
         text: "yes"
@@ -1455,8 +1347,8 @@ slots:
     multivalued: false
     range: Travel_Destination
     required: false
-  non_westernized:
-    name: non_westernized
+  westernized:
+    name: westernized
     description: Subject belongs to a non-westernized community.
     from_schema: https://waldronlab.io
     multivalued: false
@@ -2559,12 +2451,12 @@ classes:
         description: >-
           travel destination using ISO3 code from
           http://www.fao.org/countryprofiles/iso3list/en/.
-      non_westernized:
-        name: non_westernized
-        range: non_westernized_enums
+      westernized:
+        name: westernized
+        range: westernized_enums
         required: false
         multivalued: false
-        description: Subject belongs to a non-westernized community.
+        description: Subject belongs to a westernized community.
       lifestyle:
         name: lifestyle
         range: lifestyle_enums
