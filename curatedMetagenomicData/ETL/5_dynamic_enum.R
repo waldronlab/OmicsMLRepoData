@@ -8,7 +8,7 @@ suppressPackageStartupMessages({
     library(dplyr)
 })
 
-target_attr <- c("biomarker", "body_site", "disease",
+target_attr <- c("biomarker", "body_site", "disease", "country",
                  "target_condition", "treatment")
 
 cmd_dd <- addDynamicEnumNodes(target_attr[1], enum_dd) %>%
