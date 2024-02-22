@@ -2,7 +2,6 @@
 ### Required input: `mapDir` and `filled_dd`
 ### dir <- "~/OmicsMLRepo/OmicsMLRepoData/curatedMetagenomicData"
 
-age <- read.csv(file.path(mapDir, "cMD_age_group_map.csv"))
 
 # age ----
 curated_age <- data.frame(
@@ -29,6 +28,7 @@ curated_age_unit <- data.frame(
 )
 
 # age_group ----
+age <- read.csv(file.path(mapDir, "cMD_age_group_map.csv"))
 desc <- paste(age$curated_age_min, "<=", 
               age$curated_ontology_term, "<", age$curated_age_max)
 curated_age_group <- data.frame(

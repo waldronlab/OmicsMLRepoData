@@ -157,7 +157,9 @@ source(file.path(cmd_etl_dir, "5_dynamic_enum.R"))
 
 ```{r eval=FALSE, echo=FALSE}
 ## Test individual dynamic enum
-curated_col <- "biomarker"
+target_attr <- c("biomarker", "body_site", "country", "disease", "hla",
+                 "target_condition", "treatment")
+curated_col <- target_attr[5]
 dd <- read_csv("~/OmicsMLRepo/OmicsMLRepoData/inst/extdata/cMD_data_dictionary.csv")
 colnames <- c(curated_col, paste0("curated_", curated_col))
 ind <- which(dd$col.name %in% colnames)
@@ -190,5 +192,15 @@ source columns, no ontology term id).
 ```{r}
 # requires: `curated_all` from `0_assemble_curated_metadata.R`
 source(file.path(cmd_etl_dir, "6_format_for_release.R"))
+```
+
+
+
+# Main files
+```{r}
+extDir <- "~/OmicsMLRepo/OmicsMLRepoData/inst/extdata"
+curated_all <- read_csv(file.path(extDir, "cMD_curated_metadata_all.csv"))
+cmd_ms <- read_csv(file.path(extDir, "cMD_merging_schema.csv"))
+cmd_dd <- read_csv(file.path(extDir, "cMD_data_dictionary.csv"))
 ```
 

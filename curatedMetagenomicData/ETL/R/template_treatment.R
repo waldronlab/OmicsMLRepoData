@@ -3,8 +3,10 @@
 ### dir <- "~/OmicsMLRepo/OmicsMLRepoData/curatedMetagenomicData"
 
 
-treatment_map <- read.csv(file.path(mapDir, "cMD_treatment_map.csv"))
-abx_map <- read.csv(file.path(mapDir, "cMD_antibiotic_map.csv"))
+treatment_map <- read.csv(file.path(mapDir, "cMD_treatment_map.csv"))  %>%
+    .[order(.$curated_ontology_term),]
+abx_map <- read.csv(file.path(mapDir, "cMD_antibiotic_map.csv")) %>%
+    .[order(.$curated_ontology_term),]
 
 # treatment -----
 curated_treatment <- data.frame(

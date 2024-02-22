@@ -60,7 +60,7 @@ curated_probing_pocket_depth <- data.frame(
     multiplevalues = FALSE,
     description = "Depth of periodontal pocket (observable entity)",
     allowedvalues = "[0-9]+",
-    ontology = ""     
+    ontology = NA     
 ) 
 
 # smoker ----
@@ -101,7 +101,8 @@ uncurated_metadata <- data.frame(
 )
 
 # hla ------
-hla <- read.csv(file.path(mapDir, "cMD_hla_map.csv"))
+hla <- read.csv(file.path(mapDir, "cMD_hla_map.csv")) %>%
+    .[order(.$curated_ontology_term),]
 curated_hla <- data.frame(
     col.name = "hla",
     col.class = "character",
@@ -142,7 +143,8 @@ curated_feces_phenotype <- bind_rows(feces_phenotype_metric,
                                      feces_phenotype_value)
 
 # country ----
-country_map <- read.csv(file.path(mapDir, "cMD_country_map.csv"))
+country_map <- read.csv(file.path(mapDir, "cMD_country_map.csv")) %>%
+    .[order(.$curated_ontology_term),]
 curated_country <- data.frame(
     col.name = "country",
     col.class = "character",

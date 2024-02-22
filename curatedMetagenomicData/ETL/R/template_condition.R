@@ -4,7 +4,6 @@
 ### projDir <- "~/OmicsMLRepo/OmicsMLRepoData/curatedMetagenomicData"
 ### mapDir <- file.path(projDir, "maps")
 
-disease_map <- read.csv(file.path(mapDir, "cMD_disease_map.csv"))
 
 # control ----
 control <- data.frame(
@@ -19,6 +18,8 @@ control <- data.frame(
 )
 
 # disease ----
+disease_map <- read.csv(file.path(mapDir, "cMD_disease_map.csv")) %>%
+    .[order(.$curated_ontology_term),]
 disease <- data.frame(
     col.name = "disease",
     col.class = "character",
@@ -31,7 +32,8 @@ disease <- data.frame(
 )
 
 # target_condition ----
-target_condition_map <- read.csv(file.path(mapDir, "cMD_target_condition_map.csv"))
+target_condition_map <- read.csv(file.path(mapDir, "cMD_target_condition_map.csv")) %>%
+    .[order(.$curated_ontology_term),]
 
 target_condition <- data.frame(
     col.name = "target_condition",

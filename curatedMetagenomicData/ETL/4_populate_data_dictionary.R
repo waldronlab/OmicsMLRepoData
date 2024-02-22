@@ -12,7 +12,7 @@ suppressPackageStartupMessages({
 })
 
 # Populate data dictionary per attributes -----
-## The scripts sourced below requires two inputs: `mapDir`, `scriptDir`, and `final_dd`
+## The scripts sourced below requires two inputs: `mapDir`, `scriptDir`, and `filled_dd`
 source(file.path(scriptDir, "template_age.R"))
 source(file.path(scriptDir, "template_bodysite.R"))
 source(file.path(scriptDir, "template_condition.R"))
@@ -23,7 +23,7 @@ source(file.path(scriptDir, "template_treatment.R"))
 
 
 # # Populate data dictionary per attributes -----
-# ## The scripts sourced below requires two inputs: `mapDir`, `scriptDir`, and `final_dd`
+# ## The scripts sourced below requires two inputs: `mapDir`, `scriptDir`, and `filled_dd`
 # templates <- list.files(scriptDir)
 # templates <- templates[grep(".R$", templates)]
 #

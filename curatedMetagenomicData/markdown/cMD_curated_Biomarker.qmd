@@ -10,8 +10,18 @@ format:
 ---
 
 ```{r setup, include=FALSE}
-knitr::opts_chunk$set(echo = TRUE, warning = FALSE, message = FALSE, 
+knitr::opts_chunk$set(echo = TRUE, 
+                      warning = FALSE, 
+                      message = FALSE, 
                       collapse = TRUE)
+```
+
+```{r echo=FALSE}
+suppressPackageStartupMessages({
+    library(readr)
+    library(dplyr)
+    library(OmicsMLRepoR)
+})
 ```
 
 # Load data
@@ -139,6 +149,7 @@ ntb <- getNarrowMetaTb(sub, newCol = "curated_biomarker",
 
 This narrow, compressed version of the biomarker will be released:
 ```{r}
+cmd_dir <- "~/OmicsMLRepo/OmicsMLRepoData/curatedMetagenomicData"
 ntb <- read_csv(file.path(cmd_dir, "data/curated_biomarker.csv"))
 nonNAInd <- which(!is.na(ntb$curated_biomarker))
 ```

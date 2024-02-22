@@ -1,4 +1,4 @@
-"original_value","curated_acronym","curated_ontology","curated_ontology_term_id","curated_unit","curated_ontology_term_db","curated_column_names","Notes"
+"original_value","curated_acronym","curated_ontology_term","curated_ontology_term_id","curated_unit","curated_ontology_term_db","curated_column_names","Notes"
 "adiponectin",NA,"Adiponectin Measurement","NCIT:C74839","ug/mL","NCIT","Adiponectin_in_ug/mL","Unit updated from mg/L to ug/ml"
 "albumine",NA,"Albumin Measurement","NCIT:C64431","g/dL","NCIT","Albumin_in_g/dL","Unit updated from g/L to g/dL"
 "alt","ALT","Alanine Aminotransferase Measurement","NCIT:C64433","U/L","NCIT","Alanine_Aminotransferase_in_U/L","Relabel to ALT (diagnose liver disorders) and combine with ALT column"

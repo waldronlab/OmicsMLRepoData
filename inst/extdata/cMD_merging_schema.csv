@@ -9,6 +9,7 @@ dietary_restriction,NA,NA,diet,1,2,4
 disease_response_orr,NA,NA,ORR,1,1,3
 disease_response_pfs;disease_response_pfs_month,NA,NA,PFS12,1,1,3
 disease_response_recist,NA,NA,RECIST,1,1,5
+dna_extraction_kit,NA,NA,DNA_extraction_kit,1,69,18
 feces_phenotype_metric;feces_phenotype_value,NA,NA,bristol_score;calprotectin;HBI,3,4;1;0,8;250;10
 fmt_id,NA,NA,fmt_id,1,1,46
 fmt_role,NA,NA,FMT_role,1,1,5

@@ -2,7 +2,8 @@
 ### Required input: `mapDir` and `filled_dd` 
 ### dir <- "~/OmicsMLRepo/OmicsMLRepoData/curatedMetagenomicData"
 
-bodysite_map <- read.csv(file.path(mapDir, "cMD_bodysite_map.csv"))
+bodysite_map <- read.csv(file.path(mapDir, "cMD_bodysite_map.csv")) %>%
+    .[order(.$curated_ontology_term),]
 
 # bodysite <- bodysite_map[which(bodysite_map$bodysite_values == "Yes"),]
 # bodysubsite <- bodysite_map[which(bodysite_map$bodysite_values == "No"),]

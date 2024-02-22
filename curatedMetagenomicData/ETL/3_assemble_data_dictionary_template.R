@@ -32,10 +32,14 @@ colnames(merged_cols_dd) <- colnames(kept_dd)
 merged_cols_dd$col.name <- cols_to_merge
 
 # Combine data dictionary drafts ----
-id_ind <- which(kept_dd$col.name %in% c("study_name", "sample_id", "subject_id"))
-template_dd <- dplyr::bind_rows(merged_cols_dd,
+required_cols <- c("study_name", "subject_id", "sample_id", 
+                   "target_condition", "control", "country", 
+                   "body_site")
+id_ind <- which(kept_dd$col.name %in% required_cols)
+required_ind <- which(merged_cols_dd$col.name %in% required_cols)
+template_dd <- dplyr::bind_rows(merged_cols_dd[-required_ind,],
                                 kept_dd[-id_ind,]) %>%
     dplyr::arrange(., col.name) %>% # alphabetical ordering of columns except the ID cols
-    dplyr::bind_rows(kept_dd[id_ind,], .) %>%
+    dplyr::bind_rows(kept_dd[id_ind,], merged_cols_dd[required_ind,], .) %>%
     dplyr::relocate(description, .after = multiplevalues) %>%
     dplyr::mutate(ontology = NA) # introduce ontology column

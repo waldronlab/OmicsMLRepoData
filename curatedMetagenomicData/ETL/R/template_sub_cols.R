@@ -1,10 +1,11 @@
 ### Data dictionary for consolidated cMD attributes in their 'wide' form for curators
-### Required input: ``final_dd`
+### Required input: `filled_dd`
 ### dir <- "~/OmicsMLRepo/OmicsMLRepoData/curatedMetagenomicData"
 
 
 # biomarkers ----
-biomarker_map <- read.csv(file.path(mapDir, "cMD_biomarker_map.csv"))
+biomarker_map <- read.csv(file.path(mapDir, "cMD_biomarker_map.csv")) %>%
+    .[order(.$curated_ontology_term),]
 curated_biomarker <- data.frame(
     col.name = "biomarker",
     col.class = "character",
