@@ -305,9 +305,7 @@ sheet_write(cMD_bodysite, ss = ss, sheet = "bodysite_ontology")
 
 ## Confirm that the manual curation table contains all the values in sampleMetadata
 bodysites <- unique(c(sampleMetadata$body_site,
-                      sampleMetadata$body_subsite,
-                      sampleMetadata$dental_sample_type,
-                      sampleMetadata$disease_location))
+                      sampleMetadata$body_subsite))
 setdiff(bodysites, cMD_bodysite$original_value)
 ```
 
@@ -321,7 +319,7 @@ bodysite_map
 ```
 
 Double-check whether the curation is correct. Any curated ontology terms
-returned with `correct == FALSE` in `validation_tb` are reviewed.
+returned with `corret == FLASE` in `validation_tb` should be reviewed.
 
 ```{r}
 validation_tb <- data.frame(matrix(NA, nrow = nrow(bodysite_map), ncol = 4))
@@ -359,92 +357,47 @@ have `body_site` information, I keep both columns in curated format. Also, I
 removed any `body_subsite` value that is identical to `body_site`.
 
 ```{r}
-bodysite_tb <- sampleMetadata[,c("curation_id", "body_site", "body_subsite",
-                                 "dental_sample_type", "disease_location")]
+bodysite_tb <- sampleMetadata[,c("curation_id", "body_site", "body_subsite")]
 curated_bodysite <- bodysite_tb %>%
-    transmute(curation_id = curation_id,
-              curated_body_site = mapvalues(x = bodysite_tb$body_site,
+    mutate(mapped_body_site = mapvalues(x = bodysite_tb$body_site,
                                             from = bodysite_map$original_value,
                                             to = bodysite_map$curated_ontology_term,
                                             warn_missing = TRUE),
-              curated_body_site_ontology_term_id = mapvalues(x = bodysite_tb$body_site,
+              mapped_body_site_ontology_term_id = mapvalues(x = bodysite_tb$body_site,
                                                              from = bodysite_map$original_value,
                                                              to = basename(bodysite_map$curated_ontology_term_id),
                                                              warn_missing = TRUE),
-              body_subsite = mapvalues(x = bodysite_tb$body_subsite,
+              mapped_body_subsite = mapvalues(x = bodysite_tb$body_subsite,
                                                from = bodysite_map$original_value,
                                                to = bodysite_map$curated_ontology_term,
                                                warn_missing = TRUE),
-              curated_body_subsite_ontology_term_id = mapvalues(x = bodysite_tb$body_subsite,
-                                                                from = bodysite_map$original_value,
-                                                                to = basename(bodysite_map$curated_ontology_term_id),
-                                                                warn_missing = TRUE),
-              dental_sample_type = mapvalues(x = bodysite_tb$dental_sample_type,
-                                               from = bodysite_map$original_value,
-                                               to = bodysite_map$curated_ontology_term,
-                                               warn_missing = TRUE),
-              curated_dental_sample_type_ontology_term_id = mapvalues(x = bodysite_tb$dental_sample_type,
-                                                                from = bodysite_map$original_value,
-                                                                to = basename(bodysite_map$curated_ontology_term_id),
-                                                                warn_missing = TRUE),
-              disease_location = mapvalues(x = bodysite_tb$disease_location,
-                                               from = bodysite_map$original_value,
-                                               to = bodysite_map$curated_ontology_term,
-                                               warn_missing = TRUE),
-              curated_disease_location_ontology_term_id = mapvalues(x = bodysite_tb$disease_location,
+              mapped_body_subsite_ontology_term_id = mapvalues(x = bodysite_tb$body_subsite,
                                                                 from = bodysite_map$original_value,
                                                                 to = basename(bodysite_map$curated_ontology_term_id),
                                                                 warn_missing = TRUE))
+
 ## Remove body_subsite that is identical to body_site
-redundant_ind <- which(curated_bodysite$curated_body_site == curated_bodysite$curated_body_subsite)
-curated_bodysite[redundant_ind, c("curated_body_subsite", "curated_body_subsite_ontology_term_id")] <- NA
-```
+redundant_ind <- which(curated_bodysite$mapped_body_site == curated_bodysite$mapped_body_subsite)
+curated_bodysite[redundant_ind, c("mapped_body_subsite", "mapped_body_subsite_ontology_term_id")] <- NA
 
-Add source columns for body_subsite curation and merge 3 relevant columns into
-curated_body_subsite column:
-```{r}
-# Create a column of relevant source columns
+# Merge body_site and body_subsite to a single curated column
+curated_bodysite <- curated_bodysite %>% mutate(curated_body_site = paste(mapped_body_site, mapped_body_subsite, sep=";"), curated_body_site_ontology_term_id = paste(mapped_body_site_ontology_term_id, mapped_body_subsite_ontology_term_id, sep=";"))
+
+# Remove NA values
+curated_bodysite <- data.frame(lapply(curated_bodysite, function(x) gsub("NA;", "", x)))
+curated_bodysite <- data.frame(lapply(curated_bodysite, function(x) gsub(";NA", "", x)))
+curated_bodysite <- data.frame(lapply(curated_bodysite, function(x) gsub("^$", NA, x)))
+
+# Add source column
 for (i in 1:nrow(curated_bodysite)){
-  curated_bodysite$curated_body_subsite_source[i] <- paste(colnames(curated_bodysite[,c(4,6,8)][which(!is.na(curated_bodysite[i,c(4,6,8)]))]), collapse=";")
+  curated_bodysite$curated_body_site_source[i] <- paste(colnames(curated_bodysite[,2:3][which(!is.na(curated_bodysite[i,2:3]))]), collapse=";")
 }
 
-# Convert NA values to unique character value (8X8)
-curated_bodysite <- curated_bodysite %>% replace(is.na(.), "8X8") %>% data.frame()
-
-# Merge all body_subsite value columns
-for (i in 1:nrow(curated_bodysite)){
-  curated_bodysite$merged[i] <- paste(curated_bodysite[i,c("body_subsite", 
-                                                           "dental_sample_type", 
-                                                           "disease_location")], collapse=";")
-}
-# Take out NA values
-curated_bodysite$merged <- gsub("8X8;", "", curated_bodysite$merged)
-curated_bodysite$merged <- gsub(";8X8", "", curated_bodysite$merged)
-curated_bodysite$body_subsite <- curated_bodysite$merged
-
-# Merge all body_subsite ontology id columns
-for (i in 1:nrow(curated_bodysite)){
-  curated_bodysite$merged[i] <- paste(curated_bodysite[i,c("curated_body_subsite_ontology_term_id", 
-                                                           "curated_dental_sample_type_ontology_term_id", 
-                                                           "curated_disease_location_ontology_term_id")], collapse=";")
-}
-
-# Take out NA values
-curated_bodysite$merged <- gsub("8X8;", "", curated_bodysite$merged)
-curated_bodysite$merged <- gsub(";8X8", "", curated_bodysite$merged)
-curated_bodysite$curated_body_subsite_ontology_term_id <- curated_bodysite$merged
-
-# Replace "8X8" values with "NA"
-curated_bodysite <- data.frame(lapply(curated_bodysite, 
-                                      function(x) gsub("8X8", NA, x)))
-curated_bodysite <- data.frame(lapply(curated_bodysite, 
-                                      function(x) gsub("^$", NA, x)))
-
-# Select relevant columns
-curated_bodysite <- curated_bodysite[,c(1:5, 10)]
-
-# Rename body_subsite column
-colnames(curated_bodysite)[4] <- "curated_body_subsite"
+# Drop mapped columns and rename original columns
+curated_bodysite <- curated_bodysite %>% 
+    select(-c(mapped_body_site, mapped_body_site_ontology_term_id, 
+              mapped_body_subsite, mapped_body_subsite_ontology_term_id)) %>%
+    dplyr::rename("original_body_site" = "body_site", "original_body_subsite" = "body_subsite")
 ```
 
 ```{r eval=FALSE}
