@@ -1,0 +1,115 @@
+---
+title: "Harmonize 'dietary restriction' information in cMD sample metadata"
+author:
+  - Sehyun Oh
+  - Kai Gravel-Pucillo
+date: "`r format(Sys.time(), '%B %d, %Y')`"
+format:
+    html:
+        fontsize: 14pxs
+        toc: true
+        top-depth: 3
+abstract: "Prepare U24 Supplement: AI/ML-ready"
+---
+
+```{r setup, include=FALSE}
+knitr::opts_chunk$set(echo = TRUE, 
+                    warning = FALSE,
+                    message = FALSE,
+                    collapse = TRUE,
+                    eval = TRUE)
+```
+
+# Overview
+
+This .qmd file demonstrates a workflow for curating and harmonizing 'dietary 
+restriction' data with the curatedMetagenomicData package.This file curates 
+information from the original diet column to produce the curated 
+dietary_restriction column.
+
+# Setup
+## Load Packages
+
+```{r load}
+suppressPackageStartupMessages({
+  library(curatedMetagenomicData)
+  library(tidyverse)
+  library(googlesheets4)
+  library(rols)
+  library(dplyr)
+  library(hash)
+  library(vctrs)
+  library(rvest)
+})
+```
+
+## Setup for Curation
+
+We will first add a `curation_id` consisting of study name and sample ID (`study_name:sample_id`) to avoid confusion due to duplicated samples.
+
+```{r curation_setup}
+# Add curation ID
+sampleMetadata$curation_id <- paste(sampleMetadata$study_name, sampleMetadata$sample_id, sep = ":")
+
+# Define a project directory
+proj_dir <- "C:\\Users\\Owner\\Desktop\\CUNY Internship\\cMD"
+```
+
+# Exploratory Data Analysis & Data Curation
+
+## Manual Data Corrections
+
+Next, we will make some manual corrections to the data.
+We will start by creating a tibble dataframe and checking the completeness of 
+the original column as well as reviewing its unique values:
+```{r}
+# Create a tibble object 
+samplemd <- as_tibble(sampleMetadata)
+
+# Review unique values
+unique(sampleMetadata$diet)
+
+# Calculate completeness
+length(samplemd$diet[which(!is.na(samplemd$diet))])/length(samplemd$diet)
+```
+
+Then we can create a list of the names of the columns which will be included in 
+the merged column,and export these values to a csv file to manually develop an 
+ontology map:
+```{r}
+# Create a dataframe of only the relevant columns
+diet_cols <- samplemd %>% select(curation_id, diet)
+diet_cols <- as.data.frame(sapply(diet_cols, as.character))
+
+# Get column names for ontology map
+unique_diet_vals <- unique(diet_cols$diet)
+```
+
+
+## Curated Table Creation
+
+Next, we can clean up the dataframe by replacing the unique character 
+representing NA values with "NA" and updating column names as needed:
+```{r}
+# Create a curated fmt_id column
+diet_cols <- diet_cols %>% mutate(curated_dietary_restriction = diet)
+
+# Create a column of relevant source columns
+for (i in 1:nrow(diet_cols)){
+  diet_cols$curated_dietary_restriction_source[i] <- ifelse(!is.na(diet_cols[i,2]), colnames(diet_cols)[2], NA)
+}
+
+# Rename original column for clarity
+diet_cols <- diet_cols %>% dplyr::rename(original_dietary_restriction = diet)
+```
+
+
+## Export
+
+Finally, we will export our completed table to GitHub.
+```{r export_curated_table, eval=FALSE}
+# export to GitHub
+write.csv(diet_cols, 
+          file = file.path(proj_dir, "curated_dietary_restriction.csv"),
+          row.names = FALSE)
+```

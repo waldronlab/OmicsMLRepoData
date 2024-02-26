@@ -1,0 +1,143 @@
+---
+title: "Harmonize tumor staging information in cMD sample metadata"
+author:
+  - Sehyun Oh
+  - Kai Gravel-Pucillo
+date: "`r format(Sys.time(), '%B %d, %Y')`"
+format:
+    html:
+        fontsize: 14pxs
+        toc: true
+        top-depth: 3
+abstract: "Prepare U24 Supplement: AI/ML-ready"
+---
+
+```{r setup, include=FALSE}
+knitr::opts_chunk$set(echo = TRUE, 
+                    warning = FALSE,
+                    message = FALSE,
+                    collapse = TRUE,
+                    eval = TRUE)
+```
+
+# Overview
+
+This .qmd file demonstrates a workflow for curating and harmonizing tumor
+staging data with the curatedMetagenomicData package.
+This file curates information from the original ajcc, tnm, and 
+disease_stage columns to produce the curated tumor_staging columns.
+
+# Setup
+## Load Packages
+
+```{r load}
+suppressPackageStartupMessages({
+  library(curatedMetagenomicData)
+  library(tidyverse)
+  library(googlesheets4)
+  library(rols)
+  library(dplyr)
+  library(hash)
+  library(vctrs)
+  library(rvest)
+})
+```
+
+## Setup for Curation
+
+We will first add a `curation_id` consisting of study name and sample ID (`study_name:sample_id`) to avoid confusion due to duplicated samples.
+
+```{r curation_setup}
+# Add curation ID
+sampleMetadata$curation_id <- paste(sampleMetadata$study_name, sampleMetadata$sample_id, sep = ":")
+
+# Define a project directory
+proj_dir <- "C:\\Users\\Owner\\Desktop\\CUNY Internship\\cMD"
+```
+
+# Exploratory Data Analysis & Data Curation
+
+## Manual Data Corrections
+
+Next, we will make some manual corrections to the data.
+We will start by creating a tibble dataframe and checking the completeness of 
+the three original columns as well as reviewing their unique values:
+```{r}
+# Create a tibble object 
+samplemd <- as_tibble(sampleMetadata)
+
+# Review unique values
+unique(sampleMetadata$ajcc)
+unique(sampleMetadata$tnm)
+unique(sampleMetadata$disease_stage)
+
+# Calculate completeness
+length(samplemd$ajcc[which(!is.na(samplemd$ajcc))])/length(samplemd$ajcc)
+length(samplemd$tnm[which(!is.na(samplemd$tnm))])/length(samplemd$tnm)
+length(samplemd$disease_stage[which(!is.na(samplemd$disease_stage))])/length(samplemd$disease_stage)
+```
+
+Then we can create a list of the names of the columns which will be included in 
+the merged column:
+```{r}
+# Create a dataframe of only the relevant columns
+dis_st_cols <- samplemd %>% select(curation_id, ajcc, tnm, disease_stage)
+dis_st_cols <- as.data.frame(sapply( dis_st_cols, as.character))
+```
+
+# Curating disease_stage Column
+
+Next we can create the curated tumor_staging columns by merging columns which
+use the same metric and standardizing the format of their values:
+```{r}
+# Merge all relevant rows into an original_tumor_staging column
+for (i in 1:nrow(dis_st_cols)){
+  dis_st_cols$original_tumor_staging_ajcc[i] <- paste(dis_st_cols[i,c(2,4)], collapse=";")
+  dis_st_cols$original_tumor_staging_tnm[i] <- paste(dis_st_cols[i,3], collapse=";")
+}
+
+# Take out NA values
+dis_st_cols$original_tumor_staging_ajcc <- gsub("NA;", "", dis_st_cols$original_tumor_staging_ajcc)
+dis_st_cols$original_tumor_staging_ajcc <- gsub(";NA", "", dis_st_cols$original_tumor_staging_ajcc)
+dis_st_cols$original_tumor_staging_ajcc <- gsub("NA", NA, dis_st_cols$original_tumor_staging_ajcc)
+dis_st_cols$original_tumor_staging_tnm <- gsub("NA;", "", dis_st_cols$original_tumor_staging_tnm)
+dis_st_cols$original_tumor_staging_tnm <- gsub(";NA", "", dis_st_cols$original_tumor_staging_tnm)
+dis_st_cols$original_tumor_staging_tnm <- gsub("NA", NA, dis_st_cols$original_tumor_staging_tnm)
+                                                
+# Create curated tumor_staging columns
+dis_st_cols <- dis_st_cols %>% mutate(curated_tumor_staging_tnm = original_tumor_staging_tnm, 
+                       curated_tumor_staging_ajcc = toupper(original_tumor_staging_ajcc))
+```
+
+
+## Curated Table Creation
+
+Next, we can clean up the dataframe, add a source column and update column names 
+as needed:
+```{r}
+# Create a column of relevant source columns
+for (i in 1:nrow(dis_st_cols)){
+  dis_st_cols$curated_tumor_staging_ajcc_source[i] <- 
+      paste(colnames(dis_st_cols[,c(2,4)][which(!is.na(dis_st_cols[i,c(2,4)]))]), 
+            collapse=";")
+  dis_st_cols$curated_tumor_staging_tnm_source[i] <- ifelse(!is.na(dis_st_cols$tnm[i]), "tnm", NA)
+}
+
+# Create a curated dataframe
+curated_tumor_staging <- dis_st_cols[,c(1, 5, 8, 9, 6, 7, 10)]
+
+# Replace empty values from curated columns with "NA"
+curated_tumor_staging <- data.frame(lapply(curated_tumor_staging, 
+                                      function(x) gsub("^$", NA, x)))
+```
+
+
+## Export
+
+Finally, we will export our completed table to GitHub.
+```{r export_curated_table, eval=FALSE}
+# export to GitHub
+write.csv(curated_tumor_staging, 
+          file = file.path(proj_dir, "curated_tumor_staging.csv"),
+          row.names = FALSE)
+```

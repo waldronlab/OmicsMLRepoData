@@ -76,18 +76,31 @@ length(samplemd$FMT_role[which(!is.na(samplemd$FMT_role))])/length(samplemd$FMT_
 ```
 
 Now we can replace the miss-typed value "recipient-before" with the correct
-format "recipient_before" and rename the `fmt_id` column to `FMT_id`.
+format "recipient_before", and replace all values with the curated values, as
+well as rename the `fmt_id` column to `FMT_id`.
 ```{r}
 # Subset fmt cols
 fmt_cols <- samplemd %>% select(curation_id, fmt_id, FMT_role)
 
 # Fix the typo in the FMT_role column
-fmt_cols$curated_FMT_role <- gsub("recipient-before", "recipient_before", fmt_cols$FMT_role)
+fmt_cols <- fmt_cols %>% mutate(curated_FMT_role = FMT_role)
+fmt_cols$curated_FMT_role <- gsub("recipient-before", "Recipient (before procedure)", fmt_cols$curated_FMT_role)
+fmt_cols$curated_FMT_role <- gsub("recipient_before", "Recipient (before procedure)", fmt_cols$curated_FMT_role)
+fmt_cols$curated_FMT_role <- gsub("recipient_after", "Recipient (after procedure)", fmt_cols$curated_FMT_role)
+fmt_cols$curated_FMT_role <- gsub("donor", "Donor", fmt_cols$curated_FMT_role)
 unique(fmt_cols$curated_FMT_role)
 
-# Change column name 
-fmt_cols <- fmt_cols %>% rename(curated_FMT_id = "fmt_id", original_FMT_role = "FMT_role")
+# Create a curated fmt_id column
+fmt_cols <- fmt_cols %>% mutate(curated_FMT_id = fmt_id)
 
+# Create a column of relevant source columns
+for (i in 1:nrow(fmt_cols)){
+  fmt_cols$curated_FMT_id_source_column[i] <- ifelse(!is.na(fmt_cols[i,2]), colnames(fmt_cols)[2], NA)
+  fmt_cols$curated_FMT_role_source_column[i] <- ifelse(!is.na(fmt_cols[i,3]), colnames(fmt_cols)[3], NA)
+}
+
+# Change column name 
+fmt_cols <- fmt_cols %>% rename(original_FMT_id = "fmt_id", original_FMT_role = "FMT_role")
 ```
 
 

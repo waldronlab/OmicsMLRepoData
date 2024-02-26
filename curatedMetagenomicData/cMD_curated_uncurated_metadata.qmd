@@ -1,0 +1,145 @@
+---
+title: "Harmonize uncurated metadata information in cMD sample metadata"
+author:
+  - Sehyun Oh
+  - Kai Gravel-Pucillo
+date: "`r format(Sys.time(), '%B %d, %Y')`"
+format:
+    html:
+        fontsize: 14pxs
+        toc: true
+        top-depth: 3
+abstract: "Prepare U24 Supplement: AI/ML-ready"
+---
+
+```{r setup, include=FALSE}
+knitr::opts_chunk$set(echo = TRUE, 
+                    warning = FALSE,
+                    message = FALSE,
+                    collapse = TRUE,
+                    eval = TRUE)
+```
+
+# Overview
+
+This .qmd file demonstrates a workflow for curating and harmonizing the
+uncurated metadata with the curatedMetagenomicData package.
+This file condenses the extraneous uncurated data to produce the 
+uncurated_metadata column.
+
+# Setup
+## Load Packages
+
+```{r load}
+suppressPackageStartupMessages({
+  library(curatedMetagenomicData)
+  library(tidyverse)
+  library(googlesheets4)
+  library(rols)
+  library(dplyr)
+  library(hash)
+  library(vctrs)
+  library(rvest)
+})
+```
+
+## Setup for Curation
+
+We will first add a `curation_id` consisting of study name and sample ID (`study_name:sample_id`) to avoid confusion due to duplicated samples.
+
+```{r curation_setup}
+# Add curation ID
+sampleMetadata$curation_id <- paste(sampleMetadata$study_name, sampleMetadata$sample_id, sep = ":")
+
+# Define a project directory
+proj_dir <- "C:\\Users\\Owner\\Desktop\\CUNY Internship\\cMD"
+```
+
+# Exploratory Data Analysis & Data Curation
+
+We will start by creating a tibble dataframe and reviewing the unique values of
+the original uncurated_metadata column:
+```{r}
+# Create a tibble object 
+samplemd <- as_tibble(sampleMetadata)
+
+# Review unique values
+unique(sampleMetadata$uncurated_metadata)
+```
+
+Then we can create a list of the uncurated columns to be merged:
+```{r}
+# Create a dataframe of only the relevant columns
+uncurated_cols <- samplemd %>% 
+    select(curation_id, uncurated_metadata, breastfeeding_duration, fobt, SCCAI,
+           formula_first_day, BASDAI, BASFI, protein_intake, travel_destination,
+           age_seroconversion, age_T1D_diagnosis)
+uncurated_cols <- as.data.frame(sapply( uncurated_cols, as.character))
+```
+
+
+# Curating uncurated_metadata Column
+
+Next we can convert cell values into a combined value pair by adding the 
+corresponding column name, creating our original and curated columns:
+```{r}
+# Merge all relevant rows into an original_uncurated_metadata column
+for (i in 1:nrow(uncurated_cols)){
+  uncurated_cols$original_uncurated_metadata[i] <- paste(uncurated_cols[i,2:12], collapse=";")
+}
+# Take out NA values
+uncurated_cols$original_uncurated_metadata <- gsub("NA;", "", uncurated_cols$original_uncurated_metadata)
+uncurated_cols$original_uncurated_metadata <- gsub(";NA", "", uncurated_cols$original_uncurated_metadata)
+uncurated_cols$original_uncurated_metadata <- gsub("NA", NA, uncurated_cols$original_uncurated_metadata)
+
+# Update numeric columns with additional ontology values for metric type
+for(col in colnames(uncurated_cols[,2:12])){
+  for (row in 1:nrow(uncurated_cols)){
+    val <- uncurated_cols[row,col]
+    if (!is.na(val)){
+      uncurated_cols[row,col] <- paste(col, ":", uncurated_cols[row,col], sep="")
+    }
+  }
+}
+
+# Merge all relevant rows into a curated_uncurated_metadata column
+for (i in 1:nrow(uncurated_cols)){
+  uncurated_cols$curated_uncurated_metadata[i] <- paste(uncurated_cols[i,2:12], collapse=";")
+}
+
+# Take out NA values
+uncurated_cols$curated_uncurated_metadata <- gsub("NA;", "", uncurated_cols$curated_uncurated_metadata)
+uncurated_cols$curated_uncurated_metadata <- gsub(";NA", "", uncurated_cols$curated_uncurated_metadata)
+uncurated_cols$curated_uncurated_metadata <- gsub("NA", NA, uncurated_cols$curated_uncurated_metadata)
+```
+
+
+## Curated Table Creation
+
+Next, we can filter the dataframe for the relevant columns and construct a 
+source column:
+```{r}
+# Create a column of relevant source columns
+for (i in 1:nrow(uncurated_cols)){
+  uncurated_cols$curated_uncurated_metadata_source[i] <- 
+      paste(colnames(uncurated_cols[,2:12][which(!is.na(uncurated_cols[i,2:12]))]), collapse=";")
+}
+
+# Create a curated dataframe
+curated_uncurated_metadata <- uncurated_cols[,c(1, 13:15)]
+
+# Replace empty values from curated columns with "NA"
+curated_uncurated_metadata <- data.frame(lapply(curated_uncurated_metadata, 
+                                      function(x) gsub("^$", NA, x)))
+```
+
+
+## Export
+
+Finally, we will export our completed table to GitHub.
+```{r export_curated_table, eval=FALSE}
+# export to GitHub
+write.csv(curated_uncurated_metadata, 
+          file = file.path(proj_dir, "curated_uncurated_metadata.csv"),
+          row.names = FALSE)
+```

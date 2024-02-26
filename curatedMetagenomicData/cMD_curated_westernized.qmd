@@ -89,7 +89,7 @@ inverse values from the original `non_westernized` column.
 west_cols$westernized <- NA
 
 # Convert original values from non_westernized to westernized via inversion
-west_cols$westernized <- sapply(west_cols$non_westernized, function(x) ifelse(x=="yes", "no", "yes"))
+west_cols$westernized <- sapply(west_cols$non_westernized, function(x) ifelse(x=="yes", "No", "Yes"))
 
 # Transfer NA values from non_westernized to westernized
 for (x in 1:nrow(west_cols)){
@@ -100,8 +100,13 @@ for (x in 1:nrow(west_cols)){
 
 ## Curated Table Creation
 
-Next we will rename the columns :
+Next we will rename the columns and create a source column:
 ```{r}
+# Create a column of relevant source columns
+for (i in 1:nrow(west_cols)){
+  west_cols$curated_westernized_source_column[i] <- ifelse(!is.na(west_cols[i,2]), colnames(west_cols)[2], NA)
+}
+
 # Rename columns
 west_cols <- west_cols %>% 
   rename(original_westernized = non_westernized,
