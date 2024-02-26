@@ -1,7 +1,7 @@
-### This script sync the data dictionary created in Google Sheet to GitHub
-### repository. Main data entry happens in Google Sheet which GitHub version
-### is for user facing, so do not make any major modification outside of 
-### Google Sheet. 
+### This script sync the cBioPortal data dictionary created in Google Sheet 
+### to GitHub repository. Main data entry happens in Google Sheet which 
+### GitHub version is for user facing, so do not make any major modification 
+### outside of Google Sheet. 
 
 cbio_dd_dir <- "~/OmicsMLRepo/OmicsMLRepoData/cBioPortalData/data_dictionary/"
 

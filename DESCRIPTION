@@ -8,7 +8,9 @@ Authors@R:
            role = c("aut", "cre"),
            email = "shbrief@gmail.com",
            comment = c(ORCID = "0000-0002-9490-3061"))
-Description: Provide functions to help and monitor manual curation processes. 
+Description: This project curates and hamonizes metadata from large
+omics databases, incorporting ontology, to improve the interoperabiltiy 
+and compatibility of omics data, especially for AI/ML applications. 
 License: Artistic-2.0
 Encoding: UTF-8
 Roxygen: list(markdown = TRUE)

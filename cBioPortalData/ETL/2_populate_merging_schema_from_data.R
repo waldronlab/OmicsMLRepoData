@@ -10,13 +10,13 @@ srcCols <- allCols[grep("_source", allCols)]
 srcCols <- srcCols[srcCols != "curated_treatment_source"] # remove the generic version
 
 cbio_ms <- as.data.frame(matrix(nrow = length(srcCols), ncol = 7))
-colnames(cbio_ms) <- c("original_field",
+colnames(cbio_ms) <- c("curated_field",
+                       "curated_field_completeness",
+                       "curated_field_unique_values",
+                       "original_field",
                        "original_field_num",
                        "original_field_completeness",
-                       "original_field_unique_values",
-                       "curated_field",
-                       "curated_field_completeness",
-                       "curated_field_unique_values")
+                       "original_field_unique_values")
 cbio_ms$curated_field <- gsub("curated_|_source", "", srcCols)
 
 # Import the original cBioPortal metadata
