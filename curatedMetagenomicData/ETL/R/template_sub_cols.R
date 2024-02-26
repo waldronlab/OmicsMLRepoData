@@ -229,18 +229,31 @@ tnm <- data.frame(
     requiredness = "optional",
     multiplevalues = FALSE,
     description = "A system to describe the amount and spread of cancer in a patient's body",
-    allowedvalues = "t[1-4]n[0-3]m[0-1]",
+    allowedvalues = "t[x1-4]n[x0-3]m[x0-1]|pTis|Tis",
     ontology = NA     
 )
 
 curated_tumor_staging <- bind_rows(ajcc, tnm)
+
+curated_probing_pocket_depth <- data.frame(
+    col.name = "probing_pocket_depth", 
+    col.class = "numeric",
+    uniqueness = "non-unique", 
+    requiredness = "optional",
+    multiplevalues = FALSE,
+    description = "Depth of periodontal pocket (observable entity) (SNOMED:286546002)",
+    allowedvalues = "[0-9]+",
+    ontology = NA     
+) 
+
 
 # Data dictionary for curated attributes ----
 attr_dd <- do.call("rbind", list(curated_biomarker,
                                  curated_neonatal,
                                  curated_obgyn,
                                  curated_response_to_therapy,
-                                 curated_tumor_staging))
+                                 curated_tumor_staging,
+                                 curated_probing_pocket_depth))
 
 # Add the content to data dictionary template, `filled_dd` ----
 filled_dd <- fillDataDictionary(filled_dd, attr_dd)

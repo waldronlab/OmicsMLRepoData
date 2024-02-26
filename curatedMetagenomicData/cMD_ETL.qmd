@@ -24,10 +24,7 @@ suppressPackageStartupMessages({
     library(readr)
     library(OmicsMLRepoR)
 })
-```
 
-
-```{r}
 cmd_etl_dir <- "~/OmicsMLRepo/OmicsMLRepoData/curatedMetagenomicData/ETL"
 list.files(cmd_etl_dir)
 ```
@@ -65,7 +62,6 @@ project).
 
 ```{r cmd_save_curation_maps, eval=FALSE}
 # Directory to save curation_maps from Google Sheet
-cmd_maps_dir <- "~/OmicsMLRepo/OmicsMLRepoData/curatedMetagenomicData/maps"
 source(file.path(cmd_etl_dir, "1_sync_curation_map.R"))
 ```
 

@@ -51,18 +51,6 @@ curated_westernized <- data.frame(
     ontology = NA     
 )
 
-# probing_pocket_depth -----
-curated_probing_pocket_depth <- data.frame(
-    col.name = "probing_pocket_depth", #<<<<<<<<<<<<<<<< Switch to this?
-    col.class = "numeric", #<<<<<<<<<< Updated depending on the definition of the abbreviation
-    uniqueness = "non-unique", 
-    requiredness = "optional",
-    multiplevalues = FALSE,
-    description = "Depth of periodontal pocket (observable entity)",
-    allowedvalues = "[0-9]+",
-    ontology = NA     
-) 
-
 # smoker ----
 curated_smoker <- data.frame(
     col.name = "smoker",
@@ -166,7 +154,7 @@ attr_dd <- do.call("rbind", list(curated_country,
                                  curated_fmt_role,
                                  curated_hla,
                                  curated_westernized,
-                                 curated_probing_pocket_depth,
+                                 # curated_probing_pocket_depth,
                                  # curated_response_to_therapy,
                                  curated_smoker,
                                  curated_sex,
