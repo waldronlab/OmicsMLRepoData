@@ -1,0 +1,125 @@
+---
+title: "Harmonize westernization information in cMD sample metadata"
+author:
+  - Sehyun Oh
+  - Kai Gravel-Pucillo
+date: "`r format(Sys.time(), '%B %d, %Y')`"
+format:
+    html:
+        fontsize: 14pxs
+        toc: true
+        top-depth: 3
+abstract: "Prepare U24 Supplement: AI/ML-ready"
+---
+
+```{r setup, include=FALSE}
+knitr::opts_chunk$set(echo = TRUE, 
+                    warning = FALSE,
+                    message = FALSE,
+                    collapse = TRUE,
+                    eval = TRUE)
+```
+
+# Overview
+
+This .qmd file demonstrates a workflow for curating and harmonizing 
+westernization data with the curatedMetagenomicData package.
+This file curates information from the original non-westernized column to 
+produce the curated westernized column.
+
+# Setup
+## Load Packages
+
+```{r load}
+suppressPackageStartupMessages({
+  library(curatedMetagenomicData)
+  library(tidyverse)
+  library(googlesheets4)
+  library(rols)
+  library(dplyr)
+  library(hash)
+  library(vctrs)
+  library(rvest)
+})
+```
+
+## Setup for Curation
+
+We will first add a `curation_id` consisting of study name and sample ID (`study_name:sample_id`) to avoid confusion due to duplicated samples.
+
+```{r curation_setup}
+# Add curation ID
+sampleMetadata$curation_id <- paste(sampleMetadata$study_name, sampleMetadata$sample_id, sep = ":")
+
+# Define a project directory
+proj_dir <- "C:\\Users\\Owner\\Desktop\\CUNY Internship\\cMD"
+```
+
+# Exploratory Data Analysis & Data Curation
+
+## Manual Data Corrections
+
+We will start by creating a tibble dataframe and checking the completeness of 
+the original column as well as reviewing the unique values:
+```{r}
+# Create a tibble object 
+samplemd <- as_tibble(sampleMetadata)
+
+# Review unique values
+unique(sampleMetadata$non_westernized)
+
+# Calculate completeness
+length(samplemd$non_westernized[which(!is.na(samplemd$non_westernized))])/length(samplemd$non_westernized)
+```
+
+Then we can create a dataframe of the original column values:
+```{r}
+# Create a dataframe of only the relevant columns
+west_cols <- samplemd %>% select(curation_id, non_westernized)
+west_cols <- as.data.frame(sapply( west_cols, as.character))
+```
+
+
+# Curating westernized_stage Column
+
+Next we can initiate an empty `westernized` column and propagate it with the 
+inverse values from the original `non_westernized` column.
+```{r}
+# Initialize a new column for the 'westernized' values
+west_cols$westernized <- NA
+
+# Convert original values from non_westernized to westernized via inversion
+west_cols$westernized <- sapply(west_cols$non_westernized, function(x) ifelse(x=="yes", "No", "Yes"))
+
+# Transfer NA values from non_westernized to westernized
+for (x in 1:nrow(west_cols)){
+    west_cols$westernized[x] <- ifelse(is.na(west_cols$non_westernized[x]), NA, west_cols$westernized[x])
+}
+```
+
+
+## Curated Table Creation
+
+Next we will rename the columns and create a source column:
+```{r}
+# Create a column of relevant source columns
+for (i in 1:nrow(west_cols)){
+  west_cols$curated_westernized_source_column[i] <- ifelse(!is.na(west_cols[i,2]), colnames(west_cols)[2], NA)
+}
+
+# Rename columns
+west_cols <- west_cols %>% 
+  rename(original_westernized = non_westernized,
+         curated_westernized = westernized)
+```
+
+
+## Export
+
+Finally, we will export our completed table to GitHub.
+```{r export_curated_table, eval=FALSE}
+# export to GitHub
+write.csv(west_cols, 
+          file = file.path(proj_dir, "curated_westernized.csv"),
+          row.names = FALSE)
+```

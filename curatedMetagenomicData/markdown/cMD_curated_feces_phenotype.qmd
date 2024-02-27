@@ -25,7 +25,8 @@ knitr::opts_chunk$set(echo = TRUE,
 This .qmd file demonstrates a workflow for curating and harmonizing patient
 data derived from fecal samples with the curatedMetagenomicData package.
 This file curates information from the original bristol_score, HBI, and 
-calprotectin columns to produce the curated feces_phenotype column.
+calprotectin columns to produce the curated feces_phenotype_metric and 
+feces_phenotype_value columns.
 
 # Setup
 ## Load Packages
@@ -117,17 +118,17 @@ opportunity to map the new values associated with each column metric and their
 corresponding ontology term IDs:
 ```{r}
 # Initiate an ontology_term_id column
-fecal_cols$curated_feces_phenotype_ontology_term_id <- "8X8"
+fecal_cols$curated_feces_phenotype_metric_ontology_term_id <- "8X8"
 
 # Merge all relevant rows into an original_feces_phenotype column
 for (i in 1:nrow(fecal_cols)){
   fecal_cols$original_feces_phenotype[i] <- toupper(paste(fecal_cols[i,2:4], collapse=";"))
 }
+
 # Take out NA values
 fecal_cols$original_feces_phenotype <- gsub("NA;", "", fecal_cols$original_feces_phenotype)
 fecal_cols$original_feces_phenotype <- gsub(";NA", "", fecal_cols$original_feces_phenotype)
 fecal_cols$original_feces_phenotype <- gsub("NA", NA, fecal_cols$original_feces_phenotype)
-
 
 # Update numeric columns with additional ontology values for metric type
 for(col in colnames(fecal_cols[,2:4])){
@@ -136,12 +137,15 @@ for(col in colnames(fecal_cols[,2:4])){
   for (row in 1:nrow(fecal_cols)){
     val <- fecal_cols[row,col]
     if (!is.na(val)){
-      fecal_cols[row,col] <- paste(new_col, ":", fecal_cols[row,col], sep="")
-      fecal_cols$curated_feces_phenotype_ontology_term_id[row] <- 
-        paste(fecal_cols$curated_feces_phenotype_ontology_term_id[row], new_col_onto, sep=";")
+      fecal_cols[row,col] <- new_col
+      fecal_cols$curated_feces_phenotype_metric_ontology_term_id[row] <- 
+        paste(fecal_cols$curated_feces_phenotype_metric_ontology_term_id[row], new_col_onto, sep=";")
     }
   }
 }
+
+# Create curated value column
+fecal_cols <- fecal_cols %>% mutate(curated_feces_phenotype_value = original_feces_phenotype)
 ```
 
 Now we can replace character values representing a lack of information with a 
@@ -153,7 +157,7 @@ fecal_cols[,2:4] <- fecal_cols[,2:4] %>% replace(is.na(.), "8X8") %>% data.frame
 
 # Merge all relevant rows
 for (i in 1:nrow(fecal_cols)){
-  fecal_cols$curated_feces_phenotype[i] <- paste(fecal_cols[i,2:4], collapse=";")
+  fecal_cols$curated_feces_phenotype_metric[i] <- paste(fecal_cols[i,2:4], collapse=";")
 }
 ```
 
@@ -161,10 +165,10 @@ Next, we can remove the unique character representing NA values from the merged
 column:
 ```{r}
 # Take out NA values
-fecal_cols$curated_feces_phenotype <- gsub("8X8;", "", fecal_cols$curated_feces_phenotype)
-fecal_cols$curated_feces_phenotype <- gsub(";8X8", "", fecal_cols$curated_feces_phenotype)
-fecal_cols$curated_feces_phenotype_ontology_term_id <- 
-  gsub("8X8;", "", fecal_cols$curated_feces_phenotype_ontology_term_id)
+fecal_cols$curated_feces_phenotype_metric <- gsub("8X8;", "", fecal_cols$curated_feces_phenotype_metric)
+fecal_cols$curated_feces_phenotype_metric <- gsub(";8X8", "", fecal_cols$curated_feces_phenotype_metric)
+fecal_cols$curated_feces_phenotype_metric_ontology_term_id <- 
+  gsub("8X8;", "", fecal_cols$curated_feces_phenotype_metric_ontology_term_id)
 ```
 
 
@@ -183,7 +187,7 @@ for (i in 1:nrow(fecal_cols)){
 }
 
 # Create a curated dataframe
-curated_feces_phenotype <- fecal_cols[,c(1, 6, 7, 5, 8)]
+curated_feces_phenotype <- fecal_cols[,c(1, 6, 8, 7, 5, 9)]
 
 # Replace empty values from curated columns with "NA"
 curated_feces_phenotype <- data.frame(lapply(curated_feces_phenotype, 
