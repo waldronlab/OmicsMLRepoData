@@ -1,0 +1,184 @@
+---
+title: "Harmonize 'disease response' information in cMD sample metadata"
+author:
+  - Sehyun Oh
+  - Kai Gravel-Pucillo
+date: "`r format(Sys.time(), '%B %d, %Y')`"
+format:
+    html:
+        fontsize: 14pxs
+        toc: true
+        top-depth: 3
+abstract: "Prepare U24 Supplement: AI/ML-ready"
+---
+
+```{r setup, include=FALSE}
+knitr::opts_chunk$set(echo = TRUE, 
+                    warning = FALSE,
+                    message = FALSE,
+                    collapse = TRUE,
+                    eval = TRUE)
+```
+
+# Overview
+
+This .qmd file demonstrates a workflow for curating and harmonizing 'disease 
+response' data with the curatedMetagenomicData package.This file curates 
+information from the original ORR, PFS12, and RECIST columns to produce the 
+four curated response_to_therapy columns.
+
+# Setup
+## Load Packages
+
+```{r load}
+suppressPackageStartupMessages({
+  library(curatedMetagenomicData)
+  library(tidyverse)
+  library(googlesheets4)
+  library(rols)
+  library(dplyr)
+  library(hash)
+  library(vctrs)
+  library(rvest)
+})
+```
+
+## Setup for Curation
+
+We will first add a `curation_id` consisting of study name and sample ID (`study_name:sample_id`) to avoid confusion due to duplicated samples.
+
+```{r curation_setup}
+# Add curation ID
+sampleMetadata$curation_id <- paste(sampleMetadata$study_name, sampleMetadata$sample_id, sep = ":")
+
+# Define a project directory
+proj_dir <- "C:\\Users\\Owner\\Desktop\\CUNY Internship\\cMD"
+```
+
+# Exploratory Data Analysis & Data Curation
+
+## Manual Data Corrections
+
+Next, we will make some manual corrections to the data.
+We will start by creating a tibble dataframe and checking the completeness of 
+the three original columns as well as reviewing their unique values:
+```{r}
+# Create a tibble object 
+samplemd <- as_tibble(sampleMetadata)
+
+# Review unique values
+unique(sampleMetadata$ORR)
+unique(sampleMetadata$PFS12)
+unique(sampleMetadata$RECIST)
+
+# Calculate completeness
+length(samplemd$ORR[which(!is.na(samplemd$ORR))])/length(samplemd$ORR)
+length(samplemd$PFS12[which(!is.na(samplemd$PFS12))])/length(samplemd$PFS12)
+length(samplemd$RECIST[which(!is.na(samplemd$RECIST))])/length(samplemd$RECIST)
+```
+
+Then we can create a list of the names of the columns which will be included in 
+the merged column,and export these values to a csv file to manually develop an 
+ontology map:
+```{r}
+# Create a dataframe of only the relevant columns
+disease_resp_cols <- samplemd %>% select(curation_id, ORR, PFS12, RECIST)
+disease_resp_cols <- as.data.frame(sapply(disease_resp_cols, as.character))
+
+# Get column names for ontology map
+unique_merged_cols <- unique(disease_resp_cols$RECIST)
+
+# Make a csv file of the unique values in the RECIST column
+write.csv(unique_merged_cols, 
+          file= file.path(proj_dir, "disease_resp_cols_unique_vals.csv"), 
+          row.names=F, col.names=F)
+```
+
+
+# Mapping
+
+## Import Maps
+
+To access the necessary disease response ontology terms we will load the 
+`cMD_disease_response_map`.
+```{r import_maps, eval=FALSE}
+# import disease_response ontology map
+# mapped_terms <- read_sheet(ss, sheet = "disease_response_ontology")
+
+# import disease_response ontology map
+mapped_terms <-read.csv(file = file.path(proj_dir, "cMD_disease_response_map.csv"), header=T)
+```
+
+# Curating response_to_therapy Column
+
+Now we can map the values in the original columns to their corresponding curated
+values and ontology terms for the curated columns: 
+```{r}
+# Prep RECIST column for curation
+disease_resp_cols$RECIST <- disease_resp_cols$RECIST %>% replace(is.na(.), "8X8") %>% as.vector()
+
+# Initialize curate columns
+disease_resp_cols$curated_disease_response_recist <- NA
+disease_resp_cols$curated_disease_response_recist_ontology_term_id <- NA
+disease_resp_cols$curated_disease_response_pfs_month <- NA
+
+# Iterate through merged column values
+for (x in 1:nrow(disease_resp_cols)){
+  # Search for replacement RECIST terms in the ontology map
+  disease_resp_cols$curated_disease_response_recist[x] <- mapped_terms$curated_ontology[grep(paste("^",disease_resp_cols$RECIST[x],"$",sep=""), mapped_terms$original_value, fixed=F)]
+  disease_resp_cols$curated_disease_response_recist_ontology_term_id[x] <- mapped_terms$curated_ontology_term_id[grep(paste("^",disease_resp_cols$RECIST[x],"$",sep=""), mapped_terms$original_value, fixed=F)]
+  disease_resp_cols$curated_disease_response_pfs_month[x] <- ifelse(disease_resp_cols$PFS12[x]=="yes", 12, NA)
+  if(x %% 1000==0){print(x)}
+}
+
+# Create curated pfs and orr columns
+disease_resp_cols <- disease_resp_cols %>% mutate(curated_disease_response_orr = ORR, curated_disease_response_pfs = PFS12)
+
+# Format Yes/No values for pfs and orr columns
+disease_resp_cols$curated_disease_response_orr <- gsub("no", "No", disease_resp_cols$curated_disease_response_orr)
+disease_resp_cols$curated_disease_response_orr <- gsub("yes", "Yes", disease_resp_cols$curated_disease_response_orr)
+disease_resp_cols$curated_disease_response_pfs <- gsub("no", "No", disease_resp_cols$curated_disease_response_pfs)
+disease_resp_cols$curated_disease_response_pfs <- gsub("yes", "Yes", disease_resp_cols$curated_disease_response_pfs)
+
+```
+
+
+## Curated Table Creation
+
+Next, we can clean up the dataframe by replacing the unique character 
+representing NA values with "NA" and updating column names as needed:
+```{r}
+# Replace NA values from original columns with "NA"
+disease_resp_cols <- data.frame(lapply(disease_resp_cols, 
+                                          function(x) gsub("8X8", NA, x)))
+
+# Create a column of relevant source columns
+for (i in 1:nrow(disease_resp_cols)){
+    disease_resp_cols$curated_disease_response_recist_source[i] <- ifelse(is.na(disease_resp_cols$RECIST[i]), NA, "RECIST")
+    disease_resp_cols$curated_disease_response_pfs_source[i] <- ifelse(is.na(disease_resp_cols$PFS12[i]), NA, "PFS12")
+    disease_resp_cols$curated_disease_response_pfs_month_source[i] <- ifelse(is.na(disease_resp_cols$PFS12[i]), NA, "PFS12")
+    disease_resp_cols$curated_disease_response_orr_source[i] <- ifelse(is.na(disease_resp_cols$ORR[i]), NA, "ORR")
+}
+
+# Rename original columns
+disease_resp_cols <- disease_resp_cols %>% rename(original_disease_response_orr = ORR, original_disease_response_pfs = PFS12, original_disease_response_recist = RECIST)
+
+# Create a curated dataframe
+curated_response_to_therapy <- disease_resp_cols[,c(1, 2, 8, 13, 3, 9, 11, 7, 
+                                                    12, 4, 5, 6, 10)]
+
+# Replace empty values from curated columns with "NA"
+curated_response_to_therapy <- data.frame(lapply(curated_response_to_therapy, 
+                                      function(x) gsub("^$", NA, x)))
+```
+
+
+## Export
+
+Finally, we will export our completed table to GitHub.
+```{r export_curated_table, eval=FALSE}
+# export to GitHub
+write.csv(curated_response_to_therapy, 
+          file = file.path(proj_dir, "curated_response_to_therapy.csv"),
+          row.names = FALSE)
+```
