@@ -125,10 +125,15 @@ disease_resp_cols$curated_disease_response_pfs_month <- NA
 # Iterate through merged column values
 for (x in 1:nrow(disease_resp_cols)){
   # Search for replacement RECIST terms in the ontology map
-  disease_resp_cols$curated_disease_response_recist[x] <- mapped_terms$curated_ontology[grep(paste("^",disease_resp_cols$RECIST[x],"$",sep=""), mapped_terms$original_value, fixed=F)]
-  disease_resp_cols$curated_disease_response_recist_ontology_term_id[x] <- mapped_terms$curated_ontology_term_id[grep(paste("^",disease_resp_cols$RECIST[x],"$",sep=""), mapped_terms$original_value, fixed=F)]
+    if (is.na(disease_resp_cols$RECIST[x])){
+        disease_resp_cols$curated_disease_response_recist[x] <- NA
+        disease_resp_cols$curated_disease_response_recist_ontology_term_id[x] <- NA
+    }else{
+        disease_resp_cols$curated_disease_response_recist[x] <- mapped_terms$curated_ontology[grep(paste("^",disease_resp_cols$RECIST[x],"$",sep=""), mapped_terms$original_value, fixed=F)]
+        disease_resp_cols$curated_disease_response_recist_ontology_term_id[x] <- mapped_terms$curated_ontology_term_id[grep(paste("^",disease_resp_cols$RECIST[x],"$",sep=""), mapped_terms$original_value, fixed=F)]
   disease_resp_cols$curated_disease_response_pfs_month[x] <- ifelse(disease_resp_cols$PFS12[x]=="yes", 12, NA)
-  if(x %% 1000==0){print(x)}
+    }
+    if(x %% 1000==0){print(x)}
 }
 
 # Create curated pfs and orr columns
@@ -164,11 +169,11 @@ for (i in 1:nrow(disease_resp_cols)){
 disease_resp_cols <- disease_resp_cols %>% rename(original_disease_response_orr = ORR, original_disease_response_pfs = PFS12, original_disease_response_recist = RECIST)
 
 # Create a curated dataframe
-curated_response_to_therapy <- disease_resp_cols[,c(1, 2, 8, 13, 3, 9, 11, 7, 
+curated_disease_response <- disease_resp_cols[,c(1, 2, 8, 13, 3, 9, 11, 7, 
                                                     12, 4, 5, 6, 10)]
 
 # Replace empty values from curated columns with "NA"
-curated_response_to_therapy <- data.frame(lapply(curated_response_to_therapy, 
+curated_disease_response <- data.frame(lapply(curated_disease_response, 
                                       function(x) gsub("^$", NA, x)))
 ```
 
@@ -178,7 +183,7 @@ curated_response_to_therapy <- data.frame(lapply(curated_response_to_therapy,
 Finally, we will export our completed table to GitHub.
 ```{r export_curated_table, eval=FALSE}
 # export to GitHub
-write.csv(curated_response_to_therapy, 
-          file = file.path(proj_dir, "curated_response_to_therapy.csv"),
+write.csv(curated_disease_response, 
+          file = file.path(proj_dir, "curated_disease_response.csv"),
           row.names = FALSE)
 ```
