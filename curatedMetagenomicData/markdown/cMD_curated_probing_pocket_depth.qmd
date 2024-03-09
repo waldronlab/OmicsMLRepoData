@@ -109,16 +109,16 @@ opportunity to map the new values associated with each column metric and their
 corresponding ontology term IDs:
 ```{r}
 # Initiate an ontology_term_id column
-ppd_cols$curated_probing_pocket_depth_metric_ontology_term_id <- "8X8"
+ppd_cols$curated_probing_pocket_depth_ontology_term_id <- "8X8"
 
 # Merge all relevant rows into an original_probing_pocket_depth_value column
 for (i in 1:nrow(ppd_cols)){
-  ppd_cols$original_probing_pocket_depth_value[i] <- paste(ppd_cols[i,2:5], collapse=";")
+  ppd_cols$original_probing_pocket_depth[i] <- paste(ppd_cols[i,2:5], collapse=";")
 }
 # Take out NA values
-ppd_cols$original_probing_pocket_depth_value <- gsub("NA;", "", ppd_cols$original_probing_pocket_depth_value)
-ppd_cols$original_probing_pocket_depth_value <- gsub(";NA", "", ppd_cols$original_probing_pocket_depth_value)
-ppd_cols$original_probing_pocket_depth_value <- gsub("NA", NA, ppd_cols$original_probing_pocket_depth_value)
+ppd_cols$original_probing_pocket_depth <- gsub("NA;", "", ppd_cols$original_probing_pocket_depth)
+ppd_cols$original_probing_pocket_depth <- gsub(";NA", "", ppd_cols$original_probing_pocket_depth)
+ppd_cols$original_probing_pocket_depth <- gsub("NA", NA, ppd_cols$original_probing_pocket_depth)
 
 # Update numeric columns with additional ontology values for metric type
 for(col in colnames(ppd_cols[,2:5])){
@@ -127,15 +127,12 @@ for(col in colnames(ppd_cols[,2:5])){
   for (row in 1:nrow(ppd_cols)){
     val <- ppd_cols[row,col]
     if (!is.na(val)){
-      ppd_cols[row,col] <- new_col
-      ppd_cols$curated_probing_pocket_depth_metric_ontology_term_id[row] <- 
-        paste(ppd_cols$curated_probing_pocket_depth_metric_ontology_term_id[row], new_col_onto, sep=";")
+      ppd_cols[row,col] <- paste(new_col, ":", ppd_cols[row,col], sep="")
+      ppd_cols$curated_probing_pocket_depth_ontology_term_id[row] <- 
+        paste(ppd_cols$curated_probing_pocket_depth_ontology_term_id[row], new_col_onto, sep=";")
     }
   }
 }
-
-# Create curated value column
-ppd_cols <- ppd_cols %>% mutate(curated_probing_pocket_depth_value = original_probing_pocket_depth_value)
 ```
 
 Now we can replace character values representing a lack of information with a 
@@ -147,7 +144,7 @@ ppd_cols[,2:5] <- ppd_cols[,2:5] %>% replace(is.na(.), "8X8") %>% data.frame()
 
 # Merge all relevant rows
 for (i in 1:nrow(ppd_cols)){
-  ppd_cols$curated_probing_pocket_depth_metric[i] <- paste(ppd_cols[i,2:5], collapse=";")
+  ppd_cols$curated_probing_pocket_depth[i] <- paste(ppd_cols[i,2:5], collapse=";")
 }
 ```
 
@@ -155,12 +152,12 @@ Next, we can remove the unique character representing NA values from the merged
 column:
 ```{r}
 # Take out NA values
-ppd_cols$curated_probing_pocket_depth_metric <- gsub("8X8;", "", ppd_cols$curated_probing_pocket_depth_metric)
-ppd_cols$curated_probing_pocket_depth_metric <- gsub(";8X8", "", ppd_cols$curated_probing_pocket_depth_metric)
-ppd_cols$curated_probing_pocket_depth_metric_ontology_term_id <- 
-  gsub("8X8;", "", ppd_cols$curated_probing_pocket_depth_metric_ontology_term_id)
-ppd_cols$curated_probing_pocket_depth_metric_ontology_term_id <- 
-  gsub(";8X8", "", ppd_cols$curated_probing_pocket_depth_metric_ontology_term_id)
+ppd_cols$curated_probing_pocket_depth <- gsub("8X8;", "", ppd_cols$curated_probing_pocket_depth)
+ppd_cols$curated_probing_pocket_depth <- gsub(";8X8", "", ppd_cols$curated_probing_pocket_depth)
+ppd_cols$curated_probing_pocket_depth_ontology_term_id <- 
+  gsub("8X8;", "", ppd_cols$curated_probing_pocket_depth_ontology_term_id)
+ppd_cols$curated_probing_pocket_depth_ontology_term_id <- 
+  gsub(";8X8", "", ppd_cols$curated_probing_pocket_depth_ontology_term_id)
 ```
 
 
@@ -179,7 +176,7 @@ for (i in 1:nrow(ppd_cols)){
 }
 
 # Create a curated dataframe
-curated_probing_pocket_depth <- ppd_cols[,c(1, 7, 8, 9, 6, 10)]
+curated_probing_pocket_depth <- ppd_cols[,c(1, 7, 8, 6, 9)]
 
 # Replace empty values from curated columns with "NA"
 curated_probing_pocket_depth <- data.frame(lapply(curated_probing_pocket_depth, 
