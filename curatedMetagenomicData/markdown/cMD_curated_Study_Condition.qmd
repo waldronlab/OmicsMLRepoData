@@ -24,9 +24,9 @@ knitr::opts_chunk$set(echo = TRUE,
 
 This .qmd file demonstrates a workflow for curating and harmonizing study 
 condition data with the curatedMetagenomicData package.
-This file curates information from the original study_condition, disease, and 
-disease_subtype columns to produce the curated control, target_condition, and
-disease columns.
+This file curates information from the original study_condition, disease, 
+history_of_periodontitis, and disease_subtype columns to produce the 
+curated control, target_phenotype, and disease columns.
 
 # Setup
 ## Load Packages
@@ -44,9 +44,7 @@ suppressPackageStartupMessages({
 
 ## Setup for Curation
 
-We will first add a `curation_id` consisting of study name and sample ID 
-(`study_name:sample_id`) to avoid confusion due to duplicated samples. Then 
-we will set up a Google Sheet to export our mapping table to.
+We will first add a `curation_id` consisting of study name and sample ID (`study_name:sample_id`) to avoid confusion due to duplicated samples. Then we will set up a Google Sheet to export our mapping table to.
 
 ```{r curation_setup}
 # Add curation ID
@@ -72,7 +70,8 @@ for (d in 1:length(sampleMetadata$disease)){
   sampleMetadata$disease[d] <- gsub(",", ";", sampleMetadata$disease[d])
 }
 # Create dataframe of relevant columns 
-disease_data <- sampleMetadata[,c("curation_id","study_name","study_condition","disease","disease_subtype")]
+disease_data <- sampleMetadata[,c("curation_id","study_name","study_condition",
+                                  "disease","disease_subtype", "history_of_periodontitis")]
 ```
 
 It was also found that one entry from the study "MetaCardis_2020_a" had an "MA"
@@ -124,7 +123,7 @@ Once everything has been reviewed and the Google Sheets maps have been updated a
 
 ```{r save_maps_to_github, eval=FALSE}
 # load map from Google Sheets
-study_condition_ontology <- read_sheet(ss, sheet = "disease_ontology_all")
+study_condition_ontology <- read_sheet(ss, sheet = "study_condition_ontology")
 
 # save map to GitHub
 write.csv(study_condition_ontology,
@@ -132,11 +131,11 @@ write.csv(study_condition_ontology,
           row.names = FALSE)
 
 # load map from Google Sheets
-target_condition <- read_sheet(ss, sheet = "target_condition_map")
+target_phenotype <- read_sheet(ss, sheet = "target_phenotype_map")
 
 # save map to GitHub
-write.csv(target_condition,
-          file = file.path(proj_dir, "maps/cMD_target_condition_map.csv"),
+write.csv(target_phenotype,
+          file = file.path(proj_dir, "maps/cMD_target_phenotype_map.csv"),
           row.names = FALSE)
 ```
 
@@ -146,44 +145,40 @@ write.csv(target_condition,
 
 To access the necessary disease ontology terms we will load the 
 `disease_ontology_map`. To access the manually-curated target phenotype(s) 
-associated with each study we will load the `target_condition_map`.
+associated with each study we will load the `target_phenotype_map`.
 
-```{r import_maps}
+```{r import_maps, eval=FALSE}
 # import the disease ontology map
 disease_ontology_map <- read.csv(file = file.path(proj_dir, "maps/cMD_study_condition_ontology.csv"),
                           sep = ",", header = TRUE)
 
 # import the target phenotype map
-target_condition_map <- read.csv(file = file.path(proj_dir, "maps/cMD_target_condition_map.csv"),
+target_phenotype_map <- read.csv(file = file.path(proj_dir, "maps/cMD_target_phenotype_map.csv"),
                           sep = ",", header = TRUE)
 ```
 
 ## Curating "control" Column
 
-Using the "study_condition" column as a guide, identify whether each sample 
-was part of the "control" group or the "case" group for its corresponding study. 
-Samples that were not utilized in the study receive the label "Not Used".
+Using the "study_condition" column as a guide, identify whether each sample was part of the "control" group or the "case" group for its corresponding study. Samples that were not utilized in the study receive the label "Not Used".
 ```{r}
 # Label patient data to indicate control or treatment group
 for (i in 1:nrow(disease_data)){
   if (grepl("control", disease_data$study_condition[i])){
     disease_data$control[i] <- "Study Control"
-    disease_data$control_ontology_term_id[i] <- "NCIT:C142703" # http://purl.obolibrary.org/obo/NCIT_C142703
+    disease_data$control_ontology_term_id[i] <- "NCIT_C142703" # http://purl.obolibrary.org/obo/NCIT_C142703
   }
   else if (is.na(disease_data$study_condition[i])){
     disease_data$control[i] <- "Not Used"
-    disease_data$control_ontology_term_id[i] <- "NCIT:C69062" # http://purl.obolibrary.org/obo/NCIT_C69062
+    disease_data$control_ontology_term_id[i] <- "NCIT_C69062" # http://purl.obolibrary.org/obo/NCIT_C69062
   }
   else{
     disease_data$control[i] <- "Case"   
-    disease_data$control_ontology_term_id[i] <- "NCIT:C49152" # http://purl.obolibrary.org/obo/NCIT_C49152
+    disease_data$control_ontology_term_id[i] <- "NCIT_C49152" # http://purl.obolibrary.org/obo/NCIT_C49152
   }
 }
 ```
 
-Now we can clean up the "study_condition" column by replacing any instances 
-of the term "control" with an "NA" value, which will prevent redundant data 
-when we combine this column with the "disease" column.
+Now we can clean up the "study_condition" column by replacing any instances of the term "control" with an "NA" value, which will prevent redundant data when we combine this column with the "disease" column.
 
 ```{r}
 # Replace "control" values with NA in study_condition column
@@ -230,8 +225,12 @@ for (i in 1:nrow(disease_data)){
 
 We can then append the non-redundant "disease_subtype" values onto the 
 "condensed" column values in a new "merged" column:
-```{r}
-# Append disease_subtype information if it is not redundant
+```{R}
+# Convert binary "history_of_periodontitis" column to descriptive values
+disease_data$history_of_periodontitis <- sapply(disease_data$history_of_periodontitis, function(x) gsub("yes", "periodontitis", x))
+disease_data$history_of_periodontitis <- sapply(disease_data$history_of_periodontitis, function(x) gsub("no", NA, x))
+
+# Append disease_subtype and history_of_periodontitis information if it is not redundant
 for (i in 1:nrow(disease_data)){
   if (is.na(disease_data$disease_subtype[i]) | 
       (grepl(disease_data$disease_subtype[i], disease_data$condensed[i], fixed=TRUE))){
@@ -240,6 +239,14 @@ for (i in 1:nrow(disease_data)){
   else{
     disease_data$merged[i] <- paste(disease_data$condensed[i], 
                                     disease_data$disease_subtype[i], sep=";")   
+  }
+  if (is.na(disease_data$history_of_periodontitis[i]) | 
+      (grepl(disease_data$history_of_periodontitis[i], disease_data$condensed[i], fixed=TRUE))){
+    disease_data$merged[i] <- disease_data$condensed[i]
+  }
+  else{
+    disease_data$merged[i] <- paste(disease_data$condensed[i], 
+                                    disease_data$history_of_periodontitis[i], sep=";")   
   }
 }
 ```
@@ -274,18 +281,25 @@ for (x in 1:length(disease_data$merged)){
   disease_data$curated_disease_ontology_term_id[x] <- paste(new_term_ids, collapse= ";")
   }
 }
+
+# Create a column of relevant source columns
+disease_sources <- disease_data[,3:6]
+for (i in 1:nrow(disease_sources)){
+  disease_data$curated_disease_source[i] <- paste(colnames(disease_sources[which(!is.na(disease_sources[i,]))]), collapse=";")
+  disease_data$curated_control_source[i] <- ifelse(is.na(sampleMetadata$study_condition[i]), NA, "study_condition")
+}
 ```
 
 
-## Curating "target_condition" Column
+## Curating "target_phenotype" Column
 
-Using the study names and the target_condition_map, we can create columns for 
-target_condition data:
+Using the study names and the target_phenotype_map, we can create columns for 
+target_phenotype data:
 ```{r}
-# Iterate through all data in sampleMetadata to create target_condition columns
+# Iterate through all data in sampleMetadata to create target_phenotype columns
 for (i in 1:length(sampleMetadata$study_name)){
-  disease_data$curated_target_condition[i] <- target_condition_map$target_condition[which(target_condition_map$study_name == sampleMetadata$study_name[i])]
-  disease_data$curated_target_condition_ontology_term_id[i] <- target_condition_map$target_condition_term_id[which(target_condition_map$study_name == sampleMetadata$study_name[i])]
+  disease_data$curated_target_phenotype[i] <- target_phenotype_map$target_phenotype[which(target_phenotype_map$study_name == sampleMetadata$study_name[i])]
+  disease_data$curated_target_phenotype_ontology_term_id[i] <- target_phenotype_map$target_phenotype_term_id[which(target_phenotype_map$study_name == sampleMetadata$study_name[i])]
 }
 ```
 
@@ -296,31 +310,10 @@ Then we will create our table of curated study condition data, including
 original values, curated values, and curated ontology term ids.
 ```{r}
 # Create a dataframe of the relevant columns
-curated_study_condition <- dplyr::right_join(
-    sampleMetadata[, c("curation_id", "study_condition", "disease", "disease_subtype")], 
-    disease_data[, c("curation_id", "control", "control_ontology_term_id",
-                     "curated_target_condition", "curated_target_condition_ontology_term_id", 
-                     "curated_disease", "curated_disease_ontology_term_id")], 
-    by = "curation_id")
+curated_study_condition <- data.frame(sampleMetadata[,c("curation_id", "study_condition", "disease", "disease_subtype", "history_of_periodontitis")], disease_data[,c("control", "control_ontology_term_id","curated_control_source", "curated_target_phenotype", "curated_target_phenotype_ontology_term_id", "curated_disease", "curated_disease_ontology_term_id", "curated_disease_source")])
 
 # Rename the columns for accuracy & specificity
-colnames(curated_study_condition)[2:6] <- c("original_study_condition_value", "original_disease_value", "original_disease_subtype_value", "curated_control", "curated_control_ontology_term_id")
-```
-
-```{r}
-## Double-check whether the 'one-to-one' mapping update in study_condition map
-## is properly applied during the mapping step. 
-val <- sapply(curated_study_condition$curated_target_condition, 
-              function(x) {
-                  strsplit(x, split = ";") %>% unlist %>% length
-              }) %>% as.numeric()
-onto <- sapply(curated_study_condition$curated_target_condition_ontology_term_id, 
-               function(x) {
-                   strsplit(x, split = ";") %>% unlist %>% length
-               }) %>% as.numeric()
-
-## This should return `integer(0)`
-which(val != onto)
+colnames(curated_study_condition)[2:7] <- c("original_study_condition_value", "original_disease_value", "original_disease_subtype_value", "original_history_of_periodontitis_value", "curated_control", "curated_control_ontology_term_id")
 ```
 
 
