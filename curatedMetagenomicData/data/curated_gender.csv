@@ -1,4 +1,4 @@
-"curation_id","original_gender","curated_sex","curated_sex_ontology_term_id"
+"curation_id","original_sex","curated_sex","curated_sex_ontology_term_id"
 "AsnicarF_2017:MV_FEI1_t1Q14","female","Female","NCIT:C16576"
 "AsnicarF_2017:MV_FEI2_t1Q14","male","Male","NCIT:C20197"
 "AsnicarF_2017:MV_FEI3_t1Q14","male","Male","NCIT:C20197"
