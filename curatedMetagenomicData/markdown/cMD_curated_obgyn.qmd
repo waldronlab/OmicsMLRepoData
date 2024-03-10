@@ -1,0 +1,175 @@
+---
+title: "Harmonize obgyn information in cMD sample metadata"
+author:
+  - Sehyun Oh
+  - Kai Gravel-Pucillo
+date: "`r format(Sys.time(), '%B %d, %Y')`"
+format:
+    html:
+        fontsize: 14pxs
+        toc: true
+        top-depth: 3
+abstract: "Prepare U24 Supplement: AI/ML-ready"
+---
+
+```{r setup, include=FALSE}
+knitr::opts_chunk$set(echo = TRUE, 
+                    warning = FALSE,
+                    message = FALSE,
+                    collapse = TRUE,
+                    eval = TRUE)
+```
+
+# Overview
+
+This .qmd file demonstrates a workflow for curating and harmonizing obgyn
+data with the curatedMetagenomicData package.
+This file curates information from the original birth_control_pil, lactating, 
+menopausal_status, and pregnant columns to produce the curated obgyn columns.
+
+# Setup
+## Load Packages
+
+```{r load}
+suppressPackageStartupMessages({
+  library(curatedMetagenomicData)
+  library(tidyverse)
+  library(googlesheets4)
+  library(rols)
+  library(dplyr)
+  library(hash)
+  library(vctrs)
+  library(rvest)
+})
+```
+
+## Setup for Curation
+
+We will first add a `curation_id` consisting of study name and sample ID (`study_name:sample_id`) to avoid confusion due to duplicated samples.
+
+```{r curation_setup}
+# Add curation ID
+sampleMetadata$curation_id <- paste(sampleMetadata$study_name, sampleMetadata$sample_id, sep = ":")
+
+# Define a project directory
+proj_dir <- "C:\\Users\\Owner\\Desktop\\CUNY Internship\\cMD"
+```
+
+# Exploratory Data Analysis & Data Curation
+
+## Manual Data Corrections
+
+Next, we will make some manual corrections to the data.
+We will start by creating a tibble dataframe and checking the completeness of 
+the four original columns as well as reviewing their unique values:
+```{r}
+# Create a tibble object 
+samplemd <- as_tibble(sampleMetadata)
+
+# Review unique values
+unique(sampleMetadata$birth_control_pil)
+unique(sampleMetadata$lactating)
+unique(sampleMetadata$menopausal_status)
+unique(sampleMetadata$pregnant)
+
+# Calculate completeness
+length(samplemd$birth_control_pil[which(!is.na(samplemd$birth_control_pil))])/length(samplemd$birth_control_pil)
+length(samplemd$lactating[which(!is.na(samplemd$lactating))])/length(samplemd$lactating)
+length(samplemd$menopausal_status[which(!is.na(samplemd$menopausal_status))])/length(samplemd$menopausal_status)
+length(samplemd$pregnant[which(!is.na(samplemd$pregnant))])/length(samplemd$pregnant)
+```
+
+Then we can create a list of the names of the columns which will be included in 
+the merged column,and export these values to a csv file to manually develop an 
+ontology map:
+```{r}
+# Create a dataframe of only the relevant columns
+obgyn_cols <- samplemd %>% select(curation_id, birth_control_pil, lactating, 
+                                  menopausal_status, pregnant)
+obgyn_cols <- as.data.frame(sapply(obgyn_cols, as.character))
+
+# Get column names for ontology map
+unique_merged_cols <- append(unique(samplemd$menopausal_status), 
+                             unique(samplemd$pregnant))
+
+# Make a csv file of the unique values in the merged column
+write.csv(unique_merged_cols, 
+          file= file.path(proj_dir, "obgyn_cols_unique_vals.csv"), 
+          row.names=F, col.names=F)
+```
+
+
+# Mapping
+
+## Import Maps
+
+To access the necessary obgyn ontology terms we will load the `cMD_obgyn_map`.
+```{r import_maps, eval=FALSE}
+# import obgyn ontology map
+# mapped_terms <- read_sheet(ss, sheet = "obgyn_ontology")
+
+# import obgyn ontology map
+mapped_terms <-read.csv(file = file.path(proj_dir, "cMD_obgyn_map.csv"), header=T)
+```
+
+# Curating disease_stage Column
+
+Next we can convert plain numeric values into a combined descriptive and numeric 
+value pair by adding the corresponding column name. We will also take this 
+opportunity to map the new values associated with each column metric and their
+corresponding ontology term IDs:
+```{r}
+# Iterate through merged column values
+for (x in 1:length(obgyn_cols$menopausal_status)){
+    # Search for replacement terms in the ontology map (curated menopause)
+    obgyn_cols$curated_obgyn_menopause[x] <- ifelse(is.na(obgyn_cols$menopausal_status[x]), NA, mapped_terms$curated_ontology[grep(paste("^",obgyn_cols$menopausal_status[x],"$",sep=""), mapped_terms$original_value, fixed=F)])
+    obgyn_cols$curated_obgyn_menopause_ontology_term_id[x] <- ifelse(is.na(obgyn_cols$menopausal_status[x]), NA, mapped_terms$curated_ontology_term_id[grep(paste("^",obgyn_cols$menopausal_status[x],"$",sep=""), mapped_terms$original_value, fixed=F)])
+    # Search for replacement terms in the ontology map (curated pregnancy)
+    obgyn_cols$curated_obgyn_pregnancy[x] <- ifelse(is.na(obgyn_cols$pregnant[x]), NA, mapped_terms$curated_ontology[grep(paste("^",obgyn_cols$pregnant[x],"$",sep=""), mapped_terms$original_value, fixed=F)])
+    obgyn_cols$curated_obgyn_pregnancy_ontology_term_id[x] <- ifelse(is.na(obgyn_cols$pregnant[x]), NA, mapped_terms$curated_ontology_term_id[grep(paste("^",obgyn_cols$pregnant[x],"$",sep=""), mapped_terms$original_value, fixed=F)])
+    # Curate lactating and birth_control
+    obgyn_cols$curated_obgyn_lactating[x] <- str_to_title(obgyn_cols$lactating[x])
+    obgyn_cols$curated_obgyn_birth_control[x] <- str_to_title(obgyn_cols$birth_control_pil[x])
+    if(x %% 1000==0){print(x)}
+}
+```
+
+
+## Curated Table Creation
+
+Next, we can clean up the dataframe by creating source columns and updating 
+column names as needed:
+```{r}
+# Create a column of relevant source columns
+for (i in 1:nrow(obgyn_cols)){
+  obgyn_cols$curated_obgyn_birth_control_source[i] <- ifelse(is.na(obgyn_cols$birth_control_pil[i]), NA, "birth_control_pil")
+  obgyn_cols$curated_obgyn_lactating_source[i] <- ifelse(is.na(obgyn_cols$lactating[i]), NA, "lactating")
+  obgyn_cols$curated_obgyn_menopause_source[i] <- ifelse(is.na(obgyn_cols$menopausal_status[i]), NA, "menopausal_status")
+  obgyn_cols$curated_obgyn_pregnancy_source[i] <- ifelse(is.na(obgyn_cols$pregnant[i]), NA, "pregnant")
+}
+
+# Rename original columns
+obgyn_cols <- obgyn_cols %>% rename(original_obgyn_birth_control = birth_control_pil, 
+                                    original_obgyn_lactating = lactating, 
+                                    original_obgyn_menopause = menopausal_status, 
+                                    original_obgyn_pregnacy = pregnant)
+
+# Create a curated dataframe
+curated_obgyn <- obgyn_cols[,c(1, 2, 11, 12, 3, 10, 13, 4, 
+                                6, 7, 14, 5, 8, 9, 15)]
+
+# Replace empty values from curated columns with "NA"
+curated_obgyn <- data.frame(lapply(curated_obgyn, 
+                                      function(x) gsub("^$", NA, x)))
+```
+
+
+## Export
+
+Finally, we will export our completed table to GitHub.
+```{r export_curated_table, eval=FALSE}
+# export to GitHub
+write.csv(curated_obgyn, 
+          file = file.path(proj_dir, "curated_obgyn.csv"),
+          row.names = FALSE)
+```

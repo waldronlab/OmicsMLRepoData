@@ -1,0 +1,217 @@
+---
+title: "Harmonize neonatal information in cMD sample metadata"
+author:
+  - Sehyun Oh
+  - Kai Gravel-Pucillo
+date: "`r format(Sys.time(), '%B %d, %Y')`"
+format:
+    html:
+        fontsize: 14pxs
+        toc: true
+        top-depth: 3
+abstract: "Prepare U24 Supplement: AI/ML-ready"
+---
+
+```{r setup, include=FALSE}
+knitr::opts_chunk$set(echo = TRUE, 
+                    warning = FALSE,
+                    message = FALSE,
+                    collapse = TRUE,
+                    eval = TRUE)
+```
+
+# Overview
+
+This .qmd file demonstrates a workflow for curating and harmonizing neonatal
+data with the curatedMetagenomicData package.
+This file curates information from the original birth_weight, born_method, 
+c_section_type, feeding_practice, gestational_age, and premature columns to 
+produce the curated neonatal columns.
+
+# Setup
+## Load Packages
+
+```{r load}
+suppressPackageStartupMessages({
+  library(curatedMetagenomicData)
+  library(tidyverse)
+  library(googlesheets4)
+  library(rols)
+  library(dplyr)
+  library(hash)
+  library(vctrs)
+  library(rvest)
+})
+```
+
+## Setup for Curation
+
+We will first add a `curation_id` consisting of study name and sample ID (`study_name:sample_id`) to avoid confusion due to duplicated samples.
+
+```{r curation_setup}
+# Add curation ID
+sampleMetadata$curation_id <- paste(sampleMetadata$study_name, sampleMetadata$sample_id, sep = ":")
+
+# Define a project directory
+proj_dir <- "C:\\Users\\Owner\\Desktop\\CUNY Internship\\cMD"
+```
+
+# Exploratory Data Analysis & Data Curation
+
+## Manual Data Corrections
+
+Next, we will make some manual corrections to the data.
+We will start by creating a tibble dataframe and checking the completeness of 
+the four original columns as well as reviewing their unique values:
+```{r}
+# Create a tibble object 
+samplemd <- as_tibble(sampleMetadata)
+
+# Review unique values
+unique(sampleMetadata$birth_weight)
+unique(sampleMetadata$born_method)
+unique(sampleMetadata$c_section_type)
+unique(sampleMetadata$feeding_practice)
+unique(sampleMetadata$gestational_age)
+unique(sampleMetadata$premature)
+
+# Calculate completeness
+length(samplemd$birth_weight[which(!is.na(samplemd$birth_weight))])/length(samplemd$birth_weight)
+length(samplemd$born_method[which(!is.na(samplemd$born_method))])/length(samplemd$born_method)
+length(samplemd$c_section_type[which(!is.na(samplemd$c_section_type))])/length(samplemd$c_section_type)
+length(samplemd$feeding_practice[which(!is.na(samplemd$feeding_practice))])/length(samplemd$feeding_practice)
+length(samplemd$gestational_age[which(!is.na(samplemd$gestational_age))])/length(samplemd$gestational_age)
+length(samplemd$premature[which(!is.na(samplemd$premature))])/length(samplemd$premature)
+```
+
+Then we can create a list of the names of the columns which will be included in 
+the merged column,and export these values to a csv file to manually develop an 
+ontology map:
+```{r}
+# Create a dataframe of only the relevant columns
+neonatal_cols <- samplemd %>% select(curation_id, birth_weight, born_method, 
+                                  c_section_type, feeding_practice, 
+                                  gestational_age, premature)
+neonatal_cols <- as.data.frame(sapply(neonatal_cols, as.character))
+
+# Get column names for ontology map
+unique_merged_cols <- append(append(unique(samplemd$born_method), 
+                             unique(samplemd$c_section_type)),
+                             unique(samplemd$feeding_practice))
+
+# Make a csv file of the unique values in the merged column
+write.csv(unique_merged_cols, 
+          file= file.path(proj_dir, "neonatal_cols_unique_vals.csv"), 
+          row.names=F, col.names=F)
+```
+
+
+# Mapping
+
+## Import Maps
+
+To access the necessary neonatal ontology terms we will load the `cMD_neonatal_map`.
+```{r import_maps, eval=FALSE}
+# import neonatal ontology map
+# mapped_terms <- read_sheet(ss, sheet = "neonatal_ontology")
+
+# import neonatal ontology map
+mapped_terms <-read.csv(file = file.path(proj_dir, "cMD_neonatal_map.csv"), header=T)
+```
+
+# Curating neonatal Columns
+
+Now we can map the values in the original columns to their corresponding curated
+values and ontology terms for the curated columns: 
+```{r}
+# Initialize curated columns
+neonatal_cols$curated_neonatal_delivery_procedure <- NA
+neonatal_cols$curated_neonatal_feeding_method <- NA
+neonatal_cols$curated_neonatal_delivery_procedure_ontology_term_id <- NA
+
+# Iterate through merged column values
+for (x in 1:nrow(neonatal_cols)){
+  # Search for replacement terms in the ontology map
+    if (is.na(neonatal_cols$c_section_type[x])){
+        neonatal_cols$curated_neonatal_delivery_procedure[x] <- "8X8"
+        neonatal_cols$curated_neonatal_delivery_procedure_ontology_term_id[x] <- "8X8"
+    }else{
+        neonatal_cols$curated_neonatal_delivery_procedure[x] <- mapped_terms$curated_ontology[grep(paste("^",neonatal_cols$c_section_type[x],"$",sep=""), mapped_terms$original_value, fixed=F)]
+        neonatal_cols$curated_neonatal_delivery_procedure_ontology_term_id[x] <- mapped_terms$curated_ontology_term_id[grep(paste("^",neonatal_cols$c_section_type[x],"$",sep=""), mapped_terms$original_value, fixed=F)]
+    }
+    if (is.na(neonatal_cols$feeding_practice[x])){
+        neonatal_cols$curated_neonatal_feeding_method[x] <- NA
+    }else{
+        neonatal_cols$curated_neonatal_feeding_method[x] <- mapped_terms$curated_ontology[grep(paste("^",neonatal_cols$feeding_practice[x],"$",sep=""), mapped_terms$original_value, fixed=F)]
+    }
+    if (is.na(neonatal_cols$born_method[x])){
+        neonatal_cols$curated_neonatal_delivery_procedure[x] <- paste(neonatal_cols$curated_neonatal_delivery_procedure[x], "8X8", sep=";")
+        neonatal_cols$curated_neonatal_delivery_procedure_ontology_term_id[x] <- paste(neonatal_cols$curated_neonatal_delivery_procedure_ontology_term_id[x], "8X8", sep=";")
+    } else{
+        neonatal_cols$curated_neonatal_delivery_procedure[x] <- paste(neonatal_cols$curated_neonatal_delivery_procedure[x], mapped_terms$curated_ontology[grep(paste("^",neonatal_cols$born_method[x],"$",sep=""), mapped_terms$original_value, fixed=F)], sep=";")
+        neonatal_cols$curated_neonatal_delivery_procedure_ontology_term_id[x] <- paste(neonatal_cols$curated_neonatal_delivery_procedure_ontology_term_id[x],  mapped_terms$curated_ontology_term_id[grep(paste("^",neonatal_cols$born_method[x],"$",sep=""), mapped_terms$original_value, fixed=F)], sep=";")
+    }
+    if(x %% 1000==0){print(x)}
+}
+
+# Create curated birth_weight, gestational_age, and preterm_birth
+neonatal_cols <- neonatal_cols %>% mutate(curated_neonatal_birth_weight = birth_weight, curated_neonatal_gestational_age = gestational_age, curated_neonatal_preterm_birth = premature)
+
+# Format Yes/No values for preterm_birth
+neonatal_cols$curated_neonatal_preterm_birth <- gsub("no", "No", neonatal_cols$curated_neonatal_preterm_birth)
+neonatal_cols$curated_neonatal_preterm_birth <- gsub("yes", "Yes", neonatal_cols$curated_neonatal_preterm_birth)
+```
+
+
+## Curated Table Creation
+
+Next, we can clean up the dataframe by creating source columns and updating 
+column names as needed:
+```{r}
+# Merge original c-section type and born method
+neonatal_cols$born_method <- neonatal_cols$born_method %>% replace(is.na(.), "8X8") %>% as.vector()
+neonatal_cols$c_section_type <- neonatal_cols$c_section_type %>% replace(is.na(.), "8X8") %>% as.vector()
+neonatal_cols <- neonatal_cols %>% 
+    mutate(original_neonatal_delivery_procedure = 
+               paste(c_section_type, born_method, sep=";"))
+
+# Create a column of relevant source columns
+for (i in 1:nrow(neonatal_cols)){
+    neonatal_cols$curated_neonatal_birth_weight_source[i] <- ifelse(is.na(neonatal_cols$birth_weight[i]), NA, "birth_weight")
+    neonatal_cols$curated_neonatal_feeding_method_source[i] <- ifelse(is.na(neonatal_cols$feeding_practice[i]), NA, "feeding_practice")
+    neonatal_cols$curated_neonatal_gestational_age_source[i] <- ifelse(is.na(neonatal_cols$gestational_age[i]), NA, "gestational_age")
+    neonatal_cols$curated_neonatal_preterm_birth_source[i] <- ifelse(is.na(neonatal_cols$premature[i]), NA, "premature")
+    neonatal_cols$curated_neonatal_delivery_procedure_source[i] <- ifelse(neonatal_cols$born_method[i]=="8X8", "8X8", "born_method")
+    neonatal_cols$curated_neonatal_delivery_procedure_source[i] <- paste(neonatal_cols$curated_neonatal_delivery_procedure_source[i], ifelse(neonatal_cols$c_section_type[i]=="8X8", "8X8", "c_section_type"), sep=";")
+    if(i %% 1000==0){print(i)}
+}
+
+# Take out NA values
+neonatal_cols[] <- lapply(neonatal_cols, function(x) gsub("8X8;", "", x))
+neonatal_cols[] <- lapply(neonatal_cols, function(x) gsub(";8X8", "", x))
+neonatal_cols[] <- lapply(neonatal_cols, function(x) gsub("8X8", "", x))
+
+# Replace empty values from curated columns with "NA"
+neonatal_cols[] <- lapply(neonatal_cols, function(x) gsub("^$", NA, x))
+
+# Rename original columns
+neonatal_cols <- neonatal_cols %>% rename(original_neonatal_birth_weight = birth_weight, 
+                                    original_neonatal_feeding_method = feeding_practice, 
+                                    original_neonatal_gestational_age = gestational_age, 
+                                    original_neonatal_preterm_birth = premature)
+
+# Create a curated dataframe
+curated_neonatal <- neonatal_cols[,c(1, 2, 11, 15, 5, 9, 16, 6, 12, 
+                                     17, 7, 13, 18, 14, 8, 10, 19)]
+```
+
+
+## Export
+
+Finally, we will export our completed table to GitHub.
+```{r export_curated_table, eval=FALSE}
+# export to GitHub
+write.csv(curated_neonatal, 
+          file = file.path(proj_dir, "curated_neonatal.csv"),
+          row.names = FALSE)
+```

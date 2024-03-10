@@ -1,0 +1,195 @@
+---
+title: "Harmonize probing pocket depth information in cMD sample metadata"
+author:
+  - Sehyun Oh
+  - Kai Gravel-Pucillo
+date: "`r format(Sys.time(), '%B %d, %Y')`"
+format:
+    html:
+        fontsize: 14pxs
+        toc: true
+        top-depth: 3
+abstract: "Prepare U24 Supplement: AI/ML-ready"
+---
+
+```{r setup, include=FALSE}
+knitr::opts_chunk$set(echo = TRUE, 
+                    warning = FALSE,
+                    message = FALSE,
+                    collapse = TRUE,
+                    eval = TRUE)
+```
+
+# Overview
+
+This .qmd file demonstrates a workflow for curating and harmonizing probing 
+pocket depth data with the curatedMetagenomicData package.
+This file curates information from the original PPD_B, PPD_L,PPD_D, and 
+PPD_M columns to produce the curated probing_pocket_depth metric and value 
+columns.
+
+# Setup
+## Load Packages
+
+```{r load}
+suppressPackageStartupMessages({
+  library(curatedMetagenomicData)
+  library(tidyverse)
+  library(googlesheets4)
+  library(rols)
+  library(dplyr)
+  library(hash)
+  library(vctrs)
+  library(rvest)
+})
+```
+
+## Setup for Curation
+
+We will first add a `curation_id` consisting of study name and sample ID (`study_name:sample_id`) to avoid confusion due to duplicated samples.
+
+```{r curation_setup}
+# Add curation ID
+sampleMetadata$curation_id <- paste(sampleMetadata$study_name, sampleMetadata$sample_id, sep = ":")
+
+# Define a project directory
+proj_dir <- "C:\\Users\\Owner\\Desktop\\CUNY Internship\\cMD"
+```
+
+# Exploratory Data Analysis & Data Curation
+
+## Manual Data Corrections
+
+Next, we will make some manual corrections to the data.
+We will start by creating a tibble dataframe and checking the completeness of 
+the three original columns as well as reviewing their unique values:
+```{r}
+# Create a tibble object 
+samplemd <- as_tibble(sampleMetadata)
+
+# Review unique values
+unique(sampleMetadata$PPD_D)
+unique(sampleMetadata$PPD_B)
+unique(sampleMetadata$PPD_L)
+unique(sampleMetadata$PPD_M)
+
+# Calculate completeness
+length(samplemd$PPD_D[which(!is.na(samplemd$PPD_D))])/length(samplemd$PPD_D)
+length(samplemd$PPD_B[which(!is.na(samplemd$PPD_B))])/length(samplemd$PPD_B)
+length(samplemd$PPD_L[which(!is.na(samplemd$PPD_L))])/length(samplemd$PPD_L)
+length(samplemd$PPD_M[which(!is.na(samplemd$PPD_M))])/length(samplemd$PPD_M)
+```
+
+Then we can create a list of the names of the columns which will be included in 
+the merged column,and export these values to a csv file to manually develop an 
+ontology map:
+```{r}
+# Create a dataframe of only the relevant columns
+ppd_cols <- samplemd %>% select(curation_id, PPD_B, PPD_D, PPD_L, PPD_M)
+ppd_cols <- as.data.frame(sapply( ppd_cols, as.character))
+```
+
+
+# Mapping
+
+## Import Maps
+
+To access the necessary PPD ontology terms we will load the `cMD_ppd_map.csv` 
+file.
+```{r import_maps, eval=FALSE}
+# import PPD ontology map
+mapped_terms <-read.csv(file = file.path(proj_dir, "cMD_ppd_map.csv"), header=T)
+```
+
+# Curating probing_pocket_depth Column
+
+Next we can convert plain numeric values into a combined descriptive and numeric 
+value pair by adding the corresponding column name. We will also take this 
+opportunity to map the new values associated with each column metric and their
+corresponding ontology term IDs:
+```{r}
+# Initiate an ontology_term_id column
+ppd_cols$curated_probing_pocket_depth_ontology_term_id <- "8X8"
+
+# Merge all relevant rows into an original_probing_pocket_depth_value column
+for (i in 1:nrow(ppd_cols)){
+  ppd_cols$original_probing_pocket_depth[i] <- paste(ppd_cols[i,2:5], collapse=";")
+}
+# Take out NA values
+ppd_cols$original_probing_pocket_depth <- gsub("NA;", "", ppd_cols$original_probing_pocket_depth)
+ppd_cols$original_probing_pocket_depth <- gsub(";NA", "", ppd_cols$original_probing_pocket_depth)
+ppd_cols$original_probing_pocket_depth <- gsub("NA", NA, ppd_cols$original_probing_pocket_depth)
+
+# Update numeric columns with additional ontology values for metric type
+for(col in colnames(ppd_cols[,2:5])){
+  new_col <- mapped_terms$curated_ontology[grep(paste("^",col,"$",sep=""), mapped_terms$original_value, fixed=F)]
+  new_col_onto <- mapped_terms$curated_ontology_term_id[grep(paste("^",col,"$",sep=""), mapped_terms$original_value, fixed=F)]
+  for (row in 1:nrow(ppd_cols)){
+    val <- ppd_cols[row,col]
+    if (!is.na(val)){
+      ppd_cols[row,col] <- paste(new_col, ":", ppd_cols[row,col], sep="")
+      ppd_cols$curated_probing_pocket_depth_ontology_term_id[row] <- 
+        paste(ppd_cols$curated_probing_pocket_depth_ontology_term_id[row], new_col_onto, sep=";")
+    }
+  }
+}
+```
+
+Now we can replace character values representing a lack of information with a 
+unique character value ("8X8"), and merge these values into a single column with 
+each distinct value separated by a semicolon.
+```{r}
+# Convert NA values to unique character value (8X8)
+ppd_cols[,2:5] <- ppd_cols[,2:5] %>% replace(is.na(.), "8X8") %>% data.frame()
+
+# Merge all relevant rows
+for (i in 1:nrow(ppd_cols)){
+  ppd_cols$curated_probing_pocket_depth[i] <- paste(ppd_cols[i,2:5], collapse=";")
+}
+```
+
+Next, we can remove the unique character representing NA values from the merged
+column:
+```{r}
+# Take out NA values
+ppd_cols$curated_probing_pocket_depth <- gsub("8X8;", "", ppd_cols$curated_probing_pocket_depth)
+ppd_cols$curated_probing_pocket_depth <- gsub(";8X8", "", ppd_cols$curated_probing_pocket_depth)
+ppd_cols$curated_probing_pocket_depth_ontology_term_id <- 
+  gsub("8X8;", "", ppd_cols$curated_probing_pocket_depth_ontology_term_id)
+ppd_cols$curated_probing_pocket_depth_ontology_term_id <- 
+  gsub(";8X8", "", ppd_cols$curated_probing_pocket_depth_ontology_term_id)
+```
+
+
+## Curated Table Creation
+
+Next, we can clean up the dataframe by replacing the unique character 
+representing NA values with "NA" and updating column names as needed:
+```{r}
+# Replace NA values from original columns with "NA"
+ppd_cols <- data.frame(lapply(ppd_cols, function(x) gsub("8X8", NA, x)))
+
+# Create a column of relevant source columns
+for (i in 1:nrow(ppd_cols)){
+  ppd_cols$curated_probing_pocket_depth_source[i] <- 
+      paste(colnames(ppd_cols[,2:5][which(!is.na(ppd_cols[i,2:5]))]), collapse=";")
+}
+
+# Create a curated dataframe
+curated_probing_pocket_depth <- ppd_cols[,c(1, 7, 8, 6, 9)]
+
+# Replace empty values from curated columns with "NA"
+curated_probing_pocket_depth <- data.frame(lapply(curated_probing_pocket_depth, 
+                                      function(x) gsub("^$", NA, x)))
+```
+
+
+## Export
+
+Finally, we will export our completed table to GitHub.
+```{r export_curated_table, eval=FALSE}
+# export to GitHub
+write.csv(curated_probing_pocket_depth, 
+          file = file.path(proj_dir, "curated_probing_pocket_depth.csv"),
+          row.names = FALSE)
+```

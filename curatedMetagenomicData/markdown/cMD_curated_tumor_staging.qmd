@@ -85,7 +85,7 @@ dis_st_cols <- samplemd %>% select(curation_id, ajcc, tnm, disease_stage)
 dis_st_cols <- as.data.frame(sapply( dis_st_cols, as.character))
 ```
 
-# Curating disease_stage Column
+# Curating tumor_staging Columns
 
 Next we can create the curated tumor_staging columns by merging columns which
 use the same metric and standardizing the format of their values:
@@ -107,6 +107,10 @@ dis_st_cols$original_tumor_staging_tnm <- gsub("NA", NA, dis_st_cols$original_tu
 # Create curated tumor_staging columns
 dis_st_cols <- dis_st_cols %>% mutate(curated_tumor_staging_tnm = original_tumor_staging_tnm, 
                        curated_tumor_staging_ajcc = toupper(original_tumor_staging_ajcc))
+
+# Fix tnm terms where needed
+dis_st_cols$curated_tumor_staging_tnm <- gsub("ptis", "pTis", dis_st_cols$curated_tumor_staging_tnm)
+dis_st_cols$curated_tumor_staging_tnm <- gsub("tisn0m0", "Tis", dis_st_cols$curated_tumor_staging_tnm)
 ```
 
 
