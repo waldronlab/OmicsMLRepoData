@@ -26,7 +26,7 @@ This .qmd file demonstrates a workflow for curating and harmonizing study
 condition data with the curatedMetagenomicData package.
 This file curates information from the original study_condition, disease, 
 history_of_periodontitis, and disease_subtype columns to produce the 
-curated control, target_phenotype, and disease columns.
+curated control, target_condition, and disease columns.
 
 # Setup
 ## Load Packages
@@ -123,19 +123,19 @@ Once everything has been reviewed and the Google Sheets maps have been updated a
 
 ```{r save_maps_to_github, eval=FALSE}
 # load map from Google Sheets
-study_condition_ontology <- read_sheet(ss, sheet = "study_condition_ontology")
+study_condition_ontology <- read_sheet(ss, sheet = "disease_map")
 
 # save map to GitHub
 write.csv(study_condition_ontology,
-          file = file.path(proj_dir, "maps/cMD_study_condition_ontology.csv"),
+          file = file.path(proj_dir, "maps/cMD_disease_map.csv"),
           row.names = FALSE)
 
 # load map from Google Sheets
-target_phenotype <- read_sheet(ss, sheet = "target_phenotype_map")
+target_condition <- read_sheet(ss, sheet = "target_condition_map")
 
 # save map to GitHub
-write.csv(target_phenotype,
-          file = file.path(proj_dir, "maps/cMD_target_phenotype_map.csv"),
+write.csv(target_condition,
+          file = file.path(proj_dir, "maps/cMD_target_condition_map.csv"),
           row.names = FALSE)
 ```
 
@@ -144,16 +144,16 @@ write.csv(target_phenotype,
 ## Import Maps
 
 To access the necessary disease ontology terms we will load the 
-`disease_ontology_map`. To access the manually-curated target phenotype(s) 
-associated with each study we will load the `target_phenotype_map`.
+`disease_ontology_map`. To access the manually-curated target condition(s) 
+associated with each study we will load the `target_condition_map`.
 
 ```{r import_maps, eval=FALSE}
 # import the disease ontology map
-disease_ontology_map <- read.csv(file = file.path(proj_dir, "maps/cMD_study_condition_ontology.csv"),
+disease_ontology_map <- read.csv(file = file.path(proj_dir, "maps/cMD_disease_map.csv"),
                           sep = ",", header = TRUE)
 
-# import the target phenotype map
-target_phenotype_map <- read.csv(file = file.path(proj_dir, "maps/cMD_target_phenotype_map.csv"),
+# import the target condition map
+target_condition_map <- read.csv(file = file.path(proj_dir, "maps/cMD_target_condition_map.csv"),
                           sep = ",", header = TRUE)
 ```
 
@@ -291,15 +291,15 @@ for (i in 1:nrow(disease_sources)){
 ```
 
 
-## Curating "target_phenotype" Column
+## Curating "target_condition" Column
 
-Using the study names and the target_phenotype_map, we can create columns for 
-target_phenotype data:
+Using the study names and the target_condition_map, we can create columns for 
+target_condition data:
 ```{r}
-# Iterate through all data in sampleMetadata to create target_phenotype columns
+# Iterate through all data in sampleMetadata to create target_condition columns
 for (i in 1:length(sampleMetadata$study_name)){
-  disease_data$curated_target_phenotype[i] <- target_phenotype_map$target_phenotype[which(target_phenotype_map$study_name == sampleMetadata$study_name[i])]
-  disease_data$curated_target_phenotype_ontology_term_id[i] <- target_phenotype_map$target_phenotype_term_id[which(target_phenotype_map$study_name == sampleMetadata$study_name[i])]
+  disease_data$curated_target_condition[i] <- target_condition_map$target_condition[which(target_condition_map$study_name == sampleMetadata$study_name[i])]
+  disease_data$curated_target_condition_ontology_term_id[i] <- target_condition_map$target_condition_term_id[which(target_condition_map$study_name == sampleMetadata$study_name[i])]
 }
 ```
 
@@ -310,7 +310,7 @@ Then we will create our table of curated study condition data, including
 original values, curated values, and curated ontology term ids.
 ```{r}
 # Create a dataframe of the relevant columns
-curated_study_condition <- data.frame(sampleMetadata[,c("curation_id", "study_condition", "disease", "disease_subtype", "history_of_periodontitis")], disease_data[,c("control", "control_ontology_term_id","curated_control_source", "curated_target_phenotype", "curated_target_phenotype_ontology_term_id", "curated_disease", "curated_disease_ontology_term_id", "curated_disease_source")])
+curated_study_condition <- data.frame(sampleMetadata[,c("curation_id", "study_condition", "disease", "disease_subtype", "history_of_periodontitis")], disease_data[,c("control", "control_ontology_term_id","curated_control_source", "curated_target_condition", "curated_target_condition_ontology_term_id", "curated_disease", "curated_disease_ontology_term_id", "curated_disease_source")])
 
 # Rename the columns for accuracy & specificity
 colnames(curated_study_condition)[2:7] <- c("original_study_condition_value", "original_disease_value", "original_disease_subtype_value", "original_history_of_periodontitis_value", "curated_control", "curated_control_ontology_term_id")
