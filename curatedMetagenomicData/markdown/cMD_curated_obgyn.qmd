@@ -152,7 +152,7 @@ for (i in 1:nrow(obgyn_cols)){
 obgyn_cols <- obgyn_cols %>% rename(original_obgyn_birth_control = birth_control_pil, 
                                     original_obgyn_lactating = lactating, 
                                     original_obgyn_menopause = menopausal_status, 
-                                    original_obgyn_pregnacy = pregnant)
+                                    original_obgyn_pregnancy = pregnant)
 
 # Create a curated dataframe
 curated_obgyn <- obgyn_cols[,c(1, 2, 11, 12, 3, 10, 13, 4, 
