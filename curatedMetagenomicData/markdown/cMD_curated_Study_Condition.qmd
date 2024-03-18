@@ -310,10 +310,10 @@ Then we will create our table of curated study condition data, including
 original values, curated values, and curated ontology term ids.
 ```{r}
 # Create a dataframe of the relevant columns
-curated_study_condition <- data.frame(sampleMetadata[,c("curation_id", "study_condition", "disease", "disease_subtype", "history_of_periodontitis")], disease_data[,c("control", "control_ontology_term_id","curated_control_source", "curated_target_condition", "curated_target_condition_ontology_term_id", "curated_disease", "curated_disease_ontology_term_id", "curated_disease_source")])
+curated_study_condition <- data.frame(sampleMetadata[,c("curation_id", "study_condition")], disease_data[,c("merged", "control", "control_ontology_term_id","curated_control_source", "curated_target_condition", "curated_target_condition_ontology_term_id", "curated_disease", "curated_disease_ontology_term_id", "curated_disease_source")])
 
 # Rename the columns for accuracy & specificity
-colnames(curated_study_condition)[2:7] <- c("original_study_condition_value", "original_disease_value", "original_disease_subtype_value", "original_history_of_periodontitis_value", "curated_control", "curated_control_ontology_term_id")
+colnames(curated_study_condition)[2:7] <- c("original_control", "original_disease", "curated_control", "curated_control_ontology_term_id")
 ```
 
 
