@@ -139,6 +139,7 @@ write.csv(target_condition,
           row.names = FALSE)
 ```
 
+
 # Mapping
 
 ## Import Maps
@@ -297,9 +298,11 @@ Using the study names and the target_condition_map, we can create columns for
 target_condition data:
 ```{r}
 # Iterate through all data in sampleMetadata to create target_condition columns
-for (i in 1:length(sampleMetadata$study_name)){
-  disease_data$curated_target_condition[i] <- target_condition_map$target_condition[which(target_condition_map$study_name == sampleMetadata$study_name[i])]
-  disease_data$curated_target_condition_ontology_term_id[i] <- target_condition_map$target_condition_term_id[which(target_condition_map$study_name == sampleMetadata$study_name[i])]
+for (i in seq_len(nrow(sampleMetadata))){
+    ind <- which(target_condition_map$study_name == sampleMetadata$study_name[i])
+    
+    disease_data$curated_target_condition[i] <- target_condition_map$curated_ontology_term[ind]
+    disease_data$curated_target_condition_ontology_term_id[i] <- target_condition_map$curated_ontology_term_id[ind]
 }
 ```
 
@@ -310,10 +313,21 @@ Then we will create our table of curated study condition data, including
 original values, curated values, and curated ontology term ids.
 ```{r}
 # Create a dataframe of the relevant columns
-curated_study_condition <- data.frame(sampleMetadata[,c("curation_id", "study_condition")], disease_data[,c("merged", "control", "control_ontology_term_id","curated_control_source", "curated_target_condition", "curated_target_condition_ontology_term_id", "curated_disease", "curated_disease_ontology_term_id", "curated_disease_source")])
+disease_cols <- c("merged", "control", 
+                  "control_ontology_term_id",
+                  "curated_control_source", 
+                  "curated_target_condition", 
+                  "curated_target_condition_ontology_term_id", 
+                  "curated_disease", 
+                  "curated_disease_ontology_term_id", 
+                  "curated_disease_source")
+
+curated_study_condition <- dplyr::left_join(sampleMetadata[c("curation_id", "study_condition")],
+                                            disease_data[c("curation_id", disease_cols)], 
+                                            by = "curation_id")
 
 # Rename the columns for accuracy & specificity
-colnames(curated_study_condition)[2:7] <- c("original_control", "original_disease", "curated_control", "curated_control_ontology_term_id")
+colnames(curated_study_condition)[2:5] <- c("original_control", "original_disease", "curated_control", "curated_control_ontology_term_id")
 ```
 
 
