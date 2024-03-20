@@ -143,777 +143,389 @@ types:
     uri: shex:nonLiteral
     repr: str
 enums:
-  age_unit_enums:
-    name: age_unit_enums
-    source_ontology: ncit
-    source_nodes: NCIT:C50400
-    include_self: "false"
-    relationship_types: descendants
-  age_group_enums:
-    name: age_group_enums
-    source_ontology: ncit
-    source_nodes: NCIT:C20587
-    include_self: "false"
-    relationship_types: descendants
+  target_condition_enums:
+    name: target_condition_enums
+    permissible_values:
+    - abnormal glucose tolerance
+    - acute diarrhea
+    - adenocarcinoma
+    - Adenoma
+    - Alzheimer's disease
+    - ankylosing spondylitis
+    - arthritis
+    - Asthma
+    - atherosclerosis
+    - Behcet's syndrome
+    - bronchitis
+    - carcinoma
+    - carcinoma,History of surgery (situation)
+    - Cephalosporin Antibiotic
+    - Cholera
+    - chorioamnionitis
+    - cirrhosis of liver
+    - clostridium difficile infection
+    - colorectal cancer
+    - control
+    - Cough
+    - Crohn's disease
+    - cystitis
+    - diarrhea
+    - Fever
+    - gastroenteritis
+    - gestational diabetes
+    - Heart Failure
+    - Helminth,Transmitted,soil
+    - human gut microbiome
+    - human microbiome
+    - human skin microbiome interaction
+    - hypertension
+    - Infection,Suspected
+    - Inflammatory Bowel Disease
+    - Intestinal Flora
+    - melanoma
+    - metabolic syndrome
+    - Metabolic Syndrome
+    - Metastases status (attribute)
+    - Migraine
+    - Mucositis
+    - Multidrug-resistant bacteria (organism)
+    - myalgic encephalomeyelitis/chronic fatigue syndrome
+    - Non-alcoholic Fatty Liver Disease
+    - Oral Microbiome
+    - otitis
+    - Parkinson disease
+    - Peri-Implantitis
+    - periodontitis
+    - pneumonia
+    - preeclampsia
+    - premature birth
+    - Prevotella copri
+    - psoriasis
+    - pyelonephritis
+    - Respiratory tract infection
+    - rheumatoid arthritis
+    - salmonellosis
+    - Schizophrenia
+    - sepsis
+    - Shiga Toxin-producing Escherichia coli
+    - Skin Infection
+    - stomatitis
+    - Tonsillitis
+    - Type 1 Diabetes Mellitus
+    - Type 2 Diabetes Mellitus
+    - Weight loss
   control_enums:
     name: control_enums
     permissible_values:
       Study Control:
-        text: Study Control
       Case:
-        text: Case
       Not Used:
-        text: Not Used
-  disease_enums:
-    name: disease_enums
-    permissible_values:
-      Hernia of the abdominal wall:
-        text: Hernia of the abdominal wall
-      acute diarrhea:
-        text: acute diarrhea
-      atherosclerosis:
-        text: atherosclerosis
-      Alzheimer's disease:
-        text: Alzheimer's disease
-      adenocarcinoma:
-        text: adenocarcinoma
-      Adenoma:
-        text: Adenoma
-      Allergic rhinitis:
-        text: Allergic rhinitis
-      arthritis:
-        text: arthritis
-      ankylosing spondylitis:
-        text: ankylosing spondylitis
-      Ascaris lumbricoides:
-        text: Ascaris lumbricoides
-      Ascites:
-        text: Ascites
-      Asthma:
-        text: Asthma
-      Behcet's syndrome:
-        text: Behcet's syndrome
-      bronchitis:
-        text: bronchitis
-      coronary artery disease:
-        text: coronary artery disease
-      carcinoma:
-        text: carcinoma
-      Crohn's disease:
-        text: Crohn's disease
-      clostridium difficile infection:
-        text: clostridium difficile infection
-      cellulitis:
-        text: cellulitis
-      Cephalosporin Antibiotic:
-        text: Cephalosporin Antibiotic
-      Cholera:
-        text: Cholera
-      Hypercholesterolemia:
-        text: Hypercholesterolemia
-      chorioamnionitis:
-        text: chorioamnionitis
-      cirrhosis of liver:
-        text: cirrhosis of liver
-      cytomegalovirus infection:
-        text: cytomegalovirus infection
-      celiac disease:
-        text: celiac disease
-      Study Control:
-        text: Study Control
-      Cough:
-        text: Cough
-      colorectal cancer:
-        text: colorectal cancer
-      cystitis:
-        text: cystitis
-      Donor:
-        text: Donor
-      Entamoeba histolytica:
-        text: Entamoeba histolytica
-      Fatty Liver:
-        text: Fatty Liver
-      Fever:
-        text: Fever
-      Polyps:
-        text: Polyps
-      Schizophrenia:
-        text: Schizophrenia
-      Fecal Microbiota Transplantation:
-        text: Fecal Microbiota Transplantation
-      gangrene:
-        text: gangrene
-      Diabetes Mellitus:
-        text: Diabetes Mellitus
-      gestational diabetes:
-        text: gestational diabetes
-      hepatitis B virus infection:
-        text: hepatitis B virus infection
-      Hepatitis C Infection:
-        text: Hepatitis C Infection
-      hepatitis D virus infection:
-        text: hepatitis D virus infection
-      Healthy:
-        text: Healthy
-      Hepatitis:
-        text: Hepatitis
-      hepatitis E virus infection:
-        text: hepatitis E virus infection
-      Heart Failure:
-        text: Heart Failure
-      Hookworm Infection:
-        text: Hookworm Infection
-      human gut microbiome:
-        text: human gut microbiome
-      human microbiome:
-        text: human microbiome
-      human skin microbiome interaction:
-        text: human skin microbiome interaction
-      hypertension:
-        text: hypertension
-      Inflammatory Bowel Disease:
-        text: Inflammatory Bowel Disease
-      abnormal glucose tolerance:
-        text: abnormal glucose tolerance
-      indeterminate colitis:
-        text: indeterminate colitis
-      gastroenteritis:
-        text: gastroenteritis
-      Intestinal Flora:
-        text: Intestinal Flora
-      Irritable Bowel Syndrome:
-        text: Irritable Bowel Syndrome
-      large intestine adenoma:
-        text: large intestine adenoma
-      Metabolic Syndrome:
-        text: Metabolic Syndrome
-      Mansonella perstans:
-        text: Mansonella perstans
-      Multidrug-resistant bacteria (organism):
-        text: Multidrug-resistant bacteria (organism)
-      myalgic encephalomeyelitis/chronic fatigue syndrome:
-        text: myalgic encephalomeyelitis/chronic fatigue syndrome
-      melanoma:
-        text: melanoma
-      Melanoma Surgery:
-        text: Melanoma Surgery
-      metabolic syndrome:
-        text: metabolic syndrome
-      Metastatic Malignant Neoplasm:
-        text: Metastatic Malignant Neoplasm
-      Metastatic Malignant Neoplasm in the Adrenal Gland:
-        text: Metastatic Malignant Neoplasm in the Adrenal Gland
-      Metastatic Malignant Neoplasm in the Bone:
-        text: Metastatic Malignant Neoplasm in the Bone
-      Metastatic Malignant Neoplasm in the Liver:
-        text: Metastatic Malignant Neoplasm in the Liver
-      Metastatic Malignant Neoplasm in the Lung:
-        text: Metastatic Malignant Neoplasm in the Lung
-      Metastatic Malignant Neoplasm in the Lymph Nodes:
-        text: Metastatic Malignant Neoplasm in the Lymph Nodes
-      Metastatic Squamous Cell Carcinoma:
-        text: Metastatic Squamous Cell Carcinoma
-      Loa loa:
-        text: Loa loa
-      Microfilaria:
-        text: Microfilaria
-      Migraine:
-        text: Migraine
-      Mucositis:
-        text: Mucositis
-      Non-alcoholic Fatty Liver Disease:
-        text: Non-alcoholic Fatty Liver Disease
-      Necator americanus:
-        text: Necator americanus
-      Natural Killer Cell:
-        text: Natural Killer Cell
-      Oral Microbiome:
-        text: Oral Microbiome
-      Osteoarthritis:
-        text: Osteoarthritis
-      otitis:
-        text: otitis
-      Parkinson disease:
-        text: Parkinson disease
-      Peri-Implantitis:
-        text: Peri-Implantitis
-      Perianal fistula (disorder):
-        text: Perianal fistula (disorder)
-      periodontitis:
-        text: periodontitis
-      Plasmodium falciparum:
-        text: Plasmodium falciparum
-      pneumonia:
-        text: pneumonia
-      preeclampsia:
-        text: preeclampsia
-      Pre-capillary pulmonary hypertension:
-        text: Pre-capillary pulmonary hypertension
-      premature birth:
-        text: premature birth
-      Prevotella copri:
-        text: Prevotella copri
-      pyelonephritis:
-        text: pyelonephritis
-      rheumatoid arthritis:
-        text: rheumatoid arthritis
-      Schizophrenia,repeated:
-        text: Schizophrenia,repeated
-      Respiratory tract infection:
-        text: Respiratory tract infection
-      salmonellosis:
-        text: salmonellosis
-      Schistosoma:
-        text: Schistosoma
-      sepsis:
-        text: sepsis
-      Helminth:
-        text: Helminth
-      Small Intestinal Adenoma:
-        text: Small Intestinal Adenoma
-      Infection:
-        text: Infection
-      Shiga Toxin-producing Escherichia coli:
-        text: Shiga Toxin-producing Escherichia coli
-      Helminth,Transmitted,soil:
-        text: Helminth,Transmitted,soil
-      stomatitis:
-        text: stomatitis
-      Infection,Suspected:
-        text: Infection,Suspected
-      Type 1 Diabetes Mellitus:
-        text: Type 1 Diabetes Mellitus
-      Type 2 Diabetes Mellitus:
-        text: Type 2 Diabetes Mellitus
-      diarrhea:
-        text: diarrhea
-      Tonsillitis:
-        text: Tonsillitis
-      Colitis:
-        text: Colitis
-      Trichomonas:
-        text: Trichomonas
-      Trichuris trichiura:
-        text: Trichuris trichiura
-      ulcerative colitis:
-        text: ulcerative colitis
-      undetermined colitis:
-        text: undetermined colitis
-      Ureteric Stone:
-        text: Ureteric Stone
-      uveitis:
-        text: uveitis
-      Vogt-Koyanagi-Harada disease:
-        text: Vogt-Koyanagi-Harada disease
-      Weight loss:
-        text: Weight loss
-      Wilson disease:
-        text: Wilson disease
-      Wuchereria bancrofti:
-        text: Wuchereria bancrofti
-  target_condition_enums:
-    name: target_condition_enums
-    permissible_values:
-      human gut microbiome:
-        text: human gut microbiome
-      Parkinson disease:
-        text: Parkinson disease
-      Oral Microbiome:
-        text: Oral Microbiome
-      premature birth:
-        text: premature birth
-      Schizophrenia:
-        text: Schizophrenia
-      rheumatoid arthritis:
-        text: rheumatoid arthritis
-      ankylosing spondylitis:
-        text: ankylosing spondylitis
-      Alzheimer's disease:
-        text: Alzheimer's disease
-      gestational diabetes:
-        text: gestational diabetes
-      chorioamnionitis:
-        text: chorioamnionitis
-      preeclampsia:
-        text: preeclampsia
-      acute diarrhea:
-        text: acute diarrhea
-      Cholera:
-        text: Cholera
-      Prevotella copri:
-        text: Prevotella copri
-      colorectal cancer:
-        text: colorectal cancer
-      carcinoma:
-        text: carcinoma
-      Adenoma:
-        text: Adenoma
-      melanoma:
-        text: melanoma
-      Metastases status (attribute):
-        text: Metastases status (attribute)
-      Peri-Implantitis:
-        text: Peri-Implantitis
-      Mucositis:
-        text: Mucositis
-      adenocarcinoma:
-        text: adenocarcinoma
-      Inflammatory Bowel Disease:
-        text: Inflammatory Bowel Disease
-      Intestinal Flora:
-        text: Intestinal Flora
-      Type 1 Diabetes Mellitus:
-        text: Type 1 Diabetes Mellitus
-      human microbiome:
-        text: human microbiome
-      abnormal glucose tolerance:
-        text: abnormal glucose tolerance
-      Type 2 Diabetes Mellitus:
-        text: Type 2 Diabetes Mellitus
-      diarrhea:
-        text: diarrhea
-      clostridium difficile infection:
-        text: clostridium difficile infection
-      Multidrug-resistant bacteria (organism):
-        text: Multidrug-resistant bacteria (organism)
-      Crohn's disease:
-        text: Crohn's disease
-      atherosclerosis:
-        text: atherosclerosis
-      hypertension:
-        text: hypertension
-      metabolic syndrome:
-        text: metabolic syndrome
-      Shiga Toxin-producing Escherichia coli:
-        text: Shiga Toxin-producing Escherichia coli
-      Non-alcoholic Fatty Liver Disease:
-        text: Non-alcoholic Fatty Liver Disease
-      Weight loss:
-        text: Weight loss
-      Metabolic Syndrome:
-        text: Metabolic Syndrome
-      control:
-        text: control
-      Heart Failure:
-        text: Heart Failure
-      myalgic encephalomeyelitis/chronic fatigue syndrome:
-        text: myalgic encephalomeyelitis/chronic fatigue syndrome
-      human skin microbiome interaction:
-        text: human skin microbiome interaction
-      cirrhosis of liver:
-        text: cirrhosis of liver
-      Cephalosporin Antibiotic:
-        text: Cephalosporin Antibiotic
-      Helminth:
-        text: Helminth
-      periodontitis:
-        text: periodontitis
-      arthritis:
-        text: arthritis
-      psoriasis:
-        text: psoriasis
-      otitis:
-        text: otitis
-      pneumonia:
-        text: pneumonia
-      bronchitis:
-        text: bronchitis
-      Respiratory tract infection:
-        text: Respiratory tract infection
-      sepsis:
-        text: sepsis
-      Skin Infection:
-        text: Skin Infection
-      Cough:
-        text: Cough
-      gastroenteritis:
-        text: gastroenteritis
-      Tonsillitis:
-        text: Tonsillitis
-      pyelonephritis:
-        text: pyelonephritis
-      cystitis:
-        text: cystitis
-      Fever:
-        text: Fever
-      Infection:
-        text: Infection
-      stomatitis:
-        text: stomatitis
-      salmonellosis:
-        text: salmonellosis
-      Migraine:
-        text: Migraine
-      Asthma:
-        text: Asthma
-      Behcet's syndrome:
-        text: Behcet's syndrome
-  treatment_enums:
-    name: treatment_enums
-    permissible_values:
-      Mesalamine:
-        text: Mesalamine
-      Acarbose:
-        text: Acarbose
-      Angiotensin-Converting Enzyme Inhibitors:
-        text: Angiotensin-Converting Enzyme Inhibitors
-      Albendazole:
-        text: Albendazole
-      Amiodarone:
-        text: Amiodarone
-      EC 3.4.23.15 (renin) inhibitor:
-        text: EC 3.4.23.15 (renin) inhibitor
-      Antihelminthic Agent:
-        text: Antihelminthic Agent
-      Antihypertensive Agents:
-        text: Antihypertensive Agents
-      Anti-Retroviral Agents:
-        text: Anti-Retroviral Agents
-      antiviral drug:
-        text: antiviral drug
-      Anti-diabetic Agent:
-        text: Anti-diabetic Agent
-      Antilipidemic Agent:
-        text: Antilipidemic Agent
-      Antineoplastic Agent:
-        text: Antineoplastic Agent
-      Thrombolytic Agent:
-        text: Thrombolytic Agent
-      Aspirin:
-        text: Aspirin
-      Angiotensin II Receptor Antagonist:
-        text: Angiotensin II Receptor Antagonist
-      Azathioprine:
-        text: Azathioprine
-      Beta-Adrenergic Antagonist:
-        text: Beta-Adrenergic Antagonist
-      Calcium Channel Blocker:
-        text: Calcium Channel Blocker
-      Clopidogrel:
-        text: Clopidogrel
-      Corticosteroid:
-        text: Corticosteroid
-      Anti-CTLA-4 Monoclonal Antibody:
-        text: Anti-CTLA-4 Monoclonal Antibody
-      Centrally acting hypotensive agent (substance):
-        text: Centrally acting hypotensive agent (substance)
-      Coumarin:
-        text: Coumarin
-      Digitalis:
-        text: Digitalis
-      Diuretic:
-        text: Diuretic
-      Dopamine Antagonist:
-        text: Dopamine Antagonist
-      Dipeptidyl-Peptidase IV Inhibitors:
-        text: Dipeptidyl-Peptidase IV Inhibitors
-      Enteral Nutrition:
-        text: Enteral Nutrition
-      Ezetimibe:
-        text: Ezetimibe
-      fibrate:
-        text: fibrate
-      Folate:
-        text: Folate
-      Dietary Supplement:
-        text: Dietary Supplement
-      Insulin Glargine:
-        text: Insulin Glargine
-      Thiazolidinedione Antidiabetic Agent:
-        text: Thiazolidinedione Antidiabetic Agent
-      glucagon-like peptide-1 receptor agonist:
-        text: glucagon-like peptide-1 receptor agonist
-      Heparin:
-        text: Heparin
-      Insulin:
-        text: Insulin
-      Ipilimumab:
-        text: Ipilimumab
-      Iron:
-        text: Iron
-      Isophane Insulin, Human:
-        text: Isophane Insulin, Human
-      Potassium-Sparing Diuretic:
-        text: Potassium-Sparing Diuretic
-      lactulose:
-        text: lactulose
-      Laxative:
-        text: Laxative
-      Metformin:
-        text: Metformin
-      Metformin Hydrochloride:
-        text: Metformin Hydrochloride
-      Methotrexate:
-        text: Methotrexate
-      Pediatric Nutritional Supplement Drink:
-        text: Pediatric Nutritional Supplement Drink
-      Nitrate:
-        text: Nitrate
-      Nivolumab:
-        text: Nivolumab
-      None:
-        text: None
-      Insulin Aspart:
-        text: Insulin Aspart
-      Nonsteroidal Antiinflammatory Drug:
-        text: Nonsteroidal Antiinflammatory Drug
-      Opioid:
-        text: Opioid
-      Anti-Arrhythmia Agents:
-        text: Anti-Arrhythmia Agents
-      Anti-PD1 Monoclonal Antibody:
-        text: Anti-PD1 Monoclonal Antibody
-      Pembrolizumab:
-        text: Pembrolizumab
-      Phenylpiperidine derivative (substance):
-        text: Phenylpiperidine derivative (substance)
-      Proton Pump Inhibitor:
-        text: Proton Pump Inhibitor
-      Probiotics:
-        text: Probiotics
-      red yeast rice:
-        text: red yeast rice
-      Reverse Transcriptase Inhibitor:
-        text: Reverse Transcriptase Inhibitor
-      sodium-glucose transport protein subtype 2 inhibitor:
-        text: sodium-glucose transport protein subtype 2 inhibitor
-      Sitagliptin:
-        text: Sitagliptin
-      statin:
-        text: statin
-      Steroid Compound:
-        text: Steroid Compound
-      Sulfonylurea Antidiabetic Agent:
-        text: Sulfonylurea Antidiabetic Agent
-      Thiazide Diuretic:
-        text: Thiazide Diuretic
-      second generation antipsychotic:
-        text: second generation antipsychotic
-      Citrate-containing Alkalinizing Agent:
-        text: Citrate-containing Alkalinizing Agent
-      Xanthine Oxidase Inhibitor:
-        text: Xanthine Oxidase Inhibitor
-  bodysite_enums:
-    name: bodysite_enums
-    source_ontology: uberon
-    source_nodes: UBERON:0001062
-    include_self: "false"
-    relationship_types: descendants
-  body_subsite_enums:
-    name: body_subsite_enums
-    permissible_values:
-      anterior naris:
-        text: anterior naris
-      buccal mucosa:
-        text: buccal mucosa
-      chest:
-        text: chest
-      hard palate:
-        text: hard palate
-      gingiva:
-        text: gingiva
-      Entire skin of postauricular region (body structure):
-        text: Entire skin of postauricular region (body structure)
-      left ear:
-        text: left ear
-      Left elbow:
-        text: Left elbow
-      lung:
-        text: lung
-      median vaginal canal:
-        text: median vaginal canal
-      palatine tonsil:
-        text: palatine tonsil
-      posterior fornix of vagina:
-        text: posterior fornix of vagina
-      rectum:
-        text: rectum
-      right ear:
-        text: right ear
-      Right elbow:
-        text: Right elbow
-      saliva:
-        text: saliva
-      sputum:
-        text: sputum
-      subgingival dental plaque:
-        text: subgingival dental plaque
-      supragingival dental plaque:
-        text: supragingival dental plaque
-      throat:
-        text: throat
-      dorsum of tongue:
-        text: dorsum of tongue
-      Vaginal introitus structure (body structure):
-        text: Vaginal introitus structure (body structure)
-  sex_enums:
-    name: sex_enums
-    permissible_values:
-      Female:
-        text: Female
-      Male:
-        text: Male
-      NA:
-        text: NA
-  antibiotics_current_use_enums:
-    name: antibiotics_current_use_enums
-    permissible_values:
-      "Yes":
-        text: "Yes"
-      "No":
-        text: "No"
-      NA:
-        text: NA
   country_enums:
     name: country_enums
     source_ontology: ncit
     source_nodes: NCIT:C25464
     include_self: "false"
     relationship_types: descendants
-  westernized_enums:
-    name: westernized_enums
+  bodysite_enums:
+    name: bodysite_enums
     permissible_values:
-      "yes":
-        text: "yes"
-      "no":
-        text: "no"
-  lifestyle_enums:
-    name: lifestyle_enums
+      anterior naris:
+      buccal mucosa:
+      chest:
+      colon:
+      dentition:
+      dorsum of tongue:
+      elbow:
+      feces:
+      gingiva:
+      hard palate:
+      left colon:
+      left ear:
+      lumbar vertebra 2:
+      lumbar vertebra 3:
+      lumbar vertebra 4:
+      lung:
+      median vaginal canal:
+      milk:
+      nasal cavity:
+      oral cavity:
+      palatine tonsil:
+      posterior fornix of vagina:
+      rectum:
+      retroauricular region:
+      right colon:
+      right ear:
+      saliva:
+      sigmoid colon:
+      skin epidermis:
+      sputum:
+      subgingival dental plaque:
+      supragingival dental plaque:
+      throat:
+      vagina:
+      vagina orifice:
+  age_unit_enums:
+    name: age_unit_enums
     permissible_values:
-      Hunter-gatherer:
-        text: Hunter-gatherer
-      Agriculturalist:
-        text: Agriculturalist
-      Agropastoralist:
-        text: Agropastoralist
-      Pastoralist:
-        text: Pastoralist
-      Fisher:
-        text: Fisher
-  sequencing_platform_enums:
-    name: sequencing_platform_enums
+      Day:
+      Week:
+      Month:
+      Year:
+  age_group_enums:
+    name: age_group_enums
     permissible_values:
-      IlluminaHiSeq:
-        text: IlluminaHiSeq
-      IlluminaMiSeq:
-        text: IlluminaMiSeq
-      IlluminaNextSeq:
-        text: IlluminaNextSeq
-      IlluminaNovaSeq:
-        text: IlluminaNovaSeq
-      IonProton:
-        text: IonProton
-  DNA_extraction_kit_enums:
-    name: DNA_extraction_kit_enums
+      Infant:
+      Children 2-11 Years Old:
+      Adolescent:
+      Adult:
+      Elderly:
+  antibiotics_current_use_enums:
+    name: antibiotics_current_use_enums
     permissible_values:
-      Qiagen:
-        text: Qiagen
-      Gnome:
-        text: Gnome
-      MoBio:
-        text: MoBio
-      MPBio:
-        text: MPBio
-      NorgenBiotek:
-        text: NorgenBiotek
-      Illuminakit:
-        text: Illuminakit
-      Maxwell_LEV:
-        text: Maxwell_LEV
-      PSP_Spin_Stool:
-        text: PSP_Spin_Stool
-      Tiangen:
-        text: Tiangen
-      PowerSoil:
-        text: PowerSoil
+      "Yes":
+      "No":
+      NA:
+  curator_enums:
+    name: curator_enums
+    permissible_values:
+      Paolo_Manghi:
+      Aitor_Blanco_Miguez:
+      Andrea_Zen:
+      Andrew_Malthez_Thomas:
+      Anna_Pedrotti:
+      Arianna_Bonetti:
+      Bryan_Merrill:
+      Francesco_Asnicar:
+      Francesca_DeFilippis:      
+      Giacomo_Damato:
+      Ilya_Likhotkin:
+      Jacob_Wirbel:
+      Marisa_Metzger:
+      Mireia_VallesColomer:      
+      Pamela_Ferretti:
+      Valentina_Giunchiglia:
+  dietary_restriction_enums:
+    name: dietary_restriction_enums
+    permissible_values:
+      omnivore:
+      vegan:
+      vegetarian:
+      high_fiber:
+      low_fiber:
+      high_gluten:
+      low_gluten:
+  disease_enums:
+    name: disease_enums
+    permissible_values:
+      abnormal glucose tolerance:
+      acute diarrhea:
+      adenocarcinoma:
+      Adenoma:
+      Allergic rhinitis:
+      Alzheimer's Disease:
+      ankylosing spondylitis:
+      arthritis:
+      Ascaris lumbricoides:
+      Ascites:
+      Asthma:
+      atherosclerosis:
+      Behcet's syndrome:
+      bronchitis:
+      carcinoma:
+      celiac disease:
+      cellulitis:
+      Cephalosporin Antibiotic:
+      Cholera:
+      chorioamnionitis:
+      cirrhosis of liver:
+      clostridium difficile infection:
+      Colitis:
+      Colorectal Carcinoma:
+      coronary artery disease:
+      Cough:
+      Crohn's disease:
+      cystitis:
+      cytomegalovirus infection:
+      Diabetes Mellitus:
+      Diarrhea:
+      Donor:
+      Entamoeba histolytica:
+      Fatty Liver:
+      Fecal Microbiota Transplantation:
+      Fever:
+      gangrene:
+      gastroenteritis:
+      gestational diabetes:
+      Healthy:
+      Heart Failure:
+      Helminth:
+      Hepatitis:
+      hepatitis B virus infection:
+      Hepatitis C Infection:
+      hepatitis D virus infection:
+      hepatitis E virus infection:
+      Hernia of the abdominal wall:
+      Hookworm Infection:
+      human gut microbiome:
+      human microbiome:
+      human skin microbiome interaction:
+      Hypercholesterolemia:
+      hypertension:
+      indeterminate colitis:
+      Infection:
+      Inflammatory Bowel Disease:
+      Intestinal Flora:
+      Irritable Bowel Syndrome:
+      large intestine adenoma:
+      Loa loa:
+      Mansonella perstans:
+      melanoma:
+      Melanoma Surgery:
+      metabolic syndrome:
+      Metabolic Syndrome:
+      Metastatic Malignant Neoplasm:
+      Metastatic Malignant Neoplasm in the Adrenal Gland:
+      Metastatic Malignant Neoplasm in the Bone:
+      Metastatic Malignant Neoplasm in the Liver:
+      Metastatic Malignant Neoplasm in the Lung:
+      Metastatic Malignant Neoplasm in the Lymph Nodes:
+      Metastatic Squamous Cell Carcinoma:
+      Microfilaria:
+      Migraine:
+      Mucositis:
+      Multidrug-resistant bacteria (organism):
+      myalgic encephalomeyelitis/chronic fatigue syndrome:
+      Natural Killer Cell:
+      Necator americanus:
+      Non-alcoholic Fatty Liver Disease:
+      Oral Microbiome:
+      Osteoarthritis:
+      Otitis Media:
+      Parkinson disease:
+      Peri-Implantitis:
+      Perianal fistula (disorder):
+      Periodontal Scaling and Root Planing:
+      periodontitis:
+      Plasmodium falciparum:
+      pneumonia:
+      Polyps:
+      Pre-capillary pulmonary hypertension:
+      preeclampsia:
+      premature birth:
+      Prevotella copri:
+      psoriasis:
+      pyelonephritis:
+      Respiratory tract infection:
+      rheumatoid arthritis:
+      salmonellosis:
+      Schistosoma:
+      Schizophrenia:
+      Sepsis:
+      Shiga Toxin-producing Escherichia coli:
+      Skin Infection:
+      Small Intestinal Adenoma:
+      stomatitis:
+      Tonsillitis:
+      Trichomonas:
+      Trichuris trichiura:
+      Type 1 Diabetes Mellitus:
+      Type 2 Diabetes Mellitus:
+      ulcerative colitis:
+      undetermined colitis:
+      Ureteric Stone:
+      uveitis:
+      Vogt-Koyanagi-Harada disease:
+      Weight loss:
+      Wilson disease:
+      Wuchereria bancrofti:
+  disease_response_orr_enums:
+    name: disease_response_orr_enums
+    permissible_values:
+      "Yes":
+      "No":
+  disease_response_pfs_enums:
+    name: disease_response_pfs_enums
+    permissible_values:
+      "Yes":
+      "No":
+  disease_response_recist_enums:
+    name: disease_response_recist_enums
+    permissible_values:
+      RECIST Complete Response:
+        text: NCIT:C159715
+      RECIST Partial Response:
+        text: NCIT:C159547
+      RECIST Progressive Disease:
+        text: NCIT:C159716
+      RECIST Stable Disease:
+        text: NCIT:C159546
+  dna_extraction_kit_enums:
+    name: dna_extraction_kit_enums
+    permissible_values:
       Chemagen:
-        text: Chemagen
-      other:
-        text: other
-      PowerSoilPro:
-        text: PowerSoilPro
-      ZR_Fecal_DNA_MiniPrep:
-        text: ZR_Fecal_DNA_MiniPrep
+      Gnome:
+      Illuminakit:
       KAMA_Hyper_Prep:
-        text: KAMA_Hyper_Prep
-      thermo_fisher:
-        text: thermo_fisher
+      Maxwell_LEV:
+      MoBio:
+      MPBio:
+      NorgenBiotek:
+      PowerSoil:
+      PowerSoilPro:
+      PSP_Spin_Stool:
       QIAamp:
-        text: QIAamp
-  pregnant_enums:
-    name: pregnant_enums
-    permissible_values:
-      "yes":
-        text: "yes"
-      "no":
-        text: "no"
-  lactating_enums:
-    name: lactating_enums
-    permissible_values:
-      "yes":
-        text: "yes"
-      "no":
-        text: "no"
-  birth_control_pil_enums:
-    name: birth_control_pil_enums
-    permissible_values:
-      "yes":
-        text: "yes"
-      "no":
-        text: "no"
-  smoker_enums:
-    name: smoker_enums
-    permissible_values:
-      "yes":
-        text: "yes"
-      "no":
-        text: "no"
-  ever_smoker_enums:
-    name: ever_smoker_enums
-    permissible_values:
-      "yes":
-        text: "yes"
-      "no":
-        text: "no"
-  ajcc_enums:
-    name: ajcc_enums
-    permissible_values:
-      "0":
-        text: "0"
-      i:
-        text: i
-      ii:
-        text: ii
-      iii:
-        text: iii
-      iv:
-        text: iv
-      iii/iv:
-        text: iii/iv
-      iv-a:
-        text: iv-a
-      iv-b:
-        text: iv-b
-      iv-c:
-        text: iv-c
-      iv-d:
-        text: iv-d
-  fobt_enums:
-    name: fobt_enums
-    permissible_values:
-      "yes":
-        text: "yes"
-      "no":
-        text: "no"
+      Qiagen:
+      thermo_fisher:
+      Tiangen:
+      ZR_Fecal_DNA_MiniPrep:
+      other:
   family_role_enums:
     name: family_role_enums
     permissible_values:
       child:
-        text: child
       mother:
-        text: mother
-      father:
-        text: father
+      father:        
+  feces_phenotype_metric_enums:
+    name: feces_phenotype_metric_enums
+    permissible_values:
+      Bristol stool form score (observable entity):
+        text: SNOMED:443172007
+      Calprotectin Measurement:
+        text: NCIT:C82005
+      Harvey-Bradshaw Index Clinical Classification:
+        text: NCIT:C191036
+  fmt_role_enums:
+    name: fmt_role_enums
+    permissible_values:
+      Donor:
+      Recipient (before procedure):
+      Recipient (after procedure):
+  hla_enums:
+    name: hla_enums
+    permissible_values:
+      HLA protein complex with DQ1 serotype:
+      HLA protein complex with DQ2 serotype:
+      HLA protein complex with DQ3 serotype:
+      HLA protein complex with DQ4 serotype:
+      HLA protein complex with DQ5 serotype:
+      HLA-DQA1*02:01 protein complex:
+      HLA-DQB1*03:01 protein complex:
+      HLA-DQB1*03:02 protein complex:
+      HLA-DQB1*05:01 protein complex:
+      HLA-DQB1*06:04 protein complex:
+      HLA-DRB1*04:01 protein complex:
+      HLA-DRB1*04:02 protein complex:
+      HLA-DRB1*04:04 protein complex:
+      HLA-DRB1*04:05 protein complex:
+      HLA-DRB1*04:08 protein complex:
+  lifestyle_enums:
+    name: lifestyle_enums
+    permissible_values:
+      Hunter-gatherer:
+      Agriculturalist:
+      Agropastoralist:
+      Pastoralist:
+      Fisher:
   neonatal_delivery_procedure_enum:
     name: neonatal_delivery_procedure_enum	
     permissible_values:
@@ -925,175 +537,182 @@ enums:
         text: NCIT:C46088
       Vaginal Delivery:
         text: NCIT:C81303
-  premature_enums:
-    name: premature_enums
+  neonatal_feeding_method_enums:
+    name: neonatal_feeding_method_enums
     permissible_values:
-      "yes":
-        text: "yes"
-      "no":
-        text: "no"
-  feeding_practice_enums:
-    name: feeding_practice_enums
+      Exclusively Breastfeeding;Mixed Feeding:
+      Exclusively Breastfeeding:
+      Exclusively Formula Feeding:
+      Mixed Feeding:
+      No Breastfeeding:
+  neonatal_preterm_birth_enums:
+    name: neonatal_preterm_birth_enums
     permissible_values:
-      exclusively_breastfeeding:
-        text: exclusively_breastfeeding
-      no_breastfeeding:
-        text: no_breastfeeding
-      "":
-        text: ""
-      mixed_feeding:
-        text: mixed_feeding
-      any_breastfeeding:
-        text: any_breastfeeding
-      exclusively_formula_feeding:
-        text: exclusively_formula_feeding
-  disease_stage_enums:
-    name: disease_stage_enums
+      "Yes":
+      "No":
+  obgyn_birth_control_enums:
+    name: obgyn_birth_control_enums
+    permissible_values:
+      "Yes":
+      "No":
+  obgyn_lactating_enums:
+    name: obgyn_lactating_enums
+    permissible_values:
+      "Yes":
+      "No":      
+  obgyn_menopause_enums:
+    name: obgyn_menopause_enums
+    permissible_values:
+      Premenopausal:
+      Postmenopausal:
+      Perimenopausal:
+  obgyn_pregnancy_enums:
+    name: obgyn_pregnancy_enums
+    permissible_values:
+      Pregnant:
+      Not Pregnant:
+  sequencing_platform_enums:
+    name: sequencing_platform_enums
+    permissible_values:
+      IlluminaHiSeq:
+      IlluminaMiSeq:
+      IlluminaNextSeq:
+      IlluminaNovaSeq:
+      IonProton:
+  sex_enums:
+    name: sex_enums
+    permissible_values:
+      Female:
+      Male:
+      NA:
+  smoker_enums:
+    name: smoker_enums
+    permissible_values:
+      smoker (finding):
+        text: SNOMED:77176002
+      Non-smoker (finding):
+        text: SNOMED:8392000
+      Ex-smoker (finding):
+        text: SNOMED:8517006
+  treatment_enums:
+    name: treatment_enums
+    permissible_values:
+    - Acarbose
+    - Albendazole
+    - Aminoglycoside Antibiotic
+    - Amiodarone
+    - Angiotensin II Receptor Antagonist
+    - Angiotensin-Converting Enzyme Inhibitors
+    - Anti-Arrhythmia Agents
+    - Anti-CTLA-4 Monoclonal Antibody
+    - Anti-diabetic Agent
+    - Anti-PD1 Monoclonal Antibody
+    - Anti-Retroviral Agents
+    - Antihelminthic Agent
+    - Antihypertensive Agents
+    - Antilipidemic Agent
+    - Antineoplastic Agent
+    - antiviral drug
+    - Aspirin
+    - Azathioprine
+    - Azithromycin
+    - Beta-Adrenergic Antagonist
+    - Beta-lactamase Inhibitor
+    - Calcium Channel Blocker
+    - Carbapenems
+    - Centrally acting hypotensive agent (substance)
+    - Cephalosporin Antibiotic
+    - Citrate-containing Alkalinizing Agent
+    - Clindamycin
+    - Clopidogrel
+    - Corticosteroid
+    - Coumarin
+    - Daptomycin
+    - Dietary Supplement
+    - Digitalis
+    - Dipeptidyl-Peptidase IV Inhibitors
+    - Diuretic
+    - Dopamine Antagonist
+    - EC 3.4.23.15 (renin) inhibitor
+    - Enteral Nutrition
+    - Ezetimibe
+    - fibrate
+    - fluoroquinolone antibiotic
+    - Folate
+    - Gentamicin
+    - glucagon-like peptide-1 receptor agonist
+    - Heparin
+    - Insulin
+    - Insulin Aspart
+    - Insulin Glargine
+    - Ipilimumab
+    - Iron
+    - Isophane Insulin, Human
+    - lactulose
+    - Laxative
+    - Lincomycin
+    - Macrolide Antibiotic
+    - Mesalamine
+    - Metformin
+    - Metformin Hydrochloride
+    - Methotrexate
+    - Metronidazole
+    - Nitrate
+    - nitrofuran antibiotic
+    - Nivolumab
+    - None
+    - Nonsteroidal Antiinflammatory Drug
+    - Opioid
+    - Pediatric Nutritional Supplement Drink
+    - Pembrolizumab
+    - Penicillin Antibiotic
+    - Phenylpiperidine derivative (substance)
+    - Potassium-Sparing Diuretic
+    - Probiotics
+    - Proton Pump Inhibitor
+    - red yeast rice
+    - Reverse Transcriptase Inhibitor
+    - second generation antipsychotic
+    - Sitagliptin
+    - sodium-glucose transport protein subtype 2 inhibitor
+    - statin
+    - Steroid Compound
+    - sulfonamide antibiotic
+    - Sulfonylurea Antidiabetic Agent
+    - Thiazide Diuretic
+    - Thiazolidinedione Antidiabetic Agent
+    - Thrombolytic Agent
+    - Trimethoprim-Sulfamethoxazole
+    - Vancomycin
+    - Xanthine Oxidase Inhibitor
+  tumor_staging_ajcc_enums:
+    name: tumor_staging_ajcc_enums
     permissible_values:
       "0":
-        text: "0"
       I:
-        text: I
       II:
-        text: II
       III:
-        text: III
       IV:
-        text: IV
-  dental_sample_type_enums:
-    name: dental_sample_type_enums
+      III/IV:
+  westernized_enums:
+    name: westernized_enums
     permissible_values:
-      teeth:
-        text: teeth
-      implant:
-        text: implant
-  history_of_periodontitis_enums:
-    name: history_of_periodontitis_enums
-    permissible_values:
-      "yes":
-        text: "yes"
-      "no":
-        text: "no"
+      "Yes":
+      "No":
   zigosity_enums:
     name: zigosity_enums
     permissible_values:
       monozygotic:
-        text: monozygotic
       dizygotic:
-        text: dizygotic
-  menopausal_status_enums:
-    name: menopausal_status_enums
-    permissible_values:
-      pre:
-        text: pre
-      going_through:
-        text: going_through
-      post:
-        text: post
-  diet_enums:
-    name: diet_enums
-    permissible_values:
-      omnivore:
-        text: omnivore
-      vegan:
-        text: vegan
-      vegetarian:
-        text: vegetarian
-      high_fibers:
-        text: high_fibers
-      low_fibers:
-        text: low_fibers
-      high_gluten:
-        text: high_gluten
-      low_gluten:
-        text: low_gluten
-  RECIST_enums:
-    name: RECIST_enums
-    permissible_values:
-      SD:
-        text: SD
-      PR:
-        text: PR
-      PD:
-        text: PD
-      CR:
-        text: CR
-  ORR_enums:
-    name: ORR_enums
-    permissible_values:
-      "yes":
-        text: "yes"
-      "no":
-        text: "no"
-  PFS12_enums:
-    name: PFS12_enums
-    permissible_values:
-      "yes":
-        text: "yes"
-      "no":
-        text: "no"
-  history_of_therapy_enums:
-    name: history_of_therapy_enums
-    permissible_values:
-      "yes":
-        text: "yes"
-      "no":
-        text: "no"
-  curator_enums:
-    name: curator_enums
-    permissible_values:
-      Paolo_Manghi:
-        text: Paolo_Manghi
-      Valentina_Giunchiglia:
-        text: Valentina_Giunchiglia
-      Pamela_Ferretti:
-        text: Pamela_Ferretti
-      Marisa_Metzger:
-        text: Marisa_Metzger
-      Giacomo_DAmato:
-        text: Giacomo_DAmato
-      Jacob_Wirbel:
-        text: Jacob_Wirbel
-      Arianna_Bonetti:
-        text: Arianna_Bonetti
-      Anna_Pedrotti:
-        text: Anna_Pedrotti
-      Francesca_DeFilippis:
-        text: Francesca_DeFilippis
-      Aitor_Blanco_Miguez:
-        text: Aitor_Blanco_Miguez
-      Arianna_Bonetti;Anna_Pedrotti:
-        text: Arianna_Bonetti;Anna_Pedrotti
-      Francesco_Asnicar;Paolo_Manghi:
-        text: Francesco_Asnicar;Paolo_Manghi
-      Ilya_Likhotkin;Paolo_Manghi:
-        text: Ilya_Likhotkin;Paolo_Manghi
-      Aitor_Blanco_Miguez;Paolo_Manghi:
-        text: Aitor_Blanco_Miguez;Paolo_Manghi
-      Giacomo_Damato;Paolo_Manghi:
-        text: Giacomo_Damato;Paolo_Manghi
-      Anna_Pedrotti;Paolo_Manghi:
-        text: Anna_Pedrotti;Paolo_Manghi
-      Mireia_VallesColomer:
-        text: Mireia_VallesColomer
-      Andrew_Malthez_Thomas:
-        text: Andrew_Malthez_Thomas
-      Andrea_Zen:
-        text: Andrea_Zen
-      Bryan_Merrill:
-        text: Bryan_Merrill
 classes:
   dh_interface:
     name: dh_interface
     description: A DataHarmonizer interface
-    
   Project:
     name: Project
-    
     attributes:
       project_name:
         name: project_name
-        
         alias: project_name
         owner: Project
         domain_of:
@@ -1101,7 +720,6 @@ classes:
         range: string
       studies:
         name: studies
-        
         multivalued: true
         alias: studies
         owner: Project
@@ -1112,11 +730,9 @@ classes:
     tree_root: true
   Study:
     name: Study
-    
     attributes:
       samples:
         name: samples
-        
         multivalued: true
         alias: samples
         owner: Study
@@ -1127,7 +743,6 @@ classes:
       study_name:
         name: study_name
         description: Dataset name.
-        
         multivalued: false
         alias: study_name
         owner: Study
@@ -1140,7 +755,6 @@ classes:
           [a-zA-Z-]+_[0-9]4}_[a-zA-Z-]+ | [a-zA-Z-]+_[0-9]4}_[a-zA-Z0-9]+
   Sample:
     name: Sample
-    
     is_a: dh_interface
     attributes:
       study_name:
@@ -1151,13 +765,6 @@ classes:
         description: Dataset name.
         pattern: >-
           ^[a-zA-Z-]+_[0-9]{4}$|^[a-zA-Z-]+_[0-9]{4}[a-zA-Z-]+$|^[a-zA-Z-]+_[0-9]{4}_[a-zA-Z-]+$|^[a-zA-Z-]+_[0-9]{4}_[a-zA-Z0-9]+$
-      sample_id:
-        name: sample_id
-        range: string
-        required: true
-        multivalued: false
-        description: Sample identifier.
-        pattern: ^[0-9a-zA-Z]\S+$
       subject_id:
         name: subject_id
         range: string
@@ -1165,6 +772,43 @@ classes:
         multivalued: false
         description: Subject identifier.
         pattern: ^[0-9a-zA-Z]\S+$
+      sample_id:
+        name: sample_id
+        range: string
+        required: true
+        multivalued: false
+        description: Sample identifier.
+        pattern: ^[0-9a-zA-Z]\S+$
+      target_condition:
+        name: target_condition
+        range: target_condition_enums
+        required: true
+        multivalued: true
+        description: Main phenotype(s)/condition(s) of interest for a given study
+      control:
+        name: control
+        range: control_enums
+        required: true
+        multivalued: false
+        description: Whether the sample is control, case, or not used in the study
+      country:
+        name: country
+        range: country_enums
+        required: true
+        multivalued: false
+        description: Location where subject lives and/or data was collected
+      bodysite:
+        name: bodysite
+        range: bodysite_enums
+        required: false
+        multivalued: false
+        description: Subject's bodysite the given sample was collected from
+      curator:
+        name: curator
+        range: curator_enums
+        required: true
+        multivalued: true
+        description: Curator name.
       age:
         name: age
         range: integer
@@ -1186,12 +830,36 @@ classes:
         description: >-
           11 <= Adolescent < 18|18 <= Adult < 65|2 <= Children 2-11 Years Old <
           11|65 <= Elderly < 130|0 <= Infant < 2
-      control:
-        name: control
-        range: control_enums
-        required: true
+      antibiotics_current_use:
+        name: antibiotics_current_use
+        range: antibiotics_current_use_enums
+        required: false
         multivalued: false
-        description: Whether the sample is control, case, or not used in the study
+        description: >-
+          Antibiotics current usage. `Yes` for currently using and `No` for not using
+      bmi:
+        name: bmi
+        range: double
+        required: false
+        multivalued: false
+        description: >-
+          body mass index (EFO:0004340): An indicator of body density as 
+          determined by the relationship of BODY WEIGHT to BODY HEIGHT. 
+          BMI=weight (kg)/height squared (m2).
+        pattern: ^[0-9]+\.?[0-9]*$
+      days_from_first_collection:
+        name: days_from_first_collection
+        range: integer
+        required: false
+        multivalued: false
+        description: Used for time series studies.
+        pattern: ^[0-9]+$
+      dietary_restriction:
+        name: dietary_restriction
+        range: dietary_restriction_enums
+        required: false
+        multivalued: false
+        description: Dietary regime (partial match to SNOMED:182922004 or SNOMED:162536008)
       disease:
         name: disease
         range: disease_enums
@@ -1200,496 +868,58 @@ classes:
         description: >-
           Reported disease/condition type(s) for a participant. 'Healthy' if
           disease(s)/condition(s) assessed under a given study is not detected
-      target_condition:
-        name: target_condition
-        range: target_condition_enums
-        required: true
-        multivalued: true
-        description: Main phenotype(s)/condition(s) of interest for a given study
-      treatment:
-        name: treatment
-        range: treatment_enums
-        required: false
-        multivalued: true
-        description: Medication(s)/treatment(s) applied to the subject
-      bodysite:
-        name: bodysite
-        range: bodysite_enums
-        required: false
-        multivalued: false
-        description: Subject's bodysite the given sample was collected from
-      body_subsite:
-        name: body_subsite
-        range: body_subsite_enums
+      disease_response_orr:
+        name: disease_response_orr
+        range: disease_response_orr_enums
         required: false
         multivalued: false
         description: >-
-          Subject's body subsite the given sample was collected from. Should be
-          more specific information than bodysite
-      sex:
-        name: sex
-        range: sex_enums
-        required: false
-        multivalued: false
-        description: Biological sex of the subject
-      antibiotics_current_use:
-        name: antibiotics_current_use
-        range: antibiotics_current_use_enums
+          Overal Response (ORR, NCIT:C96613): An assessment of the overall 
+          response of the disease to the therapy
+      disease_response_pfs:
+        name: disease_response_pfs
+        range: disease_response_pfs_enums
         required: false
         multivalued: false
         description: >-
-          Antibiotics current usage. `Yes` for currently using and `No` for not
-          using
-      BMI:
-        name: BMI
-        range: double
-        required: false
-        multivalued: false
-        description: Body mass index (kg/m2).
-        pattern: ^[0-9]+\.?[0-9]*$
-      country:
-        name: country
-        range: country_enums
-        required: true
-        multivalued: false
-        description: >-
-          Country of acquisition using ISO3 code from
-          http://www.fao.org/countryprofiles/iso3list/en/.
-      location:
-        name: location
-        range: string
-        required: false
-        multivalued: false
-        description: Free-form additional location information.
-        pattern: ^.+$
-      population:
-        name: population
-        range: string
-        required: false
-        multivalued: false
-        description: can describe the belonging to a specific population
-        pattern: ^[a-zA-Z]\S+$
-      travel_destination:
-        name: travel_destination
-        range: travel_destination_enums
+          Progression Free Survival (PFS, EFO:0004920): Progression free 
+          survival is a measurement from a defined time point e.g. diagnosis 
+          and indicates that the disease did not progress i.e. tumours did 
+          not increase in size and new incidences did not occur. PFS is 
+          usually used in analyzing results of treatment for advanced disease.
+      disease_response_pfs_month:
+        name: disease_response_pfs_month
+        range: integer
         required: false
         multivalued: false
         description: >-
-          travel destination using ISO3 code from
-          http://www.fao.org/countryprofiles/iso3list/en/.
-      westernized:
-        name: westernized
-        range: westernized_enums
-        required: false
-        multivalued: false
-        description: Subject belongs to a westernized community.
-      lifestyle:
-        name: lifestyle
-        range: lifestyle_enums
-        required: false
-        multivalued: false
-        description: to describe the lifestyle of non-westernized people
-      days_from_first_collection:
-        name: days_from_first_collection
-        range: integer
-        required: false
-        multivalued: false
-        description: Used for time series studies.
+          Overal Response (ORR, NCIT:C96613): An assessment of the overall 
+          response of the disease to the therapy
         pattern: ^[0-9]+$
-      sequencing_platform:
-        name: sequencing_platform
-        range: sequencing_platform_enums
-        required: true
-        multivalued: false
-        description: >-
-          This will be modified as new sequencing platforms are added to the
-          database.
-      DNA_extraction_kit:
-        name: DNA_extraction_kit
-        range: DNA_extraction_kit_enums
-        required: false
-        multivalued: false
-        description: DNA extraction kit.
-      PMID:
-        name: PMID
-        range: string
-        required: false
-        multivalued: false
-        description: Identifier of the main publication in PubMed.
-        pattern: ^[0-9]{8}$|^NA$
-      number_reads:
-        name: number_reads
-        range: integer
-        required: true
-        multivalued: false
-        description: Number of final reads - calculated from raw data.
-        pattern: ^[0-9]+$
-      number_bases:
-        name: number_bases
-        range: double
-        required: true
-        multivalued: false
-        description: >-
-          Total number of bases sequenced in the sample - calculated from raw
-          data.
-        pattern: ^[0-9]+$
-      minimum_read_length:
-        name: minimum_read_length
-        range: integer
-        required: true
-        multivalued: false
-        description: Minimum read length - calculated from raw data.
-        pattern: ^[0-9]+$|^NA$
-      median_read_length:
-        name: median_read_length
-        range: integer
-        required: true
-        multivalued: false
-        description: Median read length - calculated from raw data.
-        pattern: ^[0-9]+$|^NA$
-      NCBI_accession:
-        name: NCBI_accession
-        range: string
-        required: false
-        multivalued: true
-        description: Semicolon-separated vector of NCBI accessions.
-        pattern: ^[ES]R[SR][0-9]+$
-      bristol_score:
-        name: bristol_score
-        range: double
+      disease_response_recist:
+        name: disease_response_recist
+        range: disease_response_recist_enums
         required: false
         multivalued: false
         description: >-
-          The Brisol scale (feces-consistentcy scale) for the stool sample
-          collected.
-        pattern: ^[0-9]+$
-      pregnant:
-        name: pregnant
-        range: pregnant_enums
+          Response Evaluation Criteria in Solid Tumors (RECIST, DICOM:112022): 
+          Standard parameters to be used when documenting response of solid 
+          tumors to treatment; a set of published rules that define when 
+          cancer patients improve (`respond`), stay the same (`stable`), or 
+          worsen (`progression`) during treatments. (from www.recist.com)
+      dna_extraction_kit:
+        name: dna_extraction_kit
+        range: dna_extraction_kit_enums
         required: false
         multivalued: false
-        description: "Pregnancy of the subject (men: no)."
-      lactating:
-        name: lactating
-        range: lactating_enums
-        required: false
-        multivalued: false
-        description: "Lactating subjects (men: no)."
-      birth_control_pil:
-        name: birth_control_pil
-        range: birth_control_pil_enums
-        required: false
-        multivalued: false
-        description: "Use of the birth-control-pils at the sampling time (men: no)."
-      smoker:
-        name: smoker
-        range: smoker_enums
-        required: false
-        multivalued: false
-        description: Currently a smoker at sampling.
-      ever_smoker:
-        name: ever_smoker
-        range: ever_smoker_enums
-        required: false
-        multivalued: false
-        description: Ever been a smoker.
-      ajcc:
-        name: ajcc
-        range: ajcc_enums
-        required: false
-        multivalued: false
-        description: AJCC staging for colorectal-cancer.
-      fobt:
-        name: fobt
-        range: fobt_enums
-        required: false
-        multivalued: false
-        description: Fecal occult blood test.
-      tnm:
-        name: tnm
-        range: tnm_enums
-        required: false
-        multivalued: false
-        description: TNM classification for colorectal-cancer.
-      inr:
-        name: inr
-        range: double
-        required: false
-        multivalued: false
-        description: International normalized ratio.
-        pattern: ^[0-9]+\.?[0-9]*$
-      protein_intake:
-        name: protein_intake
-        range: double
-        required: false
-        multivalued: false
-        description: Indication about the protein intake in the Mongolians diet.
-        pattern: ^[0-9]+\.?[0-9]*$
-      flg_genotype:
-        name: flg_genotype
-        range: flg_genotype_enums
-        required: false
-        multivalued: false
-        description: Any term for filaggrin-protein genotype.
-      momeducat:
-        name: momeducat
-        range: integer
-        required: false
-        multivalued: false
-        description: Years of education of the mother of the subject.
-        pattern: ^[0-9]+$
-      hla_drb12:
-        name: hla_drb12
-        range: integer
-        required: false
-        multivalued: false
-        description: Hla_drb12 allele.
-        pattern: ^[0-9]+$
-      hla_dqa12:
-        name: hla_dqa12
-        range: integer
-        required: false
-        multivalued: false
-        description: Hla_dqa12 allele.
-        pattern: ^[0-9]+$
-      hla_dqa11:
-        name: hla_dqa11
-        range: integer
-        required: false
-        multivalued: false
-        description: Hla_dqa11 allele.
-        pattern: ^[0-9]+$
-      hla_drb11:
-        name: hla_drb11
-        range: integer
-        required: false
-        multivalued: false
-        description: Hla_drb11 allele.
-        pattern: ^[0-9]+$
-      hla_dbq12:
-        name: hla_dbq12
-        range: integer
-        required: false
-        multivalued: false
-        description: Hla_dbq12 allele.
-        pattern: ^[0-9]+$
-      hla_dbq11:
-        name: hla_dbq11
-        range: integer
-        required: false
-        multivalued: false
-        description: Hla_dbq11 allele.
-        pattern: ^[0-9]+$
-      ctp:
-        name: ctp
-        range: integer
-        required: false
-        multivalued: false
-        description: Cytidine triphosphate level.
-        pattern: ^[0-9]+$
-      start_solidfood:
-        name: start_solidfood
-        range: integer
-        required: false
-        multivalued: false
-        description: First day of solid food introduction (newborns).
-        pattern: ^[0-9]+$
-      triglycerides:
-        name: triglycerides
-        range: double
-        required: false
-        multivalued: false
-        description: Curators must use mg/dl.
-        pattern: ^[0-9]+\.?[0-9]*$
-      cholesterol:
-        name: cholesterol
-        range: double
-        required: false
-        multivalued: false
-        description: Curators must use mg/dl.
-        pattern: ^[0-9]+\.?[0-9]*$
-      hdl:
-        name: hdl
-        range: double
-        required: false
-        multivalued: false
-        description: Curators must use mg/dl.
-        pattern: ^[0-9]+\.?[0-9]*$
-      ldl:
-        name: ldl
-        range: double
-        required: false
-        multivalued: false
-        description: Curators must use mg/dl.
-        pattern: ^[0-9]+\.?[0-9]*$
-      ALT:
-        name: ALT
-        range: double
-        required: false
-        multivalued: false
-        description: >-
-          The Alanine aminotransferase test. STD. results of the test are
-          allowed.
-        pattern: ^[0-9]+\.?[0-9]*$
-      eGFR:
-        name: eGFR
-        range: double
-        required: false
-        multivalued: false
-        description: >-
-          The Estimated Glomerular Filtration Rate. STD. estimate of the test
-          allowed.
-        pattern: ^[0-9]+\.?[0-9]*$
-      adiponectin:
-        name: adiponectin
-        range: double
-        required: false
-        multivalued: false
-        description: Curators must use mg/l.
-        pattern: ^[0-9]+\.?[0-9]*$
-      fasting_insulin:
-        name: fasting_insulin
-        range: double
-        required: false
-        multivalued: false
-        description: Curators must use micro-units/ml.
-        pattern: ^[0-9]+\.?[0-9]*$
-      hba1c:
-        name: hba1c
-        range: double
-        required: false
-        multivalued: false
-        description: Curators must use %.
-        pattern: ^[0-9]+\.?[0-9]*$
-      c_peptide:
-        name: c_peptide
-        range: double
-        required: false
-        multivalued: false
-        description: Curators must use ng/ml.
-        pattern: ^[0-9]+\.?[0-9]*$
-      glp_1:
-        name: glp_1
-        range: double
-        required: false
-        multivalued: false
-        description: Curators must use pmol/l.
-        pattern: ^[0-9]+\.?[0-9]*$
-      cd163:
-        name: cd163
-        range: double
-        required: false
-        multivalued: false
-        description: Curators must use ng/ml.
-        pattern: ^[0-9]+\.?[0-9]*$
-      il_1:
-        name: il_1
-        range: double
-        required: false
-        multivalued: false
-        description: Curators must use pg/ml.
-        pattern: ^[0-9]+\.?[0-9]*$
-      leptin:
-        name: leptin
-        range: double
-        required: false
-        multivalued: false
-        description: Curators must use micrograms/l.
-        pattern: ^[0-9]+\.?[0-9]*$
-      glucose:
-        name: glucose
-        range: double
-        required: false
-        multivalued: false
-        description: Curators must use mg/dl.
-        pattern: ^[0-9]+\.?[0-9]*$
-      fasting_glucose:
-        name: fasting_glucose
-        range: double
-        required: false
-        multivalued: false
-        description: Curators must use mg/dl.
-        pattern: ^[0-9]+\.?[0-9]*$
-      fgf_19:
-        name: fgf_19
-        range: double
-        required: false
-        multivalued: false
-        description: Curators must use pg/ml.
-        pattern: ^[0-9]+\.?[0-9]*$
-      glutamate_decarboxylase_2_antibody:
-        name: glutamate_decarboxylase_2_antibody
-        range: double
-        required: false
-        multivalued: false
-        description: Glutamic acid decarboxylase (GAD65) antibody assay.
-        pattern: ^[0-9]+\.?[0-9]*$
-      creatinine:
-        name: creatinine
-        range: double
-        required: false
-        multivalued: false
-        description: Curators must use micro-mol/l.
-        pattern: ^[0-9]+\.?[0-9]*$
-      creatine:
-        name: creatine
-        range: double
-        required: false
-        multivalued: false
-        description: Curators must use micro-mol/l.
-        pattern: ^[0-9]+\.?[0-9]*$
-      albumine:
-        name: albumine
-        range: double
-        required: false
-        multivalued: false
-        description: Albumine level; curators must use g/l.
-        pattern: ^[0-9]+\.?[0-9]*$
-      bilirubin:
-        name: bilirubin
-        range: double
-        required: false
-        multivalued: false
-        description: Bilirubin; curators must use mg/dl.
-        pattern: ^[0-9]+\.?[0-9]*$
-      prothrombin_time:
-        name: prothrombin_time
-        range: double
-        required: false
-        multivalued: false
-        description: Prothrombin time in seconds.
-        pattern: ^[0-9]+\.?[0-9]*$
-      dyastolic_p:
-        name: dyastolic_p
-        range: double
-        required: false
-        multivalued: false
-        description: Measured in mm/Hg.
-        pattern: ^[0-9]+\.?[0-9]*$
-      systolic_p:
-        name: systolic_p
-        range: double
-        required: false
-        multivalued: false
-        description: Measured in mm/Hg.
-        pattern: ^[0-9]+\.?[0-9]*$
-      hscrp:
-        name: hscrp
-        range: double
-        required: false
-        multivalued: false
-        description: >-
-          High-sensitivity C-reactive protein test result;curator have to use
-          mg/L
-        pattern: ^[0-9]+\.?[0-9]*$
+        description: Name of the DNA extraction kit
       family:
         name: family
         range: string
         required: false
         multivalued: false
         description: >-
-          A number identifying the family subjects belong; not corrected for
-          meta-analyses.
+          A number identifying the family subjects belong; not corrected for meta-analyses.
         pattern: ^.+$
       family_role:
         name: family_role
@@ -1699,207 +929,171 @@ classes:
         description: >-
           Role in the family when multiple samples come from the same family but
           different persons.
-      born_method:
-        name: born_method
-        range: born_method_enums
+      feces_phenotype_metric:
+        name: feces_phenotype_metric
+        range: feces_phenotype_metric_enums
         required: false
         multivalued: false
-        description: C-section vs vaginal birth.
-      c_section_type:
-        name: c_section_type
-        range: c_section_type_enums
-        required: false
-        multivalued: false
-        description: C-section main decision reason.
-      premature:
-        name: premature
-        range: premature_enums
-        required: false
-        multivalued: false
-        description: If premature at birth.
-      birth_order:
-        name: birth_order
-        range: integer
-        required: false
-        multivalued: false
-        description: Can be used for multiple birth.
-        pattern: ^[0-9]+$
-      age_twins_started_to_live_apart:
-        name: age_twins_started_to_live_apart
-        range: integer
-        required: false
-        multivalued: false
-        description: Age at which twins started to live apart (years).
-        pattern: ^[0-9]+$
-      feeding_practice:
-        name: feeding_practice
-        range: feeding_practice_enums
-        required: false
-        multivalued: false
-        description: Feeding practice.
-      breastfeeding_duration:
-        name: breastfeeding_duration
-        range: integer
-        required: false
-        multivalued: false
-        description: curator must use days
-        pattern: ^[0-9]+$
-      formula_first_day:
-        name: formula_first_day
-        range: integer
-        required: false
-        multivalued: false
-        description: " the age infants get the first formula feeding in days"
-        pattern: ^[0-9]+$
-      ESR:
-        name: ESR
+        descrition: >-
+          Measurements collected from stool sample, including observation, 
+          chemical test, and diagnostic procedure
+      feces_phenotype_value:
+        name: feces_phenotype_value
         range: double
         required: false
         multivalued: false
-        description: Erythrocyte sedimentation rate (ESR) in mm/H.
-        pattern: ^[0-9]+\.?[0-9]*$
-      HLA:
-        name: HLA
+        descrition: Measured value for the metric specified under 'feces_phenotype_metric'
+      fmt_id:
+        name: fmt_id
+        range: string
+        required: false
+        multivalued: false
+        descrition: The id assigned to the FMT (Fecal microbiota transplantation) participants in the study
+        pattern: .+
+      fmt_role:
+        name: fmt_role
+        range: fmt_role_enums
+        required: false
+        multivalued: false
+        descrition: >-
+          The role of the FMT (Fecal microbiota transplantation) participants. 
+          For recipient's samples, timing information (i.e., before or after 
+          FMT) is included as well.
+      hla:
+        name: hla
+        range: hla_enums
+        required: false
+        multivalued: true
+        description: >-
+          HLA complex. A family of proteins that are essential for the 
+          presentation of peptide antigens on cell surfaces that modulate 
+          the host defensive activities of T-cells. This protein family 
+          includes major histocompatibility complex (MHC) class I and 
+          class II proteins.
+      lifestyle:
+        name: lifestyle
+        range: lifestyle_enums
+        required: false
+        multivalued: false
+        description: to describe the lifestyle of non-westernized people
+      location:
+        name: location
+        range: string
+        required: false
+        multivalued: false
+        description: Free-form additional location information.
+        pattern: ^.+$
+      median_read_length:
+        name: median_read_length
+        range: integer
+        required: true
+        multivalued: false
+        description: Median read length - calculated from raw data.
+        pattern: ^[0-9]+$|^NA$
+      minimum_read_length:
+        name: minimum_read_length
+        range: integer
+        required: true
+        multivalued: false
+        description: Minimum read length - calculated from raw data.
+        pattern: ^[0-9]+$|^NA$
+      ncbi_accession:
+        name: ncbi_accession
         range: string
         required: false
         multivalued: true
-        description: HLA DR-DQ alleles conferring risk of Typ-1-Diabetes (T1D)
-        pattern: ^.+$
-      autoantibody_positive:
-        name: autoantibody_positive
+        description: Semicolon-separated vector of NCBI accessions.
+        pattern: ^[ES]R[SR][0-9]+$
+      neonatal_birth_weight:
+        name: neonatal_birth_weight
+        range: double
+        required: false
+        multivalued: false
+        description: The mass or quantity of heaviness of an individual at BIRTH. Unit is in grams. (EFO:0004344)
+        pattern: ^[0-9]+\.?[0-9]*$
+      neonatal_delivery_procedure:
+        name: neonatal_delivery_procedure
+        range: neonatal_delivery_procedure_enums
+        required: false
+        multivalued: false
+        description: Description of the method by which a fetus is delivered. (NCIT:C81179)
+      neonatal_feeding_method:
+        name: neonatal_feeding_method
+        range: neonatal_feeding_method_enums
+        required: false
+        multivalued: false
+        description: >-
+          Infant feeding methods. 'Breastfeeding' refers feeding milk from 
+          human (include non-mother's and through bottle), 'Mixed_feeding' 
+          refers both breastfeeding and formula feeding, 'Exclusively 
+          Breastfeeding;Mixed Feeding' referes the cases where any 
+          breastfeeding was done but formula feeding information is unavailable.      
+      neonatal_gestational_age:
+        name: neonatal_gestational_age
+        range: double
+        required: false
+        multivalued: false
+        description: The age of the conceptus, beginning from the time of FERTILIZATION. (EFO:0005112)
+        pattern: ^[0-9]+\.?[0-9]*$
+      neonatal_preterm_birth:
+        name: neonatal_preterm_birth
+        range: neonatal_preterm_birth_enums
+        required: false
+        multivalued: false
+        description: Birth when a fetus is less than 37 weeks and 0 days gestational age (NCIT:C92861).
+      number_bases:
+        name: number_bases
+        range: double
+        required: true
+        multivalued: false
+        description: >-
+          Total number of bases sequenced in the sample - calculated from raw data.
+        pattern: ^[0-9]+$
+      number_reads:
+        name: number_reads
+        range: integer
+        required: true
+        multivalued: false
+        description: Number of final reads - calculated from raw data.
+        pattern: ^[0-9]+$
+      obgyn_birth_control:
+        name: obgyn_birth_control
+        range: obgyn_birth_control_enums
+        required: false
+        multivalued: false
+        description: Use of birth control pill (Oral Contraceptive)
+      obgyn_lactating:
+        name: obgyn_lactating
+        range: obgyn_lactating_enums
+        required: false
+        multivalued: false
+        description: An indication that the subject is currently producing milk. (NCIT:C82463)
+      obgyn_menopause:
+        name: obgyn_menopause
+        range: obgyn_menopause_enums
+        required: false
+        multivalued: false
+        description: An indicator as to whether the female subject is in menopause        
+      obgyn_pregnancy:
+        name: obgyn_pregnancy
+        range: obgyn_pregnancy_enums
+        required: false
+        multivalued: false
+        description: The pregnancy status of an individual.     
+      pmid:
+        name: pmid
         range: string
         required: false
-        multivalued: true
-        description: Tested positive for AAB.
-        pattern: ^.+$
-      age_seroconversion:
-        name: age_seroconversion
-        range: double
+        multivalued: false
+        description: Identifier of the main publication in PubMed.
+        pattern: ^[0-9]{8}$|^NA$
+      population:
+        name: population
+        range: string
         required: false
         multivalued: false
-        description: Age at seroconvention was detected (days).
-        pattern: ^[0-9]+\.?[0-9]*$
-      age_T1D_diagnosis:
-        name: age_T1D_diagnosis
-        range: double
-        required: false
-        multivalued: false
-        description: Age at which T1D was diagnosed (days).
-        pattern: ^[0-9]+\.?[0-9]*$
-      disease_stage:
-        name: disease_stage
-        range: disease_stage_enums
-        required: false
-        multivalued: false
-        description: >-
-          Stage information for diseases that can be divided into multiple
-          stages.
-      disease_location:
-        name: disease_location
-        range: disease_location_enums
-        required: false
-        multivalued: true
-        description: Can be used for diseases which occur on different body parts like CD.
-      calprotectin:
-        name: calprotectin
-        range: double
-        required: false
-        multivalued: false
-        description: >-
-          Higher calprotectin is an indicator for inflammation in the
-          gastrointestinal tract.
-        pattern: ^[0-9]+\.?[0-9]*$
-      wbc:
-        name: wbc
-        range: double
-        required: false
-        multivalued: false
-        description: White blood cells count; curators must use *1000counts/µL
-        pattern: ^[0-9]+\.?[0-9]*$
-      rbc:
-        name: rbc
-        range: double
-        required: false
-        multivalued: false
-        description: Red blood cells count; curators must use *million_counts/µL
-        pattern: ^[0-9]+\.?[0-9]*$
-      blood_platelet:
-        name: blood_platelet
-        range: double
-        required: false
-        multivalued: false
-        description: Curators must use *1000counts/µl
-        pattern: ^[0-9]+\.?[0-9]*$
-      hemoglobinometry:
-        name: hemoglobinometry
-        range: double
-        required: false
-        multivalued: false
-        description: Hemoglobin concentration in blood; curators must use g/dl
-        pattern: ^[0-9]+\.?[0-9]*$
-      ast:
-        name: ast
-        range: double
-        required: false
-        multivalued: false
-        description: Aspartate transaminase; curator must use U/l
-        pattern: ^[0-9]+\.?[0-9]*$
-      alt:
-        name: alt
-        range: double
-        required: false
-        multivalued: false
-        description: Alanine aminotransferase; curator must use U/l
-        pattern: ^[0-9]+\.?[0-9]*$
-      globulin:
-        name: globulin
-        range: double
-        required: false
-        multivalued: false
-        description: Curator must use g/l
-        pattern: ^[0-9]+\.?[0-9]*$
-      urea_nitrogen:
-        name: urea_nitrogen
-        range: double
-        required: false
-        multivalued: false
-        description: Curator must use mmol/l
-        pattern: ^[0-9]+\.?[0-9]*$
-      ASO:
-        name: ASO
-        range: double
-        required: false
-        multivalued: false
-        description: Antistreptolysin O; curator must use IU/ml
-        pattern: ^[0-9]+\.?[0-9]*$
-      anti_ccp_antibody:
-        name: anti_ccp_antibody
-        range: double
-        required: false
-        multivalued: false
-        description: Curator must use U/ml
-        pattern: ^[0-9]+\.?[0-9]*$
-      rheumatoid_factor:
-        name: rheumatoid_factor
-        range: double
-        required: false
-        multivalued: false
-        description: Curator must use IU/ml
-        pattern: ^[0-9]+\.?[0-9]*$
-      dental_sample_type:
-        name: dental_sample_type
-        range: dental_sample_type_enums
-        required: false
-        multivalued: false
-        description: Dental sample type.
-      history_of_periodontitis:
-        name: history_of_periodontitis
-        range: history_of_periodontitis_enums
-        required: false
-        multivalued: false
-        description: >-
-          If the patients has been reported having previously suffered of
-          periodontitis in one of more sites.
+        description: can describe the belonging to a specific population
+        pattern: ^[a-zA-Z]\S+$
       PPD_M:
         name: PPD_M
         range: double
@@ -1928,68 +1122,24 @@ classes:
         multivalued: false
         description: Depth of the pocket reached by the probe in a dental implant ('L').
         pattern: ^[0-9]+\.?[0-9]*$
-      zigosity:
-        name: zigosity
-        range: zigosity_enums
+      sequencing_platform:
+        name: sequencing_platform
+        range: sequencing_platform_enums
+        required: true
+        multivalued: false
+        description: A scientific instrument used to automate the DNA sequencing process
+      sex:
+        name: sex
+        range: sex_enums
         required: false
         multivalued: false
-        description: Zigosity.
-      menopausal_status:
-        name: menopausal_status
-        range: menopausal_status_enums
+        description: Biological sex of the subject
+      smoker:
+        name: smoker
+        range: smoker_enums
         required: false
         multivalued: false
-        description: Menopausal status.
-      BASDAI:
-        name: BASDAI
-        range: double
-        required: false
-        multivalued: false
-        description: Bath Ankylosing Spondylitis Disease Activity Index
-        pattern: ^[0-9]+\.?[0-9]*$
-      BASFI:
-        name: BASFI
-        range: double
-        required: false
-        multivalued: false
-        description: Bath Ankylosing Spondylitis Functional Index
-        pattern: ^[0-9]+\.?[0-9]*$
-      HBI:
-        name: HBI
-        range: double
-        required: false
-        multivalued: false
-        description: >-
-          Harvey-Bradshaw Index clinical indication of active disease and
-          inflammation
-        pattern: ^[0-9]+\.?[0-9]*$
-      SCCAI:
-        name: SCCAI
-        range: double
-        required: false
-        multivalued: false
-        description: simple clinical colitis activity index
-        pattern: ^[0-9]+\.?[0-9]*$
-      birth_weight:
-        name: birth_weight
-        range: double
-        required: false
-        multivalued: false
-        description: "curators must use gramms "
-        pattern: ^[0-9]+\.?[0-9]*$
-      gestational_age:
-        name: gestational_age
-        range: double
-        required: false
-        multivalued: false
-        description: duration time of pregnancy;curatos must use weeks
-        pattern: ^[0-9]+\.?[0-9]*$
-      diet:
-        name: diet
-        range: diet_enums
-        required: false
-        multivalued: false
-        description: type of diet; low_fiber defined in SpencerCN_2021 as <20 g/day
+        description: Tobacco smoking behavior        
       subcohort:
         name: subcohort
         range: string
@@ -1997,41 +1147,25 @@ classes:
         multivalued: false
         description: Identifier of a sub-set of the cohort. Can be everything.
         pattern: ^[0-9a-zA-Z]\S+$
-      RECIST:
-        name: RECIST
-        range: RECIST_enums
+      treatment:
+        name: treatment
+        range: treatment_enums
         required: false
-        multivalued: false
-        description: >-
-          RECIST classification for response to cancer-therapy: SD=Stable
-          Disease; PR=Partial Response; PD=Progression Disease; CR=Complete
-          Response
-      ORR:
-        name: ORR
-        range: ORR_enums
-        required: false
-        multivalued: false
-        description: Overall Response Rate (see also RECIST)
-      PFS12:
-        name: PFS12
-        range: PFS12_enums
-        required: false
-        multivalued: false
-        description: Progression-free survival in 12 months.
-      history_of_therapy:
-        name: history_of_therapy
-        range: history_of_therapy_enums
-        required: false
-        multivalued: false
-        description: >-
-          If the patient has been reported having previously undergone a
-          standard therapy for the dataset disease.
-      curator:
-        name: curator
-        range: curator_enums
-        required: true
         multivalued: true
-        description: Curator name.
+        description: Medication(s)/treatment(s) applied to the subject
+      tumor_staging_ajcc:
+        name: tumor_staging_ajcc
+        range: tumor_staging_ajcc_enums
+        required: false
+        multivalued: false
+        description: A system to describe the amount and spread of cancer in a patient's body
+      tumor_staging_tnm:
+        name: tumor_staging_tnm
+        range: string
+        required: false
+        multivalued: false
+        description: A system to describe the amount and spread of cancer in a patient's body
+        pattern: t[x1-4]n[x0-3]m[x0-1]|pTis|Tis
       uncurated_metadata:
         name: uncurated_metadata
         range: string
@@ -2039,5 +1173,264 @@ classes:
         multivalued: false
         description: A row for whatever field has not be included here.
         pattern: ^.+$
+      westernized:
+        name: westernized
+        range: westernized_enums
+        required: false
+        multivalued: false
+        description: >-
+          Subject adopt or be influenced by the cultural, economic, or 
+          political systems of Europe and North America.
+      zigosity:
+        name: zigosity
+        range: zigosity_enums
+        required: false
+        multivalued: false
+        description: Zigosity.
+      Adiponectin_in_ug/mL:
+        name: Adiponectin_in_ug/mL
+        range: double
+        required: false
+        multivalued: false
+        description: NCIT:C74839
+        pattern: ^[0-9]+\.?[0-9]*$
+      Albumin_in_g/dL:
+        name: Albumin_in_g/dL
+        range: double
+        required: false
+        multivalued: false
+        description: NCIT:C64431
+        pattern: ^[0-9]+\.?[0-9]*$       
+      Alanine_Aminotransferase_in_U/L:
+        name: Alanine_Aminotransferase_in_U/L
+        range: double
+        required: false
+        multivalued: false
+        description: NCIT:C64433 (ALT)
+        pattern: ^[0-9]+\.?[0-9]*$
+      Aspartate_Aminotransferase_in_U/L:
+        name: Aspartate_Aminotransferase_in_U/L
+        range: double
+        required: false
+        multivalued: false
+        description: NCIT:C64467 (AST)
+        pattern: ^[0-9]+\.?[0-9]*$        
+      Autoantibody_titer_measurement_(procedure)_in_n.a.:
+        name: Autoantibody_titer_measurement_(procedure)_in_n.a.
+        range: string
+        required: false
+        multivalued: true
+        description: SNOMED:165848009
+        pattern: ^.+$
+      Direct_Bilirubin_in_umol/L:
+        name: Direct_Bilirubin_in_umol/L
+        range: double
+        required: false
+        multivalued: false
+        description: NCIT:C64481
+        pattern: ^[0-9]+\.?[0-9]*$
+      C-peptide_in_ng/ml:
+        name: C-peptide_in_ng/ml
+        range: double
+        required: false
+        multivalued: false
+        description: NCIT:C74736
+        pattern: ^[0-9]+\.?[0-9]*$
+      Scavenger_Receptor_Cysteine-Rich_Type_1_Protein_M130_in_ng/ml:
+        name: Scavenger_Receptor_Cysteine-Rich_Type_1_Protein_M130_in_ng/ml
+        range: double
+        required: false
+        multivalued: false
+        description: NCIT:C154728 (CD163)
+        pattern: ^[0-9]+\.?[0-9]*$
+      Cholesterol_in_mg/dL:
+        name: Cholesterol_in_mg/dL
+        range: double
+        required: false
+        multivalued: false
+        description: NCIT:C105586
+        pattern: ^[0-9]+\.?[0-9]*$
+      Creatine_in_umol/L:
+        name: Creatine_in_umol/L
+        range: double
+        required: false
+        multivalued: false
+        description: NCIT:C201455
+        pattern: ^[0-9]+\.?[0-9]*$
+      Creatinine_in_umol/L:
+        name: Creatinine_in_umol/L
+        range: double
+        required: false
+        multivalued: false
+        description: NCIT:C64547
+        pattern: ^[0-9]+\.?[0-9]*$
+      Diastolic_Blood_Pressure_in_mm/Hg:
+        name: Diastolic_Blood_Pressure_in_mm/Hg
+        range: double
+        required: false
+        multivalued: false
+        description: NCIT:C25299
+        pattern: ^[0-9]+\.?[0-9]*$
+      Estimated_Glomerular_Filtration_Rate_in_mL/min/1.73m2:
+        name: Estimated_Glomerular_Filtration_Rate_in_mL/min/1.73m2
+        range: double
+        required: false
+        multivalued: false
+        description: NCIT:C110935 (eGFR)
+        pattern: ^[0-9]+\.?[0-9]*$
+      Erythrocyte_Sedimentation_Rate_in_mm/hr:
+        name: Erythrocyte_Sedimentation_Rate_in_mm/hr
+        range: double
+        required: false
+        multivalued: false
+        description: NCIT:C74611 (ESR)
+        pattern: ^[0-9]+\.?[0-9]*$
+      fasting_blood_glucose_measurement_in_mg/dL:
+        name: fasting_blood_glucose_measurement_in_mg/dL
+        range: double
+        required: false
+        multivalued: false
+        description: EFO:0004465
+        pattern: ^[0-9]+\.?[0-9]*$
+      fasting_blood_insulin_measurement_in_uU/ml:
+        name: fasting_blood_insulin_measurement_in_uU/ml
+        range: double
+        required: false
+        multivalued: false
+        description: EFO:0004466
+        pattern: ^[0-9]+\.?[0-9]*$
+      Fibroblast_Growth_Factor_19_in_pg/ml:
+        name: Fibroblast_Growth_Factor_19_in_pg/ml
+        range: double
+        required: false
+        multivalued: false
+        description: NCIT:C154727 (FGF-19)
+        pattern: ^[0-9]+\.?[0-9]*$
+      Globulin_Protein_in_g/L:
+        name: Globulin_Protein_in_g/L
+        range: double
+        required: false
+        multivalued: false
+        description: NCIT:C74738
+        pattern: ^[0-9]+\.?[0-9]*$
+      Glucagon-like_Peptide-1_in_pmol/L:
+        name: Glucagon-like_Peptide-1_in_pmol/L
+        range: double
+        required: false
+        multivalued: false
+        description: NCIT:C80183 (GLP-1)
+        pattern: ^[0-9]+\.?[0-9]*$
+      Glucose_in_mg/dL:
+        name: Glucose_in_mg/dL
+        range: double
+        required: false
+        multivalued: false
+        description: NCIT:C105585
+        pattern: ^[0-9]+\.?[0-9]*$
+      Measurement_of_glutamate_decarboxylase_65_antibody_(procedure)_in_n.a.:
+        name: Measurement_of_glutamate_decarboxylase_65_antibody_(procedure)_in_n.a.
+        range: double
+        required: false
+        multivalued: false
+        description: SNOMED:117907009 (GAD65)
+        pattern: ^[0-9]+\.?[0-9]*$
+      Glycosylated_Hemoglobin_in_mmol/mol:
+        name: Glycosylated_Hemoglobin_in_mmol/mol
+        range: double
+        required: false
+        multivalued: false
+        description: NCIT:C64849 (HbA1C)
+        pattern: ^[0-9]+\.?[0-9]*$
+      High_Density_Lipoprotein_Cholesterol_in_mg/dL:
+        name: High_Density_Lipoprotein_Cholesterol_in_mg/dL
+        range: double
+        required: false
+        multivalued: false
+        description: NCIT:C105587 (HDL)
+        pattern: ^[0-9]+\.?[0-9]*$
+      Hemoglobinometry_in_g/dL:
+        name: Hemoglobinometry_in_g/dL
+        range: double
+        required: false
+        multivalued: false
+        description: OMIT:0007621
+        pattern: ^[0-9]+\.?[0-9]*$
+      High_Sensitivity_C-Reactive_Protein_in_mg/L:
+        name: High_Sensitivity_C-Reactive_Protein_in_mg/L
+        range: double
+        required: false
+        multivalued: false
+        description: NCIT:C157114 (hsCRP)
+        pattern: ^[0-9]+\.?[0-9]*$
+      Interleukin_1_in_pg/ml:
+        name: Interleukin_1_in_pg/ml
+        range: double
+        required: false
+        multivalued: false
+        description: NCIT:C74805
+        pattern: ^[0-9]+\.?[0-9]*$
+      International_Normalized_Ratio_of_Prothrombin_Time_in_sec:
+        name: International_Normalized_Ratio_of_Prothrombin_Time_in_sec
+        range: double
+        required: false
+        multivalued: false
+        description: NCIT:C64805 (INR)
+        pattern: ^[0-9]+\.?[0-9]*$
+      LDL_Particles_in_mg/dL:
+        name: LDL_Particles_in_mg/dL
+        range: double
+        required: false
+        multivalued: false
+        description: NCIT:C120636 (LDL)
+        pattern: ^[0-9]+\.?[0-9]*$
+      Leptin_in_ug/L:
+        name: Leptin_in_ug/L
+        range: double
+        required: false
+        multivalued: false
+        description: NCIT:C74866
+        pattern: ^[0-9]+\.?[0-9]*$
+      Prothrombin_Time_in_sec:
+        name: Prothrombin_Time_in_sec
+        range: double
+        required: false
+        multivalued: false
+        description: NCIT:C62656 (PT)
+        pattern: ^[0-9]+\.?[0-9]*$
+      Red_blood_cell_count_(procedure)_in_x10^6_counts/ul:
+        name: Red_blood_cell_count_(procedure)_in_x10^6_counts/ul
+        range: double
+        required: false
+        multivalued: false
+        description: SNOMED:14089001 (RBC)
+        pattern: ^[0-9]+\.?[0-9]*$
+      Systolic_Blood_Pressure_in_mm/Hg:
+        name: Systolic_Blood_Pressure_in_mm/Hg
+        range: double
+        required: false
+        multivalued: false
+        description: NCIT:C25298
+        pattern: ^[0-9]+\.?[0-9]*$
+      Triglyceride_in_mg/dL:
+        name: Triglyceride_in_mg/dL
+        range: double
+        required: false
+        multivalued: false
+        description: NCIT:C64812
+        pattern: ^[0-9]+\.?[0-9]*$
+      Urea_Nitrogen_in_mmol/L:
+        name: Urea_Nitrogen_in_mmol/L
+        range: double
+        required: false
+        multivalued: false
+        description: NCIT:C125949 (BUN)
+        pattern: ^[0-9]+\.?[0-9]*$
+      White_blood_cell_count_(procedure)_in_x10^3_counts/ul:
+        name: White_blood_cell_count_(procedure)_in_x10^3_counts/ul
+        range: double
+        required: false
+        multivalued: false
+        description: SNOMED:767002 (WBC)
+        pattern: ^[0-9]+\.?[0-9]*$
 source_file: cmgd.yaml
 "@type": SchemaDefinition
