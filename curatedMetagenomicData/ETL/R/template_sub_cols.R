@@ -1,6 +1,9 @@
 ### Data dictionary for consolidated cMD attributes in their 'wide' form for curators
 ### Required input: `filled_dd`
-### dir <- "~/OmicsMLRepo/OmicsMLRepoData/curatedMetagenomicData"
+### projDir <- "~/OmicsMLRepo/OmicsMLRepoData/curatedMetagenomicData"
+### mapDir <- file.path(projDir, "maps")
+### dataDir <- file.path(projDir, "data")
+### scriptDir <- file.path(projDir, "ETL/R")
 
 
 # biomarkers ----
@@ -13,7 +16,7 @@ curated_biomarker <- data.frame(
     requiredness = "optional",
     multiplevalues = FALSE,
     description = "A measurable and quantifiable characteristic or substance that serves as an indicator of a biological state, condition, or process within an organism.",
-    allowedvalues = paste(unique(biomarker_map$curated_ontology), collapse = "|"),
+    allowedvalues = paste(unique(biomarker_map$curated_ontology_term), collapse = "|"),
     ontology = paste(unique(biomarker_map$curated_ontology_term_id), collapse = "|")     
 ) 
 
@@ -61,7 +64,7 @@ birth_weight <- data.frame(
     uniqueness = "non-unique", 
     requiredness = "optional",
     multiplevalues = FALSE,
-    description = "The mass or quantity of heaviness of an individual at BIRTH. (EFO:0004344)",
+    description = "The mass or quantity of heaviness of an individual at BIRTH. (EFO:0004344) Unit is in gram.",
     allowedvalues = "^[1-9]\\d*(\\.\\d+)?$",
     ontology = NA  
 )
@@ -83,8 +86,8 @@ feeding_method <- data.frame(
     uniqueness = "non-unique", 
     requiredness = "optional",
     multiplevalues = FALSE,
-    description = "Infant feeding methods. 'Breastfeeding' refers feeding milk from human (include non-mother's and through bottle), 'mixed_feeding' refers both breastfeeding and formula feeding",
-    allowedvalues = "exclusively_breastfeeding|exclusively_formula_feeding|mixed_feeding|no_breastfeeding",
+    description = "Infant feeding methods. 'Breastfeeding' refers feeding milk from human (include non-mother's and through bottle), 'Mixed_feeding' refers both breastfeeding and formula feeding, 'Exclusively Breastfeeding;Mixed Feeding' referes the cases where any breastfeeding was done but formula feeding information is unavailable.",
+    allowedvalues = "Exclusively Breastfeeding;Mixed Feeding|Exclusively Breastfeeding|Exclusively Formula Feeding|Mixed Feeding|No Breastfeeding", 
     ontology = NA  
 )
 
@@ -94,12 +97,12 @@ gestational_age <- data.frame(
     uniqueness = "non-unique", 
     requiredness = "optional",
     multiplevalues = FALSE,
-    description = "The age of the conceptus, beginning from the time of FERTILIZATION. (EFO:0005112)",
+    description = "The age of the conceptus, beginning from the time of FERTILIZATION. (EFO:0005112) Unit in weeks.",
     allowedvalues = "^[1-9]\\d*(\\.\\d+)?$",
     ontology = NA  
 )
 
-# Data dictionary for curated attributes ----
+# Data dictionary for curated neonatal ----
 curated_neonatal <- do.call("rbind", list(preterm_birth, 
                                           birth_weight, 
                                           delivery_procedure, 
@@ -137,8 +140,8 @@ obgyn_menopause <- data.frame(
     requiredness = "optional",
     multiplevalues = FALSE,
     description = "An indicator as to whether the female subject is in menopause",
-    allowedvalues = "Premenopausal|Postmenopausal",
-    ontology = "NCIT:C15491|NCIT:C15421"     
+    allowedvalues = "Premenopausal|Postmenopausal|Perimenopausal",
+    ontology = "NCIT:C15491|NCIT:C15421|NCIT:C15692"     
 ) 
 
 obgyn_lactating <- data.frame(
@@ -195,12 +198,12 @@ progression_free_survival <- data.frame(
 
 progression_free_survival_timepoint <- data.frame(
     col.name = "disease_response_pfs_month",
-    col.class = "character",
+    col.class = "integer",
     uniqueness = "non-unique", 
     requiredness = "optional",  #<<<<<<<< required if `progression_free_survival` is entered
     multiplevalues = FALSE, 
     description = "A time point used to observe PFS. Unit is 'month'",
-    allowedvalues = "^[1-9]\\d*(\\.\\d+)?$",
+    allowedvalues = "[0-9]+",
     ontology = NA
 )
 

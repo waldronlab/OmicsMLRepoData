@@ -11,7 +11,7 @@ curated_dietary_restriction <- data.frame(
     requiredness = "optional",
     multiplevalues = FALSE,
     description = "Dietary regime (partial match to SNOMED:182922004 or SNOMED:162536008)",
-    allowedvalues = "omnivore|vegan|vegetarian",
+    allowedvalues = "omnivore|vegan|vegetarian|high_fiber|low_fiber|high_gluten|low_gluten",
     ontology = NA
 )
 
@@ -23,7 +23,7 @@ curated_fmt_id <- data.frame(
     requiredness = "optional",
     multiplevalues = TRUE,
     description = "The id assigned to the FMT (Fecal microbiota transplantation) participants in the study",
-    allowedvalues = NA,
+    allowedvalues = ".+",
     ontology = NA     
 ) 
 
@@ -96,7 +96,7 @@ curated_hla <- data.frame(
     col.class = "character",
     uniqueness = "non-unique", 
     requiredness = "optional",
-    multiplevalues = FALSE,
+    multiplevalues = TRUE,
     description = "HLA complex. A family of proteins that are essential for the presentation of peptide antigens on cell surfaces that modulate the host defensive activities of T-cells. This protein family includes major histocompatibility complex (MHC) class I and class II proteins.",
     allowedvalues = sapply(hla$curated_ontology_term, strsplit, split = ";") %>%
         unlist %>% unique %>% paste0(collapse = "|"),

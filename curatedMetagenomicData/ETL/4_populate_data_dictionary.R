@@ -20,6 +20,21 @@ source(file.path(scriptDir, "template_minor.R"))
 source(file.path(scriptDir, "template_others.R"))
 source(file.path(scriptDir, "template_sub_cols.R"))
 source(file.path(scriptDir, "template_treatment.R"))
+source(file.path(scriptDir, "template_ppd.R"))
+
+# Order col.name column -------
+required_cols <- c("study_name", "subject_id", "sample_id", 
+                   "target_condition", "control", "country", 
+                   "body_site")
+required_ind <- c()
+for (col in required_cols) {
+    ind <- which(filled_dd$col.name == col)
+    required_ind <- c(required_ind, ind)
+}
+    
+filled_dd <- filled_dd[-required_ind,] %>%
+    dplyr::arrange(., col.name) %>% # alphabetical ordering of columns except the required cols
+    dplyr::bind_rows(filled_dd[required_ind, ], .)
 
 
 # # Populate data dictionary per attributes -----

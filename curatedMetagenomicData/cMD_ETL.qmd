@@ -23,6 +23,7 @@ suppressPackageStartupMessages({
     library(googlesheets4)
     library(readr)
     library(OmicsMLRepoR)
+    library(dplyr)
 })
 
 cmd_etl_dir <- "~/OmicsMLRepo/OmicsMLRepoData/curatedMetagenomicData/ETL"
@@ -45,7 +46,29 @@ fpath <- file.path(dir, "inst/extdata/cMD_curated_metadata_all.csv")
 write.csv(curated_all, fpath, row.names = FALSE)
 ```
 
+# Format for release
+This script creates a `cmd_meta_release` table, which containing only 
+the curated attributes formatted in an user-facing version (e.g., no legacy/
+source columns, no ontology term id).
 
+```{r}
+# requires: `curated_all` from `0_assemble_curated_metadata.R`
+source(file.path(cmd_etl_dir, "6_format_for_release.R"))
+```
+
+```{r save_cmd_meta_release, eval=FALSE}
+dir <- "~/OmicsMLRepo/OmicsMLRepoData"
+fpath <- file.path(dir, "inst/extdata/cMD_curated_metadata_release.csv")
+write.csv(cmd_meta_release, fpath, row.names = FALSE)
+
+## Sync the version in GCS bucket
+AnVIL::gsutil_cp(fpath, "gs://omics_ml_repo/cMD_curated_metadata_release.csv")
+
+## Sync the version in other OmicsMLRepoR package
+file.copy(from = fpath,
+          to = "~/OmicsMLRepo/OmicsMLRepoR/inst/extdata/cMD_curated_metadata_release.csv",
+          overwrite = TRUE)
+```
 
 
 # Sync curation maps
@@ -62,6 +85,7 @@ project).
 
 ```{r cmd_save_curation_maps, eval=FALSE}
 # Directory to save curation_maps from Google Sheet
+cmd_maps_dir <- "~/OmicsMLRepo/OmicsMLRepoData/curatedMetagenomicData/maps"
 source(file.path(cmd_etl_dir, "1_sync_curation_map.R"))
 ```
 
@@ -79,6 +103,8 @@ source(file.path(cmd_etl_dir, "2_assemble_merging_schema.R"))
 ## GitHub project
 extDir <- "~/OmicsMLRepo/OmicsMLRepoData/inst/extdata"
 write_csv(cmd_ms, file.path(extDir, "cMD_merging_schema.csv"))
+write_csv(map, file.path(extDir, "cMD_ms_allCols.csv")) # accessory file
+write_csv(dd, file.path(extDir, "cMD_dd_allCols.csv")) # accessory file
 
 ## Google Sheet
 url <- "https://docs.google.com/spreadsheets/d/1xziFB_zBl32BjNarcyEN4GupTYpPtq5aDz0GbRbWvtk/edit?usp=sharing"
@@ -120,6 +146,13 @@ scriptDir <- file.path(projDir, "ETL/R")
 source(file.path(cmd_etl_dir, "4_populate_data_dictionary.R")) 
 ```
 
+Minor, extra updates for kept subset of sampleMetadata
+```{r}
+## Description for `sequencing_platform`
+newDesc <- "A scientific instrument used to automate the DNA sequencing process"
+```
+
+
 ## Save
 ```{r save_cmd_dd_schema, eval=FALSE}
 ## GitHub project
@@ -132,6 +165,11 @@ ss <- googledrive::as_id(url)
 googlesheets4::write_sheet(filled_dd, ss = ss, sheet = "cMD_data_dictionary")
 ```
 
+```{r sync_curated_all, eval=FALSE}
+file.copy(from = file.path(extDir, "cMD_data_dictionary.csv"),
+          to = "~/OmicsMLRepo/OmicsMLRepoR/inst/extdata/cMD_data_dictionary.csv",
+          overwrite = TRUE)
+```
 
 # Dynamic Enum
 ```{r}
@@ -180,22 +218,11 @@ googlesheets4::write_sheet(cmd_dd, ss = ss, sheet = "cMD_data_dictionary")
 ```
 
 
-# Format for release
-This script creates a `cmd_meta_release` table, which containing only 
-the curated attributes formatted in an user-facing version (e.g., no legacy/
-source columns, no ontology term id).
-
-```{r}
-# requires: `curated_all` from `0_assemble_curated_metadata.R`
-source(file.path(cmd_etl_dir, "6_format_for_release.R"))
-```
-
-
 
 # Main files
 ```{r}
 extDir <- "~/OmicsMLRepo/OmicsMLRepoData/inst/extdata"
-curated_all <- read_csv(file.path(extDir, "cMD_curated_metadata_all.csv"))
+curated_all <- read_csv(file.path(extDir, "cMD_curated_metadata_release.csv"))
 cmd_ms <- read_csv(file.path(extDir, "cMD_merging_schema.csv"))
 cmd_dd <- read_csv(file.path(extDir, "cMD_data_dictionary.csv"))
 ```
