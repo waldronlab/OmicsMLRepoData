@@ -1,4 +1,4 @@
-"curation_id","original_age_source","original_age_value","original_age_unit","curated_age_years","curated_age_min","curated_age_max","curated_age_group","curated_age_group_ontology_term_id"
+"curation_id","curated_age_source","original_age_value","original_age_unit","curated_age_years","curated_age_min","curated_age_max","curated_age_group","curated_age_group_ontology_term_id"
 "AsnicarF_2017:MV_FEI1_t1Q14","infant_age",90,"day",0.246575342465753,0.246575342465753,0.246575342465753,"Infant","NCIT:C27956"
 "AsnicarF_2017:MV_FEI2_t1Q14","infant_age",90,"day",0.246575342465753,0.246575342465753,0.246575342465753,"Infant","NCIT:C27956"
 "AsnicarF_2017:MV_FEI3_t1Q14","infant_age",90,"day",0.246575342465753,0.246575342465753,0.246575342465753,"Infant","NCIT:C27956"
