@@ -1,0 +1,5 @@
+"original_value","curated_ontology_term","curated_ontology_term_id","curated_ontology_term_db"
+"PPD_L","Lingual surface of tooth","FMA:55647","FMA"
+"PPD_B","Buccal surface","FMA:64849","FMA"
+"PPD_D","Distal surface of tooth","FMA:55649","FMA"
+"PPD_M","Mesial surface of tooth","FMA:55650","FMA"
