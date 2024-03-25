@@ -75,6 +75,10 @@ uncurated_cols <- samplemd %>%
            formula_first_day, BASDAI, BASFI, protein_intake, travel_destination,
            age_seroconversion, age_T1D_diagnosis)
 uncurated_cols <- as.data.frame(sapply( uncurated_cols, as.character))
+
+# Remove values being categorized in dietary restriction
+uncurated_cols$uncurated_metadata <- gsub("low_gluten_diet|high_gluten_diet", 
+                                          NA, uncurated_cols$uncurated_metadata)
 ```
 
 
@@ -83,24 +87,29 @@ uncurated_cols <- as.data.frame(sapply( uncurated_cols, as.character))
 Next we can convert cell values into a combined value pair by adding the 
 corresponding column name, creating our original and curated columns:
 ```{r}
+# Prepare NA values for merging
+uncurated_cols <- uncurated_cols %>% replace(is.na(.), "8X8") %>% as.data.frame()
+
 # Merge all relevant rows into an original_uncurated_metadata column
 for (i in 1:nrow(uncurated_cols)){
   uncurated_cols$original_uncurated_metadata[i] <- paste(uncurated_cols[i,2:12], collapse=";")
 }
 # Take out NA values
-uncurated_cols$original_uncurated_metadata <- gsub("NA;", "", uncurated_cols$original_uncurated_metadata)
-uncurated_cols$original_uncurated_metadata <- gsub(";NA", "", uncurated_cols$original_uncurated_metadata)
-uncurated_cols$original_uncurated_metadata <- gsub("NA", NA, uncurated_cols$original_uncurated_metadata)
+uncurated_cols$original_uncurated_metadata <- gsub("8X8;", "", uncurated_cols$original_uncurated_metadata)
+uncurated_cols$original_uncurated_metadata <- gsub(";8X8", "", uncurated_cols$original_uncurated_metadata)
 
 # Update numeric columns with additional ontology values for metric type
 for(col in colnames(uncurated_cols[,2:12])){
   for (row in 1:nrow(uncurated_cols)){
     val <- uncurated_cols[row,col]
-    if (!is.na(val)){
+    if (val!="8X8"){
       uncurated_cols[row,col] <- paste(col, ":", uncurated_cols[row,col], sep="")
     }
   }
 }
+
+# Prepare NA values for merging
+uncurated_cols <- uncurated_cols %>% replace(is.na(.), "8X8") %>% as.data.frame()
 
 # Merge all relevant rows into a curated_uncurated_metadata column
 for (i in 1:nrow(uncurated_cols)){
@@ -108,9 +117,9 @@ for (i in 1:nrow(uncurated_cols)){
 }
 
 # Take out NA values
-uncurated_cols$curated_uncurated_metadata <- gsub("NA;", "", uncurated_cols$curated_uncurated_metadata)
-uncurated_cols$curated_uncurated_metadata <- gsub(";NA", "", uncurated_cols$curated_uncurated_metadata)
-uncurated_cols$curated_uncurated_metadata <- gsub("NA", NA, uncurated_cols$curated_uncurated_metadata)
+uncurated_cols$curated_uncurated_metadata <- gsub("8X8;", "", uncurated_cols$curated_uncurated_metadata)
+uncurated_cols$curated_uncurated_metadata <- gsub(";8X8", "", uncurated_cols$curated_uncurated_metadata)
+uncurated_cols <- data.frame(lapply(uncurated_cols, function(x) gsub("8X8", NA, x)))
 ```
 
 
