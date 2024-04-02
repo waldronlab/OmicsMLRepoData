@@ -24,8 +24,8 @@ knitr::opts_chunk$set(echo = TRUE,
 
 This .qmd file demonstrates a workflow for curating and harmonizing 'dietary 
 restriction' data with the curatedMetagenomicData package.This file curates 
-information from the original diet column to produce the curated 
-dietary_restriction column.
+information from the original diet column and the 'uncurated_metadata' column to 
+produce the curated dietary_restriction column.
 
 # Setup
 ## Load Packages
@@ -68,6 +68,7 @@ samplemd <- as_tibble(sampleMetadata)
 
 # Review unique values
 unique(sampleMetadata$diet)
+unique(sampleMetadata$uncurated_metadata)
 
 # Calculate completeness
 length(samplemd$diet[which(!is.na(samplemd$diet))])/length(samplemd$diet)
@@ -78,11 +79,16 @@ the merged column,and export these values to a csv file to manually develop an
 ontology map:
 ```{r}
 # Create a dataframe of only the relevant columns
-diet_cols <- samplemd %>% select(curation_id, diet)
+diet_cols <- samplemd %>% select(curation_id, diet, uncurated_metadata)
 diet_cols <- as.data.frame(sapply(diet_cols, as.character))
 
+# Isolate only the relevant values from the uncurated metadata column
+diet_cols$uncurated_metadata[which(diet_cols$uncurated_metadata!="low_gluten_diet" &
+                                       diet_cols$uncurated_metadata!="high_gluten_diet")] <- NA
+    
 # Get column names for ontology map
 unique_diet_vals <- unique(diet_cols$diet)
+unique_diet_vals <- append(unique_diet_vals, unique(diet_cols$uncurated_metadata))
 ```
 
 
@@ -91,16 +97,23 @@ unique_diet_vals <- unique(diet_cols$diet)
 Next, we can clean up the dataframe by replacing the unique character 
 representing NA values with "NA" and updating column names as needed:
 ```{r}
-# Create a curated fmt_id column
-diet_cols <- diet_cols %>% mutate(curated_dietary_restriction = diet)
+# Merge uncurated_metadata with diet column
+diet_cols$original_dietary_restriction <- ifelse(is.na(diet_cols$uncurated_metadata), diet_cols$diet, paste(diet_cols$diet, diet_cols$uncurated_metadata, sep=";"))
+diet_cols$original_dietary_restriction <- gsub("^NA;", "", diet_cols$original_dietary_restriction)
+
+diet_cols <- diet_cols %>% mutate(curated_dietary_restriction = original_dietary_restriction)
 
 # Create a column of relevant source columns
 for (i in 1:nrow(diet_cols)){
-  diet_cols$curated_dietary_restriction_source[i] <- ifelse(!is.na(diet_cols[i,2]), colnames(diet_cols)[2], NA)
+  diet_cols$curated_dietary_restriction_source[i] <- 
+      paste(colnames(diet_cols[,2:3][which(!is.na(diet_cols[i,2:3]))]), collapse=";")
 }
+diet_cols$curated_dietary_restriction_source <- gsub("^$", NA, diet_cols$curated_dietary_restriction_source)
 
-# Rename original column for clarity
-diet_cols <- diet_cols %>% dplyr::rename(original_dietary_restriction = diet)
+# Remove extra columns
+diet_cols <- diet_cols[,c("original_dietary_restriction", 
+                          "curated_dietary_restriction", 
+                          "curated_dietary_restriction_source")]
 ```
 
 
