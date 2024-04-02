@@ -280,11 +280,11 @@ chk <- patient_chk %>%
     filter(uniqueVal > 1)
 ```
 
-Next we will expand the `chk` dataframe to generate a column of "best" curated_sex
-values based on the sex which is most common across the patient's samples.
+Next we will expand the `chk` dataframe to generate a column of "best" curated_pop_ancestry
+values based on the value which is most common across the patient's samples.
 Additionally we will track the number of dissenting values and the studies from
 which they originated, as well as any patients with no clear "majority" value 
-for curated_sex:
+for curated_pop_ancestry:
 ```{r}
 # Add summary columns to chk dataframe to identify majority and dissenting values for curated_sex
 for (pat_id in chk$patient_id){
@@ -292,10 +292,30 @@ for (pat_id in chk$patient_id){
   chk$values[which(chk$patient_id==pat_id)] <- paste(as.list(unique(patient_chk$curated_pop_ancestry[which(patient_chk$patient_id==pat_id)])), collapse="<<>>")
 }  
 
+# Add a column to demonstrate the distribution of each pop ancestry value for each patient
+for (row in 1:nrow(chk)){
+  vals_list <- unlist(strsplit(chk$values[row], "<<>>"))
+  all_vals <- patient_chk$curated_pop_ancestry[which(patient_chk$patient_id==chk$patient_id[row])]
+  distribution <- NA
+  for (val in vals_list){
+    if (val == "NA"){
+      val_count <- length(all_vals[which(is.na(all_vals))])
+    }else{
+      val_count <- length(all_vals[which(all_vals == val)])
+    }
+    distribution <- paste(distribution, paste(val, val_count, sep="::"), sep="<<>>")
+  }
+  chk$distribution[row] <- substr(distribution, 7, nchar(distribution))
+}
+
+# Export a list of the unique discrepancy value combos to manually create a map
+write.csv(chk, file = file.path(proj_dir, "population_ancestry_discrepancies.csv"),
+      row.names = FALSE)
+
 # Export a list of the unique discrepancy value combos to manually create a map
 pop_a_discreps <- data.frame(unique(chk$values))
 write.csv(pop_a_discreps, 
-          file = file.path(proj_dir, "population_ancestry_discrepancies.csv"),
+          file = file.path(proj_dir, "cBioPortal_pop_ancestry_discrepancies.csv"),
           row.names = FALSE)
 ```
 
@@ -303,7 +323,7 @@ We can now replace the mismatched values for each patient with the "best value"
 from the `chk` dataframe:
 ```{r}
 # Load the map to fix discrepancies
-pop_ancestry_discrep <- read.csv(file=file.path(proj_dir, "cBioPortal_pop_ancestry_discrepancies_map.csv"))
+pop_ancestry_discrep <- read.csv(file=file.path(proj_dir, "cBioPortal_pop_ancestry_discrepancies.csv"))
 
 # Initialize mapped columns for chk
 chk$standardized_values <- NA
