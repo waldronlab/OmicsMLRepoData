@@ -111,7 +111,8 @@ for (i in 1:nrow(diet_cols)){
 diet_cols$curated_dietary_restriction_source <- gsub("^$", NA, diet_cols$curated_dietary_restriction_source)
 
 # Remove extra columns
-diet_cols <- diet_cols[,c("original_dietary_restriction", 
+diet_cols <- diet_cols[,c("curation_id",
+                          "original_dietary_restriction", 
                           "curated_dietary_restriction", 
                           "curated_dietary_restriction_source")]
 ```
