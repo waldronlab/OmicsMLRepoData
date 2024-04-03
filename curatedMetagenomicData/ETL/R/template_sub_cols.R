@@ -14,7 +14,7 @@ curated_biomarker <- data.frame(
     col.class = "character",
     uniqueness = "non-unique", 
     requiredness = "optional",
-    multiplevalues = FALSE,
+    multiplevalues = TRUE,
     description = "A measurable and quantifiable characteristic or substance that serves as an indicator of a biological state, condition, or process within an organism.",
     allowedvalues = paste(unique(biomarker_map$curated_ontology_term), collapse = "|"),
     ontology = paste(unique(biomarker_map$curated_ontology_term_id), collapse = "|")     
@@ -220,7 +220,7 @@ ajcc <- data.frame(
     uniqueness = "non-unique", 
     requiredness = "optional",
     multiplevalues = FALSE,
-    description = "A system to describe the amount and spread of cancer in a patient's body",
+    description = "American Joint Committee on Cancer (tumor staging) (SNOMED:258236004). A system to describe the amount and spread of cancer in a patient's body",
     allowedvalues = "0|I|II|III|IV|III/IV",
     ontology = NA     
 ) 
@@ -231,7 +231,7 @@ tnm <- data.frame(
     uniqueness = "non-unique", 
     requiredness = "optional",
     multiplevalues = FALSE,
-    description = "A system to describe the amount and spread of cancer in a patient's body",
+    description = "Tumor-node-metastasis (TNM) tumor staging system (tumor staging) (SNOMED:254293002).A system to describe the amount and spread of cancer in a patient's body",
     allowedvalues = "t[x1-4]n[x0-3]m[x0-1]|pTis|Tis",
     ontology = NA     
 )

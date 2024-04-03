@@ -23,8 +23,9 @@ colnames(curated_all_cleaned) <- updated_col_names
 
 # Add unchanged columns ----------
 extDir <- "~/OmicsMLRepo/OmicsMLRepoData/inst/extdata"
-map <- read_csv(file.path(extDir, "cMD_ms_allCols.csv")) # accessory file
-dd <- read_csv(file.path(extDir, "cMD_dd_allCols.csv")) # accessory file
+map <- read_sheet(ss, sheet = "merging_schema_allCols")
+dd <- read_sheet(ss, sheet = "data_dictionary_allCols") %>%
+    mutate(merge = as.character(merge))
 
 kept_categories <- dd %>% filter(merge == FALSE) %>% .[["curated_column"]]
 kept_cols <- map %>%
@@ -53,3 +54,6 @@ required_cols <- c("study_name", "subject_id", "sample_id", "curation_id",
 optional_cols <- allCols[!allCols %in% required_cols]
 col_order <- c(required_cols, sort(optional_cols))
 cmd_meta_release <- cmd_meta_release[col_order]
+
+# Add attribute -----------
+attr(cmd_meta_release, "source") <- "curatedMetagenomicData"

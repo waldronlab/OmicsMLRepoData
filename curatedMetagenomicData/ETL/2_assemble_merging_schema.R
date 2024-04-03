@@ -17,8 +17,8 @@ ss <- googledrive::as_id(url)
 
 # Import merging schema drafts from Google Sheet ----
 map <- read_sheet(ss, sheet = "merging_schema_allCols")
-dd <- read_sheet(ss, sheet = "data_dictionary_allCols")
-dd$merge <- as.character(dd$merge)
+dd <- read_sheet(ss, sheet = "data_dictionary_allCols") %>%
+    mutate(merge = as.character(merge))
 
 # Summarize consolidated columns as merging schema ---- 
 ## `map_to_ms` is a two-column table with `curated_field` and `original_field` columns
@@ -29,6 +29,9 @@ map_to_ms <- map %>%
     dplyr::summarise(original_field = paste0(ori_column, collapse = ";")) %>%
     dplyr::rename(curated_field = curated_column)
 
+## Separately handle the 'age' exception
+age_ind <- which(map_to_ms$curated_field == "age;age_unit;age_group")
+map_to_ms$curated_field[age_ind] <- "age_years;age_group"
 
 # Completeness and uniqueness of original fields -----
 dir <- "~/OmicsMLRepo/OmicsMLRepoData/inst/extdata"

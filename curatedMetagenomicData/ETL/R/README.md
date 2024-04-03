@@ -1,5 +1,11 @@
 The below lists are entered from each R files.
 
+#### template_new_attrs.R
+- ecog_performance_status
+- disease_response_os
+- disease_response_os_unit
+- tumor_size
+- tumor_size_residual
 
 #### template_age.R
 - age
@@ -46,3 +52,4 @@ The below lists are entered from each R files.
 #### template_treatment.R
 - treatment
 - antibiotics_current_use
+
