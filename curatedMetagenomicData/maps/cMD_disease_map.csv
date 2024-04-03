@@ -15,7 +15,8 @@
 "BD","Behcet's syndrome","EFO:0003780","EFO",NA
 "bronchitis","bronchitis","EFO:0009661","EFO",NA
 "carcinoma","carcinoma","EFO:0000313","EFO",NA
-"carcinoma_surgery_history","carcinoma","EFO:0000313","EFO","carcinoma,History of surgery (situation)"
+"carcinoma_surgery_history","carcinoma","EFO:0000313","EFO",NA
+"carcinoma_surgery_history","History of surgery (situation)","SNOMED:161615003","SNOMED",NA
 "coeliac","celiac disease","EFO:0001060","EFO",NA
 "cellulitis","cellulitis","EFO:0003035","EFO",NA
 "cephalosporins","Cephalosporin Antibiotic","NCIT:C357","NCIT",NA
@@ -106,10 +107,12 @@
 "RA","rheumatoid arthritis","EFO:0000685","EFO",NA
 "salmonellosis","salmonellosis","MONDO:0000827","MONDO",NA
 "schistosoma","Schistosoma","NCIT:C124285","NCIT",NA
-"first_episode_schizofrenia","Schizophrenia","NCIT:C3362","NCIT","Schizophrenia,First episode (qualifier value)"
+"first_episode_schizofrenia","Schizophrenia","NCIT:C3362","NCIT",NA
+"first_episode_schizofrenia","First episode (qualifier value)","SNOMED:255217005","SNOMED",NA
 "schizofrenia","Schizophrenia","NCIT:C3362","NCIT",NA
 "schizophrenia","Schizophrenia","NCIT:C3362","NCIT",NA
-"repeated_episodes_shizofrenia","Schizophrenia","NCIT:C3362","NCIT","Schizophrenia,repeated"
+"repeated_episodes_shizofrenia","Schizophrenia","NCIT:C3362","NCIT",NA
+"repeated_episodes_shizofrenia","repeated","EUPATH:0001011","EUPATH",NA
 "sepsis","Sepsis","HP:0100806","HP",NA
 "STEC","Shiga Toxin-producing Escherichia coli","NCIT:C184689","NCIT",NA
 "skininf","Skin Infection","NCIT:C35025","NCIT",NA

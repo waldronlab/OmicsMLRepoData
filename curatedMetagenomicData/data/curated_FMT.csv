@@ -1,4 +1,4 @@
-"curation_id","original_FMT_id","original_FMT_role","curated_FMT_role","curated_FMT_id","curated_FMT_id_source_column","curated_FMT_role_source_column"
+"curation_id","original_fmt_id","original_fmt_role","curated_fmt_role","curated_fmt_id","curated_fmt_id_source_column","curated_fmt_role_source_column"
 "AsnicarF_2017:MV_FEI1_t1Q14",NA,NA,NA,NA,NA,NA
 "AsnicarF_2017:MV_FEI2_t1Q14",NA,NA,NA,NA,NA,NA
 "AsnicarF_2017:MV_FEI3_t1Q14",NA,NA,NA,NA,NA,NA

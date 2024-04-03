@@ -4,7 +4,7 @@
 "alt","ALT","Alanine Aminotransferase Measurement","NCIT:C64433","U/L","NCIT","Alanine_Aminotransferase_in_U/L","Relabel to ALT (diagnose liver disorders) and combine with ALT column"
 "ALT","ALT","Alanine Aminotransferase Measurement","NCIT:C64433","U/L","NCIT","Alanine_Aminotransferase_in_U/L","determinant of liver disease"
 "ast","AST","Aspartate Aminotransferase Measurement","NCIT:C64467","U/L","NCIT","Aspartate_Aminotransferase_in_U/L","Relabel to AST (diagnose liver disorders)"
-"autoantibody_positive",NA,"Autoantibody titer positive (finding)","SNOMED:165879008","n.a.","SNOMED","Autoantibody_titer_positive_(finding)_in_n.a.","presence of autoantibodies"
+"autoantibody_positive",NA,"Autoantibody titer positive (finding)","SNOMED:165879008","n.a.","SNOMED","Autoantibody_titer_positive_(finding)","presence of autoantibodies, Yes|No can work?"
 "bilubirin",NA,"Direct Bilirubin Measurement","NCIT:C64481","umol/L","NCIT","Direct_Bilirubin_in_umol/L",NA
 "c_peptide",NA,"C-peptide Measurement","NCIT:C74736","ng/ml","NCIT","C-peptide_in_ng/ml","insulin indicator"
 "cd163","CD163","Scavenger Receptor Cysteine-Rich Type 1 Protein M130 Measurement","NCIT:C154728","ng/ml","NCIT","Scavenger_Receptor_Cysteine-Rich_Type_1_Protein_M130_in_ng/ml","cluster of differentiation 163?"
@@ -20,7 +20,7 @@
 "globulin",NA,"Globulin Protein Measurement","NCIT:C74738","g/L","NCIT","Globulin_Protein_in_g/L",NA
 "glp_1","GLP-1","Glucagon-like Peptide-1 Measurement","NCIT:C80183","pmol/L","NCIT","Glucagon-like_Peptide-1_in_pmol/L","glucagon-like peptide 1"
 "glucose",NA,"Glucose Measurement","NCIT:C105585","mg/dL","NCIT","Glucose_in_mg/dL",NA
-"glutamate_decarboxylase_2_antibody","GAD65","Measurement of glutamate decarboxylase 65 antibody (procedure)","SNOMED:117907009","n.a.","SNOMED","Measurement_of_glutamate_decarboxylase_65_antibody_(procedure)_in_n.a.","diabetes indicator"
+"glutamate_decarboxylase_2_antibody","GAD65","Measurement of glutamate decarboxylase 65 antibody (procedure)","SNOMED:117907009","n.a.","SNOMED","Measurement_of_glutamate_decarboxylase_65_antibody_(procedure)","diabetes indicator"
 "hba1c","HbA1C","Glycosylated Hemoglobin Measurement","NCIT:C64849","mmol/mol","NCIT","Glycosylated_Hemoglobin_in_mmol/mol","Relabel to HbA1C, Unit updated from % to mmol/mol"
 "hdl","HDL","High Density Lipoprotein Cholesterol Measurement","NCIT:C105587","mg/dL","NCIT","High_Density_Lipoprotein_Cholesterol_in_mg/dL",NA
 "hemoglobinometry",NA,"Hemoglobinometry","OMIT:0007621","g/dL","OMIT","Hemoglobinometry_in_g/dL","hemoglobin concentration metric"
@@ -37,3 +37,6 @@
 "triglycerides",NA,"Triglyceride Measurement","NCIT:C64812","mg/dL","NCIT","Triglyceride_in_mg/dL",NA
 "urea_nitrogen","BUN","Urea Nitrogen Measurement","NCIT:C125949","mmol/L","NCIT","Urea_Nitrogen_in_mmol/L","BUN (Blood Urea Nitrogen) test"
 "wbc","WBC","White blood cell count (procedure)","SNOMED:767002","x10^3 counts/ul","SNOMED","White_blood_cell_count_(procedure)_in_x10^3_counts/ul","white blood cell counts, Leukocyte Count (OMIT:0009044)"
+NA,NA,"Lactate Dehydrogenase Measurement","NCIT:C64855","U/L","NCIT","Lactate_Dehydrogenase_in_U/L",NA
+NA,NA,"Neutrophil to Lymphocyte Ratio Measurement","NCIT:C141271","n.a.","NCIT","Neutrophil_to_Lymphocyte_Ratio",NA
+NA,NA,"Platelet Antibody Measurement","NCIT:C176760","n.a.","NCIT","Platelet_Antibody","Positive|Negative can work?"
