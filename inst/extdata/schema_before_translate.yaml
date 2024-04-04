@@ -222,48 +222,26 @@ enums:
       Not Used:
   country_enums:
     name: country_enums
-    source_ontology: ncit
-    source_nodes: NCIT:C25464
-    include_self: "false"
-    relationship_types: descendants
+    include: 
+      Country:
+        source_ontology: ncit
+        source_nodes: NCIT:C25464
+        include_self: "false"
+        relationship_types: descendants
   bodysite_enums:
     name: bodysite_enums
-    permissible_values:
-      anterior naris:
-      buccal mucosa:
-      chest:
-      colon:
-      dentition:
-      dorsum of tongue:
-      elbow:
-      feces:
-      gingiva:
-      hard palate:
-      left colon:
-      left ear:
-      lumbar vertebra 2:
-      lumbar vertebra 3:
-      lumbar vertebra 4:
-      lung:
-      median vaginal canal:
-      milk:
-      nasal cavity:
-      oral cavity:
-      palatine tonsil:
-      posterior fornix of vagina:
-      rectum:
-      retroauricular region:
-      right colon:
-      right ear:
-      saliva:
-      sigmoid colon:
-      skin epidermis:
-      sputum:
-      subgingival dental plaque:
-      supragingival dental plaque:
-      throat:
-      vagina:
-      vagina orifice:
+    include: 
+      material anatomical entity:
+        source_ontology: uberon
+        source_node: UBERON:0000465
+        include_self: "false"
+        relationship_types: descendants
+    include: 
+      anatomical cavity:
+        source_ontology: uberon
+        source_node: UBERON:0002553
+        include_self: "false"
+        relationship_types: descendants
   age_group_enums:
     name: age_group_enums
     permissible_values:
