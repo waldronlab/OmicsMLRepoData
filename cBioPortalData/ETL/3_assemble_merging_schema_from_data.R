@@ -1,7 +1,7 @@
 ### This script create the merging schema table from the curated data files
 ### `0_curated_metadata_table.R` should be run before this script to provide
 ### the required inputs.
-# source("~/OmicsMLRepo/OmicsMLRepoData/cBioPortalData/ETL/0_assemble_curated_metadata.R")
+
 
 # Create the template table for merging schema (`cbio_ms`). 
 # It includes age, body site, sex, disease, treatment, and ancestry.
@@ -122,15 +122,3 @@ trt_uniqueness <- main_trt %>%
 insert_ind <- which(cbio_ms$curated_field %in% gsub("curated_", "", main_trt_col_names))
 cbio_ms$curated_field_completeness[insert_ind] <- as.vector(trt_completeness)
 cbio_ms$curated_field_unique_values[insert_ind] <- as.numeric(trt_uniqueness)
-    
-    
-# # Save
-# ## GitHub project
-# extDir <- "~/OmicsMLRepo/OmicsMLRepoData/inst/extdata"
-# write_csv(cbio_ms, file.path(extDir, "cBioPortal_merging_schema.csv"))
-# 
-# ## Google Sheet
-# url <- "https://docs.google.com/spreadsheets/d/1t2GTvDpgIrR84_ECoft6bQbb2qUr9RoeFtLZWM-ZRDI/edit?usp=sharing"
-# ss <- googledrive::as_id(url)
-# googlesheets4::write_sheet(cbio_ms, ss = ss, sheet = "merging_schema")
-

@@ -1,19 +1,20 @@
-### This script syncs cBioPortal merging schema created in Google Sheet to 
-### the GitHub repo. 
+### This script syncs cBioPortal merging schema available/created in Google 
+### Sheet to the GitHub repo. 
 
 ### Because there are quite a lot of columns involved in cBioPortal metadata 
 ### harmonization, its merging schema is created per attribute. 
 ### Each merging schema contains three major columns and more: `curated_column`, 
-### `original_column`, and `completeness`
+### `original_column`, and `completeness`.
+
+required_cols <- c("curated_field", "original_field", "original_field_completeness")
 
 
-# Directory to save curation_maps from Google Sheet
-cbio_ms_dir <- "~/OmicsMLRepo/OmicsMLRepoData/cBioPortalData/merging_schema/"
 
 ## Age
 url <- "https://docs.google.com/spreadsheets/d/1HDB845dzSFu25i6xEPfk06eR9n70IB-2uGsV4ZWpnVM/edit?usp=sharing"
 ss <- googledrive::as_id(url)
 age_ms <- googlesheets4::read_sheet(ss = ss, sheet = "merging_schema_age")
+age_ms <- age_ms %>% select(all_of(c(required_cols, "original_field_unit")))
 
 ## Disease
 url <- "https://docs.google.com/spreadsheets/d/1IgrVEdgCZdvBmWrER21A57lSkfDjdRdV3RbK_yoqMl4/edit?usp=sharing"
@@ -56,4 +57,5 @@ disease_ms <- googlesheets4::read_sheet(ss = ss, sheet = "merging_schema_disease
 ## Treatment
 url <- "https://docs.google.com/spreadsheets/d/1E6Xr1Aa8gxu6MgujOQ7kxarlZ7O8-Iy8XsCp7-0BHXY/edit?usp=sharing"
 ss <- googledrive::as_id(url)
-treatment_ms <- googlesheets4::read_sheet(ss = ss, sheet = "binned_cols")
+treatment_ms <- googlesheets4::read_sheet(ss = ss, sheet = "binned_cols") %>%
+    tidyr::gather(., "curated_field", value = "original_field", seq_len(ncol(.)))

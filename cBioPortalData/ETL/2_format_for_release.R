@@ -1,0 +1,44 @@
+### This script creates a `cbio_meta_release` table, which containing only 
+### the curated attributes formatted in an user-facing version (e.g., no 
+### legacy/source columns, no ontology term id).
+
+
+# Load `curated_all` table ------
+dir <- "~/OmicsMLRepo/OmicsMLRepoData"
+fpath <- file.path(dir, "inst/extdata/cBioPortal_curated_metadata.csv")
+curated_all <- readr::read_csv(fpath)
+
+# Remove accessory columns --------
+ori_ind <- grep("^original_", colnames(curated_all)) # `original_` cols
+curated_all_cleaned <-curated_all[-ori_ind]
+
+source_ind <- grep("_source$", colnames(curated_all_cleaned)) # `_source` cols
+curated_all_cleaned <- curated_all_cleaned[-source_ind]
+
+# Remove `curated_` prefix ---------
+updated_col_names <- gsub("^curated_", "", colnames(curated_all_cleaned))
+colnames(curated_all_cleaned) <- updated_col_names
+
+
+# Subset the metadata to be kept (ID columns) -------
+srcDir <- "~/OmicsMLRepo/OmicsMLRepoData/cBioPortalData/source"
+ori <- readRDS(file.path(srcDir, "cBioPortal_all_clinicalData_combined_2023-05-18.rds"))
+
+kept_cols <- c("studyId", "patientId", "sampleId", "SAMPLE_COUNT")
+kept_meta <- ori %>% select(all_of(kept_cols))
+kept_meta$curation_id <- paste(kept_meta$studyId, 
+                               kept_meta$patientId, sep = ":") %>%
+    paste(., kept_meta$sampleId, sep = ":")
+
+
+# Combine all metadata --------
+cbio_meta_release <- dplyr::full_join(curated_all_cleaned, 
+                                      kept_meta,
+                                      by = "curation_id")
+allCols <- colnames(cbio_meta_release)
+required_cols <- c("studyId", "patientId", "sampleId", "curation_id", "SAMPLE_COUNT")
+optional_cols <- allCols[!allCols %in% required_cols]
+col_order <- c(required_cols, sort(optional_cols)) # alphabetical order
+cbio_meta_release <- cbio_meta_release[col_order] 
+
+attr(cbio_meta_release, "source") <- "cBioPortalData" # add attribute

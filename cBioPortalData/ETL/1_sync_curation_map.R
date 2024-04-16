@@ -1,15 +1,7 @@
 ### This script imports cBioPortal curation maps created in Google Sheet
 
 
-# Directory to save curation_maps from Google Sheet
-cbio_maps_dir <- "~/OmicsMLRepo/OmicsMLRepoData/cBioPortalData/maps/"
-
-# Load curattion maps
-## Age_group
-url <- "https://docs.google.com/spreadsheets/d/1IgrVEdgCZdvBmWrER21A57lSkfDjdRdV3RbK_yoqMl4/edit?usp=sharing"
-ss <- googledrive::as_id(url)
-age_map <- googlesheets4::read_sheet(ss = ss, sheet = "cBioPortal_diseases_map")
-
+# Import curation maps from Google Sheet ----
 ## Bodysite
 url <- "https://docs.google.com/spreadsheets/d/1DKuoIt2xgSnkdkhYWffubmwrXLA7V7Z7pcqgb1TUXxo/edit?usp=sharing"
 ss <- googledrive::as_id(url)
@@ -36,11 +28,6 @@ url <- "https://docs.google.com/spreadsheets/d/1O_W_QDUZKWRNy4GbDQp3RCObb0FCBSVZ
 ss <- googledrive::as_id(url)
 sex_map <- googlesheets4::read_sheet(ss = ss, sheet = "cBioPortal_sex_map")
 
-# ## Study_design
-# url <- "https://docs.google.com/spreadsheets/d/1u7-r_a2hhbgBbZGOWmvJHIeRetol8lBKdOVNCGP83pA/edit?usp=sharing"
-# ss <- googledrive::as_id(url)
-# study_design_map <- googlesheets4::read_sheet(ss = ss, sheet = "study_design_map")
-# 
 # ## Study_design
 # url <- "https://docs.google.com/spreadsheets/d/1u7-r_a2hhbgBbZGOWmvJHIeRetol8lBKdOVNCGP83pA/edit?usp=sharing"
 # ss <- googledrive::as_id(url)
