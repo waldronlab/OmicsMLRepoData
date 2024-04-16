@@ -1,4 +1,4 @@
-## OmicsMLRepo project
+# OmicsMLRepo project
 
 Clinical and epidemiological data tend to explain most of the variation of 
 health-related traits, and its joint modeling with Omics data is crucial to 
@@ -24,4 +24,4 @@ making Omics data more AI/ML-ready.
 
 <br>
 
-<img src="https://raw.githubusercontent.com/waldronlab/OmicsMLRepoData/master/metadata_harmonization.png" width="90%" height="90%"/>
+<img src="https://raw.githubusercontent.com/waldronlab/OmicsMLRepoData/master/metadata_harmonization_process.png" width="80%" height="80%"/>
