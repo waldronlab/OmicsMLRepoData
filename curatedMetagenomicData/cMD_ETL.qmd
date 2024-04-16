@@ -44,6 +44,11 @@ source(file.path(cmd_etl_dir, "0_assemble_curated_metadata.R"))
 dir <- "~/OmicsMLRepo/OmicsMLRepoData"
 fpath <- file.path(dir, "inst/extdata/cMD_curated_metadata_all.csv")
 write.csv(curated_all, fpath, row.names = FALSE)
+
+## Sync the version in other OmicsMLRepo package, OmicsMLRepoCuration
+file.copy(from = fpath,
+          to = "~/OmicsMLRepo/OmicsMLRepoCuration/inst/extdata/cMD_curated_metadata_all.csv",
+          overwrite = TRUE)
 ```
 
 # Format for release
@@ -77,10 +82,10 @@ assign appropriate ontology terms to original values. These tables contain four
 main columns with some additional columns depending on a attribute.
 
 Four main columns are labeled as `original_value`, `curated_ontology`,
-`curated_contology_term_id`, and `curated_ontology_term_db`.
+`curated_ontology_term_id`, and `curated_ontology_term_db`.
 
-The script below (`1_sync_curation_map.R`) syncs all the cMD curations maps
-from Google Sheet under the `cmd_maps_dir` (a diretory under the local git 
+The script below (`1_sync_curation_map.R`) syncs all the cMD curation maps
+from Google Sheet to the `cbioportal_maps_dir` (a directory under the local git 
 project).
 
 ```{r cmd_save_curation_maps, eval=FALSE}
@@ -170,6 +175,23 @@ file.copy(from = file.path(extDir, "cMD_data_dictionary.csv"),
           to = "~/OmicsMLRepo/OmicsMLRepoR/inst/extdata/cMD_data_dictionary.csv",
           overwrite = TRUE)
 ```
+
+# Expand data dictionary
+Add the new attributes to the data dictionary.
+```{r}
+projDir <- "~/OmicsMLRepo/OmicsMLRepoData/curatedMetagenomicData"
+scriptDir <- file.path(projDir, "ETL/R")
+extDir <- "~/OmicsMLRepo/OmicsMLRepoData/inst/extdata"
+
+# returns: the updated `expanded_dd`
+source(file.path(cmd_etl_dir, "5_expand_data_dictionary.R")) 
+```
+
+
+
+
+
+
 
 # Dynamic Enum
 ```{r}

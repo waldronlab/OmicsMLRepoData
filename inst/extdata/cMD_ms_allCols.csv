@@ -1,0 +1,146 @@
+ori_column,curated_column,completeness,ontology,ontology_term_id,unit,Notes,Ask Curators,Direction
+age,age;age_unit;age_group,0.6,NA,NA,NA,NA,NA,NA
+age_category,age;age_unit;age_group,1,NA,NA,NA,NA,NA,NA
+infant_age,age;age_unit;age_group,0.128,NA,NA,NA,NA,NA,NA
+adiponectin,biomarker,0.006,Adiponectin Measurement,NCIT:C74839,ug/mL,Unit updated from mg/L to ug/ml,NA,NA
+albumine,biomarker,0.025,Albumin Measurement,NCIT:C64431,g/L,NA,NA,NA
+alt,biomarker,0.014,Alanine Aminotransferase Measurement,NCIT:C64433,U/L,Relabel to ALT (diagnose liver disorders) and combine with ALT column,NA,NA
+ALT,biomarker,0.005,Alanine Aminotransferase Measurement,NCIT:C64433,U/L,determinant of liver disease,NA,NA
+ast,biomarker,0.014,Aspartate Aminotransferase Measurement,NCIT:C64467,U/L,Relabel to AST (diagnose liver disorders),NA,NA
+autoantibody_positive,biomarker,0.003,Autoantibody titer measurement (procedure),SNOMED:165848009,n.a.,presence of autoantibodies,NA,NA
+bilubirin,biomarker,0.02,Direct Bilirubin Measurement,NCIT:C64481,umol/L,NA,NA,NA
+c_peptide,biomarker,0.01,C-peptide Measurement,NCIT:C74736,ng/ml,insulin indicator,NA,NA
+cd163,biomarker,0.006,Scavenger Receptor Cysteine-Rich Type 1 Protein M130 (CD163) Measurement,NCIT:C154728,ng/ml,cluster of differentiation 163?,NA,NA
+cholesterol,biomarker,0.053,Cholesterol Measurement,NCIT:C105586,mg/dL,NA,NA,NA
+creatine,biomarker,0.015,Creatine Measurement,NCIT:C201455,umol/L,Unit updated from mmol/L to umol/L,NA,NA
+creatinine,biomarker,0.034,Creatinine Measurement,NCIT:C64547,mmol/L,NA,NA,NA
+dyastolic_p,biomarker,0.035,Diastolic Blood Pressure,NCIT:C25299,mm/Hg,blood pressure metric,NA,NA
+eGFR,biomarker,0.005,Estimated Glomerular Filtration Rate,NCIT:C110935,mL/min/1.73m2,"determinant of kidney disease stage, Unit added",NA,NA
+ESR,biomarker,0.004,Erythrocyte Sedimentation Rate Measurement,NCIT:C74611,mm/hr,NA,NA,NA
+fasting_glucose,biomarker,0.009,fasting blood glucose measurement,EFO:0004465,mg/dL,NA,NA,NA
+fasting_insulin,biomarker,0.005,fasting blood insulin measurement,EFO:0004466,uU/ml,NA,NA,NA
+fgf_19,biomarker,0.006,Fibroblast Growth Factor 19 Measurement,NCIT:C154727,pg/ml,fibroblast growth factor 19,NA,NA
+globulin,biomarker,0.014,Globulin Protein Measurement,NCIT:C74738,g/L,NA,NA,NA
+glp_1,biomarker,0.006,Glucagon-like Peptide-1 Measurement,NCIT:C80183,pmol/L,glucagon-like peptide 1,NA,NA
+glucose,biomarker,0.018,Glucose Measurement,NCIT:C105585,mg/dL,NA,NA,NA
+glutamate_decarboxylase_2_antibody,biomarker,0.006,Measurement of glutamate decarboxylase 65 antibody (procedure),SNOMED:117907009,n.a.,diabetes indicator,NA,NA
+hba1c,biomarker,0.068,Glycosylated Hemoglobin (HbA1C) Measurement,NCIT:C64849,mmol/mol,"Relabel to HbA1C, Unit updated from % to mmol/mol",NA,NA
+hdl,biomarker,0.043,High Density Lipoprotein Cholesterol Measurement,NCIT:C105587,mg/dL,Relabel to HDL,NA,NA
+hemoglobinometry,biomarker,0.01,Hemoglobinometry,OMIT:0007621,g/dL,hemoglobin concentration metric,NA,NA
+hsCRP,biomarker,0.037,High Sensitivity C-Reactive Protein (hsCRP) Measurement,NCIT:C157114,mg/L,"High-sensitivity C-reactive protein (a marker of inflammation that predicts heart issues such as heart attack, stroke, etc.)",NA,NA
+hscrp,biomarker,0.018,High Sensitivity C-Reactive Protein (hsCRP) Measurement,NCIT:C157114,mg/L,Relabel to hcCRP and combine with hsCRP column,NA,NA
+il_1,biomarker,0.006,Interleukin 1 Measurement,NCIT:C74805,pg/ml,interleukin 1,NA,NA
+inr,biomarker,0.005,International Normalized Ratio of Prothrombin Time (INR),NCIT:C64805,sec,blood clot time metric,Is normalized version different from PT time?,NA
+ldl,biomarker,0.043,LDL Particles Measurement,NCIT:C120636,mg/dL,Relabel to LDL and combine with LDL column,NA,NA
+LDL,biomarker,0.037,LDL Particles Measurement,NCIT:C120636,mg/dL,"risk for heart disease, stroke",NA,NA
+leptin,biomarker,0.006,Leptin Measurement,NCIT:C74866,ug/L,NA,NA,NA
+prothrombin_time,biomarker,0.011,Prothrombin Time,NCIT:C62656,sec,NA,unit is 'second',"blood clotting test, prothrombin time (PT) test"
+rbc,biomarker,0.01,Red blood cell count (procedure),SNOMED:14089001,x10^6 counts/ul,"red blood cell counts, Erythrocyte Count (OMIT:0006139)",NA,NA
+systolic_p,biomarker,0.035,Systolic Blood Pressure,NCIT:C25298,mm/Hg,blood pressure metric,NA,NA
+triglycerides,biomarker,0.08,Triglyceride Measurement,NCIT:C64812,mg/dL,NA,NA,NA
+urea_nitrogen,biomarker,0.017,Urea Nitrogen Measurement,NCIT:C125949,mmol/L,BUN (Blood Urea Nitrogen),NA,NA
+wbc,biomarker,0.01,White blood cell count (procedure),SNOMED:767002,x10^3 counts/ul,"white blood cell counts, Leukocyte Count (OMIT:0009044)",NA,NA
+BMI,bmi,0.568,NA,NA,NA,NA,NA,NA
+body_site,body_site,1,NA,NA,NA,Not sure whether it's worth to keep both body site and body subsite,NA,NA
+body_subsite,body_site,0.096,NA,NA,NA,NA,NA,NA
+dental_sample_type,body_site,0.007,NA,NA,NA,Didn't we used this for body site curation already? Yes,NA,NA
+disease_location,body_site,0.018,NA,NA,NA,NA,NA,NA
+disease,control;disease,1,NA,NA,NA,NA,NA,NA
+disease_subtype,control;disease,0.136,NA,NA,NA,NA,NA,NA
+history_of_periodontitis,control;disease,0.005,periodontitis,EFO:0000649,NA,Yes/No,NA,Dental implants marker.
+study_condition,control;disease,0.999,NA,NA,NA,NA,NA,NA
+country,country,1,Country,NCIT:C25464,NA,NA,NA,NA
+diet,dietary_restriction,0.018,NA,NA,NA,dynamic enum using 'Restricted diet pattern (finding)' (SNOMED:162536008?),Rename column to 'dietary_restriction'?,Rename to 'dietary_restriction'
+ORR,disease_response_orr,0.01,Overal Response,NCIT:C96613,NA,An assessment of the overall response of the disease to the therapy.,? (yes/no/NA),"Overall Response Rate (binary variable?) --> ""response_to_therpy"" column to combine"
+PFS12,disease_response_pfs;disease_response_pfs_month,0.009,Progression Free Survival,EFO:0004920,NA,Progression free survival is a measurement from a defined time point e.g. diagnosis and indicates that the disease did not progress i.e. tumours did not increase in size and new incidences did not occur. PFS is usually used in analyzing results of treatment for advanced disease.,NA,NA
+RECIST,disease_response_recist,0.01,RECIST,DICOM:112022,NA,Response Evaluation Criteria In Solid Tumors. Stable Disease (SD)/ Partial Response (PR)/ Progressive Disease (PD)/ Complete Response (CR),? (SD/PR/PD/CR/NA),"- Standard classification of progression in tumor therapy
+- Stable Disease/ Partial Response/ Progressive Disease/ Complete Response/ NA"
+DNA_extraction_kit,dna_extraction_kit,0.691,NA,NA,NA,NA,NA,NA
+bristol_score,feces_phenotype_metric;feces_phenotype_value,0.037,Bristol stool form score (observable entity),SNOMED:443172007,NA,stool consistency metric,NA,Keep this column
+calprotectin,feces_phenotype_metric;feces_phenotype_value,0.012,Calprotectin Measurement,NCIT:C82005,NA,a calcium- and zinc-binding protein,unit? (numeric - concentration?),"summation index, marker for inflammation, from fecal sample"
+HBI,feces_phenotype_metric;feces_phenotype_value,0.004,Harvey-Bradshaw Index Clinical Classification,NCIT:C191036,NA,Harvey-Bradshaw Index for Crohn's Disease,NA,NA
+fmt_id,fmt_id,0.006,NA,NA,NA,fecal microbiota transplant (id),NA,NA
+FMT_role,fmt_role,0.007,NA,NA,NA,fecal microbiota transplant (role),NA,NA
+HLA,hla,0.005,HLA Complex,NCIT:C121977,NA,NA,NA,NA
+hla_dqa11,hla,0.025,human MHC class II protein complex with serotype,MRO:0001676,NA,NA,NA,NA
+hla_dqa12,hla,0.015,human MHC class II protein complex with serotype,MRO:0001676,NA,NA,NA,NA
+hla_drb11,hla,0.01,human MHC class II protein complex with serotype,MRO:0001676,NA,NA,NA,NA
+hla_drb12,hla,0.007,human MHC class II protein complex with serotype,MRO:0001676,NA,NA,NA,NA
+curator,identification,1,NA,NA,NA,NA,NA,NA
+sample_id,identification,1,NA,NA,NA,NA,NA,NA
+study_name,identification,1,NA,NA,NA,NA,NA,NA
+subcohort,identification,0.015,NA,NA,NA,NA,NA,NA
+subject_id,identification,1,NA,NA,NA,NA,NA,NA
+days_from_first_collection,independent,0.366,NA,NA,NA,NA,NA,Important
+family,independent,0.189,NA,NA,NA,NA,NA,NA
+family_role,independent,0.124,NA,NA,NA,NA,NA,NA
+lifestyle,independent,0.013,NA,NA,NA,NA,NA,Important
+zigosity,independent,0.013,"Twin (OMIT:0015263) as a dynamic enum node --> Twins, Dizygotic (OMIT:0015265) and Twins, Monozygotic (OMIT:0015266)",NA,NA,describes twin type,NA,NA
+location,location,0.318,NA,NA,NA,NA,NA,NA
+NCBI_accession,ncbi_accession,0.795,NA,NA,NA,NA,NA,NA
+birth_weight,neonatal_birth_weight,0.097,Rename the column,NA,NA,NA,NA,neonatal_birth_weight
+born_method,neonatal_delivery_procedure,0.13,NA,NA,NA,NA,NA,neonatal_delivery_procedure
+c_section_type,neonatal_delivery_procedure,0.035,NA,NA,NA,emergency/elective,NA,neonatal_delivery_procedure
+feeding_practice,neonatal_feeding_method,0.033,NA,NA,NA,NA,NA,neonatal_feeding_method
+breastfeeding_duration,neonatal_feeding_method,0.006,Move to uncurated_metadata after updating neonatal_feeding_method,NA,NA,NA,NA,uncurated_metadata
+formula_first_day,neonatal_feeding_method,0.007,Move to uncurated_metadata after updating neonatal_feeding_method,NA,NA,age (in days) when formula first administered,NA,uncurated_metadata
+gestational_age,neonatal_gestational_age,0.098,Rename the column,NA,NA,NA,NA,neonatal_gestational_age
+premature,neonatal_preterm_birth,0.098,Preterm Birth,NA,NA,NA,NA,neonatal_preterm_birth
+birth_control_pil,obgyn_birth_control,0.013,NA,NA,NA,y/n on bc?,NA,NA
+lactating,obgyn_lactating,0.043,NA,NA,NA,NA,NA,move to obgyn_lactating
+menopausal_status,obgyn_menopause,0.019,NA,NA,NA,NA,NA,NA
+pregnant,obgyn_pregnancy,0.16,NA,NA,NA,Pregnant (SNOMED:77386006)/ Not pregnant (SNOMED:60001007),NA,NA
+PMID,pmid,1,NA,NA,NA,NA,NA,NA
+population,population,0.09,NA,NA,NA,NA,NA,NA
+PPD_B,probing_pocket_depth,0.005,Depth of periodontal pocket (observable entity),SNOMED:286546002,NA,NA,?,"Dental Implants, Basal"
+PPD_D,probing_pocket_depth,0.005,Depth of periodontal pocket (observable entity),SNOMED:286546002,NA,NA,?,"Dental Implants, Distal"
+PPD_L,probing_pocket_depth,0.005,Depth of periodontal pocket (observable entity),SNOMED:286546002,NA,NA,?,"Dental Implants, more studies coming"
+PPD_M,probing_pocket_depth,0.005,Depth of periodontal pocket (observable entity),SNOMED:286546002,NA,NA,?,"Dental Implants, PPD = Probing Pocket Depth"
+alcohol,remove,0.035,NA,NA,NA,NA,? (yes/no/NA),Remove
+alcohol_numeric,remove,0.027,NA,NA,NA,NA,? unit?,Remove
+anti_PD_1,remove,0.002,NA,NA,NA,responder/non-responder,NA,"Remove. Old version PFS12, etc."
+brinkman_index,remove,0.027,NA,NA,NA,cigs/day * years smoked,NA,Remove or smoker column
+change_in_tumor_size,remove,0.002,NA,NA,NA,NA,NA,Remove or uncurated_metadata
+days_after_onset,remove,0.006,NA,NA,NA,NA,?,Remove
+ferm_milk_prod_consumer,remove,0.001,NA,NA,NA,NA,? (dmfp for 19),Remove (not common measurement anymore)
+flg_genotype,remove,0.003,NA,NA,NA,filaggrin gene (wt/mutation type),NA,Remove
+hitchip_probe_class,remove,0.013,NA,NA,NA,intestinal species content (high/low),hpc/lpc (high probe class and low probe class?),Remove
+insulin_cat,remove,0.006,NA,NA,NA,yes/no,?,Remove
+mgs_richness,remove,0.017,NA,NA,NA,metagenomic species richness,unit?,Remove
+mumps,remove,0.002,NA,NA,NA,no indication if this is condition or vaccine,?,Remove
+performance_status,remove,0.007,NA,NA,NA,0-3,? (0/1/2/3),Remove
+previous_therapy,remove,0.007,NA,NA,NA,yes/no,? (1/no/yes),Remove
+remission,remove,0.002,NA,NA,NA,NA,NA,Remove
+shigatoxin_2_elisa,remove,0.002,NA,NA,NA,shiga toxin indicator (neg/pos),NA,Remove
+stec_count,remove,0.002,NA,NA,NA,shiga toxin info,NA,Remove
+stool_texture,remove,0.002,NA,NA,NA,stool consistency metric,NA,Remove
+toxicity_above_zero,remove,0.007,NA,NA,NA,yes/no,? (0/no/yes),Remove
+visit_number,remove,0.116,NA,NA,NA,NA,NA,Remove
+median_read_length,sequencing,0.912,NA,NA,NA,NA,NA,NA
+minimum_read_length,sequencing,0.912,NA,NA,NA,NA,NA,NA
+number_bases,sequencing,1,NA,NA,NA,NA,NA,NA
+number_reads,sequencing,0.912,NA,NA,NA,NA,NA,NA
+sequencing_platform,sequencing,0.993,NA,NA,NA,NA,NA,NA
+gender,sex,0.886,NA,NA,NA,NA,NA,NA
+ever_smoker,smoker,0.052,Finding of tobacco smoking behavior (finding),SNOMED:365981007,NA,Ex-smoker (finding) (SNOMED:8517006)/ Never smoked tobacco (finding) (SNOMED:266919005) <-- depending on ever_smoker value,yes/no/NA,"less informative, but probably keep it for now
+merge all three into Yes/No/Past/NA"
+smoke,smoker,0.058,Finding of tobacco smoking behavior (finding),SNOMED:365981007,NA,smoker (finding) (SNOMED:77176002)/ Non-smoker (finding) (SNOMED:8392000),1/no/NA,Yes/No/NA (smoke and smoker are same)
+smoker,smoker,0.074,Finding of tobacco smoking behavior (finding),SNOMED:365981007,NA,smoker (finding) (SNOMED:77176002)/ Non-smoker (finding) (SNOMED:8392000),yes/no/NA,"(smoke and smoker are same)
+This column is linked to the ever_smoker column"
+NA,target_condition,0,NA,NA,NA,NA,NA,NA
+antibiotics_current_use,treatment;antibiotics_current_use,0.651,NA,NA,NA,NA,NA,NA
+antibiotics_family,treatment;antibiotics_current_use,0.025,NA,NA,NA,NA,NA,NA
+treatment,treatment;antibiotics_current_use,0.242,NA,NA,NA,NA,NA,NA
+ajcc,tumor_staging_ajcc,0.022,American Joint Committee on Cancer (tumor staging),SNOMED:258236004,NA,cancer staging system,NA,"cancer staging, more studies coming"
+disease_stage,tumor_staging_ajcc,0.006,American Joint Committee on Cancer (tumor staging),SNOMED:258236004,NA,disease stage metric not specified. Available values 0/I/II/III/IV,metrics?,Important. More widely used than tnm and ajcc
+tnm,tumor_staging_tnm,0.012,Tumor-node-metastasis (TNM) tumor staging system (tumor staging),SNOMED:254293002,NA,"The TNM classification system was developed as a tool for doctors to stage different types of cancer based on certain, standardized criteria. The TNM Staging System includes the extent of the tumor (T), extent of spread to the lymph nodes (N), and presence of metastasis (M).",?,"cancer staging, more studies coming"
+age_seroconversion,uncurated_metadata,0.003,NA,NA,NA,age at seroconversion,NA,NA
+age_T1D_diagnosis,uncurated_metadata,0.001,NA,NA,NA,age at diagnosis (type 1 diabetes),NA,NA
+BASDAI,uncurated_metadata,0.004,NA,NA,NA,Bath Ankylosing Spondylitis Disease Activity Index,NA,Very niche information.
+BASFI,uncurated_metadata,0.004,NA,NA,NA,Bath Ankylosing Spondylitis Functional Index,NA,Very niche information.
+fobt,uncurated_metadata,0.012,Fecal Occult Blood Test,NCIT:C18014,NA,Fecal Occult Blood Test,? (yes/no/NA),"fecal occult blood test, screen for CRC (binary results), very rare measure for now, maybe keep in uncurated column"
+protein_intake,uncurated_metadata,0.005,NA,NA,NA,NA,unit?,Move to uncurated column
+SCCAI,uncurated_metadata,0.002,NA,NA,NA,Simple Clinical Colitis Activity Index (ulcerative colitis),NA,Very niche information.
+travel_destination,uncurated_metadata,0.002,NA,NA,NA,NA,NA,NA
+uncurated_metadata,uncurated_metadata,0.067,NA,NA,NA,NA,NA,NA
+non_westernized,westernized,1,NA,NA,NA,Switch the value direction,Switch the column name to 'westernized'?,Rename to 'westernized'
