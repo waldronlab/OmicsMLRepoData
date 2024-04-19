@@ -1,16 +1,22 @@
 Package: OmicsMLRepoData
 Title: Curate metadata of omics datasets for AI/ML
-Version: 0.99.2
-Date: 2022-12-22
+Version: 0.99.3
+Date: 2024-3-10
 Authors@R: 
-    person(given = "Sehyun",
-           family = "Oh",
-           role = c("aut", "cre"),
-           email = "shbrief@gmail.com",
-           comment = c(ORCID = "0000-0002-9490-3061"))
-Description: This project curates and hamonizes metadata from large
-omics databases, incorporting ontology, to improve the interoperabiltiy 
-and compatibility of omics data, especially for AI/ML applications. 
+    c(person(given = "Sehyun",
+             family = "Oh",
+             role = c("aut", "cre"),
+             email = "shbrief@gmail.com",
+             comment = c(ORCID = "0000-0002-9490-3061")),
+      person(given = "Kaelyn",
+             family = "Long",
+             role = "aut"),
+      person(given = "Kai",
+             family = "Gravel-Pucillo",
+             role = "aut"))
+Description: This project curates and hamonizes metadata from large omics 
+  databases, incorporting ontology, to improve the interoperabiltiy and 
+  compatibility of omics data, especially for AI/ML applications. 
 License: Artistic-2.0
 Encoding: UTF-8
 Roxygen: list(markdown = TRUE)
