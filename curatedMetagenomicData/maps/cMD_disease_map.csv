@@ -1,135 +1,135 @@
-"original_value","curated_ontology_term","curated_ontology_term_id","curated_ontology_term_db","Notes"
-"IGT","abnormal glucose tolerance","EFO:0002546","EFO",NA
-"acute_diarrhoea","acute diarrhea","MONDO:0000257","MONDO",NA
-"adenocarcinoma","adenocarcinoma","EFO:0000228","EFO",NA
-"adenoma","Adenoma","NCIT:C2855","NCIT",NA
-"advancedadenoma","Adenoma","NCIT:C2855","NCIT",NA
-"AR","Allergic rhinitis","HP:0003193","HP",NA
-"AD","Alzheimer's Disease","NCIT:C2866","NCIT",NA
-"AS","ankylosing spondylitis","EFO:0003898","EFO",NA
-"arthritis","arthritis","EFO:0005856","EFO",NA
-"ascaris_lumbricoides","Ascaris lumbricoides","NCIT:C122177","NCIT",NA
-"ascites","Ascites","HP:0001541","HP",NA
-"asthma","Asthma","NCIT:C28397","NCIT",NA
-"ACVD","atherosclerosis","EFO:0003914","EFO",NA
-"BD","Behcet's syndrome","EFO:0003780","EFO",NA
-"bronchitis","bronchitis","EFO:0009661","EFO",NA
-"carcinoma","carcinoma","EFO:0000313","EFO",NA
-"carcinoma_surgery_history","carcinoma","EFO:0000313","EFO",NA
-"carcinoma_surgery_history","History of surgery (situation)","SNOMED:161615003","SNOMED",NA
-"coeliac","celiac disease","EFO:0001060","EFO",NA
-"cellulitis","cellulitis","EFO:0003035","EFO",NA
-"cephalosporins","Cephalosporin Antibiotic","NCIT:C357","NCIT",NA
-"cholera","Cholera","NCIT:C157812","NCIT",NA
-"chorioamnionitis","chorioamnionitis","EFO:0009948","EFO",NA
-"cirrhosis","cirrhosis of liver","EFO:0001422","EFO",NA
-"CDI","clostridium difficile infection","EFO:0009130","EFO",NA
-"treatment_colitis","Colitis","OMIT:0004401","OMIT",NA
-"CRC","Colorectal Carcinoma","NCIT:C2955","NCIT",NA
-"CAD","coronary artery disease","EFO:0001645","EFO",NA
-"cough","Cough","HP:0012735","HP",NA
-"CD","Crohn's disease","EFO:0000384","EFO",NA
-"cystitis","cystitis","EFO:1000025","EFO",NA
-"CMV","cytomegalovirus infection","EFO:0001062","EFO",NA
-"generic_diabetes","Diabetes Mellitus","NCIT:C2985","NCIT",NA
-"TKI_dependent_diarrhoea","Diarrhea","HP:0002014","HP",NA
-"donor","Donor","NCIT:C48284","NCIT",NA
-"entamoeba_histolytica","Entamoeba histolytica","NCIT:C122297","NCIT",NA
-"fatty_liver","Fatty Liver","OMIT:0006456","OMIT",NA
-"FMT","Fecal Microbiota Transplantation","NCIT:C118643","NCIT",NA
-"fever","Fever","HP:0001945","HP",NA
-"gangrene","gangrene","EFO:0008574","EFO",NA
-"infectiousgastroenteritis","gastroenteritis","EFO:1001463","EFO",NA
-"gestational_diabetes","gestational diabetes","EFO:0004593","EFO",NA
-"healthy","Healthy","NCIT:C115935","NCIT",NA
-"HF","Heart Failure","NCIT:C50577","NCIT",NA
-"STH","Helminth","NCIT:C125642","NCIT","Helminth,Transmitted,soil"
-"hepatitis","Hepatitis","HP:0012115","HP",NA
-"HBV","hepatitis B virus infection","EFO:0004197","EFO",NA
-"HCV","Hepatitis C Infection","NCIT:C3098","NCIT",NA
-"HDV","hepatitis D virus infection","EFO:0007304","EFO",NA
-"HEV","hepatitis E virus infection","EFO:0007303","EFO",NA
-"abdominalhernia","Hernia of the abdominal wall","HP:0004299","HP",NA
-"hookworm","Hookworm Infection","NCIT:C34702","NCIT",NA
-"human gut microbiome","human gut microbiome","OHMI:0000020","OHMI",NA
-"human microbiome","human microbiome","OHMI:0000002","OHMI",NA
-"human skin microbiome interaction","human skin microbiome interaction","OHMI:0000121","OHMI",NA
-"cholesterolemia","Hypercholesterolemia","HP:0003124","HP",NA
-"hypercholesterolemia","Hypercholesterolemia","HP:0003124","HP",NA
-"hypertension","hypertension","EFO:0000537","EFO",NA
-"Indeterminate_colitis","indeterminate colitis","EFO:1000034","EFO",NA
-"suspinf","Infection","NCIT:C128320","NCIT","Infection,Suspected"
-"IBD","Inflammatory Bowel Disease","NCIT:C3138","NCIT",NA
-"intestinal microbiome","Intestinal Flora","NCIT:C93019","NCIT",NA
-"irritable_bowel","Irritable Bowel Syndrome","NCIT:C82343","NCIT",NA
-"largeadenoma","large intestine adenoma","DOID:0050914","DOID",NA
-"microfilaria_loa_loa","Loa loa","NCIT:C123512","NCIT","Loa loa,Microfilaria"
-"mansonella_perstans","Mansonella perstans","NCIT:C119326","NCIT",NA
-"melanoma","melanoma","EFO:0000756","EFO",NA
-"melanoma_surgery","Melanoma Surgery","NCIT:C157920","NCIT",NA
-"MA","Metabolic Syndrome","NCIT:C84442","NCIT",NA
-"metabolic_syndrome","metabolic syndrome","EFO:0000195","EFO",NA
-"MS","Metabolic Syndrome","NCIT:C84442","NCIT",NA
-"metastases","Metastatic Malignant Neoplasm","NCIT:C36263","NCIT",NA
-"metastases_adrenal","Metastatic Malignant Neoplasm in the Adrenal Gland","NCIT:C8610","NCIT",NA
-"metastases_bone","Metastatic Malignant Neoplasm in the Bone","NCIT:C3580","NCIT",NA
-"metastases_liver","Metastatic Malignant Neoplasm in the Liver","NCIT:C4758","NCIT",NA
-"metastases_lung","Metastatic Malignant Neoplasm in the Lung","NCIT:C3577","NCIT",NA
-"metastases_nodes","Metastatic Malignant Neoplasm in the Lymph Nodes","NCIT:C4904","NCIT",NA
-"metastases_SQ","Metastatic Squamous Cell Carcinoma","NCIT:C4104","NCIT",NA
-"microfilaria_spp","Microfilaria","OMIT:0009896","OMIT",NA
-"migraine","Migraine","NCIT:C89715","NCIT",NA
-"mucositis","Mucositis","NCIT:C115965","NCIT",NA
-"MDRB","Multidrug-resistant bacteria (organism)","713351000","SNOMED",NA
-"ME/CFS","myalgic encephalomeyelitis/chronic fatigue syndrome","MONDO:0005404","MONDO",NA
-"NK","Natural Killer Cell","NCIT:C12536","NCIT",NA
-"necator_americanus","Necator americanus","OMIT:0017611","OMIT",NA
-"NAFLD","Non-alcoholic Fatty Liver Disease","OMIT:0028679","OMIT",NA
-"Oral Microbiome","Oral Microbiome","NCIT:C125208","NCIT",NA
-"osteoarthritis","Osteoarthritis","NCIT:C3293","NCIT",NA
-"otitis","Otitis Media","NCIT:C34885","NCIT",NA
-"PD","Parkinson disease","MONDO:0005180","MONDO",NA
-"peri-implantitis","Peri-Implantitis","OMIT:0027030","OMIT",NA
-"perianal_fistula","Perianal fistula (disorder)","58103005","SNOMED",NA
-"SRP","Periodontal Scaling and Root Planing","NCIT:C63714","NCIT",NA
-"periodontitis","periodontitis","EFO:0000649","EFO",NA
-"plasmodium_falciparum","Plasmodium falciparum","NCBITaxon:5833","NCBITaxon",NA
-"pneumonia","pneumonia","EFO:0003106","EFO",NA
-"few_polyps","Polyps","OMIT:0012094","OMIT",NA
-"pre-hypertension","Pre-capillary pulmonary hypertension","HP:0033578","HP",NA
-"pre-eclampsia","preeclampsia","EFO:0000668","EFO",NA
-"premature_born","premature birth","EFO:0003917","EFO",NA
-"Prevotella copri","Prevotella copri","NCBITaxon:165179","NCBITaxon",NA
-"psoriasis","psoriasis","EFO:0000676","EFO",NA
-"pyelonefritis","pyelonephritis","EFO:1001141","EFO",NA
-"pyelonephritis","pyelonephritis","EFO:1001141","EFO",NA
-"respiratoryinf","Respiratory tract infection","HP:0011947","HP",NA
-"RA","rheumatoid arthritis","EFO:0000685","EFO",NA
-"salmonellosis","salmonellosis","MONDO:0000827","MONDO",NA
-"schistosoma","Schistosoma","NCIT:C124285","NCIT",NA
-"first_episode_schizofrenia","Schizophrenia","NCIT:C3362","NCIT",NA
-"first_episode_schizofrenia","First episode (qualifier value)","SNOMED:255217005","SNOMED",NA
-"schizofrenia","Schizophrenia","NCIT:C3362","NCIT",NA
-"schizophrenia","Schizophrenia","NCIT:C3362","NCIT",NA
-"repeated_episodes_shizofrenia","Schizophrenia","NCIT:C3362","NCIT",NA
-"repeated_episodes_shizofrenia","repeated","EUPATH:0001011","EUPATH",NA
-"sepsis","Sepsis","HP:0100806","HP",NA
-"STEC","Shiga Toxin-producing Escherichia coli","NCIT:C184689","NCIT",NA
-"skininf","Skin Infection","NCIT:C35025","NCIT",NA
-"smalladenoma","Small Intestinal Adenoma","NCIT:C5340","NCIT",NA
-"stomatitis","stomatitis","EFO:0009688","EFO",NA
-"tonsillitis","Tonsillitis","NCIT:C116006","NCIT",NA
-"trichomonas_intestinalis","Trichomonas","NCIT:C89825","NCIT",NA
-"trichuris_trichiura","Trichuris trichiura","NCIT:C125973","NCIT",NA
-"T1D","Type 1 Diabetes Mellitus","NCIT:C2986","NCIT",NA
-"T1D_nonconverter","Type 1 Diabetes Mellitus","NCIT:C2986","NCIT",NA
-"T1D_seroconverter","Type 1 Diabetes Mellitus","NCIT:C2986","NCIT",NA
-"T2D","Type 2 Diabetes Mellitus","NCIT:C26747","NCIT",NA
-"UC","ulcerative colitis","EFO:0000729","EFO",NA
-"undetermined_colitis","undetermined colitis","MONDO:0015176","MONDO",NA
-"ureteralstone","Ureteric Stone","NCIT:C26902","NCIT",NA
-"uveitis","uveitis","EFO:1001231","EFO",NA
-"VKH","Vogt-Koyanagi-Harada disease","MONDO:0018092","MONDO",NA
-"Weight loss","Weight loss","HP:0001824","HP",NA
-"wilson","Wilson disease","MONDO:0010200","MONDO",NA
-"wuchereria_bancrofti","Wuchereria bancrofti","NCIT:C122328","NCIT",NA
+original_value,curated_ontology_term,curated_ontology_term_id,curated_ontology_term_db,Notes
+IGT,Glucose Intolerance,NCIT:C34646,NCIT,NA
+acute_diarrhoea,acute diarrhea,MONDO:0000257,MONDO,NA
+adenocarcinoma,Adenocarcinoma,NCIT:C2852,NCIT,NA
+adenoma,Adenoma,NCIT:C2855,NCIT,NA
+advancedadenoma,Adenoma,NCIT:C2855,NCIT,NA
+AR,Allergic Rhinitis,NCIT:C79532,NCIT,NA
+AD,Alzheimer's Disease,NCIT:C2866,NCIT,NA
+AS,Ankylosing Spondylitis,NCIT:C84564,NCIT,NA
+arthritis,Arthritis,NCIT:C2883,NCIT,NA
+ascaris_lumbricoides,Ascaris lumbricoides,NCIT:C122177,NCIT,NA
+ascites,Ascites,NCIT:C143300,NCIT,NA
+asthma,Asthma,NCIT:C28397,NCIT,NA
+ACVD,Atherosclerosis,NCIT:C35768,NCIT,NA
+BD,Behcet Syndrome,NCIT:C34416,NCIT,NA
+bronchitis,bronchitis,NCIT:C2911,NCIT,NA
+carcinoma,Carcinoma,NCIT:C2916,NCIT,NA
+carcinoma_surgery_history,Carcinoma,NCIT:C2916,NCIT,NA
+carcinoma_surgery_history,History of surgery (situation),SNOMED:161615003,SNOMED,NA
+coeliac,Celiac Disease,NCIT:C26714,NCIT,NA
+cellulitis,Cellulitis,NCIT:C26715,NCIT,NA
+cephalosporins,Cephalosporin Antibiotic,NCIT:C357,NCIT,NA
+cholera,Cholera,NCIT:C157812,NCIT,NA
+chorioamnionitis,Chorioamnionitis,NCIT:C26720,NCIT,NA
+cirrhosis,Cirrhosis,NCIT:C2951,NCIT,NA
+CDI,Clostridium difficile Infection,NCIT:C180523,NCIT,NA
+treatment_colitis,Colitis,NCIT:C26723,NCIT,NA
+CRC,Colorectal Carcinoma,NCIT:C2955,NCIT,NA
+CAD,Coronary Artery Disease,NCIT:C26732,NCIT,NA
+cough,Cough,NCIT:C37935,NCIT,NA
+CD,Crohn Disease,NCIT:C2965,NCIT,NA
+cystitis,Cystitis,NCIT:C26738,NCIT,NA
+CMV,Cytomegaloviral Infection,NCIT:C53649,NCIT,NA
+generic_diabetes,Diabetes Mellitus,NCIT:C2985,NCIT,NA
+TKI_dependent_diarrhoea,Diarrhea,NCIT:C2987,NCIT,NA
+donor,Donor,NCIT:C48284,NCIT,NA
+entamoeba_histolytica,Entamoeba histolytica,NCIT:C122297,NCIT,NA
+fatty_liver,fatty liver disease,MONDO:0004790,MONDO,NA
+FMT,Fecal Microbiota Transplantation,NCIT:C118643,NCIT,NA
+fever,Fever,NCIT:C3038,NCIT,NA
+gangrene,Gangrene,NCIT:C50573,NCIT,NA
+infectiousgastroenteritis,Gastroenteritis,NCIT:C34632,NCIT,NA
+gestational_diabetes,Gestational Diabetes,NCIT:C34942,NCIT,NA
+healthy,Healthy,NCIT:C115935,NCIT,NA
+HF,Heart Failure,NCIT:C50577,NCIT,NA
+STH,Helminth,NCIT:C125642,NCIT,"Helminth,Transmitted,soil"
+hepatitis,Hepatitis,NCIT:C3095,NCIT,NA
+HBV,hepatitis B virus infection,MONDO:0005344,MONDO,NA
+HCV,Hepatitis C Infection,NCIT:C3098,NCIT,NA
+HDV,hepatitis D virus infection,MONDO:0005789,MONDO,NA
+HEV,hepatitis E virus infection,MONDO:0005788,MONDO,NA
+abdominalhernia,Abdominal Hernia,NCIT:C98700,NCIT,NA
+hookworm,Hookworm Infection,NCIT:C34702,NCIT,NA
+human gut microbiome,human gut microbiome,OHMI:0000020,OHMI,NA
+human microbiome,human microbiome,OHMI:0000002,OHMI,NA
+human skin microbiome interaction,human skin microbiome interaction,OHMI:0000121,OHMI,NA
+cholesterolemia,Hypercholesterolemia,NCIT:C37967,NCIT,NA
+hypercholesterolemia,Hypercholesterolemia,NCIT:C37967,NCIT,NA
+hypertension,Hypertension,NCIT:C3117,NCIT,NA
+Indeterminate_colitis,Colitis of Indeterminate Type,NCIT:C27110,NCIT,NA
+suspinf,Infection,NCIT:C128320,NCIT,"Infection,Suspected"
+IBD,Inflammatory Bowel Disease,NCIT:C3138,NCIT,NA
+intestinal microbiome,Intestinal Flora,NCIT:C93019,NCIT,NA
+irritable_bowel,Irritable Bowel Syndrome,NCIT:C82343,NCIT,NA
+largeadenoma,Colorectal Adenoma,NCIT:C5673,NCIT,NA
+microfilaria_loa_loa,Loa loa,NCIT:C123512,NCIT,"Loa loa,Microfilaria"
+mansonella_perstans,Mansonella perstans,NCIT:C119326,NCIT,NA
+melanoma,Melanoma,NCIT:C3224,NCIT,NA
+melanoma_surgery,Melanoma Surgery,NCIT:C157920,NCIT,NA
+MA,Metabolic Syndrome,NCIT:C84442,NCIT,NA
+metabolic_syndrome,metabolic syndrome,NCIT:C84442,NCIT,NA
+MS,Metabolic Syndrome,NCIT:C84442,NCIT,NA
+metastases,Metastatic Malignant Neoplasm,NCIT:C36263,NCIT,NA
+metastases_adrenal,Metastatic Malignant Neoplasm in the Adrenal Gland,NCIT:C8610,NCIT,NA
+metastases_bone,Metastatic Malignant Neoplasm in the Bone,NCIT:C3580,NCIT,NA
+metastases_liver,Metastatic Malignant Neoplasm in the Liver,NCIT:C4758,NCIT,NA
+metastases_lung,Metastatic Malignant Neoplasm in the Lung,NCIT:C3577,NCIT,NA
+metastases_nodes,Metastatic Malignant Neoplasm in the Lymph Nodes,NCIT:C4904,NCIT,NA
+metastases_SQ,Metastatic Squamous Cell Carcinoma,NCIT:C4104,NCIT,NA
+microfilaria_spp,Onchocerca microfilariae,NCBITaxon:6285,NCBITaxon,NA
+migraine,Migraine,NCIT:C89715,NCIT,NA
+mucositis,Mucositis,NCIT:C115965,NCIT,NA
+MDRB,Multidrug-resistant bacteria (organism),SNOMED:713351000,SNOMED,NA
+ME/CFS,Chronic Fatigue Syndrome,NCIT:C3037,NCIT,NA
+NK,Natural Killer Cell,NCIT:C12536,NCIT,NA
+necator_americanus,Necator americanus,NCIT:C123524,NCIT,NA
+NAFLD,Nonalcoholic Fatty Liver Disease,NCIT:C84444,NCIT,NA
+Oral Microbiome,Oral Microbiome,NCIT:C125208,NCIT,NA
+osteoarthritis,Osteoarthritis,NCIT:C3293,NCIT,NA
+otitis,Otitis Media,NCIT:C34885,NCIT,NA
+PD,Parkinson's Disease,NCIT:C26845,NCIT,NA
+peri-implantitis,Peri-Implantitis,OMIT:0027030,OMIT,NA
+perianal_fistula,Perianal fistula (disorder),SNOMED:58103005,SNOMED,NA
+SRP,Periodontal Scaling and Root Planing,NCIT:C63714,NCIT,NA
+periodontitis,Periodontitis,NCIT:C34918,NCIT,NA
+plasmodium_falciparum,Plasmodium falciparum,NCBITaxon:5833,NCBITaxon,NA
+pneumonia,Pneumonia,NCIT:C3333,NCIT,NA
+few_polyps,Polyps,NCIT:C3340,NCIT,NA
+pre-hypertension,Prehypertension,OMIT:0027144,OMIT,NA
+pre-eclampsia,Preeclampsia,NCIT:C85021,NCIT,NA
+premature_born,Preterm Birth,NCIT:C92861,NCIT,NA
+Prevotella copri,Prevotella copri,NCBITaxon:165179,NCBITaxon,NA
+psoriasis,Psoriasis,NCIT:C3346,NCIT,NA
+pyelonefritis,Pyelonephritis,NCIT:C34965,NCIT,NA
+pyelonephritis,Pyelonephritis,NCIT:C34965,NCIT,NA
+respiratoryinf,Respiratory Tract Infections,OMIT:0013063,OMIT,NA
+RA,Rheumatoid Arthritis,NCIT:C2884,NCIT,NA
+salmonellosis,Salmonellosis,NCIT:C157974,NCIT,NA
+schistosoma,Schistosoma,NCIT:C124285,NCIT,NA
+first_episode_schizofrenia,Schizophrenia,NCIT:C3362,NCIT,NA
+first_episode_schizofrenia,First episode (qualifier value),SNOMED:255217005,SNOMED,NA
+schizofrenia,Schizophrenia,NCIT:C3362,NCIT,NA
+schizophrenia,Schizophrenia,NCIT:C3362,NCIT,NA
+repeated_episodes_shizofrenia,Schizophrenia,NCIT:C3362,NCIT,NA
+repeated_episodes_shizofrenia,Recurrent episode (qualifier value),SNOMED:263853000,SNOMED,NA
+sepsis,Sepsis,NCIT:C3364,NCIT,NA
+STEC,Shiga Toxin-producing Escherichia coli,NCIT:C184689,NCIT,NA
+skininf,Skin Infection,NCIT:C35025,NCIT,NA
+smalladenoma,Small Intestinal Adenoma,NCIT:C5340,NCIT,NA
+stomatitis,Stomatitis,NCIT:C26887,NCIT,NA
+tonsillitis,Tonsillitis,NCIT:C116006,NCIT,NA
+trichomonas_intestinalis,Trichomonas,NCIT:C89825,NCIT,NA
+trichuris_trichiura,Trichuris trichiura,NCIT:C125973,NCIT,NA
+T1D,Type 1 Diabetes Mellitus,NCIT:C2986,NCIT,NA
+T1D_nonconverter,Type 1 Diabetes Mellitus,NCIT:C2986,NCIT,NA
+T1D_seroconverter,Type 1 Diabetes Mellitus,NCIT:C2986,NCIT,NA
+T2D,Type 2 Diabetes Mellitus,NCIT:C26747,NCIT,NA
+UC,Ulcerative Colitis,NCIT:C2952,NCIT,NA
+undetermined_colitis,Colitis,NCIT:C26723,NCIT,NA
+ureteralstone,Ureteric Stone,NCIT:C26902,NCIT,NA
+uveitis,Uveitis,NCIT:C26909,NCIT,NA
+VKH,Uveomeningoencephalitic Syndrome,NCIT:C85218,NCIT,NA
+Weight loss,Weight Loss,NCIT:C3445,NCIT,NA
+wilson,Hepatolenticular Degeneration,NCIT:C84756,NCIT,NA
+wuchereria_bancrofti,Wuchereria bancrofti,NCIT:C122328,NCIT,NA
