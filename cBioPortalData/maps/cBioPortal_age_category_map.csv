@@ -1,7 +1,0 @@
-original_value,curated_ontology,curated_ontology_term_id,curated_age_min,curated_age_max,curated_ontology_term_db
-schoolage,Adolescent,NCIT:C27954,12,18,NCIT
-adult,Adult,NCIT:C49685,18,65,NCIT
-child,Children 2-11 Years Old,NCIT:C49683,2,12,NCIT
-senior,Elderly,NCIT:C16268,65,131,NCIT
-newborn,Infant,NCIT:C27956,0,2,NCIT
-NA,NA,NA,NA,NA,NA
