@@ -1,0 +1,1510 @@
+---
+title: "Harmonization and Curation of cBioPortalData Treatment Metadata"
+author:
+  - Kaelyn Long
+date: "`r format(Sys.time(), '%B %d, %Y')`"
+format:
+    html:
+        fontsize: 14pxs
+        toc: true
+        top-depth: 3
+abstract: "Prepare U24 Supplement: AI/ML-ready"
+---
+
+```{r setup, include=FALSE}
+knitr::opts_chunk$set(echo = TRUE, 
+                    warning = FALSE,
+                    message = FALSE,
+                    eval = FALSE)
+```
+
+# Setup
+
+Load dependencies and set up file storage.
+
+```{r dependencies}
+suppressPackageStartupMessages({
+    library(dplyr)
+    library(readr)
+    library(purrr)
+    library(stringr)
+    library(tidyr)
+    library(writexl)
+    library(readxl)
+    library(rols)
+})
+```
+
+```{r file_setup}
+## Directory to save files to
+file_dir <- "/home/kaelyn/Desktop/Work/Waldron_Lab_CUNY/final_cBPD/test_run_data"
+
+## Path to input data
+infile <- "/home/kaelyn/Desktop/Work/Waldron_Lab_CUNY/cBioPortalData/sample_frame.rds"
+
+## Create directory if it doesn't exist
+if (!file.exists(file_dir)) {
+    dir.create(file_dir)
+}
+setwd(file_dir)
+```
+
+---
+
+# Retrieve Original Data
+
+Original data can be supplied as either a .csv or an .rds file. If it is an .rds
+file the object can be either a list of dataframes (one for each individual
+study's metadata) or a single dataframe with the combined metadata of all
+studies. The names of key columns will
+need to be provided or the default columns will be used:
+
+* idcol = column containing study IDs
+* ecols = columns that need no harmonization/curation (e.g. patient/sample IDs)
+
+# Select columns
+
+The input data will be formatted as a list of dataframes (one for each
+individual study's metadata) and the columns involved in each study will be
+output for manual selection.
+
+```{r data_setup}
+## Set up variables
+outfile <- file.path(file_dir, "column_selection.csv")
+idcol <- "studyId"
+ecols <- c("patientId", "sampleId")
+
+## Load data
+message("Loading data")
+
+if (endsWith(infile, ".rds")) {
+    data_file <- readRDS(infile)
+} else if (endsWith(infile, ".csv")) {
+    data_file <- read_csv(infile)
+} else {
+    stop("Invalid file type. Please provide an .rds or .csv file.")
+}
+
+## Split data into list
+if (class(data_file) == "list") {
+    data_list <- data_file
+} else {
+    data_list <- split(data_file, data_file[idcol])
+    data_list <- lapply(data_list, function (x) {
+        x %>% select(where(~ all(!is.na(.))))
+        })
+}
+
+## Output column selection file
+summarise_frame <- function(df) {
+    sframe <- map(df, ~ str_trunc(str_c(unique(.x),collapse = ","), 1000, "right")) %>%
+        bind_rows() %>% 
+        gather(key = colname, value = colvalues)
+    return(sframe)
+}
+
+message("Writing output file to ", outfile)
+cnames <- lapply(data_list, summarise_frame)
+rcols <- unique(c(idcol, ecols))
+cfinal <- lapply(cnames, function(x) filter(x, !colname %in% rcols))
+colname_mat <- bind_rows(cfinal, .id = idcol)
+write_csv(colname_mat, outfile)
+
+## Inform user of next steps
+cat("Output file created at ", outfile, ". Remove all rows representing non-treatment-related columns and proceed to \"rw_functions\" and \"study_format\" blocks.")
+```
+
+---
+
+# Create mapping frames
+
+Once treatment-related columns are manually selected, a "harmonization frame"
+for each study will be created and output as a .csv file or part of an .xlsx
+workbook for manual instruction. Procedures for filling in a harmonization
+frame accurately are outlined in the manuscript supplement.
+
+```{r rw_functions}
+## Functions to read and write directories of individual .csv files
+write_csvdir <- function(frame_list, frame_dir) {
+    if (!file.exists(frame_dir)) {
+        dir.create(frame_dir)
+    }
+    for (frame in names(frame_list)) {
+        write_csv(frame_list[[frame]], file.path(frame_dir, paste0(frame,
+                                                                   ".csv")))
+    }
+}
+
+read_csvdir <- function(frame_dir) {
+    frame_files <- paste0(frame_dir, "/", list.files(frame_dir, "\\.csv$"))
+    frame_list <- lapply(frame_files, read_csv)
+    names(frame_list) <- tools::file_path_sans_ext(list.files(frame_dir,
+                                                              "\\.csv$"))
+    return(frame_list)
+}
+
+## Function to read an .xlsx file into a list
+read_book <- function(infile) {
+    sheet_names <- excel_sheets(infile)
+    frame_list <- lapply(sheet_names, function(x) read_excel(infile,
+                                                             sheet = x))
+    names(frame_list) <- sheet_names
+    return(frame_list)
+}
+```
+
+```{r study_format}
+## Set up variables
+col_file <- file.path(file_dir, "treatment_columns.csv")
+outfile <- "empty_mapping_frames"
+
+## Load data
+relevant_colnames <- read_csv(col_file)
+study_treat_cols <- split(relevant_colnames$colname, relevant_colnames$studyId)
+
+## Filter and select treatment-related data
+alist <- data_list[names(study_treat_cols)]
+study_list <- list()
+for (i in 1:length(alist)) {
+  study_list[[i]] <- alist[[i]][,c("studyId", "patientId", "sampleId", study_treat_cols[[i]])]
+}
+names(study_list) <- names(alist)
+
+## Summarize treatment-related data
+study_treat_vals <- list()
+for (i in 1:length(study_list)) {
+    study <- study_list[[i]]
+    relevant_names <- c()
+    unique_values <- c()
+    for (j in 4:ncol(study)) {
+        relevant_names <- c(relevant_names, colnames(study)[j])
+        unique_values <- c(unique_values, paste(unique(na.omit(study[, j])), collapse = "<;>"))
+    }
+    study_cols <- study[, relevant_names, drop = FALSE]
+    study_treat_vals[[i]] <- data.frame(colname = relevant_names,
+                                      unique_values = str_trunc(unique_values, 25000, "right"),
+                                      study_completeness = colSums(!is.na(study_cols))/nrow(study_cols))
+}
+names(study_treat_vals) <- names(study_list)
+study_treat_vals <- study_treat_vals[lengths(study_treat_vals) > 1]
+
+## Create harmonization frames
+mapping_frames <- list()
+for (i in 1:length(study_treat_vals)) {
+  current_study <- study_treat_vals[[i]][,-3]
+  rownames(current_study) <- NULL
+  
+  current_mapping_frame <- current_study %>%
+    mutate(column_id = 1:nrow(.), .before = colname) %>%
+    mutate(group = NA, .before = colname) %>%
+    mutate(link_map = NA, .before = colname) %>%
+    mutate(match_col = NA, .before = colname) %>%
+    mutate(split_pattern = NA, .before = colname) %>%
+    mutate(single_value_to_multiple = NA,
+           treatment_name = NA,
+           treatment_type = NA,
+           treatment_dose_value = NA,
+           treatment_dose_unit = NA,
+           treatment_number_value = NA,
+           treatment_number_unit = NA,
+           treatment_start_value = NA,
+           treatment_start_unit = NA,
+           treatment_end_value = NA,
+           treatment_end_unit = NA,
+           treatment_frequency_value = NA,
+           treatment_frequency_unit = NA,
+           treatment_duration_value = NA,
+           treatment_duration_unit = NA,
+           treatment_status = NA,
+           treatment_reason = NA,
+           treatment_group = NA,
+           treatment_notes = NA)
+  
+  mapping_frames[[i]] <- current_mapping_frame
+  names(mapping_frames)[i] <- names(study_treat_vals)[i]
+}
+
+## Option 1: Write mapping frames to a directory of individual .csv files
+write_csvdir(mapping_frames, file.path(file_dir, outfile))
+
+## Option 2: Write mapping frames to .xlsx workbook
+write_xlsx(mapping_frames, file.path(file_dir, paste0(outfile, ".xlsx")))
+
+## Inform user of next steps
+cat("Harmonization frames output at ", outfile, " as either a directory of .csv files or an .xlsx workbook. Fill in as directed in the manuscript supplement and proceed to \"value_customization_functions\" and \"value_patterns\" blocks.")
+```
+
+---
+
+# Custom value adjustment
+
+The values of any columns marked as "single_value_to_multiple" will now be
+output along with detected punctuation patterns for manual splitting.
+
+To fill a pattern, replace each bracketed number with a bracketed column name
+(minus the "treatment_" prefix) and optionally an order indicator. If a number
+represents irrelevant data, no change needs to be made. If multiple adjacent
+numbers should be combined into a single value, simply cover all of them with a single set of curly brackets and instructions. Example:
+
+* Original value: FLAG (Fludarabine, High-dose Cytarabine, and G-CSF)
+* Detected pattern: {1} ({2}, {3}-{4} {5}, {6} {7}-{8})
+* Filled pattern: {notes} ({name:1}, {dose_unit:2} {name:2}, {6} {name:3})
+* Result:
+    * Treatment 1: Name = Fludarabine, Notes = FLAG
+    * Treatment 2: Name = Cytarabine, Dose_Unit = High-dose, Notes = FLAG
+    * Treatment 3: Name = G-CSF, Notes = FLAG
+
+```{r value_customization_functions}
+## Utility functions
+str_replace_nums <- function(s, pattern) {
+    s <- gsub(pattern, "x", s)
+    i <- 1
+    while(grepl("x", s)) {
+        s <- str_replace(s, "x", paste0("{", as.character(i), "}"))
+        i <- i + 1
+    }
+    return(s)
+}
+
+match_elim <- function(x, table) {
+    ids <- rep(NA, length(x))
+    removed <- 0
+    for (i in 1:length(x)) {
+        m <- match(x[i], table)
+        if (!is.na(m)) {
+            ids[i] <- m + removed
+            table <- table[(m + 1):length(table)]
+            removed <- removed + m
+        }
+    }
+    return(ids)
+}
+
+extract_patterns <- function(vals) {
+    
+    ## Separate punctuation and content
+    xpunc <- unlist(lapply(vals, function(x) str_replace_nums(x, "\\w+")))
+    cont <- unlist(lapply(str_extract_all(vals, "\\w+"),
+                          function(x) paste(x, collapse = " ")))
+    
+    ## Create value-wise dataframe
+    ids <- order(xpunc)
+    patts <- data.frame(val = vals[ids],
+                        pattern = xpunc[ids],
+                        content = cont[ids])
+    
+    return(patts)
+}
+
+pattern_filler <- function(patt_frame) {
+    
+    ## Group pattern dataframe
+    p_exs <- patt_frame %>%
+        group_by(pattern) %>%
+        summarise(values = paste(val, collapse = ";"),
+                  count = n())
+    
+    ## Create pattern filler
+    upuncs <- unique(patt_frame$pattern)
+    uds <- order(upuncs)
+    patt_filler <- data.frame(pattern = upuncs[uds],
+                              filled = upuncs[uds])
+    patt_filler <- patt_filler %>%
+        full_join(p_exs, patt_filler, by = join_by(pattern)) %>%
+        select(count, values, pattern, filled)
+    
+    return(patt_filler)
+}
+
+parse_pattern <- function(pattern, filled, content) {
+    
+    ## Set up empty columns
+    c_names <- c("treatment_name",
+                 "treatment_type",
+                 "treatment_dose_value",
+                 "treatment_dose_unit",
+                 "treatment_number_value",
+                 "treatment_number_unit",
+                 "treatment_start_value",
+                 "treatment_start_unit",
+                 "treatment_end_value",
+                 "treatment_end_unit",
+                 "treatment_frequency_value",
+                 "treatment_frequency_unit",
+                 "treatment_duration_value",
+                 "treatment_duration_unit",
+                 "treatment_status",
+                 "treatment_reason",
+                 "treatment_group",
+                 "treatment_notes")
+    f_cols <- as.data.frame(matrix(nrow = length(pattern),
+                                   ncol = length(c_names) + 1,
+                                   dimnames = list(c(), c(c_names, "tcol"))))
+    
+    ## Return empty columns if filled pattern not supplied
+    if (filled == "" | is.na(filled)) {
+        f_cols <- select(f_cols, -tcol)
+        return(f_cols)
+    }
+    
+    ## Save detailed pattern fills to simplify alignment
+    f_matches <- gsub("[{}]", "", unlist(str_extract_all(filled, "\\{.*?\\}")))
+    f_matches <- f_matches[grepl("[a-zA-Z]", f_matches)]
+    clean_filled <- gsub("(?<=\\w):[\\d,]*?(?=})", "", filled, perl = TRUE)
+    
+    ## Clean pattern and filled pattern to simplify alignment
+    f <- gsub("[{}]", "", clean_filled)
+    f <- gsub(" (?=[^\\w ])|(?<=[^\\w ]) ", "", f, perl = TRUE)
+    p <- gsub("[{}]", "", pattern)
+    p <- gsub(" (?=[^\\w ])|(?<=[^\\w ]) ", "", p, perl = TRUE)
+    
+    ## Split into vectors for alignment
+    f_vec <- unlist(strsplit(f, ""))
+    p_vec <- unlist(strsplit(p, ""))
+    
+    ## Align to get pattern indices that match filled pattern
+    raw_match <- match_elim(f_vec, p_vec)
+    
+    ## Extract non-matching pattern sections to assign to filled bracket contents
+    if (all(is.na(raw_match))) {
+        p_matches <- p
+    } else {
+        p_ids <- raw_match[!is.na(raw_match)]
+        if (max(p_ids) < length(p_vec)) {
+            p_ids <- c(p_ids, length(p_vec) + 1)
+        }
+        p_matches <- c()
+        start <- 1
+        for (i in p_ids) {
+            if (i != start) {
+                p_matches <- c(p_matches,
+                               paste0(p_vec[start:(i - 1)], collapse = ""))
+            }
+            start <- i + 1
+        }
+    }
+    
+    ## Get/create unique character string to replace digits with temporarily
+    s_chars <- c("!", "@", "%", "&", "~", "`")
+    df_chars <- gtools::permutations(5, 5, s_chars)
+    chars <- c(s_chars, apply(df_chars, 1, function(x) paste(x, collapse = "")))
+    test_vec <- sapply(chars, function(x) grepl(x, paste(content, pattern)))
+    rep_char <- names(test_vec)[which(!test_vec)][1]
+    
+    ## Replace digits within pattern with replacement character strings
+    c_vec <- unlist(str_split(content, "\\s"))
+    nums <- 1:length(c_vec)
+    rep_vec <- sapply(nums, function(x) paste0(rep(rep_char, x),
+                                               collapse = ""))
+    replace_nums <- rev(setNames(rep_vec, as.character(nums)))
+    replace_chars <- rev(setNames(c_vec, rep_vec))
+
+    ## Re-fill pattern pieces with original content
+    char_matches <- str_replace_all(p_matches, replace_nums)    
+    c_matches <- str_replace_all(char_matches, replace_chars)
+
+    ## Find number of treatment rows required
+    split_coords <- unlist(str_split(f_matches, "[:,]"))
+    num_coords <- split_coords[grepl("\\d", split_coords)]
+    if (length(num_coords) == 0) {
+        num_coords <- "1"
+    }
+    num_rows <- max(as.integer(num_coords))
+    all_ind <- paste(1:num_rows, collapse = ",")
+    
+    ## Fill non-specific coordinates
+    for (i in 1:length(f_matches)) {
+        fm <- f_matches[i]
+        if (!grepl(":", fm)) {
+            f_matches[i] <- paste0(fm, ":", all_ind)
+        }
+    }
+    
+    ## Set up table of coordinates
+    cmat <- data.frame(content = c_matches,
+                       full_coords = f_matches)
+    cmat <- cmat %>%
+         rowwise %>%
+         mutate(feature = paste0("treatment_",
+                                 str_split(full_coords, ":")[[1]][1])) %>%
+         mutate(rownum = str_split(full_coords, ":")[[1]][-1]) %>%
+         mutate(rownum = str_split(rownum, ",")) %>%
+        select(-full_coords)
+    
+    ## Populate columns
+    for (i in 1:nrow(cmat)) {
+        r <- unlist(cmat$rownum[i])
+        c <- cmat$feature[i]
+        f_cols[r, "tcol"] <- cmat$content[i]
+        f_cols <- f_cols %>%
+            unite(!!c, c(!!c, tcol), sep = ";", remove = FALSE, na.rm = TRUE)
+        f_cols$tcol <- NA
+        f_cols[f_cols == ""] <- NA
+    }
+    f_cols <- select(f_cols, -tcol)
+    
+    return(f_cols)
+}
+
+## Wrapper functions
+prepPatts <- function(map, delim = "<;>") {
+    ## Extract unique values from map
+    vals <- unlist(str_split(map$unique_values, delim))
+    
+    ## Extract patterns
+    patts <- extract_patterns(vals)
+    
+    return (patts)
+}
+
+prepValues <- function(empty, filled) {
+    ## Replace empty patterns with filled ones
+    empty$filled <- plyr::mapvalues(empty$pattern,
+                                    filled$pattern,
+                                    filled$filled,
+                                    warn_missing = FALSE)
+    
+    ## Parse patterns
+    parsed_patts <- mapply(function(p, f, c) parse_pattern(p, f, c),
+                           empty$pattern,
+                           empty$filled,
+                           empty$content,
+                           SIMPLIFY = FALSE)
+    names(parsed_patts) <- empty$val
+    parsed_frame <- bind_rows(parsed_patts, .id = "original_value")
+    rownames(parsed_frame) <- NULL
+    
+    return(parsed_frame)
+}
+```
+
+```{r value_patterns}
+## Set up variables
+outfile <- "empty_value_fillers"
+
+## Get filled mapping frames for custom value allocation
+## Option 1: Read directory of individual .csv files
+map_list <- read_csvdir(file.path(file_dir, "empty_mapping_frames"))
+
+## Option 2: Read .xlsx file
+map_list <- read_book(file.path(file_dir, "filled_mapping_frames.xlsx"))
+
+## Pull marked values for custom splitting/allocation
+cval_list <- lapply(map_list, function(x) filter(x, !is.na(single_value_to_multiple)))
+cval_list <- cval_list[map(cval_list, nrow) > 0]
+
+split_cval_list <- unlist(lapply(cval_list, function(x) split(x, x$colname)),
+                          recursive = FALSE)
+
+cval_frames <- lapply(split_cval_list, function(x) prepPatts(x, delim = "<;>"))
+cval_fillers <- lapply(cval_frames, pattern_filler)
+
+if (length(cval_fillers) > 0) {
+    ## Option 1: Write value fillers to a directory of individual .csv files
+    write_csvdir(cval_fillers, file.path(file_dir, outfile))
+
+    ## Option 2: Write value fillers to .xlsx workbook
+    write_xlsx(cval_fillers, file.path(file_dir, paste0(outfile, ".xlsx")))
+}
+
+## Inform user of next steps
+cat("Value fillers output at ", outfile, " as either a directory of .csv files or an .xlsx workbook. Fill in patterns and proceed to \"adjust_values\" block.")
+```
+
+---
+
+# Apply patterns
+
+The filled patterns will now be applied to the source values and output in a
+dataframe to allow for validation and manual adjustment.
+
+```{r adjust_values}
+## Set up variables
+outfile <- "custom_values"
+
+## Get filled pattern sheets
+## Option 1: Read directory of individual .csv files
+filled_list <- read_csvdir(file.path(file_dir, "empty_value_fillers"))
+
+## Option 2: Read .xlsx file
+filled_list <- read_book(file.path(file_dir, "filled_value_fillers.xlsx"))
+
+## Apply patterns
+applied_frames <- mapply(function(e, f) prepValues(e, f),
+                         cval_frames,
+                         filled_list,
+                         SIMPLIFY = FALSE)
+
+## Write for manual adjustment/validation
+## Option 1: Write value lists to a directory of individual .csv files
+write_csvdir(applied_frames, file.path(file_dir, outfile))
+
+## Option 2: Write value lists to .xlsx workbook
+write_xlsx(applied_frames, file.path(file_dir, paste0(outfile, ".xlsx")))
+
+## Inform user of next steps
+cat("Adjusted values output at ", outfile, " as either a directory of .csv files or an .xlsx workbook. Adjust as needed and proceed to \"no_data_setup\" and \"harmonize_studies\" blocks.")
+```
+
+---
+
+# Harmonization
+
+The harmonization frames and custom-allocated values will now be used to
+harmonize the original study metadata. Harmonized metadata will be output as a
+single dataframe containing the combined and compressed metadata of all studies.
+
+```{r no_data_setup}
+## Load no_data file
+no_data_values_frame <- read_csv(file.path(file_dir, "no_data_values.csv"))
+
+## Separate "no_data" values into different ontology definitions and get
+## negative columns
+no_vals <- na.omit(no_data_values_frame$No)
+na_vals <- na.omit(no_data_values_frame$Not_Applicable)
+nc_vals <- na.omit(no_data_values_frame$Not_Collected)
+np_vals <- na.omit(no_data_values_frame$Not_Provided)
+negative_cols <- na.omit(no_data_values_frame$Negative_Columns)
+ymn_vals <- na.omit(no_data_values_frame$yes_means_no)
+
+## Create regular expression search terms
+for (i in 1:length(no_vals)) {
+  no_vals[i] <- paste0("^", no_vals[i], "$")
+}
+no_vals_search_term <- paste(no_vals, collapse = "|")
+
+for (i in 1:length(na_vals)) {
+  na_vals[i] <- paste0("^", na_vals[i], "$")
+}
+na_vals_search_term <- paste(na_vals, collapse = "|")
+
+for (i in 1:length(nc_vals)) {
+  nc_vals[i] <- paste0("^", nc_vals[i], "$")
+}
+nc_vals_search_term <- paste(nc_vals, collapse = "|")
+
+for (i in 1:length(np_vals)) {
+  np_vals[i] <- paste0("^", np_vals[i], "$")
+}
+np_vals_search_term <- paste(np_vals, collapse = "|")
+
+for (i in 1:length(ymn_vals)) {
+  ymn_vals[i] <- paste0("^", ymn_vals[i], "$")
+}
+ymn_vals_search_term <- paste(ymn_vals, collapse = "|")
+```
+
+```{r harmonize_studies}
+## Set up variables
+outfile <- "harmonized_data.csv"
+
+## Get treatment-related data
+study_list <- study_list
+
+## Get mapping frames
+map_list <- map_list
+
+## Get final custom values
+## Option 1: Read directory of individual .csv files
+val_list <- read_csvdir(file.path(file_dir, "custom_values"))
+
+## Option 2: Read .xlsx file
+val_list <- read_book(file.path(file_dir, "final_custom_values.xlsx"))
+
+## Set up custom value list hierarchy
+lnames <- str_split(names(val_list), "\\.")
+snames <- lapply(lnames, function(x) x[1])
+fnames <- lapply(lnames, function(x) x[2])
+
+aval_list <- mapply(function(f, n) cbind(colname = n, f),
+                    val_list,
+                    fnames,
+                    SIMPLIFY = FALSE)
+hval_list <- split(aval_list, snames)
+fval_list <- lapply(hval_list, bind_rows)
+
+##### Set up batch #########################################################
+
+# vector of study names to harmonize
+batch_names <- names(study_list)
+
+# check that requested studies are present in map_list
+nm <- setdiff(batch_names, names(map_list))
+if (length(nm) > 0) {
+    ms2 <- paste0("The following study names are not present in the filled ",
+                  "mapping table file. Please check worksheet names.")
+    print(ms2)
+    print(nm)
+}
+
+# list to save harmonized studies
+new_harmonized_studies <- list()
+
+# save stats
+elapsed_times <- c()
+rates <- c()
+batch_start_time <- Sys.time()
+
+# save errors
+all_errors <- c()
+
+for (g in 1:length(batch_names)) {
+  tryCatch({
+    ####### Loop through batch list ################
+    # 0. Select study and load map
+    step <- 0
+    start_time <- Sys.time()
+    
+    study_name <- batch_names[g]
+    current_study_number <- grep(paste0("^", study_name, "$"), names(study_treat_cols))
+    
+    completed_harmonization_mappings <- map_list[[study_name]]
+    
+    if (study_name %in% names(fval_list)) {
+        current_val_subs <- fval_list[[study_name]] %>%
+        mutate(across(everything(), as.character)) %>% 
+        rename(colvalue = original_value)
+    } else {
+        current_val_subs <- NA
+    }
+    
+    # 1. Get template study map and save relevant column names
+    step <- 1
+    original_harmonization_map <- completed_harmonization_mappings %>%
+      select(-unique_values) %>%
+      mutate(fullcolvalue = NA, .after = colname) %>%
+      mutate(colvalue = NA, .after = fullcolvalue) %>%
+      dplyr::rename(link_id = column_id) %>%
+      mutate(match_id = link_id, .after = link_id)
+    
+    # 2. Get study from study_list and set up final frame
+    step <- 2
+    current_study_data <- study_list[[study_name]]
+    features <- colnames(original_harmonization_map)[grepl("^treatment_",
+                                                  colnames(original_harmonization_map))]
+    feature_originals <- unlist(lapply(features, function(x) {
+        c(paste0("original_value_", x),
+          paste0("split_original_value_", x),
+          paste0("original_column_", x))
+    }))
+    no_cols <- c("treatment_no",
+                 "treatment_not_applicable",
+                 "treatment_not_collected",
+                 "treatment_not_provided")
+    harmonized_colnames <- c("patientId",
+                             "sampleId",
+                             features,
+                             feature_originals,
+                             no_cols)
+    harmonized_study <- data.frame(matrix(nrow = nrow(current_study_data),
+                                          ncol = length(harmonized_colnames),
+                                          dimnames = list(c(), harmonized_colnames)))
+    
+    ######## Loop through current study ####################################
+    
+    for (h in 1:nrow(current_study_data)) { # loop through records
+      print(paste0(study_name, " (study ", g, " of ", length(batch_names),
+                   "): ", nrow(original_harmonization_map),
+                   " column(s), record ", h, "/", nrow(current_study_data)))
+      harmonization_map <- original_harmonization_map
+      original_record <- current_study_data[h,]
+      patient_ID <- original_record$patientId
+      sample_ID <- original_record$sampleId
+      
+      # 3. For each row in map, populate column value
+      step <- 3
+      for (i in 1:nrow(harmonization_map)) {
+        harmonization_map$fullcolvalue[i] <- original_record[1, harmonization_map$colname[i]]
+      }
+      harmonization_map$fullcolvalue <- as.character(harmonization_map$fullcolvalue)
+      
+      # 4. Split any columns with multiple values and save split order when relevant
+      step <- 4
+      harmonization_map <- harmonization_map %>%
+        mutate(colvalue = strsplit(as.character(fullcolvalue), split_pattern, perl = TRUE)) %>%
+        mutate(colvalue = map(colvalue, ~ data.frame(colvalue = .x, split_index = seq_along(.x)))) %>%
+        unnest(colvalue) %>%
+        relocate(split_index, .after = split_pattern) %>%
+        mutate(colvalue = str_trim(colvalue))
+      
+      harmonization_map$split_index[is.na(harmonization_map$split_pattern)] <- NA
+      
+      harmonization_map <- harmonization_map %>%
+        mutate(split_order = case_when(!is.na(group) & !is.na(split_index) ~split_index), .after = split_index)
+      
+      # 5. Filter out any columns with no/NA values and save name--value values for later storage
+      step <- 5
+      no_names_values <- c()
+      na_names_values <- c()
+      nc_names_values <- c()
+      np_names_values <- c()
+      for (i in 1:nrow(harmonization_map)) {
+        if (harmonization_map$colname[i] %in% negative_cols) {
+          definitive_vals_search_term <- ymn_vals_search_term
+          if (grepl(definitive_vals_search_term, harmonization_map$colvalue[i], ignore.case = TRUE)) {
+            saved_name <- paste0(harmonization_map$colname[i], "-", harmonization_map$colvalue[i])
+          } else {
+            saved_name <- harmonization_map$colname[i]
+          }
+        } else {
+          definitive_vals_search_term <- no_vals_search_term
+          saved_name <- harmonization_map$colname[i]
+        }
+        if (grepl(definitive_vals_search_term, harmonization_map$colvalue[i], ignore.case = TRUE)) {
+          no_names_values <- c(no_names_values, saved_name)
+          harmonization_map[i, ] <- NA
+        } else if (grepl(na_vals_search_term, harmonization_map$colvalue[i], ignore.case = TRUE) | is.na(harmonization_map$colvalue[i]) | is.null(harmonization_map$colvalue[i])) {
+          na_names_values <- c(na_names_values, saved_name)
+          harmonization_map[i, ] <- NA
+        } else if (grepl(nc_vals_search_term, harmonization_map$colvalue[i], ignore.case = TRUE)) {
+          nc_names_values <- c(nc_names_values, saved_name)
+          harmonization_map[i, ] <- NA
+        } else if (grepl(np_vals_search_term, harmonization_map$colvalue[i], ignore.case = TRUE)) {
+          np_names_values <- c(np_names_values, saved_name)
+          harmonization_map[i, ] <- NA
+        }
+      }
+      no_names_values <- paste(no_names_values, collapse = ";")
+      na_names_values <- paste(na_names_values, collapse = ";")
+      nc_names_values <- paste(nc_names_values, collapse = ";")
+      np_names_values <- paste(np_names_values, collapse = ";")
+      harmonization_map <- harmonization_map[rowSums(is.na(harmonization_map)) != ncol(harmonization_map),]
+      if (nrow(harmonization_map) == 0) {
+        harmonized_row <- c(patient_ID, sample_ID, rep(NA, (length(harmonized_colnames) - 6)), no_names_values, na_names_values, nc_names_values, np_names_values)
+        harmonized_study[h,] <- harmonized_row
+        next
+      }
+      
+      # 6. Use parsed column names and map names/values to treatment_ columns
+      step <- 6
+      
+      treat_cols <- colnames(harmonization_map)[startsWith(colnames(harmonization_map), "treatment")]
+      
+      emap <- harmonization_map %>%
+          filter(is.na(single_value_to_multiple)) %>%
+          rowwise() %>%
+          mutate(across(treat_cols, ~ str_replace_all(., "\\{value\\}|^value$", colvalue)))
+      
+      if (!all(is.na(current_val_subs))) {
+          cvals <- select(current_val_subs, c(colname, colvalue, treat_cols))
+          
+          cmap <- harmonization_map %>%
+          filter(!is.na(single_value_to_multiple)) %>%
+          select(-all_of(treat_cols)) %>%
+          left_join(cvals, by = join_by(colname, colvalue))
+          
+          harmonization_map <- rbind(emap, cmap)
+      } else {
+          harmonization_map <- emap
+      }
+      
+      o_frame <- harmonization_map %>%
+          rowwise() %>%
+          mutate(across(treat_cols, ~ case_when(!is.na(.) ~ fullcolvalue))) %>%
+          select(treat_cols)
+      colnames(o_frame) <- paste0("original_value_", features)
+      
+      os_frame <- harmonization_map %>%
+          rowwise() %>%
+          mutate(across(treat_cols, ~ case_when(!is.na(.) ~ colvalue))) %>%
+          select(treat_cols)
+      colnames(os_frame) <- paste0("split_original_value_", features)
+      
+      oc_frame <- harmonization_map %>%
+          rowwise() %>%
+          mutate(across(treat_cols, ~ case_when(!is.na(.) ~ colname))) %>%
+          select(treat_cols)
+      colnames(oc_frame) <- paste0("original_column_", features)
+      
+     sources_frame <- cbind(o_frame, os_frame, oc_frame) %>%
+          select(feature_originals)
+      
+     harmonization_map[harmonization_map == "yes" | harmonization_map == "YES" | harmonization_map == "Yes"] <- "NA"
+     
+     harmonization_map <- cbind(harmonization_map, sources_frame)
+
+      # 7. For each row with a condition, set its link_id to its target link_id and save in merge_links
+      step <- 7
+      harmonization_map <- harmonization_map %>%
+        mutate(match_marker = NA, .after = match_id)
+      match_marker_counter <- 1
+      
+      merge_links <- c()
+      for (i in 1:nrow(harmonization_map)) { # loop through rows
+        current_row <- harmonization_map[i,]
+        link_map <- current_row$link_map
+        if (!is.na(link_map)) { # if there is a link map
+          named_vector <- eval(parse(text = link_map))
+          value <- current_row$colvalue
+          for (j in 1:length(named_vector)) { # loop through values that map to links
+            if (grepl(names(named_vector)[j], value, ignore.case = TRUE)) { # if the current mapping value is found in the actual column value
+              target <- unname(named_vector[j])
+              harmonization_map$link_id[i] <- target
+            }
+          }
+        }
+      }
+      
+      # for matches
+      for (i in 1:nrow(harmonization_map)) { # loop through rows
+        current_row <- harmonization_map[i,]
+        match_col <- current_row$match_col
+        if (!is.na(match_col)) { # if there is a column to test matching
+          value <- current_row$colvalue
+          test_col_values <- harmonization_map$colvalue[harmonization_map$match_id == match_col]
+          if (length(test_col_values) > 0) {
+            for (j in 1:length(test_col_values)) {
+              if(!is.na(value) & !is.na(test_col_values[j])) {
+                if (value == test_col_values[j]) { # if the values match
+                  matched_row <- harmonization_map[(harmonization_map$match_id == match_col) & (harmonization_map$colvalue == test_col_values[j]),]
+                  final_id <- matched_row$link_id
+                  final_match_marker <- matched_row$match_marker
+                  if (is.na(final_match_marker)) {
+                    harmonization_map$match_marker[(harmonization_map$match_id == match_col) & (harmonization_map$colvalue == test_col_values[j])] <- match_marker_counter
+                    harmonization_map$match_marker[i] <- match_marker_counter
+                    match_marker_counter <- match_marker_counter + 1
+                  } else {
+                    harmonization_map$match_marker[i] <- final_match_marker
+                  }
+                  harmonization_map$link_id[i] <- final_id
+                  merge_links <- unique(c(merge_links, final_id))
+                }   
+              }
+            } 
+          }
+        }
+      }
+      
+      # follow up with link_maps with changed single match_col parents
+      # note: it is assumed that the link_map has no children and the parent does not circularly reference the link_map. This is specified in the documentation.
+      for (i in 1:nrow(harmonization_map)) {
+        current_row <- harmonization_map[i,]
+        if ((!is.na(current_row$link_map)) & (current_row$match_id != current_row$link_id)) {
+          link_to_follow <- current_row$link_id
+          if (link_to_follow %in% harmonization_map$match_id) {
+            parent_to_follow <- harmonization_map[harmonization_map$match_id == link_to_follow,]
+            if(nrow(parent_to_follow) == 1) {
+              if (parent_to_follow$match_id != parent_to_follow$link_id) {
+                harmonization_map$link_id[i] <- parent_to_follow$link_id
+              } 
+            }
+          }
+          merge_links <- unique(c(merge_links, harmonization_map$link_id[i]))
+        }
+      }
+      
+      # 8. Collapse frame by link_id AND SPLIT_INDEX (prevents multiple split_index values when merging groups)
+      step <- 8
+      rows_without_links <- harmonization_map %>%
+        filter(!link_id %in% merge_links)
+      
+      if (length(merge_links) > 0) {
+        for (i in 1:length(merge_links)) {
+          current_link <- merge_links[i]
+          
+          group_rows <- harmonization_map %>%
+            filter(link_id == current_link)
+          
+          group_rows <- group_rows %>%
+            mutate(old_split_index = split_index, .after = split_index)
+          
+          original_col_ids <- unlist(strsplit(as.character(group_rows$match_id), split = "::"))
+          id_freq <- as.data.frame(table(original_col_ids))
+          
+          duplicate_ids <- as.character(id_freq$original_col_ids[id_freq$Freq > 1])
+          
+          if(length(duplicate_ids) > 0) {
+            for (i in 1:length(duplicate_ids)) {
+              duplicate_ids[i] <- paste0("(^|:)", duplicate_ids[i], "($|:)")
+            }
+            duplicate_ids <- paste(duplicate_ids, collapse = "|")
+            group_rows <- group_rows %>%
+              mutate(split_index = case_when(grepl(duplicate_ids, match_id) ~split_index,
+                                             !grepl(duplicate_ids, match_id) ~NA))
+            
+          } else {
+            group_rows$split_index <- NA
+          }
+          
+          merge_split_indices <- unique(filter(group_rows, !is.na(split_index))$split_index)
+          if (length(merge_split_indices) == 0) {
+            merged_rows <- group_rows %>%
+              filter(link_id == current_link) %>%
+              group_by(link_id) %>%
+              summarise(across(everything(), ~paste(na.omit(.), collapse = "::"))) %>%
+              mutate(split_index = old_split_index) %>%
+              select(-old_split_index)
+            rows_without_links <- rbind(rows_without_links, merged_rows)
+          } else {
+            for (j in 1:length(merge_split_indices)) {
+              current_index <- merge_split_indices[j]
+              merged_rows <- group_rows %>%
+                filter((split_index == current_index)|(is.na(split_index)))
+              if (any(is.na(merged_rows$match_marker)) & any(!is.na(merged_rows$match_marker))) {
+                merged_rows <- merged_rows %>%
+                  filter(is.na(match_marker))
+              }
+              merged_rows <- merged_rows %>%
+                summarise(across(everything(), ~paste(na.omit(.), collapse = "::"))) %>%
+                mutate(split_index = old_split_index) %>%
+                select(-old_split_index)
+              rows_without_links <- rbind(rows_without_links, merged_rows)
+            }
+          }
+        }
+      }
+      
+      harmonization_map <- rows_without_links
+      harmonization_map[harmonization_map == ""] <- NA
+      
+      # 9. Collapse frame by group and split_index
+      step <- 9
+      
+      rows_without_groups <- harmonization_map %>%
+        filter(is.na(group))
+      
+      rows_to_group <- harmonization_map %>%
+        filter(!is.na(group)) %>%
+        mutate(group = as.character(group)) %>%
+        mutate(group = strsplit(group, split = "::")) %>%
+        mutate(current_bool = NA, .before = group)
+      
+      if (nrow(rows_to_group) > 0) {
+        
+        merge_groups <- unique(unlist(rows_to_group$group))
+        merge_groups <- merge_groups[!is.na(merge_groups)]
+        
+        for (i in 1:length(merge_groups)) {
+          current_group <- merge_groups[i]
+          for (j in 1:length(rows_to_group$group)) {
+            rows_to_group$current_bool[j] <- current_group %in% rows_to_group$group[[j]]
+          }
+          group_rows <- filter(rows_to_group, current_bool == TRUE) %>%
+            rowwise() %>%
+            mutate(group = list(paste(group, collapse = "::"))) %>%
+            ungroup()
+          
+          group_rows <- group_rows %>%
+            mutate(old_split_index = split_index, .after = split_index)
+          
+          original_col_ids <- unlist(strsplit(as.character(group_rows$match_id), split = "::"))
+          id_freq <- as.data.frame(table(original_col_ids))
+          
+          duplicate_ids <- as.character(id_freq$original_col_ids[id_freq$Freq > 1])
+          
+          if(length(duplicate_ids) > 0) {
+            for (i in 1:length(duplicate_ids)) {
+              duplicate_ids[i] <- paste0("(^|:)", duplicate_ids[i], "($|:)")
+            }
+            duplicate_ids <- paste(duplicate_ids, collapse = "|")
+            group_rows <- group_rows %>%
+              mutate(split_index = case_when(grepl(duplicate_ids, match_id) ~split_index,
+                                             !grepl(duplicate_ids, match_id) ~NA))
+          } else {
+            group_rows$split_index <- NA
+          }
+          
+          group_rows <- group_rows %>%
+            mutate(split_index = case_when(!is.na(split_order) ~split_order))
+          
+          merge_split_indices <- unique(filter(group_rows, current_bool == TRUE & !is.na(split_index))$split_index)
+          if (length(merge_split_indices) == 0) {
+            merged_rows <- group_rows %>%
+              summarise(across(everything(), ~paste(na.omit(.), collapse = "::"))) %>%
+              mutate(split_index = old_split_index) %>%
+              select(-current_bool, -old_split_index)
+            rows_without_groups <- rbind(rows_without_groups, merged_rows)
+          } else {
+            for (j in 1:length(merge_split_indices)) {
+              current_index <- merge_split_indices[j]
+              merged_rows <- group_rows %>%
+                filter((split_index == current_index)|(is.na(split_index))) %>%
+                summarise(across(everything(), ~paste(na.omit(.), collapse = "::"))) %>%
+                mutate(split_index = old_split_index) %>%
+                select(-current_bool, -old_split_index)
+              rows_without_groups <- rbind(rows_without_groups, merged_rows)
+            }
+          }
+        }
+      }
+      
+      harmonization_map <- rows_without_groups
+      harmonization_map[harmonization_map == ""] <- NA
+      harmonization_map <- harmonization_map %>%
+        rowwise() %>%
+        mutate(across(treatment_name:treatment_notes, ~paste(unique(unlist(strsplit(as.character(.), split = "::"))), collapse = "::"))) %>%
+        ungroup()
+      harmonization_map[harmonization_map == "" | harmonization_map == "NA"] <- NA
+      
+      # 10. Combine rows with the same values
+      step <- 10
+      harmonization_map <- harmonization_map %>%
+        select(treatment_name:original_column_treatment_notes) %>%
+        rowwise() %>%
+        mutate(across(treatment_name:treatment_notes, ~paste(unique(unlist(strsplit(as.character(.), split = "::"))), collapse = "::")))
+      
+      harmonization_map[harmonization_map == "" | harmonization_map == "NA"] <- NA
+      
+      # 11. Collapse entire frame into <;> delimited row, fill no/na/nc/np columns, and add to harmonized_study
+      step <- 11
+      harmonization_map[is.na(harmonization_map)] <- "NA"
+      harmonized_row <- harmonization_map %>%
+        ungroup() %>%
+        summarise(across(everything(), ~paste(., collapse = "<;>"))) %>%
+        mutate(patientId = patient_ID, .before = treatment_name) %>%
+        mutate(sampleId = sample_ID, .before = treatment_name) %>%
+        mutate(treatment_no_values = no_names_values) %>%
+        mutate(treatment_na_values = na_names_values) %>%
+        mutate(treatment_nc_values = nc_names_values) %>%
+        mutate(treatment_np_values = np_names_values)
+      
+      harmonized_study[h,] <- harmonized_row
+    }
+    
+    harmonized_study[harmonized_study == ""] <- NA
+    
+    # 12. Add "source_columns" column for all records in frame
+    step <- 12
+    harmonized_study <- harmonized_study %>%
+      mutate(treatment_source = paste(original_harmonization_map$colname, collapse = ";"))
+    
+    # 13. Save harmonized study
+    step <- 13
+    new_harmonized_studies[[current_study_number]] <- harmonized_study
+    names(new_harmonized_studies)[current_study_number] <- study_name
+    
+    elapsed_time <- difftime(Sys.time(), start_time, units = "secs")
+    elapsed_times <- c(elapsed_times, elapsed_time)
+    print(paste0("elapsed time: ", elapsed_time, " ", attributes(elapsed_time)$units))
+    time_per_100_records <- elapsed_time / nrow(current_study_data) * 100
+    rates <- c(rates, time_per_100_records)
+    print(paste0("time/100 records: ", time_per_100_records, " ", attributes(time_per_100_records)$units)) 
+  }, error = function(e) {
+    error_message <- paste0("\nError in ", study_name, " (", current_study_number, ")",
+                            ", record ", h,
+                            ", step ", step, ":\n",
+                            "g = ", g, "\n",
+                            "h = ", h, "\n",
+                            "i = ", i, "\n",
+                            "j = ", j, "\n",
+                            e, "\n")
+    all_errors <<- c(all_errors, error_message)
+    print("ERROR: proceeding to next study")
+  })
+}
+
+# Print batch stats and any errors
+batch_total_time <- Sys.time() - batch_start_time
+cat(paste0("Batch Stats:\n",
+           "total batch time: ", batch_total_time, " ", attributes(batch_total_time)$units, "\n",
+           "average elapsed time: ", mean(elapsed_times), " secs\n",
+           "average time/100 records: ", mean(rates), " secs\n",
+           "longest time for single study: ", max(elapsed_times), " secs, ", batch_names[which.max(elapsed_times)], "\n",
+           "shortest time for single study: ", min(elapsed_times), " secs, ", batch_names[which.min(elapsed_times)], "\n",
+           "fastest study rate: ", min(rates), ", ", batch_names[which.min(rates)], " secs/100 records\n",
+           "slowest study rate: ", max(rates), ", ", batch_names[which.max(rates)], " secs/100 records\n"),
+    all_errors)
+
+# Compress data
+compressed_dat <- bind_rows(mapply(function(x, n) mutate(x, study_name = n, .before = "patientId"),
+                                   new_harmonized_studies,
+                                   names(new_harmonized_studies),
+                                   SIMPLIFY = FALSE))
+
+# Save data
+write_csv(compressed_dat, file.path(file_dir, outfile))
+
+## Inform user of next steps
+cat("Harmonized metadata output at ", outfile, ".csv. Proceed to \"term_picker_function\" and \"curation_prep\" blocks.")
+```
+
+
+# Curation
+
+The individual values of each column will now be extracted for curation to
+ontology terms. The "rols" R package will be used to provide the top 10
+suggestions for each value. These suggestions will be output in four "picker"
+dataframes for manual selection.
+
+```{r term_picker_function}
+create_rols_picker <- function(raw_terms) {
+     ontology_df <- as.data.frame(raw_terms) %>%
+      rename(term = 1) %>%
+      mutate(label1 = NA,
+             id1 = NA,
+             description1 = NA,
+             label2 = NA,
+             id2 = NA,
+             description2 = NA,
+             label3 = NA,
+             id3 = NA,
+             description3 = NA,
+             label4 = NA,
+             id4 = NA,
+             description4 = NA,
+             label5 = NA,
+             id5 = NA,
+             description5 = NA,
+             label6 = NA,
+             id6 = NA,
+             description6 = NA,
+             label7 = NA,
+             id7 = NA,
+             description7 = NA,
+             label8 = NA,
+             id8 = NA,
+             description8 = NA,
+             label9 = NA,
+             id9 = NA,
+             description9 = NA,
+             label10 = NA,
+             id10 = NA,
+             description10 = NA)
+    
+    start_time <- Sys.time()
+    all_errors <- c()
+    for (i in 1:nrow(ontology_df)) {
+      tryCatch({
+        term <- ontology_df$term[i]
+        print(paste0(i, "/", nrow(ontology_df), " ", term))
+        
+        qry <- OlsSearch(q = term, rows = 10)
+        qry <- olsSearch(qry)
+        qdrf <- as(qry, "data.frame")
+        
+        ontology_df$label1[i] <- qdrf$label[1]
+        ontology_df$id1[i] <- qdrf$obo_id[1]
+        ontology_df$label2[i] <- qdrf$label[2]
+        ontology_df$id2[i] <- qdrf$obo_id[2]
+        ontology_df$label3[i] <- qdrf$label[3]
+        ontology_df$id3[i] <- qdrf$obo_id[3]
+        ontology_df$label4[i] <- qdrf$label[4]
+        ontology_df$id4[i] <- qdrf$obo_id[4]
+        ontology_df$label5[i] <- qdrf$label[5]
+        ontology_df$id5[i] <- qdrf$obo_id[5]
+        ontology_df$label6[i] <- qdrf$label[6]
+        ontology_df$id6[i] <- qdrf$obo_id[6]
+        ontology_df$label7[i] <- qdrf$label[7]
+        ontology_df$id7[i] <- qdrf$obo_id[7]
+        ontology_df$label8[i] <- qdrf$label[8]
+        ontology_df$id8[i] <- qdrf$obo_id[8]
+        ontology_df$label9[i] <- qdrf$label[9]
+        ontology_df$id9[i] <- qdrf$obo_id[9]
+        ontology_df$label10[i] <- qdrf$label[10]
+        ontology_df$id10[i] <- qdrf$obo_id[10]
+        
+        if (length(qdrf$description) > 0) {
+          ontology_df$description1[i] <- qdrf$description[1]
+          ontology_df$description2[i] <- qdrf$description[2]
+          ontology_df$description3[i] <- qdrf$description[3]
+          ontology_df$description4[i] <- qdrf$description[4]
+          ontology_df$description5[i] <- qdrf$description[5]
+          ontology_df$description6[i] <- qdrf$description[6]
+          ontology_df$description7[i] <- qdrf$description[7]
+          ontology_df$description8[i] <- qdrf$description[8]
+          ontology_df$description9[i] <- qdrf$description[9]
+          ontology_df$description10[i] <- qdrf$description[10]
+        }
+      }, error = function(e) {
+        error_message <- paste0("\nError searching for term: ", term, " (", i, ")",
+                                "\n", e, "\n")
+        all_errors <<- c(all_errors, error_message)
+        print("ERROR: proceeding to next term")
+      })
+    }
+    elapsed_time <- difftime(Sys.time(), start_time, units = "mins")
+    print(elapsed_time)
+    cat(all_errors)
+    
+    ontology_picker <- ontology_df %>%
+      mutate(selected_label = NA,
+             selected_id = NA,
+             selected_description = NA,
+             .after = term)
+    
+    return(ontology_picker)   
+}
+```
+
+```{r curation_prep}
+## Set up variables
+outfile <- "ontology_pickers"
+
+# Read harmonized data
+compressed_dat <- compressed_dat
+#compressed_dat <- read_csv(file.path(file_dir, "harmonized_data.csv"))
+
+n_cols <- c("treatment_name")
+t_cols <- c("treatment_type")
+at_cols <- c("treatment_dose_unit",
+             "treatment_number_unit",
+             "treatment_start_unit",
+             "treatment_end_unit",
+             "treatment_frequency_unit",
+             "treatment_duration_unit")
+c_cols <- c("treatment_status",
+            "treatment_reason",
+            "treatment_group")
+
+n_vals <- unique(unlist(str_split(unlist(select(compressed_dat, n_cols),
+                                         use.names = FALSE), "<;>|::")))
+t_vals <- unique(unlist(str_split(unlist(select(compressed_dat, t_cols),
+                                         use.names = FALSE), "<;>|::")))
+at_vals <- unique(unlist(str_split(unlist(select(compressed_dat, at_cols),
+                                         use.names = FALSE), "<;>|::")))
+c_vals <- unique(unlist(str_split(unlist(select(compressed_dat, c_cols),
+                                         use.names = FALSE), "<;>|::")))
+
+n_terms <- n_vals[n_vals != "NA" & !is.na(n_vals)]
+t_terms <- t_vals[t_vals != "NA" & !is.na(t_vals)]
+at_terms <- at_vals[at_vals != "NA" & !is.na(at_vals)]
+c_terms <- c_vals[c_vals != "NA" & !is.na(c_vals)]
+
+n_picker <- create_rols_picker(n_terms)
+t_picker <- create_rols_picker(t_terms)
+at_picker <- create_rols_picker(at_terms)
+c_picker <- create_rols_picker(c_terms)
+
+picker_list <- set_names(list(n_picker, t_picker, at_picker, c_picker),
+                         c("treatment_name_picker",
+                           "treatment_type_picker",
+                           "treatment_amount_time_picker",
+                           "treatment_case_picker"))
+
+## Write for ontology term selection
+## Option 1: Write term pickers to a directory of individual .csv files
+write_csvdir(picker_list, file.path(file_dir, outfile))
+
+## Option 2: Write term pickers to .xlsx workbook
+write_xlsx(picker_list, file.path(file_dir, paste0(outfile, ".xlsx")))
+
+## Inform user of next steps
+cat("Ontology term pickers output at ", outfile, " as either a directory of .csv files or an .xlsx workbook. Select ontology terms for each original value and proceed to \"curation_map_functions\" and \"curation_maps\" blocks.")
+```
+
+---
+
+# Mapping
+
+The selected ontology terms will now be used to create the official curation
+maps and subsequently curate the harmonized data.
+
+```{r curation_map_functions}
+## Curation map functions
+validate_terms <- function(terms, labels, ids) {
+    picked_terms <- data.frame(term = terms,
+                               selected_label = labels,
+                               selected_id = ids)
+    
+    expanded_terms <- picked_terms %>%
+        filter(!is.na(selected_id)) %>%
+        separate_longer_delim(selected_label:selected_id, delim = ";")
+    
+    validation_table <- data.frame(matrix(nrow = nrow(expanded_terms),
+                                      ncol = 6,
+                                      dimnames = list(c(), c("original_value",
+                                                             "curated_onto_term",
+                                                             "curated_onto_id",
+                                                             "curated_onto_db",
+                                                             "query_onto_term",
+                                                             "correct"))))
+    
+    start_time <- Sys.time()
+    all_errors <- c()
+    for (i in 1:nrow(expanded_terms)) {
+      tryCatch({
+        og_val <- expanded_terms$term[i]
+        onto_term <- expanded_terms$selected_label[i]
+        print(paste0("Validating '", og_val, "' with '", onto_term, "' (", i, "/", nrow(expanded_terms), ")"))
+        onto_id <- expanded_terms$selected_id[i]
+        qry <- OlsSearch(q = onto_id, exact = TRUE)
+        qry <- olsSearch(qry)
+        qdrf <- as(qry, "data.frame") %>%
+            filter(obo_id == onto_id)
+        
+        validation_table$original_value[i] <- og_val
+        validation_table$curated_onto_term[i] <- onto_term
+        validation_table$curated_onto_id[i] <- onto_id
+        validation_table$curated_onto_db[i] <- qdrf$ontology_prefix
+        validation_table$query_onto_term[i] <- unique(qdrf$label)
+        validation_table$correct[i] <- identical(validation_table$curated_onto_term[i], validation_table$query_onto_term[i])
+      }, error = function(e) {
+        error_message <- paste0("Error validating '", og_val, "' with '", onto_term, "' (", i, "/", nrow(expanded_terms), ")\n", e)
+        all_errors <<- c(all_errors, error_message)
+        print("ERROR: proceeding to next term")
+      })
+    }
+    
+    data_did_not_match <- validation_table[!validation_table$correct,]
+
+    elapsed_time <- difftime(Sys.time(), start_time, units = "mins")
+    hours_elapsed_time <- difftime(Sys.time(), start_time, units = "hours")
+    print(paste0("elapsed time: ", elapsed_time, " ", attributes(elapsed_time)$units, " or ", hours_elapsed_time, " ", attributes(hours_elapsed_time)$units))
+    time_per_100_terms <- elapsed_time / nrow(expanded_terms) * 100
+    print(paste0("time/100 terms: ", time_per_100_terms, " ", attributes(time_per_100_terms)$units))
+    cat(all_errors)
+        
+    if (nrow(data_did_not_match > 0)) {
+        print("Nonmatching ontology terms and ids were found. Please check output dataframe.")
+        return(data_did_not_match)
+    } else {
+        print("All ontology terms and ids matched.")
+        return(validation_table)
+    }
+}
+
+curation_map <- function(validation_table) {
+    final_map <- validation_table %>%
+      select(original_value:curated_onto_db) %>%
+      rename(curated_ontology = curated_onto_term,
+             curated_ontology_term_id = curated_onto_id,
+             curated_ontology_term_db = curated_onto_db) %>%
+      group_by(original_value) %>%
+      summarise(across(everything(), ~paste(., collapse = ";"))) %>%
+      ungroup()
+    
+    return(final_map)
+}
+```
+
+```{r curation_maps}
+## Set up variables
+outfile <- "curation_maps"
+
+## Get finished ontology term_pickers
+## Option 1: Read directory of individual .csv files
+picked_list <- read_csvdir(file.path(file_dir, "ontology_pickers"))
+
+## Option 2: Read .xlsx file
+picked_list <- read_book(file.path(file_dir, "finished_ontology_pickers.xlsx"))
+
+## Reformat and validate ontology term maps
+val_n <- validate_terms(picked_list$treatment_name_picker$term,
+                        picked_list$treatment_name_picker$selected_label,
+                        picked_list$treatment_name_picker$selected_id)
+val_t <- validate_terms(picked_list$treatment_type_picker$term,
+                        picked_list$treatment_type_picker$selected_label,
+                        picked_list$treatment_type_picker$selected_id)
+val_at <- validate_terms(picked_list$treatment_amount_time_picker$term,
+                         picked_list$treatment_amount_time_picker$selected_label,
+                         picked_list$treatment_amount_time_picker$selected_id)
+val_c <- validate_terms(picked_list$treatment_case_picker$term,
+                        picked_list$treatment_case_picker$selected_label,
+                        picked_list$treatment_case_picker$selected_id)
+
+## Create final maps
+n_map <- curation_map(val_n)
+t_map <- curation_map(val_t)
+at_map <- curation_map(val_at)
+c_map <- curation_map(val_c)
+
+cur_map_list <- set_names(list(n_map, t_map, at_map, c_map),
+                          c("treatment_name_map",
+                          "treatment_type_map",
+                          "treatment_amount_time_map",
+                          "treatment_case_map"))
+
+## Write curation maps for storage
+## Option 1: Write maps to a directory of individual .csv files
+write_csvdir(cur_map_list, file.path(file_dir, outfile))
+
+## Option 2: Write maps to .xlsx workbook
+write_xlsx(cur_map_list, file.path(file_dir, paste0(outfile, ".xlsx")))
+           
+## Inform user of next steps
+cat("Curation maps output at ", outfile, " as either a directory of .csv files or an .xlsx workbook. Proceed to \"curate_values\" block.")
+```
+
+```{r curate_values}
+## Setup variables
+outfile <- "harmonized_curated_data"
+
+## Read curation maps
+## Option 1: Read directory of individual .csv files
+cur_map_list <- read_csvdir(file.path(file_dir, "curation_maps"))
+
+## Option 2: Read .xlsx file
+cur_map_list <- read_book(file.path(file_dir, "curation_maps.xlsx"))
+
+## Extract maps
+n_map <- cur_map_list$treatment_name_map
+t_map <- cur_map_list$treatment_type_map
+at_map <- cur_map_list$treatment_amount_time_map
+c_map <- cur_map_list$treatment_case_map
+
+## Get compressed harmonized data
+#compressed_dat <- compressed_dat
+compressed_dat <- read_csv(file.path(file_dir, "harmonized_data.csv"))
+
+## Get feature names and create names for curated features
+f_regex <- "^treatment_(((?!(value|no|source)).)*)$"
+o_features <- str_extract(colnames(compressed_dat), f_regex)
+o_features <- o_features[!is.na(o_features)]
+c_features <- str_extract(colnames(compressed_dat), f_regex, group = TRUE)
+c_features <- c_features[!is.na(c_features)]
+
+id_features <- unlist(lapply(c_features, function(x) {
+    c(paste0("curated_", x, "_id"))
+}))
+
+m_features <- unlist(lapply(c_features, function(x) {
+    c(paste0("curated_", x))
+}))
+
+cmap_list <- list(n_map, t_map,
+                  at_map, at_map, at_map, at_map, at_map, at_map,
+                  c_map, c_map, c_map)
+
+## Expand data and create "NA" placeholders
+e_dat <- compressed_dat %>%
+  separate_longer_delim(treatment_name:original_column_treatment_notes, delim = "<;>")
+e_dat[e_dat == "NA"] <- "NONE"
+
+## Map values to curated terms and ids
+for (i in 1:length(o_features)) {
+    of <- o_features[i]
+    idf <- id_features[i]
+    mf <- m_features[i]
+    cmap <- cmap_list[[i]]
+    
+    vals <- strsplit(pull(e_dat, of), split = "::")
+    cterms <- unlist(lapply(vals, function(x) {
+        paste(unique(plyr::mapvalues(x,
+                                     cmap$original_value,
+                                     cmap$curated_ontology,
+                                     warn_missing = FALSE)), collapse = "::")
+        }))
+    cids <- unlist(lapply(vals, function(x) {
+        paste(unique(plyr::mapvalues(x,
+                                     cmap$original_value,
+                                     cmap$curated_ontology_term_id,
+                                     warn_missing = FALSE)), collapse = "::")
+        }))
+    
+    e_dat <- e_dat %>%
+        mutate(!!mf := cterms, .after = !!of) %>%
+        mutate(!!idf := cids, .after = !!mf)
+}
+
+## Revert "NA" placeholders
+e_dat[e_dat == "NA"] <- NA
+e_dat[e_dat == "NONE"] <- "NA"
+
+## Compress data
+c_final <- e_dat %>%
+  group_by(study_name, patientId, sampleId) %>%
+  summarise(
+    across(treatment_name:original_column_treatment_notes, ~paste(na.omit(.), collapse = "<;>")),
+    across(treatment_no:treatment_source, ~unique(.))
+  ) %>%
+  ungroup()
+c_final[c_final == ""] <- NA
+
+## Save data
+write_csv(c_final, file.path(file_dir, paste0(outfile, ".csv")))
+
+## Inform user of completion
+cat("Final harmonized and curated metadata completed and output at ", outfile, ".csv.")
+```
+
+---
