@@ -1,0 +1,233 @@
+---
+title: "Harmonize target_condition information in cMD sample metadata"
+author:
+  - Sehyun Oh
+  - Kai Gravel-Pucillo
+date: "`r format(Sys.time(), '%B %d, %Y')`"
+format:
+    html:
+        fontsize: 14pxs
+        toc: true
+        top-depth: 3
+abstract: "Prepare U24 Supplement: AI/ML-ready"
+---
+
+```{r setup, include=FALSE}
+knitr::opts_chunk$set(echo = TRUE, 
+                    warning = FALSE,
+                    message = FALSE,
+                    collapse = TRUE,
+                    eval = TRUE)
+```
+
+# Overview
+
+This .qmd file demonstrates a workflow for curating and harmonizing target 
+condition data with the curatedMetagenomicData package.
+This file curates information from the original study_condition, disease, 
+history_of_periodontitis, and disease_subtype columns to produce the 
+curated control, target_condition, and disease columns.
+
+# Setup
+## Load Packages
+
+```{r load}
+suppressPackageStartupMessages({
+  library(curatedMetagenomicData)
+  library(tidyverse)
+  library(googlesheets4)
+  library(gsheet)
+  library(rols)
+  library(AMR)
+})
+```
+
+## Setup for Curation
+
+We will first add a `curation_id` consisting of study name and sample ID (`study_name:sample_id`) to avoid confusion due to duplicated samples. Then we will set up a Google Sheet to export our mapping table to.
+
+```{r curation_setup}
+# Add curation ID
+sampleMetadata$curation_id <- paste(sampleMetadata$study_name, sampleMetadata$sample_id, sep = ":")
+
+# Setup google sheets link to mapping table
+url <- "https://docs.google.com/spreadsheets/d/1QSbB_b1DkfqOc7q5eHE0IDHSiGqNUyTE8d4GzbSEzjM/edit?usp=sharing"
+
+ss <- googledrive::as_id(url)
+```
+
+# Exploratory Data Analysis
+
+## Manual Data Corrections
+
+Next, we will make some manual corrections to the data.
+It was found that a comma delimiter was used in palce of a semicolon on some 
+entries in the disease column. For accessibility we will replace these commas 
+with semicolons:
+```{r}
+# Fixing the accidental comma delimiters
+for (d in 1:length(sampleMetadata$disease)){
+  sampleMetadata$disease[d] <- gsub(",", ";", sampleMetadata$disease[d])
+}
+# Create dataframe of relevant columns 
+disease_data <- sampleMetadata[,c("curation_id","study_name","study_condition",
+                                  "disease","disease_subtype", "history_of_periodontitis")]
+```
+
+It was also found that one entry from the study "MetaCardis_2020_a" had an "MA"
+value entered in the `disease` column in place of the value "MS" due to a 
+curation error. We will adjust for this in the ontology map to replace the value
+with the correct ontology term "Metabolic Syndrome".
+
+
+# Data Curation
+
+## Validation
+
+Once the maps have been manually curated, we can double-check that they are correct before saving them to GitHub.
+Any curated ontology terms returned with `correct == FALSE` in `validation_tb` are reviewed.
+
+```{r validate_map, eval=FALSE}
+# import study condition ontology map for validation
+target_condition_map <- read_sheet(ss, sheet = "target_condition_ontology")
+
+# create validation table for curation statuses
+sc_validation_tb <- data.frame(matrix(NA, nrow = nrow(target_condition_map), ncol = 4))
+colnames(sc_validation_tb) <- c("curated_onto_term", "curated_onto_id", 
+                             "query_onto_term", "correct")
+
+# check each ontology term and indicate incorrect values
+for (i in seq_len(nrow(target_condition_map))) {
+    onto_term <- target_condition_map$curated_ontology_term[i]
+    onto_id <- basename(target_condition_map$curated_ontology_term_id_link[i])
+    qry <- OlsSearch(q = onto_id, exact = TRUE)
+    qry <- olsSearch(qry)
+    qdrf <- as(qry, "data.frame")
+    
+    sc_validation_tb$curated_onto_term[i] <- onto_term
+    sc_validation_tb$curated_onto_id[i] <- onto_id
+    sc_validation_tb$query_onto_term[i] <- unique(qdrf$label)
+    sc_validation_tb$correct[i] <- identical(sc_validation_tb$curated_onto_term[i], sc_validation_tb$query_onto_term[i])
+}
+
+# get all incorrect rows for review
+sc_validation_tb[!sc_validation_tb$correct,]
+```
+
+Upon reviewing the 7 rows flagged by the validation process, the accuracy of all
+ontology terms has been verified.
+
+## Storage
+
+Once everything has been reviewed and the Google Sheets maps have been updated as needed, we can save the maps to GitHub.
+
+```{r save_maps_to_github, eval=FALSE}
+# load map from Google Sheets
+target_condition <- read_sheet(ss, sheet = "target_condition_map")
+
+# save map to GitHub
+write.csv(target_condition,
+          file = file.path(proj_dir, "maps/cMD_target_condition_map.csv"),
+          row.names = FALSE)
+```
+
+
+# Mapping
+
+## Import Maps
+
+To access the manually-curated target condition(s) 
+associated with each study we will load the `target_condition_map`.
+
+```{r import_maps, eval=FALSE}
+# import the target condition map
+target_condition_map <- read.csv(file = file.path(proj_dir, "maps/cMD_target_condition_map.csv"),
+                          sep = ",", header = TRUE)
+```
+
+## Curating "control" Column
+
+Using the "study_condition" column as a guide, identify whether each sample was part of the "control" group or the "case" group for its corresponding study. Samples that were not utilized in the study receive the label "Not Used".
+```{r}
+# Label patient data to indicate control or treatment group
+for (i in 1:nrow(disease_data)){
+  if (grepl("control", disease_data$study_condition[i])){
+    disease_data$control[i] <- "Study Control"
+    disease_data$control_ontology_term_id[i] <- "NCIT_C142703" # http://purl.obolibrary.org/obo/NCIT_C142703
+  }
+  else if (is.na(disease_data$study_condition[i])){
+    disease_data$control[i] <- "Not Used"
+    disease_data$control_ontology_term_id[i] <- "NCIT_C69062" # http://purl.obolibrary.org/obo/NCIT_C69062
+  }
+  else{
+    disease_data$control[i] <- "Case"   
+    disease_data$control_ontology_term_id[i] <- "NCIT_C49152" # http://purl.obolibrary.org/obo/NCIT_C49152
+  }
+}
+```
+
+Now we can clean up the "study_condition" column by replacing any instances of the term "control" with an "NA" value, which will prevent redundant data when we combine this column with the "disease" column.
+
+```{r}
+# Replace "control" values with NA in study_condition column
+for (d in 1:length(disease_data$study_condition)){
+  disease_data$study_condition[d] <- gsub("control", NA, disease_data$study_condition[d])
+}
+
+# Create a column of relevant source columns
+disease_sources <- disease_data[,3:6]
+for (i in 1:nrow(disease_sources)){
+  disease_data$curated_control_source[i] <- ifelse(is.na(sampleMetadata$study_condition[i]), NA, "study_condition")
+}
+```
+
+
+## Curating "target_condition" Column
+
+Using the study names and the target_condition_map, we can create columns for 
+target_condition data:
+```{r}
+# Iterate through all data in sampleMetadata to create target_condition columns
+for (i in seq_len(nrow(disease_data))){
+    ind <- which(target_condition_map$study_name == sampleMetadata$study_name[i])
+    disease_data$curated_target_condition[i] <- target_condition_map$curated_ontology_term[ind]
+    disease_data$curated_target_condition_ontology_term_id[i] <- target_condition_map$curated_ontology_term_id[ind]
+}
+```
+
+
+## Curated Table Creation
+
+Then we will create our table of curated study condition data, including 
+original values, curated values, and curated ontology term ids.
+```{r}
+# Create a dataframe of the relevant columns
+disease_cols <- c("control", 
+                  "control_ontology_term_id",
+                  "curated_control_source", 
+                  "curated_target_condition", 
+                  "curated_target_condition_ontology_term_id")
+
+curated_study_condition <- dplyr::left_join(sampleMetadata[c("curation_id", "study_condition")],
+                                            disease_data[c("curation_id", disease_cols)], 
+                                            by = "curation_id")
+
+# Rename the columns for accuracy & specificity
+colnames(curated_study_condition)[2:4] <- c("original_control", "curated_control", "curated_control_ontology_term_id")
+
+# Replace empty values from curated columns with "NA"
+curated_study_condition <- data.frame(lapply(curated_study_condition, 
+                                      function(x) gsub("^$", NA, x)))
+```
+
+
+## Export
+
+Finally, we will export our completed table to GitHub.
+
+```{r export_curated_table, eval=FALSE}
+# export to GitHub
+write.csv(curated_study_condition, 
+          file = file.path(proj_dir, "data/curated_study_condition.csv"),
+          row.names = FALSE)
+```
