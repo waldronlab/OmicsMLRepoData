@@ -1,0 +1,283 @@
+---
+title: "Harmonize disease_detailed information in cMD sample metadata"
+author:
+  - Sehyun Oh
+  - Kai Gravel-Pucillo
+date: "`r format(Sys.time(), '%B %d, %Y')`"
+format:
+    html:
+        fontsize: 14pxs
+        toc: true
+        top-depth: 3
+abstract: "Prepare U24 Supplement: AI/ML-ready"
+---
+
+```{r setup, include=FALSE}
+knitr::opts_chunk$set(echo = TRUE, 
+                    warning = FALSE,
+                    message = FALSE,
+                    collapse = TRUE,
+                    eval = TRUE)
+```
+
+# Overview
+
+This .qmd file demonstrates a workflow for curating and harmonizing 
+disease_detailed data with the curatedMetagenomicData package.
+This file curates information from the original study_condition, disease, 
+history_of_periodontitis, and disease_subtype columns to produce the 
+disease column.
+
+# Setup
+## Load Packages
+
+```{r load}
+suppressPackageStartupMessages({
+  library(curatedMetagenomicData)
+  library(tidyverse)
+  library(googlesheets4)
+  library(gsheet)
+  library(rols)
+  library(AMR)
+})
+```
+
+## Setup for Curation
+
+We will first add a `curation_id` consisting of study name and sample ID (`study_name:sample_id`) to avoid confusion due to duplicated samples. Then we will set up a Google Sheet to export our mapping table to.
+
+```{r curation_setup}
+# Add curation ID
+sampleMetadata$curation_id <- paste(sampleMetadata$study_name, sampleMetadata$sample_id, sep = ":")
+
+# Setup google sheets link to mapping table
+url <- "https://docs.google.com/spreadsheets/d/1QSbB_b1DkfqOc7q5eHE0IDHSiGqNUyTE8d4GzbSEzjM/edit?usp=sharing"
+
+ss <- googledrive::as_id(url)
+```
+
+# Exploratory Data Analysis
+
+## Manual Data Corrections
+
+Next, we will make some manual corrections to the data.
+It was found that a comma delimiter was used in palce of a semicolon on some 
+entries in the disease column. For accessibility we will replace these commas 
+with semicolons:
+```{r}
+# Fixing the accidental comma delimiters
+for (d in 1:length(sampleMetadata$disease)){
+  sampleMetadata$disease[d] <- gsub(",", ";", sampleMetadata$disease[d])
+}
+# Create dataframe of relevant columns 
+disease_data <- sampleMetadata[,c("curation_id","study_name","study_condition",
+                                  "disease","disease_subtype", "history_of_periodontitis")]
+```
+
+It was also found that one entry from the study "MetaCardis_2020_a" had an "MA"
+value entered in the `disease` column in place of the value "MS" due to a 
+curation error. We will adjust for this in the ontology map to replace the value
+with the correct ontology term "Metabolic Syndrome".
+
+
+# Data Curation
+
+## Validation
+
+Once the maps have been manually curated, we can double-check that they are correct before saving them to GitHub.
+Any curated ontology terms returned with `correct == FALSE` in `validation_tb` are reviewed.
+
+```{r validate_map, eval=FALSE}
+# import disease ontology map for validation
+disease_detailed_map <- read_sheet(ss, sheet = "disease_detailed_ontology")
+
+# create validation table for curation statuses
+sc_validation_tb <- data.frame(matrix(NA, nrow = nrow(disease_detailed_map), ncol = 4))
+colnames(sc_validation_tb) <- c("curated_onto_term", "curated_onto_id", 
+                             "query_onto_term", "correct")
+
+# check each ontology term and indicate incorrect values
+for (i in seq_len(nrow(disease_detailed_map))) {
+    onto_term <- disease_detailed_map$curated_ontology_term[i]
+    onto_id <- basename(disease_detailed_map$curated_ontology_term_id_link[i])
+    qry <- OlsSearch(q = onto_id, exact = TRUE)
+    qry <- olsSearch(qry)
+    qdrf <- as(qry, "data.frame")
+    
+    sc_validation_tb$curated_onto_term[i] <- onto_term
+    sc_validation_tb$curated_onto_id[i] <- onto_id
+    sc_validation_tb$query_onto_term[i] <- unique(qdrf$label)
+    sc_validation_tb$correct[i] <- identical(sc_validation_tb$curated_onto_term[i], sc_validation_tb$query_onto_term[i])
+}
+
+# get all incorrect rows for review
+sc_validation_tb[!sc_validation_tb$correct,]
+```
+
+Upon reviewing the 7 rows flagged by the validation process, the accuracy of all
+ontology terms has been verified.
+
+## Storage
+
+Once everything has been reviewed and the Google Sheets maps have been updated as needed, we can save the maps to GitHub.
+
+```{r save_maps_to_github, eval=FALSE}
+# load map from Google Sheets
+disease_detailed_ontology <- read_sheet(ss, sheet = "disease_detailed_map")
+
+# save map to GitHub
+write.csv(disease_detailed_ontology,
+          file = file.path(proj_dir, "maps/cMD_disease_detailed_map.csv"),
+          row.names = FALSE)
+```
+
+
+# Mapping
+
+## Import Maps
+
+To access the necessary disease ontology terms we will load the 
+`disease_ontology_map`.
+
+```{r import_maps, eval=FALSE}
+# import the disease ontology map
+disease_detailed_ontology_map <- read.csv(file = file.path(proj_dir, "maps/cMD_disease_detailed_map.csv"),
+                          sep = ",", header = TRUE)
+```
+
+## Curating "disease_detailed" Column
+
+Some of the information between columns demonstrates significant redundancy. 
+Specifically the "disease" column features many redundant values from the 
+"study_condition" column. 
+
+For some of the values in the study_condition column there is only one 
+corresponding value in the disease column, however this does not necessarily 
+mean that there is only one corresponding value in the study_condition column 
+for that single disease column value. For example, "pre-hypertension" in the 
+study_condition column only has one corresponding value in the disease column; 
+"hypertension". However, "hypertension" has three corresponding values in the 
+study_condition column; "pre-hypertension", "hypertension", and "control".
+
+This indicates that the "study_condition" column is a more specific 
+classification in this instance, and the delineation between these three groups 
+should be reflected in the final combined column. 
+
+Next, we can create a new "condensed" column that preserves the values from 
+both columns when values are different, and condenses identical values:
+```{R}
+# Append study_condition value to disease value if it is not redundant
+for (i in 1:nrow(disease_data)){
+  if (is.na(disease_data$study_condition[i]) | 
+      (grepl(disease_data$study_condition[i], disease_data$disease[i], 
+             fixed=TRUE))){
+    disease_data$condensed[i] <- disease_data$disease[i]
+  }
+  else{
+    disease_data$condensed[i] <- paste(disease_data$disease[i], 
+                                    disease_data$study_condition[i], sep=";")   
+  }
+}
+```
+
+We can then append the non-redundant "disease_subtype" values onto the 
+"condensed" column values in a new "merged" column:
+```{R}
+# Convert binary "history_of_periodontitis" column to descriptive values
+disease_data$history_of_periodontitis <- sapply(disease_data$history_of_periodontitis, function(x) gsub("yes", "periodontitis", x))
+disease_data$history_of_periodontitis <- sapply(disease_data$history_of_periodontitis, function(x) gsub("no", NA, x))
+
+# Append disease_subtype and history_of_periodontitis information if it is not redundant
+for (i in 1:nrow(disease_data)){
+  if (is.na(disease_data$disease_subtype[i]) | 
+      (grepl(disease_data$disease_subtype[i], disease_data$condensed[i], fixed=TRUE))){
+    disease_data$merged[i] <- disease_data$condensed[i]
+  }
+  else{
+    disease_data$merged[i] <- paste(disease_data$condensed[i], 
+                                    disease_data$disease_subtype[i], sep=";")   
+  }
+  if (is.na(disease_data$history_of_periodontitis[i]) | 
+      (grepl(disease_data$history_of_periodontitis[i], disease_data$condensed[i], fixed=TRUE))){
+    disease_data$merged[i] <- disease_data$condensed[i]
+  }
+  else{
+    disease_data$merged[i] <- paste(disease_data$condensed[i], 
+                                    disease_data$history_of_periodontitis[i], sep=";")   
+  }
+}
+```
+
+Our "merged" column now contains all data from the three disease data columns, 
+with unique attributes delimited by the ";" symbol, which will allow us to 
+easily parse this column's data in the future for whichever specific values we 
+need to access.
+
+Finally, we will update the terminology in the merged column to create a new
+curated disease column, using the curated disease_ontology_map:
+```{r}
+# Iterate through merged column values
+for (x in 1:length(disease_data$merged)){
+  # Create a list of terms in the value
+  original_terms <- as.list(unlist(strsplit(disease_data$merged[x], ";")))
+  new_terms <- list()
+  new_term_ids <- list()
+  # Search for replacement terms in the ontology map
+  for (i in 1:length(original_terms)){
+    new_term <- disease_detailed_ontology_map$curated_ontology_term[grep(paste("^",original_terms[i],"$",sep=""), disease_detailed_ontology_map$original_value, fixed=F)]
+    new_term_id <- disease_detailed_ontology_map$curated_ontology_term_id[grep(paste("^",original_terms[i],"$",sep=""), disease_detailed_ontology_map$original_value, fixed=F)]
+    # Append replacement term to new list if not already included
+    if(length(new_term)!=0){
+      if(!(new_term %in% new_terms)){
+        new_terms <- append(new_terms, new_term)
+        new_term_ids <- append(new_term_ids, new_term_id)
+      }
+    }
+  # Concatenate new lists on ";" delimiter to create curated value
+  disease_data$curated_disease_detailed[x] <- paste(new_terms, collapse= ";")
+  disease_data$curated_disease_detailed_ontology_term_id[x] <- paste(new_term_ids, collapse= ";")
+  }
+}
+
+# Create a column of relevant source columns
+disease_sources <- disease_data[,3:6]
+for (i in 1:nrow(disease_sources)){
+  disease_data$curated_disease_detailed_source[i] <- paste(colnames(disease_sources[which(!is.na(disease_sources[i,]))]), collapse=";")
+}
+```
+
+
+## Curated Table Creation
+
+Then we will create our table of curated disease data, including 
+original values, curated values, and curated ontology term ids.
+```{r}
+# Create a dataframe of the relevant columns
+disease_cols <- c("merged",
+                  "curated_disease_detailed", 
+                  "curated_disease_detailed_ontology_term_id", 
+                  "curated_disease_detailed_source")
+
+curated_study_condition <- dplyr::left_join(sampleMetadata[c("curation_id")],
+                                            disease_data[c("curation_id", disease_cols)], 
+                                            by = "curation_id")
+
+# Rename the columns for accuracy & specificity
+curated_study_condition <- curated_study_condition %>% rename(original_disease_detailed = merged)
+
+# Replace empty values from curated columns with "NA"
+curated_study_condition <- data.frame(lapply(curated_study_condition, 
+                                      function(x) gsub("^$", NA, x)))
+```
+
+
+## Export
+
+Finally, we will export our completed table to GitHub.
+
+```{r export_curated_table, eval=FALSE}
+# export to GitHub
+write.csv(curated_study_condition, 
+          file = file.path(proj_dir, "data/curated_disease_detailed.csv"),
+          row.names = FALSE)
+```
