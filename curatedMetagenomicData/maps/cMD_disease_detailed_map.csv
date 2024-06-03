@@ -1,0 +1,28 @@
+﻿original_value,curated_ontology_term,curated_ontology_term_id,curated_ontology_term_db,Notes
+acute_diarrhoea,Acute,NCIT:C14140,NCIT,NA
+advancedadenoma,Advanced (qualifier value),SNOMED:86005002,SNOMED,NA
+ascaris_lumbricoides,Ascaris lumbricoides,NCIT:C122177,NCIT,NA
+carcinoma_surgery_history,History of surgery (situation),SNOMED:161615003,SNOMED,NA
+entamoeba_histolytica,Entamoeba histolytica,NCIT:C122297,NCIT,NA
+STH,Helminth,NCIT:C125642,NCIT,"Helminth,Transmitted,soil"
+HBV,Hepatitis B Virus,NCIT:C14215,NCIT,NA
+HCV,Hepatitis C Virus,NCIT:C14312,NCIT,NA
+HDV,Hepatitis D Virus,NCIT:C93324,NCIT,NA
+HEV,Hepatitis E Virus,NCIT:C14295,NCIT,NA
+hookworm,Hookworm Infection,NCIT:C34702,NCIT,NA
+suspinf,Suspected,NCIT:C71458,NCIT,"Infection,Suspected"
+microfilaria_loa_loa,Loa loa,NCIT:C123512,NCIT,"Loa loa,Microfilaria"
+mansonella_perstans,Mansonella perstans,NCIT:C119326,NCIT,NA
+microfilaria_spp,Onchocerca microfilariae,NCBITaxon:6285,NCBITaxon,NA
+MDRB,Multidrug-resistant bacteria (organism),SNOMED:713351000,SNOMED,NA
+necator_americanus,Necator americanus,NCIT:C123524,NCIT,NA
+peri-implantitis,Peri-Implantitis,OMIT:0027030,OMIT,NA
+plasmodium_falciparum,Plasmodium falciparum,NCBITaxon:5833,NCBITaxon,NA
+Prevotella copri,Prevotella copri,NCBITaxon:165179,NCBITaxon,NA
+first_episode_schizofrenia,First episode (qualifier value),SNOMED:255217005,SNOMED,NA
+repeated_episodes_shizofrenia,Recurrent episode (qualifier value),SNOMED:263853000,SNOMED,NA
+STEC,Shiga Toxin-producing Escherichia coli,NCIT:C184689,NCIT,NA
+trichomonas_intestinalis,Trichomonas,NCIT:C89825,NCIT,NA
+trichuris_trichiura,Trichuris trichiura,NCIT:C125973,NCIT,NA
+wuchereria_bancrofti,Wuchereria bancrofti,NCIT:C122328,NCIT,NA
+schistosoma,Schistosoma,NCIT:C124285,NCIT,NA
