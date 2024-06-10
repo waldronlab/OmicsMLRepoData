@@ -57,3 +57,4 @@ cmd_meta_release <- cmd_meta_release[col_order]
 
 # Add attribute -----------
 attr(cmd_meta_release, "source") <- "curatedMetagenomicData"
+attr(cmd_meta_release, "last_updated") <- Sys.time()
