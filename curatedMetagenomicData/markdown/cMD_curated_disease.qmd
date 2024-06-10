@@ -188,24 +188,9 @@ disease_data$history_of_periodontitis <- sapply(disease_data$history_of_periodon
 disease_data$history_of_periodontitis <- sapply(disease_data$history_of_periodontitis, function(x) gsub("no", NA, x))
 
 # Append disease_subtype and history_of_periodontitis information if it is not redundant
-for (i in 1:nrow(disease_data)){
-  if (is.na(disease_data$disease_subtype[i]) | 
-      (grepl(disease_data$disease_subtype[i], disease_data$condensed[i], fixed=TRUE))){
-    disease_data$merged[i] <- disease_data$condensed[i]
-  }
-  else{
-    disease_data$merged[i] <- paste(disease_data$condensed[i], 
-                                    disease_data$disease_subtype[i], sep=";")   
-  }
-  if (is.na(disease_data$history_of_periodontitis[i]) | 
-      (grepl(disease_data$history_of_periodontitis[i], disease_data$condensed[i], fixed=TRUE))){
-    disease_data$merged[i] <- disease_data$condensed[i]
-  }
-  else{
-    disease_data$merged[i] <- paste(disease_data$condensed[i], 
-                                    disease_data$history_of_periodontitis[i], sep=";")   
-  }
-}
+disease_data <- disease_data %>% mutate(merged = paste(condensed, disease_subtype, sep=";"))
+disease_data <- disease_data %>% mutate(merged = paste(merged, history_of_periodontitis, sep=";"))
+disease_data$merged <- gsub(";NA", "", disease_data$merged)
 ```
 
 Our "merged" column now contains all data from the three disease data columns, 
