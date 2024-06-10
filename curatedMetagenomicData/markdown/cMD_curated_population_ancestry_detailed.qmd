@@ -1,5 +1,5 @@
 ---
-title: "Harmonize population information in cMD sample metadata"
+title: "Harmonize population ancestry detailed information in cMD sample metadata"
 author:
   - Sehyun Oh
   - Kai Gravel-Pucillo
@@ -22,10 +22,10 @@ knitr::opts_chunk$set(echo = TRUE,
 
 # Overview
 
-This .qmd file demonstrates a workflow for curating and harmonizing population data 
-with the curatedMetagenomicData package.
+This .qmd file demonstrates a workflow for curating and harmonizing population 
+ancestry detailed data with the curatedMetagenomicData package.
 This file curates information from the original population column to 
-produce the curated population column.
+produce the curated population ancestry detailed column.
 
 # Setup
 ## Load Packages
@@ -109,7 +109,7 @@ unique_merged_vals <- unique(unlist(merged_vals))
 
 # Make a csv file of the unique values in the merged column
 write.csv(unique_merged_vals, 
-          file= file.path(proj_dir, "population_cols_unique_vals.csv"), 
+          file= file.path(proj_dir, "population_detailed_cols_unique_vals.csv"), 
           row.names=F, col.names=F)
 ```
 
@@ -118,17 +118,17 @@ write.csv(unique_merged_vals,
 ## Import Maps
 
 To access the necessary population ontology terms we will load the 
-`population_ontology_map`.
+`population_ancestry_detailed_ontology_map`.
 ```{r import_maps, eval=FALSE}
-# import population ontology map
+# import population detailed ontology map
 # mapped_terms <- read_sheet(ss, sheet = "population_map")
 
-# import population ontology map
-mapped_terms <-read.csv(file = file.path(proj_dir, "cMD_population_map.csv"), header=T)
+# import population detailed ontology map
+mapped_terms <-read.csv(file = file.path(proj_dir, "cMD_population_ancestry_detailed_map.csv"), header=T)
 ```
 
 
-# Curating Population Column
+# Curating Population Ancestry Detailed Column
 
 Now we can map the values in the merged columns to their corresponding ontology
 terms and propagate these values into the curated columns: 
@@ -151,8 +151,8 @@ for (x in 1:length(population_cols$merged)){
   new_terms <- list_drop_empty(new_terms)
   new_term_ids <- list_drop_empty(new_term_ids)
   # Concatenate new lists on ";" delimiter to create curated value
-  population_cols$curated_population[x] <- rmv_xtra_semis(paste(as.list(unique(new_terms)), collapse= ";"))
-  population_cols$curated_population_ontology_term_id[x] <- rmv_xtra_semis(paste(as.list(unique(new_term_ids)), collapse= ";"))
+  population_cols$curated_population_ancestry_detailed[x] <- rmv_xtra_semis(paste(as.list(unique(new_terms)), collapse= ";"))
+  population_cols$curated_population_ancestry_detailed_ontology_term_id[x] <- rmv_xtra_semis(paste(as.list(unique(new_term_ids)), collapse= ";"))
   if(x %% 10000==0){print(x)}
 }
 ```
@@ -169,14 +169,14 @@ population_cols <- data.frame(lapply(population_cols,
 
 # Create a column of relevant source columns
 for (i in 1:nrow(population_cols)){
-  population_cols$curated_population_source[i] <- ifelse(is.na(population_cols[i,2]), NA, colnames(population_cols)[2])
+  population_cols$curated_population_ancestry_detailed_source[i] <- ifelse(is.na(population_cols[i,2]), NA, colnames(population_cols)[2])
 }
 
 # Create a curated dataframe
 curated_population <- population_cols[,c(1, 3:6)]
 
 # Rename the columns for accuracy & specificity
-colnames(curated_population)[2] <- "original_population"
+colnames(curated_population)[2] <- "original_population_ancestry_detailed"
 
 # Replace empty values from curated columns with "NA"
 curated_population <- data.frame(lapply(curated_population, 
@@ -190,6 +190,6 @@ Finally, we will export our completed table to GitHub.
 ```{r export_curated_table, eval=FALSE}
 # export to GitHub
 write.csv(curated_population, 
-          file = file.path(proj_dir, "curated_population.csv"),
+          file = file.path(proj_dir, "curated_population_ancestry_detailed.csv"),
           row.names = FALSE)
 ```
