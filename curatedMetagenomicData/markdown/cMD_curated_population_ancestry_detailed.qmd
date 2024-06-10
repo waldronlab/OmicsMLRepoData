@@ -1,0 +1,195 @@
+---
+title: "Harmonize population ancestry detailed information in cMD sample metadata"
+author:
+  - Sehyun Oh
+  - Kai Gravel-Pucillo
+date: "`r format(Sys.time(), '%B %d, %Y')`"
+format:
+    html:
+        fontsize: 14pxs
+        toc: true
+        top-depth: 3
+abstract: "Prepare U24 Supplement: AI/ML-ready"
+---
+
+```{r setup, include=FALSE}
+knitr::opts_chunk$set(echo = TRUE, 
+                    warning = FALSE,
+                    message = FALSE,
+                    collapse = TRUE,
+                    eval = TRUE)
+```
+
+# Overview
+
+This .qmd file demonstrates a workflow for curating and harmonizing population 
+ancestry detailed data with the curatedMetagenomicData package.
+This file curates information from the original population column to 
+produce the curated population ancestry detailed column.
+
+# Setup
+## Load Packages
+
+```{r load}
+suppressPackageStartupMessages({
+  library(curatedMetagenomicData)
+  library(tidyverse)
+  library(googlesheets4)
+  library(rols)
+  library(dplyr)
+  library(hash)
+  library(vctrs)
+  library(rvest)
+})
+```
+
+## Setup for Curation
+
+We will first add a `curation_id` consisting of study name and sample ID (`study_name:sample_id`) to avoid confusion due to duplicated samples.
+
+```{r curation_setup}
+# Add curation ID
+sampleMetadata$curation_id <- paste(sampleMetadata$study_name, sampleMetadata$sample_id, sep = ":")
+
+# Define a project directory
+proj_dir <- "D:\\CUNY Internship\\cMD"
+```
+
+# Exploratory Data Analysis & Data Curation
+
+## Manual Data Corrections
+
+Next, we will make some manual corrections to the data.
+We will start by creating a tibble dataframe and checking the completeness of 
+the original column as well as reviewing the unique values:
+```{r}
+# Create a tibble object 
+samplemd <- as_tibble(sampleMetadata)
+
+# Review unique values
+unique(sampleMetadata$population)
+
+# Calculate completeness
+length(samplemd$population[which(!is.na(samplemd$population))])/length(samplemd$population)
+```
+
+Now we can replace character values representing a lack of information with a 
+unique character value ("8X8"), and merge these values into a single column with 
+each distinct value separated by a semicolon.
+```{r}
+# Create a dataframe of only the relevant columns
+population_cols <- samplemd %>% select(curation_id, population)
+
+# Convert NA values to unique character value (8X8)
+population_cols <- population_cols %>% replace(is.na(.), "8X8") %>% data.frame()
+
+# Merge all relevant rows
+for (i in 1:nrow(population_cols)){
+  population_cols$merged[i] <- toupper(paste(population_cols[i,2], collapse=";"))
+}
+```
+
+Next, we can remove the unique character representing NA values from the merged
+column:
+```{r}
+# Take out NA values
+population_cols$merged <- gsub("8X8;", "", population_cols$merged)
+population_cols$merged <- gsub(";8X8", "", population_cols$merged)
+```
+
+Then we can create a list of all unique values included in the merged column,
+and export these values to a csv file to manually develop an ontology map:
+```{r}
+# Count the number of unique values in the merged column
+merged_vals <- list()
+for(r in 1:nrow(population_cols)){
+  merged_vals <- append(merged_vals, str_split(population_cols$merged[r], ";"))
+}
+unique_merged_vals <- unique(unlist(merged_vals))
+
+# Make a csv file of the unique values in the merged column
+write.csv(unique_merged_vals, 
+          file= file.path(proj_dir, "population_detailed_cols_unique_vals.csv"), 
+          row.names=F, col.names=F)
+```
+
+# Mapping
+
+## Import Maps
+
+To access the necessary population ontology terms we will load the 
+`population_ancestry_detailed_ontology_map`.
+```{r import_maps, eval=FALSE}
+# import population detailed ontology map
+# mapped_terms <- read_sheet(ss, sheet = "population_map")
+
+# import population detailed ontology map
+mapped_terms <-read.csv(file = file.path(proj_dir, "cMD_population_ancestry_detailed_map.csv"), header=T)
+```
+
+
+# Curating Population Ancestry Detailed Column
+
+Now we can map the values in the merged columns to their corresponding ontology
+terms and propagate these values into the curated columns: 
+```{r}
+# Make a function to remove excess semicolons
+rmv_xtra_semis <- function(x){
+  x <- ifelse(startsWith(x, ";"), sub("^;", "", x), x)
+  return(ifelse(endsWith(x, ";"), sub(";$", "", x), x))
+}
+
+# Iterate through merged column values
+for (x in 1:length(population_cols$merged)){
+  # Create a list of terms in the value
+  original_terms <- as.list(unlist(strsplit(population_cols$merged[x], ";")))
+  new_terms <- list()
+  new_term_ids <- list()
+  # Search for replacement terms in the ontology map
+  new_terms <- lapply(original_terms, function(y) mapped_terms$curated_ontology[grep(paste("^",y,"$",sep=""), mapped_terms$original_value, fixed=F)])
+  new_term_ids <- lapply(original_terms, function(y) mapped_terms$curated_ontology_term_id[grep(paste("^",y,"$",sep=""), mapped_terms$original_value, fixed=F)])
+  new_terms <- list_drop_empty(new_terms)
+  new_term_ids <- list_drop_empty(new_term_ids)
+  # Concatenate new lists on ";" delimiter to create curated value
+  population_cols$curated_population_ancestry_detailed[x] <- rmv_xtra_semis(paste(as.list(unique(new_terms)), collapse= ";"))
+  population_cols$curated_population_ancestry_detailed_ontology_term_id[x] <- rmv_xtra_semis(paste(as.list(unique(new_term_ids)), collapse= ";"))
+  if(x %% 10000==0){print(x)}
+}
+```
+
+
+## Curated Table Creation
+
+Next, we can clean up the dataframe by replacing the unique character 
+representing NA values with "NA" and updating column names as needed:
+```{r}
+# Replace NA values from original columns with "NA"
+population_cols <- data.frame(lapply(population_cols, 
+                                          function(x) gsub("8X8", NA, x)))
+
+# Create a column of relevant source columns
+for (i in 1:nrow(population_cols)){
+  population_cols$curated_population_ancestry_detailed_source[i] <- ifelse(is.na(population_cols[i,2]), NA, colnames(population_cols)[2])
+}
+
+# Create a curated dataframe
+curated_population <- population_cols[,c(1, 3:6)]
+
+# Rename the columns for accuracy & specificity
+colnames(curated_population)[2] <- "original_population_ancestry_detailed"
+
+# Replace empty values from curated columns with "NA"
+curated_population <- data.frame(lapply(curated_population, 
+                                      function(x) gsub("^$", NA, x)))
+```
+
+
+## Export
+
+Finally, we will export our completed table to GitHub.
+```{r export_curated_table, eval=FALSE}
+# export to GitHub
+write.csv(curated_population, 
+          file = file.path(proj_dir, "curated_population_ancestry_detailed.csv"),
+          row.names = FALSE)
+```
