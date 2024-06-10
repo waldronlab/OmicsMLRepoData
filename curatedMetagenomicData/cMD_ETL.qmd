@@ -94,6 +94,16 @@ cmd_maps_dir <- "~/OmicsMLRepo/OmicsMLRepoData/curatedMetagenomicData/maps"
 source(file.path(cmd_etl_dir, "1_sync_curation_map.R"))
 ```
 
+```{r save_maps_for_harmonizer, eval=FALSE}
+# ## Save maps for harmonizer
+# attrNames <- c("disease", "treatment", "bodysite")
+# attrFnames <- paste0("cMD_", attrNames, "_map.csv")
+# harmonizerDataDir <- "~/OmicsMLRepo/OmicsMLRepoHarmonizer/data"
+# 
+# file.copy(file.path(cmd_maps_dir, attrFnames),
+#           file.path(harmonizerDataDir, attrFnames),
+#           overwrite = TRUE)
+```
 
 # Assemble merging schema
 This script load the merging/curation/harmonization schema tables from Google
@@ -105,13 +115,18 @@ source(file.path(cmd_etl_dir, "2_assemble_merging_schema.R"))
 ```
 
 ```{r save_cmd_merging_schema, eval=FALSE}
-## GitHub project
+##### Other GitHub projects
+## OmicsMLRepoData
 extDir <- "~/OmicsMLRepo/OmicsMLRepoData/inst/extdata"
 write_csv(cmd_ms, file.path(extDir, "cMD_merging_schema.csv"))
 write_csv(map, file.path(extDir, "cMD_ms_allCols.csv")) # accessory file
 write_csv(dd, file.path(extDir, "cMD_dd_allCols.csv")) # accessory file
 
-## Google Sheet
+# ## OmicsMLDataHarmonizer
+# harmonizerDataDir <- "~/OmicsMLRepo/OmicsMLRepoHarmonizer/data"
+# write_csv(cmd_ms, file.path(harmonizerDataDir, "cMD_merging_schema.csv"))
+
+##### Google Sheet
 url <- "https://docs.google.com/spreadsheets/d/1xziFB_zBl32BjNarcyEN4GupTYpPtq5aDz0GbRbWvtk/edit?usp=sharing"
 ss <- googledrive::as_id(url)
 googlesheets4::write_sheet(cmd_ms, ss = ss, sheet = "cMD_merging_schema")
@@ -176,6 +191,7 @@ file.copy(from = file.path(extDir, "cMD_data_dictionary.csv"),
           overwrite = TRUE)
 ```
 
+
 # Expand data dictionary
 Add the new attributes to the data dictionary.
 ```{r}
@@ -187,7 +203,17 @@ extDir <- "~/OmicsMLRepo/OmicsMLRepoData/inst/extdata"
 source(file.path(cmd_etl_dir, "5_expand_data_dictionary.R")) 
 ```
 
+## Save
+```{r save_cmd_expanded_dd_schema, eval=FALSE}
+## GitHub project
+extDir <- "~/OmicsMLRepo/OmicsMLRepoData/inst/extdata"
+write_csv(expanded_dd, file.path(extDir, "cMD4_data_dictionary.csv"))
 
+## Google Sheet
+url <- "https://docs.google.com/spreadsheets/d/1xziFB_zBl32BjNarcyEN4GupTYpPtq5aDz0GbRbWvtk/edit?usp=sharing"
+ss <- googledrive::as_id(url)
+googlesheets4::write_sheet(expanded_dd, ss = ss, sheet = "cMD4_data_dictionary")
+```
 
 
 
