@@ -64,7 +64,7 @@ curated_smoker <- data.frame(
 ) 
 
 # sex ----
-sex <- read.csv(file.path(dataDir, "curated_gender.csv"))
+sex <- read.csv(file.path(dataDir, "curated_sex.csv"))
 curated_sex <- data.frame(
     col.name = "sex",
     col.class = "character",
@@ -146,8 +146,42 @@ curated_country <- data.frame(
                      collapse = "|")     
 )
 
+# ancestry ----
+ancestry_map <- read.csv(file.path(mapDir, "cMD_ancestry_map.csv")) %>%
+    .[order(.$curated_ontology_term),]
+curated_ancestry <- data.frame(
+    col.name = "ancestry",
+    col.class = "character",
+    uniqueness = "non-unique", 
+    requiredness = "required",
+    multiplevalues = FALSE,
+    description = "Population category defined using ancestry informative markers (AIMs) based on genetic/genomic data (children of HANCESTRO:0004)",
+    allowedvalues = paste(unique(ancestry_map$curated_ontology_term), 
+                          collapse = "|"),
+    ontology = paste(unique(basename(ancestry_map$curated_ontology_term_id)), 
+                     collapse = "|")     
+)
+
+# ancestry_details ----
+ancestry_details_map <- read.csv(file.path(mapDir, "cMD_ancestry_details_map.csv")) %>%
+    .[order(.$curated_ontology_term),]
+curated_ancestry_details <- data.frame(
+    col.name = "ancestry_details",
+    col.class = "character",
+    uniqueness = "non-unique", 
+    requiredness = "required",
+    multiplevalues = FALSE,
+    description = "Population category defined using ancestry informative markers (AIMs) based on genetic/genomic data (descendants of `ancestry`)",
+    allowedvalues = paste(unique(ancestry_details_map$curated_ontology_term), 
+                          collapse = "|"),
+    ontology = paste(unique(basename(ancestry_details_map$curated_ontology_term_id)), 
+                     collapse = "|")     
+)
+
 # Data dictionary for curated attributes ----
-attr_dd <- do.call("rbind", list(curated_country,
+attr_dd <- do.call("rbind", list(curated_ancestry,
+                                 curated_ancestry_details,
+                                 curated_country,
                                  curated_dietary_restriction,
                                  curated_feces_phenotype,
                                  curated_fmt_id,

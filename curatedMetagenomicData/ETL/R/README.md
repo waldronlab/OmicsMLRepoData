@@ -18,6 +18,7 @@ The below lists are entered from each R files.
 #### template_condition.R
 - control
 - disease
+- disease_details
 - target_condition
 
 #### template_minor.R
@@ -27,6 +28,8 @@ The below lists are entered from each R files.
 - bmi
                                  
 #### template_others.R
+- ancestry
+- ancestry_details
 - country
 - dietary_restriction
 - feces_phenotype

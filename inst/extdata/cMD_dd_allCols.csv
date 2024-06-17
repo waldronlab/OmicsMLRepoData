@@ -4,7 +4,7 @@ biomarker,38,1,TRUE,FALSE,TRUE,TRUE,"1) Map column names to ontology.
 2) Consolidate into three columns: biomarker_name, biomarker_value, and biomerker_unit.",Hematology Test (NCIT:C49286)
 bmi,1,1,TRUE,TRUE,FALSE,NA,Update the colname as lower-case,NA
 body_site,4,1,TRUE,FALSE,TRUE,NA,NA,NA
-control;disease,4,2,TRUE,FALSE,TRUE,NA,NA,NA
+control;disease;disease_details,4,3,TRUE,FALSE,TRUE,NA,NA,NA
 country,1,1,TRUE,FALSE,FALSE,NA,NA,NA
 dietary_restriction,1,1,TRUE,FALSE,FALSE,NA,Rename the column to 'dietary_restriction'. Partially curated - no adequate ontology terms identified.,NA
 disease_response_orr,1,1,TRUE,FALSE,TRUE,NA,Combine as `disease_response` for release,NA
@@ -29,7 +29,7 @@ obgyn_lactating,1,1,TRUE,FALSE,FALSE,NA,NA,NA
 obgyn_menopause,1,1,TRUE,FALSE,FALSE,NA,NA,NA
 obgyn_pregnancy,1,1,TRUE,FALSE,FALSE,NA,NA,NA
 pmid,1,1,TRUE,TRUE,FALSE,NA,Update the colname as lower-case,NA
-population,1,1,FALSE,FALSE,FALSE,NA,NA,NA
+population;population_details,1,2,FALSE,FALSE,FALSE,NA,NA,NA
 probing_pocket_depth,4,1,TRUE,FALSE,TRUE,TRUE,NA,NA
 remove,20,0,Remove,FALSE,FALSE,NA,Remove these columns,NA
 sequencing,5,5,FALSE,FALSE,FALSE,NA,-,NA
@@ -41,4 +41,4 @@ tumor_staging_ajcc,2,1,TRUE,FALSE,TRUE,NA,Combine as `tumor_staging` for release
 tumor_staging_tnm,1,1,TRUE,FALSE,TRUE,NA,Combine as `tumor_staging` for release,NA
 uncurated_metadata,8,1,Uncurated,FALSE,FALSE,NA,Merge to the existing 'uncurated_metadata' column,NA
 westernized,1,1,TRUE,FALSE,FALSE,NA,Rename the column to 'westernized' and swipe the values,NA
-NA,141,58,NULL,NA,NA,NA,NA,NA
+NA,141,60,NULL,NA,NA,NA,NA,NA

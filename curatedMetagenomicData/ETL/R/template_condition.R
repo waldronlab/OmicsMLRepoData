@@ -31,6 +31,20 @@ disease <- data.frame(
     ontology = paste(unique(basename(disease_map$curated_ontology_term_id)), collapse = "|")     
 )
 
+# disease_details ----
+disease_details_map <- read.csv(file.path(mapDir, "cMD_disease_details_map.csv")) %>%
+    .[order(.$curated_ontology_term),]
+disease_details <- data.frame(
+    col.name = "disease_details",
+    col.class = "character",
+    uniqueness = "non-unique", 
+    requiredness = "optional",
+    multiplevalues = TRUE,
+    description = "Reported disease/condition type(s) for a participant in details. 'Healthy' if disease(s)/condition(s) assessed under a given study is not detected",
+    allowedvalues = paste(unique(disease_details_map$curated_ontology_term), collapse = "|"),
+    ontology = paste(unique(basename(disease_details_map$curated_ontology_term_id)), collapse = "|")     
+)
+
 # target_condition ----
 target_condition_map <- read.csv(file.path(mapDir, "cMD_target_condition_map.csv")) %>%
     .[order(.$curated_ontology_term),]
@@ -57,7 +71,7 @@ target_condition <- data.frame(
 
 
 # Data dictionary for curated attributes ----
-attr_dd <- do.call("rbind", list(control, disease, target_condition))
+attr_dd <- do.call("rbind", list(control, disease, disease_details, target_condition))
 
 # Add the content to data dictionary template, `filled_dd` ----
 filled_dd <- fillDataDictionary(filled_dd, attr_dd)

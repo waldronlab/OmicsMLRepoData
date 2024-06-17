@@ -57,7 +57,7 @@ the curated attributes formatted in an user-facing version (e.g., no legacy/
 source columns, no ontology term id).
 
 ```{r}
-# requires: `curated_all` from `0_assemble_curated_metadata.R`
+# requires: `curated_all` from `0_assemble_curated_metadata.R` is saved
 source(file.path(cmd_etl_dir, "6_format_for_release.R"))
 ```
 
@@ -92,6 +92,14 @@ project).
 # Directory to save curation_maps from Google Sheet
 cmd_maps_dir <- "~/OmicsMLRepo/OmicsMLRepoData/curatedMetagenomicData/maps"
 source(file.path(cmd_etl_dir, "1_sync_curation_map.R"))
+```
+
+```{r cmd_maps_fromGHtoGoogle, eval=FALSE}
+# # Directory containing curation_maps
+# # In case maps were modified/cleaned programmatically
+# cmd_maps_dir <- "~/OmicsMLRepo/OmicsMLRepoData/curatedMetagenomicData/maps"
+# new_maps <- c("disease", "disease_details", "ancestry", "ancestry_details")
+# source(file.path(cmd_etl_dir, "1_sync_curation_map_upload.R"))
 ```
 
 ```{r save_maps_for_harmonizer, eval=FALSE}
@@ -170,6 +178,9 @@ Minor, extra updates for kept subset of sampleMetadata
 ```{r}
 ## Description for `sequencing_platform`
 newDesc <- "A scientific instrument used to automate the DNA sequencing process"
+
+sf_ind <- which(filled_dd$col.name == "sequencing_platform")
+filled_dd[sf_ind,]$description <- newDesc
 ```
 
 
