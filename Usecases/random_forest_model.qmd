@@ -1,0 +1,182 @@
+---
+title: "Healthy vs. Cancer: Random Forest classification model"
+author:
+  - Sehyun Oh
+date: "`r format(Sys.time(), '%B %d, %Y')`"
+format:
+    html:
+        fontsize: 14pxs
+        toc: true
+        top-depth: 3
+abstract: "Reproduce Hannigan et.al. (mBio, 2018) paper"
+---
+
+```{r setup, include=FALSE}
+knitr::opts_chunk$set(echo = TRUE, 
+                      warning = FALSE,
+                      message = FALSE,
+                      collapse = TRUE,
+                      eval = TRUE)
+```
+
+# Setup
+## Load packages
+```{r}
+suppressPackageStartupMessages({
+    library(curatedMetagenomicData)
+    library(dplyr)
+    library(caret)
+    library(pROC)
+})
+```
+
+## Custom functions
+```{r}
+#' Function to preprocess data
+#' 
+#' @param data A matrix with taxa (row) and samples (column), stored in the 
+#' assay slot of the TreeSummarizedExperiment object.
+#' @param min Integer(1). The minimum number of samples detecting the feature.
+#' Default is 30.
+#' 
+preprocess_data <- function(data, min = 30) {
+  keep_features <- rowSums(data > 0) >= min
+  data <- data[keep_features, ]
+  return(data)
+}
+
+#' Evaluate Random Forest classification model using ROC curve
+#' 
+#' @import caret
+#' 
+#' @param data A matrix with taxa (row) and samples (column), stored in the 
+#' assay slot of the TreeSummarizedExperiment object.
+#' @param labels A vector of outcomes. The number of samples and the length of 
+#' labels should be same.
+#' @param p The percentage of data that goes to training. Between 0 and 1. Default is 0.8.
+#' @param aucOnly If `TRUE`, this function returns only the AUC. 
+#' 
+#' @examples
+#' se <- curated_cmd |>
+#'     filter(study_name == "HanniganGD_2017") |>
+#'     filter(disease %in% c("Healthy", "Colorectal Carcinoma")) |>
+#'     select(where(~ !all(is.na(.x)))) |> 
+#'     returnSamples("relative_abundance", rownames = "short")
+#' 
+#' data <- assay(se)
+#' labels <- colData(se)$disease %>% factor
+#' evaluateRFmodel(data, labels)
+#' 
+evaluateRFmodel <- function(data, labels, p = 0.8, aucOnly = FALSE) {
+    
+    ## Preprocess data
+    data <- preprocess_data(data)
+  
+    ## Split data into training and test sets
+    train_index <- createDataPartition(labels, p = p, list = FALSE)
+    train_data <- data[,train_index] |> t()
+    train_labels <- labels[train_index]
+    test_data <- data[,-train_index] |> t()
+    test_labels <- labels[-train_index]
+  
+    ## Train binary random forest model with nested cross-validation
+    rf_model <- train(
+        train_data, train_labels,
+        method = "rf", # random forest
+        metric = "Accuracy",
+        trControl = trainControl(
+            method = "repeatedcv", # repeating cross-validation
+            number = 5, # number of re-sampling iterations
+            repeats = 5,
+            search = "random"),
+        tuneLength = 20
+    )
+  
+    ## Evaluate model performance on test set
+    predictions <- predict(rf_model, newdata = test_data, type = "prob")
+  
+    ## Generate ROC curve
+    lvs <- levels(train_labels)
+    roc_obj <- roc(response = factor(test_labels, levels = lvs),
+                   predictor = predictions[, 2],
+                   levels = rev(lvs))
+        
+    if (isTRUE(aucOnly)) {
+        return(roc_obj$auc)
+    } else { 
+        plot(roc_obj, print.auc = TRUE, main = "ROC Curve") # plot ROC curve
+    }
+}
+```
+
+
+# HanniganGD_2017 only
+## Load data
+```{r message=FALSE}
+Hannigan_se <- sampleMetadata |>
+    filter(study_name == "HanniganGD_2017") |>
+    filter(disease %in% c("healthy", "CRC")) |>
+    select(where(~ !all(is.na(.x)))) |>
+    returnSamples("relative_abundance", rownames = "short")
+
+data <- assay(Hannigan_se) # 289 taxa x 55 samples
+labels <- colData(Hannigan_se)$disease %>% factor
+```
+
+## ROC curve
+```{r}
+set.seed(1234)
+evaluateRFmodel(data, labels)
+```
+
+
+# From harmonized metadata
+## Load data
+```{r}
+curated_cmd <- read.csv("~/OmicsMLRepo/OmicsMLRepoData/inst/extdata/cMD_curated_metadata_release.csv")
+```
+
+```{r}
+sub <- curated_cmd |>
+    filter(disease %in% c("Healthy", "Colorectal Carcinoma")) |>
+    filter(body_site == "feces") |> 
+    filter(country == "United States") |>
+    filter(age_group %in% c("Adult", "Elderly")) |>
+    filter(antibiotics_current_use == "no") |>
+    filter(westernized == "Yes") |>
+    select(where(~ !all(is.na(.x)))) # 421 samples
+```
+
+## ROC with the same number of samples
+```{r}
+set.seed(1234)
+random_ind <- sample(nrow(sub), 
+                     55, # the same number of samples like HanniganGD_2018
+                     replace = FALSE) 
+
+se_sub <- sub[random_ind,] |>
+    returnSamples("relative_abundance", rownames = "short")
+data <- assay(se_sub)
+labels <- colData(se_sub)$disease %>% factor
+```
+
+```{r}
+set.seed(1234)
+evaluateRFmodel(data, labels)
+```
+
+## ROC with more samples
+```{r}
+set.seed(1234)
+random_ind2 <- sample(nrow(sub), 100, replace = FALSE)
+
+se_sub2 <- sub[random_ind2,] |>
+    returnSamples("relative_abundance", rownames = "short")
+data <- assay(se_sub2)
+labels <- colData(se_sub2)$disease %>% factor
+```
+
+```{r}
+set.seed(1234)
+evaluateRFmodel(data, labels)
+```
