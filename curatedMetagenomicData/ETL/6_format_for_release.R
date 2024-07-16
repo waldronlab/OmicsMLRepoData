@@ -43,6 +43,14 @@ cmd_meta_release <- dplyr::full_join(curated_all_cleaned,
                                      kept_meta,
                                      by = "curation_id")
 
+# Update the format of the released version ----------------------------
+formatDir <- "~/OmicsMLRepo/OmicsMLRepoData/curatedMetagenomicData/ETL/format_update/"
+source(file.path(formatDir, "6_1_release.R"))
+
+
+
+
+
 
 # Combine data dictionary drafts ----
 allCols <- colnames(cmd_meta_release)
@@ -50,11 +58,12 @@ required_cols <- c("study_name", "subject_id", "sample_id", "curation_id",
                    "target_condition", "target_condition_ontology_term_id",
                    "control", "control_ontology_term_id", 
                    "country", "country_ontology_term_id", 
-                   "body_site", "body_site_ontology_term_id")
+                   "body_site", "body_site_ontology_term_id",
+                   "body_site_details", "body_site_details_ontology_term_id")
 optional_cols <- allCols[!allCols %in% required_cols]
 col_order <- c(required_cols, sort(optional_cols))
 cmd_meta_release <- cmd_meta_release[col_order]
 
 # Add attribute -----------
-attr(cmd_meta_release, "source") <- "curatedMetagenomicData"
-attr(cmd_meta_release, "last_updated") <- Sys.time()
+cmd_meta_release$package <- "cMD"
+cmd_meta_release$last_updated <- Sys.time()

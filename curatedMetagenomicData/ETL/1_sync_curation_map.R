@@ -12,7 +12,7 @@ for (attribute in attributes) {
                       "curated_ontology_term_id","curated_ontology_term_db")
     
     ## Column name sanity check
-    if (!all(colnames(res) %in% map_colnames)) {
+    if (!all(map_colnames %in% colnames(res))) {
         msg <- paste("The mapping table for the attributes", attribute,
                      "lacks the required columns.")
         next(msg)

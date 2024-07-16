@@ -36,6 +36,14 @@ filled_dd <- filled_dd[-required_ind,] %>%
     dplyr::arrange(., col.name) %>% # alphabetical ordering of columns except the required cols
     dplyr::bind_rows(filled_dd[required_ind, ], .)
 
+# Add summary of ontologies used (`ontoDB` column) ----------
+ontologies <- lapply(filled_dd$ontology, 
+                     function(x) {x %>% strsplit(., "\\|") %>% 
+                             unlist %>% get_ontologies(.) %>% 
+                             table %>% sort(decreasing = TRUE) %>% 
+                             names %>% paste(., collapse = "|")}) %>% unlist
+ontologies[ontologies == ""] <- NA
+filled_dd$ontoDB <- ontologies
 
 # # Populate data dictionary per attributes -----
 # ## The scripts sourced below requires two inputs: `mapDir`, `scriptDir`, and `filled_dd`
@@ -45,3 +53,8 @@ filled_dd <- filled_dd[-required_ind,] %>%
 # for (template in templates) {
 #     source(file.path(scriptDir, template))
 # }
+
+
+## Update the format -----------------------
+source("~/OmicsMLRepo/OmicsMLRepoData/curatedMetagenomicData/ETL/format_update/4_1_dictionary.R")
+

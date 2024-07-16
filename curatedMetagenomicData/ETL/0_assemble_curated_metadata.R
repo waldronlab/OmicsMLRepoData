@@ -39,6 +39,9 @@ for (i in 2:length(curatedDatObj)) { # assuming there are >= 2 tables to be comb
     curated_all <- left_join(curated_all, dat, by = "curation_id")
 }
 
-
 # Combine original metadata to be kept ----------
 curated_all <- left_join(curated_all, kept_meta, by = "curation_id")
+
+# Update the format ----------------
+formatDir <- "~/OmicsMLRepo/OmicsMLRepoData/curatedMetagenomicData/ETL/format_update/"
+source(file.path(formatDir, "0_1_curated_metadata.R"))

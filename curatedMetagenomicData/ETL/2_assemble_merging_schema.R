@@ -64,23 +64,16 @@ original_field_unique_values <- checkCurationStats(
 
 # Completeness and uniqueness of curated fields -----
 source(file.path(cmd_etl_dir, "0_assemble_curated_metadata.R"))
-colnames(curated_all) <- gsub("curated_", "", colnames(curated_all)) #<<<<<<<<<<<< remove `curated_` prefix for now
-b <- map_to_ms$curated_field 
-curated_field_name <- sapply(b, function(x) {
-    strsplit(x, split = ";") %>% 
-        unlist %>% 
-        # paste0("curated_", .) %>% 
-        gsub("curated_", "", .) %>%
-        paste0(., collapse = ";")
-}) %>% as.vector
+source(file.path(cmd_etl_dir, "6_format_for_release.R"))
+curated_field_name <- map_to_ms$curated_field
 
 curated_field_completeness <- checkCurationStats(
     fields_list = curated_field_name,
-    DB = curated_all)
+    DB = cmd_meta_release)
 curated_field_unique_values <- checkCurationStats(
     fields_list = curated_field_name,
     check = "unique",
-    DB = curated_all)
+    DB = cmd_meta_release)
 
 # Add completeness and uniqueness of fields ----
 map_to_ms$original_field_completeness <- original_field_completeness

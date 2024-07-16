@@ -58,9 +58,9 @@ curated_smoker <- data.frame(
     uniqueness = "non-unique", 
     requiredness = "optional",
     multiplevalues = FALSE,
-    description = "Tobacco smoking behavior",
-    allowedvalues = "smoker (finding)|Non-smoker (finding)|Ex-smoker (finding)",
-    ontology = "SNOMED:77176002|SNOMED:8392000|SNOMED:8517006"
+    description = "Tobacco smoking behavior. Assign `Non-smoker (finding)` only when the past smoking behavior information is unavailable.",
+    allowedvalues = "smoker (finding)|Non-smoker (finding)|Ex-smoker (finding)|Never smoked tobacco (finding)",
+    ontology = "SNOMED:77176002|SNOMED:8392000|SNOMED:8517006|SNOMED:266919005"
 ) 
 
 # sex ----
@@ -82,7 +82,7 @@ uncurated_metadata <- data.frame(
     col.class = "character",
     uniqueness = "non-unique", 
     requiredness = "optional",
-    multiplevalues = FALSE,
+    multiplevalues = TRUE,
     description = "Additional information that doesn't belong to the existing fields",
     allowedvalues = ".+",
     ontology = NA   
@@ -105,30 +105,40 @@ curated_hla <- data.frame(
 )
 
 # feces_phenotype ----
-feces_phenotype_metric <- data.frame(
-    col.name = "feces_phenotype_metric",
+# feces_phenotype_metric <- data.frame(
+#     col.name = "feces_phenotype_metric",
+#     col.class = "character",
+#     uniqueness = "non-unique", 
+#     requiredness = "optional",
+#     multiplevalues = FALSE,
+#     description = "Measurements collected from stool sample, including observation, chemical test, and diagnostic procedure",
+#     allowedvalues = "Bristol stool form score (observable entity)|Calprotectin Measurement|Harvey-Bradshaw Index Clinical Classification",
+#     ontology = "SNOMED:443172007|NCIT:C82005|NCIT:C191036"     
+# ) 
+# 
+# feces_phenotype_value <- data.frame(
+#     col.name = "feces_phenotype_value",
+#     col.class = "numeric",
+#     uniqueness = "non-unique", 
+#     requiredness = "optional",
+#     multiplevalues = FALSE,
+#     description = "Measured value for the metric specified under 'feces_phenotype_metric'",
+#     allowedvalues = "^[1-9]\\d*(\\.\\d+)?$",
+#     ontology = NA     
+# ) 
+# 
+# curated_feces_phenotype <- bind_rows(feces_phenotype_metric,
+#                                      feces_phenotype_value)
+curated_feces_phenotype <- data.frame(
+    col.name = "feces_phenotype",
     col.class = "character",
-    uniqueness = "non-unique", 
+    uniqueness = "non-unique",
     requiredness = "optional",
-    multiplevalues = FALSE,
+    multiplevalues = TRUE,
     description = "Measurements collected from stool sample, including observation, chemical test, and diagnostic procedure",
     allowedvalues = "Bristol stool form score (observable entity)|Calprotectin Measurement|Harvey-Bradshaw Index Clinical Classification",
-    ontology = "SNOMED:443172007|NCIT:C82005|NCIT:C191036"     
-) 
-
-feces_phenotype_value <- data.frame(
-    col.name = "feces_phenotype_value",
-    col.class = "numeric",
-    uniqueness = "non-unique", 
-    requiredness = "optional",
-    multiplevalues = FALSE,
-    description = "Measured value for the metric specified under 'feces_phenotype_metric'",
-    allowedvalues = "^[1-9]\\d*(\\.\\d+)?$",
-    ontology = NA     
-) 
-
-curated_feces_phenotype <- bind_rows(feces_phenotype_metric,
-                                     feces_phenotype_value)
+    ontology = "SNOMED:443172007|NCIT:C82005|NCIT:C191036"
+)
 
 # country ----
 country_map <- read.csv(file.path(mapDir, "cMD_country_map.csv")) %>%
@@ -170,7 +180,7 @@ curated_ancestry_details <- data.frame(
     col.class = "character",
     uniqueness = "non-unique", 
     requiredness = "required",
-    multiplevalues = FALSE,
+    multiplevalues = TRUE,
     description = "Population category defined using ancestry informative markers (AIMs) based on genetic/genomic data (descendants of `ancestry`)",
     allowedvalues = paste(unique(ancestry_details_map$curated_ontology_term), 
                           collapse = "|"),

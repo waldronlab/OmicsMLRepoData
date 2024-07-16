@@ -57,7 +57,7 @@ curated_probing_pocket_depth <- data.frame(
     col.class = "character",
     uniqueness = "non-unique", 
     requiredness = "optional",
-    multiplevalues = FALSE,
+    multiplevalues = TRUE,
     description = "Depth of periodontal pocket measured at the different tooth's regions",
     allowedvalues = paste(unique(ppd_map$curated_ontology_term), collapse = "|"),
     ontology = paste(unique(ppd_map$curated_ontology_term_id), collapse = "|")     
