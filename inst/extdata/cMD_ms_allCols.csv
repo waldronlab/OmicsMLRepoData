@@ -41,10 +41,10 @@ triglycerides,biomarker,0.08,Triglyceride Measurement,NCIT:C64812,mg/dL,NA,NA,NA
 urea_nitrogen,biomarker,0.017,Urea Nitrogen Measurement,NCIT:C125949,mmol/L,BUN (Blood Urea Nitrogen),NA,NA
 wbc,biomarker,0.01,White blood cell count (procedure),SNOMED:767002,x10^3 counts/ul,"white blood cell counts, Leukocyte Count (OMIT:0009044)",NA,NA
 BMI,bmi,0.568,NA,NA,NA,NA,NA,NA
-body_site,body_site,1,NA,NA,NA,Not sure whether it's worth to keep both body site and body subsite,NA,NA
-body_subsite,body_site,0.096,NA,NA,NA,NA,NA,NA
-dental_sample_type,body_site,0.007,NA,NA,NA,Didn't we used this for body site curation already? Yes,NA,NA
-disease_location,body_site,0.018,NA,NA,NA,NA,NA,NA
+body_site,"body_site, body_site_details",1,NA,NA,NA,Not sure whether it's worth to keep both body site and body subsite,NA,NA
+body_subsite,"body_site, body_site_details",0.096,NA,NA,NA,NA,NA,NA
+dental_sample_type,"body_site, body_site_details",0.007,NA,NA,NA,Didn't we used this for body site curation already? Yes,NA,NA
+disease_location,"body_site, body_site_details",0.018,NA,NA,NA,NA,NA,NA
 disease,control;disease;disease_details,1,NA,NA,NA,NA,NA,NA
 disease_subtype,control;disease;disease_details,0.136,NA,NA,NA,NA,NA,NA
 history_of_periodontitis,control;disease;disease_details,0.005,periodontitis,EFO:0000649,NA,Yes/No,NA,Dental implants marker.
@@ -56,9 +56,9 @@ PFS12,disease_response_pfs;disease_response_pfs_month,0.009,Progression Free Sur
 RECIST,disease_response_recist,0.01,RECIST,DICOM:112022,NA,Response Evaluation Criteria In Solid Tumors. Stable Disease (SD)/ Partial Response (PR)/ Progressive Disease (PD)/ Complete Response (CR),? (SD/PR/PD/CR/NA),"- Standard classification of progression in tumor therapy
 - Stable Disease/ Partial Response/ Progressive Disease/ Complete Response/ NA"
 DNA_extraction_kit,dna_extraction_kit,0.691,NA,NA,NA,NA,NA,NA
-bristol_score,feces_phenotype_metric;feces_phenotype_value,0.037,Bristol stool form score (observable entity),SNOMED:443172007,NA,stool consistency metric,NA,Keep this column
-calprotectin,feces_phenotype_metric;feces_phenotype_value,0.012,Calprotectin Measurement,NCIT:C82005,NA,a calcium- and zinc-binding protein,unit? (numeric - concentration?),"summation index, marker for inflammation, from fecal sample"
-HBI,feces_phenotype_metric;feces_phenotype_value,0.004,Harvey-Bradshaw Index Clinical Classification,NCIT:C191036,NA,Harvey-Bradshaw Index for Crohn's Disease,NA,NA
+bristol_score,feces_phenotype,0.037,Bristol stool form score (observable entity),SNOMED:443172007,NA,stool consistency metric,NA,Keep this column
+calprotectin,feces_phenotype,0.012,Calprotectin Measurement,NCIT:C82005,NA,a calcium- and zinc-binding protein,unit? (numeric - concentration?),"summation index, marker for inflammation, from fecal sample"
+HBI,feces_phenotype,0.004,Harvey-Bradshaw Index Clinical Classification,NCIT:C191036,NA,Harvey-Bradshaw Index for Crohn's Disease,NA,NA
 fmt_id,fmt_id,0.006,NA,NA,NA,fecal microbiota transplant (id),NA,NA
 FMT_role,fmt_role,0.007,NA,NA,NA,fecal microbiota transplant (role),NA,NA
 HLA,hla,0.005,HLA Complex,NCIT:C121977,NA,NA,NA,NA
@@ -91,8 +91,8 @@ lactating,obgyn_lactating,0.043,NA,NA,NA,NA,NA,move to obgyn_lactating
 menopausal_status,obgyn_menopause,0.019,NA,NA,NA,NA,NA,NA
 pregnant,obgyn_pregnancy,0.16,NA,NA,NA,Pregnant (SNOMED:77386006)/ Not pregnant (SNOMED:60001007),NA,NA
 PMID,pmid,1,NA,NA,NA,NA,NA,NA
-population,ancestry,0.09,NA,NA,NA,NA,NA,NA
-population,ancestry_details,0.09,NA,NA,NA,NA,NA,NA
+population,ancestry;ancestry_details,0.09,NA,NA,NA,NA,NA,NA
+population,ancestry;ancestry_details,0.09,NA,NA,NA,NA,NA,NA
 PPD_B,probing_pocket_depth,0.005,Depth of periodontal pocket (observable entity),SNOMED:286546002,NA,NA,?,"Dental Implants, Basal"
 PPD_D,probing_pocket_depth,0.005,Depth of periodontal pocket (observable entity),SNOMED:286546002,NA,NA,?,"Dental Implants, Distal"
 PPD_L,probing_pocket_depth,0.005,Depth of periodontal pocket (observable entity),SNOMED:286546002,NA,NA,?,"Dental Implants, more studies coming"

@@ -1,16 +1,17 @@
 curated_field,curated_field_completeness,curated_field_unique_values,original_field,original_field_num,original_field_completeness,original_field_unique_values
-age_years;age_group,61;100,466;6,age;age_category;infant_age,3,60;100;13,94;6;376
+age_years;age_group,60;100,466;6,age;age_category;infant_age,3,60;100;13,94;6;376
+ancestry;ancestry_details,9;8,6;7,population;population,2,9;9,21;21
 biomarker,13,2806,adiponectin;albumine;alt;ALT;ast;autoantibody_positive;bilubirin;c_peptide;cd163;cholesterol;creatine;creatinine;dyastolic_p;eGFR;ESR;fasting_glucose;fasting_insulin;fgf_19;globulin;glp_1;glucose;glutamate_decarboxylase_2_antibody;hba1c;hdl;hemoglobinometry;hsCRP;hscrp;il_1;inr;ldl;LDL;leptin;prothrombin_time;rbc;systolic_p;triglycerides;urea_nitrogen;wbc,38,1;2;1;0;1;0;2;1;1;5;1;3;4;0;0;1;0;1;1;1;2;1;7;4;1;4;2;1;1;4;4;1;1;1;4;8;2;1,117;201;64;31;48;7;134;148;131;632;96;208;59;109;44;104;64;131;86;44;134;26;242;313;50;588;208;33;67;495;342;129;36;95;90;655;137;50
 bmi,57,5917,BMI,1,57,5917
-body_site,100,24,body_site;body_subsite;dental_sample_type;disease_location,4,100;10;1;2,6;23;3;16
-control;disease;disease_details,NA,NA,disease;disease_subtype;history_of_periodontitis;study_condition,4,100;14;0;100,142;77;3;57
+"body_site, body_site_details",NA,NA,body_site;body_subsite;dental_sample_type;disease_location,4,100;10;1;2,6;23;3;16
+control;disease;disease_details,100;100;2,3;164;58,disease;disease_subtype;history_of_periodontitis;study_condition,4,100;14;0;100,142;77;3;57
 country,100,42,country,1,100,42
 dietary_restriction,3,6,diet,1,2,4
 disease_response_orr,1,3,ORR,1,1,3
 disease_response_pfs;disease_response_pfs_month,1;0,3;2,PFS12,1,1,3
 disease_response_recist,1,5,RECIST,1,1,5
 dna_extraction_kit,69,18,DNA_extraction_kit,1,69,18
-feces_phenotype_metric;feces_phenotype_value,5;5,4;258,bristol_score;calprotectin;HBI,3,4;1;0,8;250;10
+feces_phenotype,5,258,bristol_score;calprotectin;HBI,3,4;1;0,8;250;10
 fmt_id,1,46,fmt_id,1,1,46
 fmt_role,1,4,FMT_role,1,1,5
 hla,4,36,HLA;hla_dqa11;hla_dqa12;hla_drb11;hla_drb12,5,1;2;2;1;1,13;4;4;6;5
@@ -25,10 +26,10 @@ obgyn_lactating,4,3,lactating,1,4,3
 obgyn_menopause,2,4,menopausal_status,1,2,4
 obgyn_pregnancy,16,3,pregnant,1,16,3
 pmid,100,90,PMID,1,100,90
-probing_pocket_depth,1,91,PPD_B;PPD_D;PPD_L;PPD_M,4,1;1;1;1,13;13;12;15
-sex,89,3,gender,1,89,3
+probing_pocket_depth,0,91,PPD_B;PPD_D;PPD_L;PPD_M,4,1;1;1;1,13;13;12;15
+sex,88,3,gender,1,89,3
 smoker,13,5,ever_smoker;smoke;smoker,3,5;6;7,3;3;3
-target_condition,NA,NA,NA,1,NA,NA
+target_condition,100,48,NA,1,NA,NA
 treatment;antibiotics_current_use,26;65,949;3,antibiotics_current_use;antibiotics_family;treatment,3,65;2;24,3;69;883
 tumor_staging_ajcc,3,7,ajcc;disease_stage,2,2;1,7;6
 tumor_staging_tnm,1,25,tnm,1,1,25
