@@ -1,0 +1,383 @@
+---
+title: "Harmonize detailed race/ethnicity information in cbio data"
+author:
+  - Sehyun Oh
+  - Kai Gravel-Pucillo
+date: "`r format(Sys.time(), '%B %d, %Y')`"
+format:
+    html:
+        fontsize: 14pxs
+        toc: true
+        top-depth: 3
+abstract: "Prepare U24 Supplement: AI/ML-ready"
+---
+
+```{r setup, include=FALSE}
+knitr::opts_chunk$set(echo = TRUE, 
+                    warning = FALSE,
+                    message = FALSE,
+                    collapse = TRUE,
+                    eval = TRUE)
+```
+
+# Overview
+
+This .qmd file demonstrates a workflow for curating and harmonizing 
+race/ethnicity data with the cbioportal dataset.
+This file curates information from six original columns to produce the 
+curated population_ancestry_detailed column.
+
+# Setup
+## Load Packages
+
+```{r load}
+suppressPackageStartupMessages({
+  library(cbioportalR)
+  library(tidyverse)
+  library(googlesheets4)
+  library(gsheet)
+  library(rols)
+  library(vctrs)
+  library(dplyr)
+})
+```
+
+## Setup for Curation
+
+We will first add a `curation_id` consisting of study ID, patient ID, and sample ID (`studyId:patientId:sampleId`) to avoid confusion due to duplicated samples.
+
+```{r curation_setup}
+# Load cbio data
+cbio <- readRDS("D:\\CUNY Internship\\cBioPortal_all_clinicalData_combined_2023-05-18.rds")
+
+# Add curation ID
+cbio$curation_id <- paste(cbio$studyId, cbio$patientId, cbio$sampleId, sep = ":")
+
+# Setup google sheets link to mapping table
+url <- "https://docs.google.com/spreadsheets/d/1Mq1uXYtOElx324n7yyP_jKLdkSDpnQv5yx6HHt0CKx4/edit#gid=0"
+
+ss <- googledrive::as_id(url)
+
+# Define a project directory
+proj_dir <- "D:\\CUNY Internship\\cbio\\RaceEthnicity\\"
+```
+
+# Exploratory Data Analysis & Data Curation
+
+## Identifying Relevant Columns & Completeness
+
+Next, we will identify the columns containing values relating to the race and/or
+ethnicity of the patients.
+We will start by creating a tibble dataframe and searching the data for any
+columns containing terms related to race and ethnicity in the column name:
+```{r}
+# Create tibble
+cbio <- tibble(cbio)
+
+# Define a list of potentially relevant terms
+terms <- c("race", "ethnic", "hispanic", "latin", "population", "asian", 
+           "african", "black", "white", "indigenous", "native", "background", 
+           "ancestry")
+
+# Return all columns related to race and ethnicity
+rel_cols <- select(cbio, contains(terms, ignore.case = T)) %>% colnames()
+
+# Manually examine columns to determine which are relevant
+summary(cbio[,rel_cols])
+str(cbio[,rel_cols])
+
+# Manually select the columns with relevant data
+race_eth_data <- cbio[,rel_cols[c(1,3,5:12,37:38)]]
+```
+
+Then we will evaluate the completeness and unique values of each of the relevant
+columns:
+```{r}
+# Create a dataframe of the column names
+potential_columns <- data.frame(colnames(race_eth_data))
+
+# Iterate through these columns to create a dataframe of each column's unique values and completeness
+for (col in 1:length(race_eth_data)){
+  potential_columns$unique_vals[col] <- paste(unlist(unique(race_eth_data[,col]), use.names = F), collapse=" ")
+  potential_columns$completeness[col] <- (nrow(race_eth_data) - length(which(is.na(race_eth_data[,col]))))/nrow(race_eth_data)
+}
+```
+
+Creating a table of each column's unique values and completeness reveals that
+across all data entries there is a minimum of approximately 50% completeness 
+prior to the removal of non-NA values indicating "no response" or "unknown".
+Before we condense these values into a single merged column, we will need to 
+remove the irrelevant `POPULATION` column and convert the `HISPANIC` and 
+`PRD_HISPANIC` columns from binary values into descriptive values:
+```{r}
+# Remove the POPULATION column
+race_eth_data <- race_eth_data %>% select(-POPULATION)
+
+# Update binary columns with descriptive values
+for(col in colnames(race_eth_data[,c("HISPANIC", "PRD_HISPANIC")])){
+  race_eth_data[which(is.na(race_eth_data[,col])),col] <- "NA"
+  for (val in 1:nrow(race_eth_data)){
+    if (race_eth_data[val,col]=="YES"){
+      race_eth_data[val,col] <- "Hispanic"
+    }else if (race_eth_data[val,col]=="NO"){
+      race_eth_data[val,col] <- "Non-Hispanic"
+    }else{
+      race_eth_data[val,col] <- NA
+    }
+  }
+}
+```
+
+Now that all columns include descriptive values, we can replace character values
+representing a lack of information with an NA value, and format the non 
+alphanumeric characters:
+```{r}
+# Capitalize all values to standardize them and replace underscores with spaces
+race_eth_data <- data.frame(sapply(race_eth_data, function(x)gsub("_", " ", x)))
+race_eth_data <- data.frame(sapply(race_eth_data, function(x)toupper(x)))
+race_eth_data <- data.frame(sapply(race_eth_data, function(x)gsub(";", ",", x)))
+
+# Remove quotation marks and parentheses
+race_eth_data <- data.frame(sapply(race_eth_data, function(x)gsub('"', "", x)))
+race_eth_data <- data.frame(sapply(race_eth_data, function(x)gsub('\\(', "", x)))
+race_eth_data <- data.frame(sapply(race_eth_data, function(x)gsub('\\)', "", x)))
+
+# Create a list of the uninformative values
+uninformative_vals <- c("NA", "[NOT EVALUATED]", "UNKNOWN", 
+                        "UNAVAILABLE/NOT REPORTED", "NOT DOCUMENTED", "TEST",  
+                        "NOT REPORTED", "REFUSED TO ANSWER", "[UNKNOWN]",
+                        "UNKNOWN WHETHER SPANISH OR NOT", "NOT EVALUATED", 
+                        "SPANISH SURNAME ONLY", "UNKNOWN IF HISPANIC", 
+                        "NO VALUE ENTERED", "PT REFUSED TO ANSWER", "OTHER",
+                        "OTHER/UNAVAILABLE/NOT REPORTED", "QUESTION LEFT BLANK")
+
+# Replace uninformative values with NA values
+for (val in 1:length(uninformative_vals)){
+  race_eth_data[race_eth_data==uninformative_vals[val]] <- NA
+}
+race_eth_data <- data.frame(sapply(race_eth_data, function(x)gsub("NOS THERE IS EVIDENCE, OTHER THAN SURNAME OR MAIDEN NAME, THAT THE PERSON IS HISPANIC, BUT HE/SHE CANNOT BE ASSIGNED TO ANY OF THE OTHER CATEGORIES 1-5.", "", x)))
+```
+
+Next, we can merge these values into a single column with NA values removed and 
+each distinct value separated by a semicolon.
+```{r}
+# Merge all relevant columns
+for (i in 1:nrow(race_eth_data)){
+  race_eth_data$merged[i] <- paste(race_eth_data[i,1:11], collapse=";")
+}
+
+# Create a column of relevant source columns
+for (i in 1:nrow(race_eth_data)){
+  race_eth_data$source_columns[i] <- paste(colnames(race_eth_data[which(!is.na(race_eth_data[i,1:11]))]), collapse=";")
+}
+
+# Create a function to remove NA values from the merged column
+remove_NA <- function(x){
+  values <- as.list(unlist(strsplit(x, ";")))
+  return(unlist(values[values != "NA"]))
+}
+# Apply the function to remove NA values from the merged column
+race_eth_data$merged <- sapply(race_eth_data$merged, function(x)paste(remove_NA(x), collapse= ";"))
+
+# Count the number of unique values in the merged column (135)
+merged_vals <- list()
+for(r in 1:nrow(race_eth_data)){
+  merged_vals <- append(merged_vals, str_split(race_eth_data$merged[r], ";"))
+}
+unique_merged_vals <- unique(unlist(merged_vals))
+
+# Make a csv file of the unique values in the merged column
+write.csv(unique_merged_vals, 
+          file= file.path(proj_dir, "race_eth_cbio_unique_vals.csv"), 
+          row.names=F, col.names=F)
+```
+
+# Mapping
+
+## Import Maps
+
+To access the necessary population ancestry ontology terms we will load the 
+`cBioPortal_population_ancestry_detailed_map`.
+```{r import_maps, eval=FALSE}
+# import population ancestry ontology map
+pop_ontology_map <- read_sheet(ss, sheet = "cBioPortal_population_ancestry_detailed_map")
+
+# import the pop ontology map
+pop_ontology_map <- read.csv(file = file.path(proj_dir, "cBioPortal_population_ancestry_detailed_map.csv"),
+                           sep = ",", header = TRUE)
+```
+
+
+# Curating "population_ancestry" Column
+Now we can map the values in the merged column to their corresponding ontology
+terms and propagate these values into the curated column: 
+```{r}
+# Make a function to remove excess semicolons
+rmv_xtra_semis <- function(x){
+x <- ifelse(startsWith(x, ";"), sub(";", "", x), x)
+return(ifelse(endsWith(x, ";"), sub(";$", "", x), x))
+}
+
+# Iterate through merged column values
+for (x in 1:length(race_eth_data$merged)){
+  # Create a list of terms in the value
+  original_terms <- as.list(unlist(strsplit(race_eth_data$merged[x], ";")))
+  new_terms <- list()
+  new_term_ids <- list()
+  # Search for replacement terms in the ontology map
+  new_terms <- lapply(original_terms, function(y) pop_ontology_map$curated_ontology[grep(paste("^",y,"$",sep=""), pop_ontology_map$original_value, fixed=F)])
+  new_term_ids <- lapply(original_terms, function(y) pop_ontology_map$curated_ontology_term_id[grep(paste("^",y,"$",sep=""), pop_ontology_map$original_value, fixed=F)])
+  new_terms <- list_drop_empty(new_terms)
+  new_term_ids <- list_drop_empty(new_term_ids)
+  # Concatenate new lists on ";" delimiter to create curated value
+  race_eth_data$curated_pop_ancestry[x] <- rmv_xtra_semis(paste(as.list(unique(new_terms)), collapse= ";"))
+  race_eth_data$curated_pop_ancestry_ontology_term_id[x] <- rmv_xtra_semis(paste(as.list(unique(new_term_ids)), collapse= ";"))
+  if(x %% 10000==0){print(x)}
+}
+
+# Replace empty values from curated columns with "NA"
+race_eth_data <- data.frame(lapply(race_eth_data, 
+                                      function(x) gsub("^$", NA, x)))
+```
+
+
+## Curated Table Creation
+
+Then we will create our table of curated study condition data, including 
+original values, curated values, and curated ontology term ids.
+```{r}
+# Create a dataframe of the relevant columns
+curated_population_ancestry <- cbind(cbio$curation_id, race_eth_data[,12:15])
+
+# Rename the columns for accuracy & specificity
+colnames(curated_population_ancestry)[1:3] <- c("curation_id","original_pop_ancestry", "curated_pop_ancestry_source")
+
+# Check the values
+unique(curated_population_ancestry$curated_pop_ancestry)
+```
+
+
+## Sanity Check
+
+Before we export this curation, we will conduct a sanity check of population 
+ancestry values across all patient ids to ensure that they contain the same 
+value. Many patients included in this curation contributed multiple samples that 
+were utilized across different studies, and this step will help to validate 
+these curated values.
+
+First we will create a dataframe called `chk` which summarizes all patients with
+conflicting values for curated_population_ancestry across their samples:
+```{r}
+# Create a dataframe of curated_sex with a patient_id column
+patient_chk <- data.frame(curated_population_ancestry, patient_id = cbio$patientId)
+
+# Create a datframe summarizing all patients with more than 1 value listed for curated_population_ancestry
+chk <- patient_chk %>% 
+    group_by(patient_id) %>%
+    # Create a column of the number of samples for each patient_id
+    summarise(sampleSize = n(),
+              uniqueVal = length(unique(curated_pop_ancestry[!is.na(curated_pop_ancestry)]))) %>%
+    filter(uniqueVal > 1)
+```
+
+Next we will expand the `chk` dataframe to generate a column of "best" curated_pop_ancestry
+values based on the value which is most common across the patient's samples.
+Additionally we will track the number of dissenting values and the studies from
+which they originated, as well as any patients with no clear "majority" value 
+for curated_pop_ancestry:
+```{r}
+# Add summary columns to chk dataframe to identify majority and dissenting values for curated_sex
+for (pat_id in chk$patient_id){
+  # Count the number of "Male" values for the patient_id
+  chk$values[which(chk$patient_id==pat_id)] <- paste(as.list(unique(patient_chk$curated_pop_ancestry[which(patient_chk$patient_id==pat_id)])), collapse="<<>>")
+}  
+
+# Add a column to demonstrate the distribution of each pop ancestry value for each patient
+for (row in 1:nrow(chk)){
+  vals_list <- unlist(strsplit(chk$values[row], "<<>>"))
+  all_vals <- patient_chk$curated_pop_ancestry[which(patient_chk$patient_id==chk$patient_id[row])]
+  distribution <- NA
+  for (val in vals_list){
+    if (val == "NA"){
+      val_count <- length(all_vals[which(is.na(all_vals))])
+    }else{
+      val_count <- length(all_vals[which(all_vals == val)])
+    }
+    distribution <- paste(distribution, paste(val, val_count, sep="::"), sep="<<>>")
+  }
+  chk$distribution[row] <- substr(distribution, 7, nchar(distribution))
+}
+
+# Export a list of the unique discrepancy value combos to manually create a map
+write.csv(chk, file = file.path(proj_dir, "population_ancestry_detailed_discrepancies.csv"),
+      row.names = FALSE)
+
+# Export a list of the unique discrepancy value combos to manually create a map
+pop_a_discreps <- data.frame(unique(chk$values))
+write.csv(pop_a_discreps, 
+          file = file.path(proj_dir, "cBioPortal_pop_ancestry_detailed_discrepancies.csv"),
+          row.names = FALSE)
+```
+
+We can now replace the mismatched values for each patient with the "best value" 
+from the `chk` dataframe:
+```{r}
+# Load the map to fix discrepancies
+pop_ancestry_discrep <- read.csv(file=file.path(proj_dir, "cBioPortal_population_ancestry_detailed_discrepancies.csv"))
+
+# Initialize mapped columns for chk
+chk$standardized_values <- NA
+chk$standardized_ids <- NA
+# Map standardized terms to chk
+for (val in pop_ancestry_discrep$original_values){
+  chk$standardized_values[which(chk$values==val)] <- pop_ancestry_discrep$standardized_values[which(pop_ancestry_discrep$original_values==val)]
+  chk$standardized_ids[which(chk$values==val)] <- pop_ancestry_discrep$standardized_ids[which(pop_ancestry_discrep$original_values==val)]
+}
+
+# Standardize ancestry values across all samples for each patient
+for (pat in chk$patient_id){
+  # Set all population ancestry values for a patient to be the majority value
+  curated_population_ancestry$curated_pop_ancestry[which(cbio$patientId==pat)] <- chk$standardized_values[which(chk$patient_id==pat)]
+  # Set all curated ontology term ids to match the patient's curated value
+  curated_population_ancestry$curated_pop_ancestry_ontology_term_id[which(cbio$patientId==pat)] <- chk$standardized_ids[which(chk$patient_id==pat)]
+}
+
+# Replace unique NA value from curated columns with "NA"
+curated_population_ancestry <- data.frame(lapply(curated_population_ancestry, 
+                                      function(x) gsub("^$", NA, x)))
+```
+
+Last, we will identify any patient ids with one NA value and one descriptive 
+value, and fill in the missing value with the descriptive one:
+```{r}
+# Create a datframe summarizing all patients with more than 1 value listed for curated_population_ancestry
+chk1 <- patient_chk %>% 
+    group_by(patient_id) %>%
+    # Create a column of the number of samples for each patient_id
+    summarise(sampleSize = n(),
+              uniqueVal = length(unique(curated_pop_ancestry[!is.na(curated_pop_ancestry)]))) %>%
+    filter(uniqueVal == 1) %>% filter(sampleSize > 1)
+
+# For each patient id, find the descriptive value
+for (pat in chk1$patient_id){
+  # Find the standard value for the patient
+  standard_value <- unlist(unique(curated_population_ancestry$curated_pop_ancestry[which((cbio$patientId==pat) & !is.na(curated_population_ancestry$curated_pop_ancestry))]))
+  # Find the standard id for the patient
+  standard_id <- unlist(unique(curated_population_ancestry$curated_pop_ancestry_ontology_term_id[which((cbio$patientId==pat) & !is.na(curated_population_ancestry$curated_pop_ancestry_ontology_term_id))]))
+  # Set all values for the patient to be the descriptive value
+  curated_population_ancestry$curated_pop_ancestry[which(cbio$patientId==pat)] <- standard_value
+  # Set all curated ontology term ids to match the patient's standardized value
+  curated_population_ancestry$curated_pop_ancestry_ontology_term_id[which(cbio$patientId==pat)] <- standard_id
+}
+```
+
+
+## Export
+
+Finally, we will export our completed table to GitHub.
+```{r export_curated_table, eval=FALSE}
+# export to GitHub
+write.csv(curated_population_ancestry, 
+          file = file.path(proj_dir, "curated_population_ancestry_detailed.csv"),
+          row.names = FALSE)
+```
