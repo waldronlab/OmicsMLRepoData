@@ -1,0 +1,54 @@
+original_values,standardized_values,standardized_ids
+European<<>>Native American;European,Native American;European,HANCESTRO:0013;HANCESTRO:0005
+European<<>>Native American;European;African American or Afro-Caribbean,Native American;European;African American or Afro-Caribbean,HANCESTRO:0013;HANCESTRO:0005;HANCESTRO:0016
+African American or Afro-Caribbean<<>>African,African American or Afro-Caribbean,HANCESTRO:0016
+Hispanic or Latin American<<>>European;Hispanic or Latin American,European;Hispanic or Latin American,HANCESTRO:0005;HANCESTRO:0014
+African<<>>NA<<>>African American or Afro-Caribbean,African American or Afro-Caribbean,HANCESTRO:0016
+NA<<>>African American or Afro-Caribbean<<>>African,African American or Afro-Caribbean,HANCESTRO:0016
+NA<<>>African<<>>African American or Afro-Caribbean,African American or Afro-Caribbean,HANCESTRO:0016
+African<<>>European<<>>NA,8X8,8X8
+African<<>>African American or Afro-Caribbean<<>>NA,African American or Afro-Caribbean,HANCESTRO:0016
+NA<<>>European<<>>African American or Afro-Caribbean,8X8,8X8
+African<<>>African American or Afro-Caribbean,African American or Afro-Caribbean,HANCESTRO:0016
+European<<>>NA<<>>European;Hispanic or Latin American,European;Hispanic or Latin American,HANCESTRO:0005;HANCESTRO:0014
+NA<<>>European;Hispanic or Latin American<<>>European,European;Hispanic or Latin American,HANCESTRO:0005;HANCESTRO:0014
+NA<<>>Native American;Hispanic or Latin American<<>>Native American,Native American;Hispanic or Latin American,HANCESTRO:0013;HANCESTRO:0014
+Asian<<>>European<<>>NA,8X8,8X8
+European<<>>European;Hispanic or Latin American<<>>NA,European;Hispanic or Latin American,HANCESTRO:0005;HANCESTRO:0014
+African<<>>NA<<>>European<<>>African American or Afro-Caribbean,8X8,8X8
+NA<<>>European<<>>Hispanic or Latin American,European;Hispanic or Latin American,HANCESTRO:0005;HANCESTRO:0014
+NA<<>>Hispanic or Latin American<<>>European,European;Hispanic or Latin American,HANCESTRO:0005;HANCESTRO:0014
+African American or Afro-Caribbean<<>>African<<>>NA,African American or Afro-Caribbean,HANCESTRO:0016
+NA<<>>European<<>>European;Hispanic or Latin American,European;Hispanic or Latin American,HANCESTRO:0005;HANCESTRO:0014
+NA<<>>Asian<<>>European,8X8,8X8
+African<<>>European<<>>NA<<>>African American or Afro-Caribbean,8X8,8X8
+NA<<>>European<<>>Asian,8X8,8X8
+European<<>>NA<<>>Hispanic or Latin American,European;Hispanic or Latin American,HANCESTRO:0005;HANCESTRO:0014
+European<<>>Hispanic or Latin American<<>>NA,European;Hispanic or Latin American,HANCESTRO:0005;HANCESTRO:0014
+European<<>>NA<<>>African American or Afro-Caribbean<<>>African,8X8,8X8
+European;European;Hispanic or Latin American<<>>NA<<>>European,European;Hispanic or Latin American,HANCESTRO:0005;HANCESTRO:0014
+European<<>>European;Hispanic or Latin American,European;Hispanic or Latin American,HANCESTRO:0005;HANCESTRO:0014
+NA<<>>African American or Afro-Caribbean;Hispanic or Latin American<<>>African American or Afro-Caribbean,African American or Afro-Caribbean;Hispanic or Latin American,HANCESTRO:0016;HANCESTRO:0014
+Asian<<>>African<<>>African American or Afro-Caribbean,8X8,8X8
+European;Hispanic or Latin American<<>>European,European;Hispanic or Latin American,HANCESTRO:0005;HANCESTRO:0014
+Hispanic or Latin American<<>>NA<<>>European,European;Hispanic or Latin American,HANCESTRO:0005;HANCESTRO:0014
+African<<>>African American or Afro-Caribbean;Hispanic or Latin American<<>>African American or Afro-Caribbean,African American or Afro-Caribbean;Hispanic or Latin American,HANCESTRO:0016;HANCESTRO:0014
+NA<<>>Native American<<>>Asian,8X8,8X8
+European;Hispanic or Latin American<<>>NA<<>>European,European;Hispanic or Latin American,HANCESTRO:0005;HANCESTRO:0014
+Asian;Hispanic or Latin American<<>>Asian,Asian;Hispanic or Latin American,HANCESTRO:0008;HANCESTRO:0014
+Asian<<>>NA<<>>European,8X8,8X8
+African<<>>NA<<>>African American or Afro-Caribbean;Hispanic or Latin American<<>>African American or Afro-Caribbean,African American or Afro-Caribbean;Hispanic or Latin American,HANCESTRO:0016;HANCESTRO:0014
+NA<<>>African American or Afro-Caribbean<<>>African<<>>African American or Afro-Caribbean;Hispanic or Latin American,African American or Afro-Caribbean;Hispanic or Latin American,HANCESTRO:0016;HANCESTRO:0014
+NA<<>>African American or Afro-Caribbean<<>>African;Hispanic or Latin American,African American or Afro-Caribbean;Hispanic or Latin American,HANCESTRO:0016;HANCESTRO:0014
+European<<>>African<<>>African American or Afro-Caribbean,8X8,8X8
+Hispanic or Latin American<<>>European<<>>NA,European;Hispanic or Latin American,HANCESTRO:0005;HANCESTRO:0014
+Oceanian<<>>Hispanic or Latin American,Oceanian;Hispanic or Latin American,HANCESTRO:0017;HANCESTRO:0014
+African American or Afro-Caribbean<<>>African;Hispanic or Latin American,African American or Afro-Caribbean;Hispanic or Latin American,HANCESTRO:0016;HANCESTRO:0014
+Hispanic or Latin American<<>>European,European;Hispanic or Latin American,HANCESTRO:0005;HANCESTRO:0014
+European;European;Hispanic or Latin American<<>>European;Hispanic or Latin American,European;Hispanic or Latin American,HANCESTRO:0005;HANCESTRO:0014
+Asian<<>>Oceanian,8X8,8X8
+European<<>>African<<>>NA,8X8,8X8
+European;Hispanic or Latin American<<>>European<<>>NA,European;Hispanic or Latin American,HANCESTRO:0005;HANCESTRO:0014
+European;Hispanic or Latin American<<>>Hispanic or Latin American<<>>NA,European;Hispanic or Latin American,HANCESTRO:0005;HANCESTRO:0014
+European<<>>Native American;European<<>>NA,Native American;European,HANCESTRO:0013;HANCESTRO:0005
+European;Hispanic or Latin American<<>>Hispanic or Latin American,European;Hispanic or Latin American,HANCESTRO:0005;HANCESTRO:0014
