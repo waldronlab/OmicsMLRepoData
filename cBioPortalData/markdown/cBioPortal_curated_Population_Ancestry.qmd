@@ -48,7 +48,7 @@ We will first add a `curation_id` consisting of study ID, patient ID, and sample
 
 ```{r curation_setup}
 # Load cbio data
-cbio <- readRDS("C:\\Users\\Owner\\Desktop\\CUNY Internship\\cBioPortal_all_clinicalData_combined_2023-05-18.rds")
+cbio <- readRDS("D:\\CUNY Internship\\cBioPortal_all_clinicalData_combined_2023-05-18.rds")
 
 # Add curation ID
 cbio$curation_id <- paste(cbio$studyId, cbio$patientId, cbio$sampleId, sep = ":")
@@ -59,7 +59,7 @@ url <- "https://docs.google.com/spreadsheets/d/1Mq1uXYtOElx324n7yyP_jKLdkSDpnQv5
 ss <- googledrive::as_id(url)
 
 # Define a project directory
-proj_dir <- "C:\\Users\\Owner\\Desktop\\CUNY Internship\\cbio\\RaceEthnicity\\"
+proj_dir <- "D:\\CUNY Internship\\cbio\\RaceEthnicity\\"
 ```
 
 # Exploratory Data Analysis & Data Curation
@@ -174,7 +174,7 @@ for (i in 1:nrow(race_eth_data)){
 # Create a function to remove NA values from the merged column
 remove_NA <- function(x){
   values <- as.list(unlist(strsplit(x, ";")))
-  return(values[values != "NA"])
+  return(unlist(values[values != "NA"]))
 }
 # Apply the function to remove NA values from the merged column
 race_eth_data$merged <- sapply(race_eth_data$merged, function(x)paste(remove_NA(x), collapse= ";"))
@@ -323,7 +323,7 @@ We can now replace the mismatched values for each patient with the "best value"
 from the `chk` dataframe:
 ```{r}
 # Load the map to fix discrepancies
-pop_ancestry_discrep <- read.csv(file=file.path(proj_dir, "cBioPortal_pop_ancestry_discrepancies.csv"))
+pop_ancestry_discrep <- read.csv(file=file.path(proj_dir, "cBioPortal_population_ancestry_discrepancies.csv"))
 
 # Initialize mapped columns for chk
 chk$standardized_values <- NA
@@ -334,7 +334,7 @@ for (val in pop_ancestry_discrep$original_values){
   chk$standardized_ids[which(chk$values==val)] <- pop_ancestry_discrep$standardized_ids[which(pop_ancestry_discrep$original_values==val)]
 }
 
-# Standardize sex values across all samples for each patient
+# Standardize ancestry values across all samples for each patient
 for (pat in chk$patient_id){
   # Set all population ancestry values for a patient to be the majority value
   curated_population_ancestry$curated_pop_ancestry[which(cbio$patientId==pat)] <- chk$standardized_values[which(chk$patient_id==pat)]
@@ -344,7 +344,7 @@ for (pat in chk$patient_id){
 
 # Replace unique NA value from curated columns with "NA"
 curated_population_ancestry <- data.frame(lapply(curated_population_ancestry, 
-                                      function(x) gsub("8X8", NA, x)))
+                                      function(x) gsub("^$", NA, x)))
 ```
 
 Last, we will identify any patient ids with one NA value and one descriptive 
