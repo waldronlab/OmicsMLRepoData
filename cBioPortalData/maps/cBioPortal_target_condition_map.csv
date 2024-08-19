@@ -1,0 +1,376 @@
+study_id,curated_ontology,curated_ontology_term_id
+acbc_mskcc_2015,Breast Adenoid Cystic Carcinoma,NCIT:C5130
+acc_2019,Adenoid Cystic Carcinoma,NCIT:C2970
+acc_tcga,Adrenal Cortical Carcinoma,NCIT:C9325
+acc_tcga_pan_can_atlas_2018,Adrenal Cortical Carcinoma,NCIT:C9325
+acyc_fmi_2014,Adenoid Cystic Carcinoma,NCIT:C2970
+acyc_jhu_2016,Adenoid Cystic Carcinoma,NCIT:C2970
+acyc_mda_2015,Adenoid Cystic Carcinoma,NCIT:C2970
+acyc_mgh_2016,Adenoid Cystic Carcinoma,NCIT:C2970
+acyc_mskcc_2013,Adenoid Cystic Carcinoma,NCIT:C2970
+acyc_sanger_2013,Adenoid Cystic Carcinoma,NCIT:C2970
+all_phase2_target_2018_pub,Pediatric;Acute Lymphoblastic Leukemia,NCIT:C39299;NCIT:C3167
+all_stjude_2013,Hypodiploidy;Acute Lymphoblastic Leukemia,NCIT:C80337;NCIT:C3167
+all_stjude_2015,Acute Lymphoblastic Leukemia;MLL Gene Rearrangement,NCIT:C3167;NCIT:C122623
+all_stjude_2016,B Acute Lymphoblastic Leukemia,NCIT:C8644
+aml_ohsu_2018,Acute Myeloid Leukemia,NCIT:C3171
+aml_target_2018_pub,Pediatric;Acute Myeloid Leukemia,NCIT:C39299;NCIT:C3171
+ampca_bcm_2016,Ampulla of Vater Carcinoma,NCIT:C3908
+angs_painter_2020,Angiosarcoma,NCIT:C3088
+angs_project_painter_2018,Angiosarcoma,NCIT:C3088
+bcc_unige_2016,Basal Cell Carcinoma,NCIT:C156767
+bfn_duke_nus_2015,Breast Phyllodes Tumor,NCIT:C7575
+biliary_tract_summit_2022,Liver and Intrahepatic Bile Duct Carcinoma,NCIT:C7927
+blca_bcan_hcrn_2022,Urothelial Carcinoma,NCIT:C4030
+blca_bgi,Bladder Urothelial Carcinoma,NCIT:C39851
+blca_cornell_2016,Urothelial Carcinoma,NCIT:C4030
+blca_dfarber_mskcc_2014,Bladder Urothelial Carcinoma,NCIT:C39851
+blca_msk_tcga_2020,Bladder Carcinoma,NCIT:C4912
+blca_mskcc_solit_2012,Bladder Carcinoma,NCIT:C4912
+blca_mskcc_solit_2014,Bladder Carcinoma,NCIT:C4912
+blca_nmibc_2017,Bladder Carcinoma,NCIT:C4912
+blca_plasmacytoid_mskcc_2016,Bladder Carcinoma,NCIT:C4912
+blca_tcga,Bladder Urothelial Carcinoma,NCIT:C39851
+blca_tcga_pan_can_atlas_2018,Bladder Urothelial Carcinoma,NCIT:C39851
+blca_tcga_pub,Bladder Urothelial Carcinoma,NCIT:C39851
+blca_tcga_pub_2017,Bladder Carcinoma,NCIT:C4912
+brain_cptac_2020,Pediatric;Malignant Brain Neoplasm,NCIT:C39299;NCIT:C3568
+brca_bccrc,Breast Carcinoma,NCIT:C4872
+brca_bccrc_xenograft_2014,Breast Carcinoma;Xenograft,NCIT:C4872;NCIT:C12932
+brca_broad,Invasive Breast Carcinoma,NCIT:C9245
+brca_cptac_2020,Breast Carcinoma,NCIT:C4872
+brca_hta9_htan_2022,Breast Carcinoma,NCIT:C4872
+brca_igr_2015,Breast Neoplasm;Metastatic,NCIT:C2910;NCIT:C14174
+brca_jup_msk_2020,Invasive Breast Carcinoma,NCIT:C9245
+brca_mapk_hp_msk_2021,Breast Carcinoma,NCIT:C4872
+brca_mbcproject_2022,Breast Neoplasm;Metastatic,NCIT:C2910;NCIT:C14174
+brca_mbcproject_wagle_2017,Breast Neoplasm;Metastatic,NCIT:C2910;NCIT:C14174
+brca_metabric,Breast Carcinoma,NCIT:C4872
+brca_mskcc_2019,Invasive Breast Carcinoma,NCIT:C9245
+brca_pareja_msk_2020,Breast Carcinoma,NCIT:C4872
+brca_sanger,Invasive Breast Carcinoma,NCIT:C9245
+brca_smc_2018,Breast Carcinoma,NCIT:C4872
+brca_tcga,Invasive Breast Carcinoma,NCIT:C9245
+brca_tcga_pan_can_atlas_2018,Invasive Breast Carcinoma,NCIT:C9245
+brca_tcga_pub,Invasive Breast Carcinoma,NCIT:C9245
+brca_tcga_pub2015,Invasive Breast Carcinoma,NCIT:C9245
+breast_alpelisib_2020,Breast Carcinoma,NCIT:C4872
+breast_ink4_msk_2021,Breast Neoplasm;Metastatic,NCIT:C2910;NCIT:C14174
+breast_msk_2018,Breast Carcinoma,NCIT:C4872
+ccle_broad_2019,Carcinoma;Cell Line,NCIT:C2916;NCIT:C16403
+ccrcc_dfci_2019,Clear Cell Renal Cell Carcinoma,NCIT:C4033
+ccrcc_irc_2014,Clear Cell Renal Cell Carcinoma,NCIT:C4033
+ccrcc_utokyo_2013,Clear Cell Renal Cell Carcinoma,NCIT:C4033
+cellline_ccle_broad,Carcinoma;Cell Line,NCIT:C2916;NCIT:C16403
+cellline_nci60,Carcinoma;Cell Line,NCIT:C2916;NCIT:C16403
+cesc_tcga,Cervical Squamous Cell Carcinoma;Cervical Adenocarcinoma,NCIT:C4028;NCIT:C4029
+cesc_tcga_pan_can_atlas_2018,Cervical Squamous Cell Carcinoma,NCIT:C4028
+cfdna_msk_2019,Circulating Cell-Free DNA;Malignant Neoplasm,NCIT:C128274;NCIT:C9305
+chol_icgc_2017,Cholangiocarcinoma,NCIT:C4436
+chol_jhu_2013,Intrahepatic Cholangiocarcinoma;Gallbladder Carcinoma,NCIT:C35417;NCIT:C3844
+chol_msk_2018,Cholangiocarcinoma,NCIT:C4436
+chol_nccs_2013,Cholangiocarcinoma,NCIT:C4436
+chol_nus_2012,Opisthorchis Viverrini-Related Cholangiocarcinoma,NCIT:C27769
+chol_tcga,Cholangiocarcinoma,NCIT:C4436
+chol_tcga_pan_can_atlas_2018,Cholangiocarcinoma,NCIT:C4436
+cll_broad_2015,Chronic Lymphocytic Leukemia,NCIT:C3163
+cll_iuopa_2015,Chronic Lymphocytic Leukemia,NCIT:C3163
+cllsll_icgc_2011,Chronic Lymphocytic Leukemia,NCIT:C3163
+coad_caseccc_2015,Colon Adenocarcinoma,NCIT:C4349
+coad_cptac_2019,Colon Adenocarcinoma,NCIT:C4349
+coadread_dfci_2016,Colorectal Adenocarcinoma,NCIT:C5105
+coadread_genentech,Colorectal Adenocarcinoma,NCIT:C5105
+coadread_mskcc,Colorectal Adenocarcinoma,NCIT:C5105
+coadread_tcga,Colorectal Adenocarcinoma,NCIT:C5105
+coadread_tcga_pan_can_atlas_2018,Colorectal Adenocarcinoma,NCIT:C5105
+coadread_tcga_pub,Colorectal Adenocarcinoma,NCIT:C5105
+crc_apc_impact_2020,Colorectal Carcinoma,NCIT:C2955
+crc_dd_2022,Colorectal Carcinoma,NCIT:C2955
+crc_msk_2017,Metastatic Colorectal Carcinoma,NCIT:C156096
+crc_nigerian_2020,Colorectal Carcinoma,NCIT:C2955
+cscc_dfarber_2015,Skin Squamous Cell Carcinoma,NCIT:C4819
+cscc_hgsc_bcm_2014,Skin Squamous Cell Carcinoma,NCIT:C4819
+cscc_ucsf_2021,Skin Squamous Cell Carcinoma,NCIT:C4819
+ctcl_columbia_2015,Sezary Syndrome;Primary Cutaneous T-Cell Non-Hodgkin Lymphoma,NCIT:C3366;NCIT:C3467
+desm_broad_2015,Desmoplastic Melanoma,NCIT:C37257
+difg_glass_2019,Diffuse Glioma,NCIT:C129325
+dlbc_broad_2012,Diffuse Large B-Cell Lymphoma,NCIT:C8851
+dlbc_tcga,Diffuse Large B-Cell Lymphoma,NCIT:C8851
+dlbc_tcga_pan_can_atlas_2018,Diffuse Large B-Cell Lymphoma,NCIT:C8851
+dlbcl_dfci_2018,Diffuse Large B-Cell Lymphoma,NCIT:C8851
+dlbcl_duke_2017,Diffuse Large B-Cell Lymphoma,NCIT:C8851
+egc_msk_2017,Metastatic;Gastroesophageal Cancer,NCIT:C14174;NCIT:C103064
+egc_msk_tp53_ccr_2022,Gastroesophageal Cancer,NCIT:C103064
+egc_mskcc_2020,Gastroesophageal Cancer,NCIT:C103064
+egc_tmucih_2015,Gastric Adenocarcinoma,NCIT:C4004
+egc_trap_msk_2020,Esophageal Carcinoma,NCIT:C3513
+es_dfarber_broad_2014,Ewing Sarcoma;Pediatric,NCIT:C4817;NCIT:C39299
+es_iocurie_2014,Ewing Sarcoma,NCIT:C4817
+esca_broad,Esophageal Adenocarcinoma,NCIT:C4025
+esca_tcga,Esophageal Adenocarcinoma,NCIT:C4025
+esca_tcga_pan_can_atlas_2018,Esophageal Adenocarcinoma,NCIT:C4025
+escc_icgc,Esophageal Squamous Cell Carcinoma,NCIT:C4024
+escc_ucla_2014,Esophageal Squamous Cell Carcinoma,NCIT:C4024
+gbc_msk_2018,Gallbladder Carcinoma,NCIT:C3844
+gbc_mskcc_2022,Gallbladder Carcinoma,NCIT:C3844
+gbc_shanghai_2014,Gallbladder Carcinoma,NCIT:C3844
+gbm_columbia_2019,Glioblastoma,NCIT:C3058
+gbm_cptac_2021,Glioblastoma,NCIT:C3058
+gbm_mayo_pdx_sarkaria_2019,Glioblastoma,NCIT:C3058
+gbm_tcga,Glioblastoma,NCIT:C3058
+gbm_tcga_pan_can_atlas_2018,Glioblastoma,NCIT:C3058
+gbm_tcga_pub,Glioblastoma,NCIT:C3058
+gbm_tcga_pub2013,Glioblastoma,NCIT:C3058
+gct_msk_2016,Germ Cell Tumor,NCIT:C3708
+gct_msk_2020,Germ Cell Tumor;Leukemia,NCIT:C3708;NCIT:C3161
+glioma_msk_2018,Glioma,NCIT:C3059
+glioma_mskcc_2019,Glioma,NCIT:C3059
+hcc_inserm_fr_2015,Hepatocellular Carcinoma,NCIT:C3099
+hcc_meric_2021,Hepatocellular Carcinoma,NCIT:C3099
+hcc_msk_venturaa_2018,Hepatocellular Adenoma;Hepatocellular Carcinoma,NCIT:C3758;NCIT:C3099
+hcc_mskimpact_2018,Hepatocellular Carcinoma,NCIT:C3099
+hccihch_pku_2019,Hepatocellular Carcinoma;Intrahepatic Cholangiocarcinoma,NCIT:C3099;NCIT:C35417
+hgsoc_msk_2021,Ovarian Serous Adenocarcinoma,NCIT:C7550
+histiocytosis_cobi_msk_2019,Histiocytosis,NCIT:C3106
+hnc_mskcc_2016,Head and Neck,NCIT:C12418
+hnsc_broad,Head and Neck Squamous Cell Carcinoma,NCIT:C34447
+hnsc_jhu,Head and Neck Squamous Cell Carcinoma,NCIT:C34447
+hnsc_mdanderson_2013,Oral Cavity Squamous Cell Carcinoma,NCIT:C4833
+hnsc_tcga,Head and Neck Squamous Cell Carcinoma,NCIT:C34447
+hnsc_tcga_pan_can_atlas_2018,Head and Neck Squamous Cell Carcinoma,NCIT:C34447
+hnsc_tcga_pub,Head and Neck Squamous Cell Carcinoma,NCIT:C34447
+ihch_ismms_2015,Intrahepatic Cholangiocarcinoma,NCIT:C35417
+ihch_msk_2021,Intrahepatic Cholangiocarcinoma,NCIT:C35417
+ihch_mskcc_2020,Intrahepatic Cholangiocarcinoma,NCIT:C35417
+ihch_smmu_2014,Intrahepatic Cholangiocarcinoma,NCIT:C35417
+kich_tcga,Chromophobe Renal Cell Carcinoma,NCIT:C4146
+kich_tcga_pan_can_atlas_2018,Chromophobe Renal Cell Carcinoma,NCIT:C4146
+kich_tcga_pub,Chromophobe Renal Cell Carcinoma,NCIT:C4146
+kirc_bgi,Clear Cell Renal Cell Carcinoma,NCIT:C4033
+kirc_tcga,Clear Cell Renal Cell Carcinoma,NCIT:C4033
+kirc_tcga_pan_can_atlas_2018,Clear Cell Renal Cell Carcinoma,NCIT:C4033
+kirc_tcga_pub,Clear Cell Renal Cell Carcinoma,NCIT:C4033
+kirp_tcga,Papillary Renal Cell Carcinoma,NCIT:C6975
+kirp_tcga_pan_can_atlas_2018,Papillary Renal Cell Carcinoma,NCIT:C6975
+laml_tcga,Acute Myeloid Leukemia,NCIT:C3171
+laml_tcga_pan_can_atlas_2018,Acute Myeloid Leukemia,NCIT:C3171
+laml_tcga_pub,Acute Myeloid Leukemia,NCIT:C3171
+lcll_broad_2013,Chronic Lymphocytic Leukemia,NCIT:C3163
+lgg_tcga,Brain Low Grade Glioma,NCIT:C201977
+lgg_tcga_pan_can_atlas_2018,Brain Low Grade Glioma,NCIT:C201977
+lgg_ucsf_2014,Low Grade Glioma,NCIT:C132067
+lgggbm_tcga_pub,Diffuse Glioma,NCIT:C129325
+lgsoc_mapk_msk_2022,Ovarian Low Grade Serous Adenocarcinoma,NCIT:C105556
+liad_inserm_fr_2014,Hepatocellular Adenoma,NCIT:C3758
+lihc_amc_prv,Hepatocellular Carcinoma,NCIT:C3099
+lihc_riken,Hepatocellular Carcinoma,NCIT:C3099
+lihc_tcga,Hepatocellular Carcinoma,NCIT:C3099
+lihc_tcga_pan_can_atlas_2018,Hepatocellular Carcinoma,NCIT:C3099
+luad_broad,Lung Adenocarcinoma,NCIT:C3512
+luad_cptac_2020,Lung Adenocarcinoma,NCIT:C3512
+luad_msk_npjpo_2021,Lung Adenocarcinoma,NCIT:C3512
+luad_mskcc_2015,Lung Non-Small Cell Carcinoma;Lung Adenocarcinoma,NCIT:C2926;NCIT:C3512
+luad_mskcc_2020,Lung Adenocarcinoma,NCIT:C3512
+luad_mskimpact_2021,Lung Adenocarcinoma,NCIT:C3512
+luad_oncosg_2020,Lung Adenocarcinoma,NCIT:C3512
+luad_tcga,Lung Adenocarcinoma,NCIT:C3512
+luad_tcga_pan_can_atlas_2018,Lung Adenocarcinoma,NCIT:C3512
+luad_tcga_pub,Lung Adenocarcinoma,NCIT:C3512
+luad_tsp,Lung Adenocarcinoma,NCIT:C3512
+lung_msk_2017,Lung Adenocarcinoma;Metastatic,NCIT:C3512;NCIT:C14174
+lung_msk_mind_2020,Lung Adenocarcinoma,NCIT:C3512
+lung_msk_pdx,Lung Carcinoma;Malignant Thoracic Neoplasm;Xenograft,NCIT:C4878;NCIT:C3576;NCIT:C12932
+lung_nci_2022,Lung Carcinoma,NCIT:C4878
+lung_pdx_msk_2021,Lung Small Cell Carcinoma,NCIT:C4917
+lung_smc_2016,Lung Carcinoma,NCIT:C4878
+lusc_cptac_2021,Lung Squamous Cell Carcinoma,NCIT:C3493
+lusc_tcga,Lung Squamous Cell Carcinoma,NCIT:C3493
+lusc_tcga_pan_can_atlas_2018,Lung Squamous Cell Carcinoma,NCIT:C3493
+lusc_tcga_pub,Lung Squamous Cell Carcinoma,NCIT:C3493
+lymphoma_cellline_msk_2020,Lymphoma;Cell Line,NCIT:C3208;NCIT:C16403
+mbc_msk_2021,Breast Metaplastic Carcinoma,NCIT:C5164
+mbl_broad_2012,Medulloblastoma,NCIT:C3222
+mbl_dkfz_2017,Medulloblastoma,NCIT:C3222
+mbl_icgc,Medulloblastoma,NCIT:C3222
+mbl_pcgp,Medulloblastoma,NCIT:C3222
+mbl_sickkids_2016,Medulloblastoma,NCIT:C3222
+mbn_mdacc_2013,Mature B-Cell Neoplasm,NCIT:C27910
+mcl_idibips_2013,Mantle Cell Lymphoma,NCIT:C4337
+mds_iwg_2022,Myelodysplastic Syndrome,NCIT:C3247
+mds_mskcc_2020,Myeloid Neoplasm,NCIT:C9290
+mds_tokyo_2011,Myelodysplastic Syndrome,NCIT:C3247
+mel_dfci_2019,Melanoma;Metastatic,NCIT:C3224;NCIT:C14174
+mel_mskimpact_2020,Melanoma,NCIT:C3224
+mel_tsam_liang_2017,Acral Lentiginous Melanoma,NCIT:C4022
+mel_ucla_2016,Melanoma,NCIT:C3224
+meso_tcga,Mesothelioma,NCIT:C3234
+meso_tcga_pan_can_atlas_2018,Mesothelioma,NCIT:C3234
+metastatic_solid_tumors_mich_2017,Metastatic;Carcinoma;Solid,NCIT:C14174;NCIT:C2916;NCIT:C45300
+mixed_allen_2018,Microsatellite Stable;Carcinoma;Solid,NCIT:C131459;NCIT:C2916;NCIT:C45300
+mixed_cfdna_msk_2020,Metastatic;Carcinoma;Solid,NCIT:C14174;NCIT:C2916;NCIT:C45300
+mixed_impact_subset_2022,Malignant Neoplasm,NCIT:C9305
+mixed_kunga_msk_2022,Malignant Neoplasm;Pediatric,NCIT:C9305;NCIT:C39299
+mixed_msk_tcga_2021,Malignant Neoplasm,NCIT:C9305
+mixed_pipseq_2017,Malignant Neoplasm;Pediatric,NCIT:C9305;NCIT:C39299
+mixed_selpercatinib_2020,Carcinoma;Solid,NCIT:C2916;NCIT:C45300
+mm_broad,Plasma Cell Myeloma,NCIT:C3242
+mng_utoronto_2021,Meningioma,NCIT:C3230
+mnm_washu_2016,Acute Myeloid Leukemia;Myelodysplastic Syndrome,NCIT:C3171;NCIT:C3247
+mpcproject_broad_2021,Metastatic Prostate Carcinoma,NCIT:C8946
+mpn_cimr_2013,Myeloproliferative Neoplasm,NCIT:C4345
+mpnst_mskcc,Malignant Peripheral Nerve Sheath Tumor,NCIT:C3798
+mrt_bcgsc_2016,Rhabdoid Tumor,NCIT:C3808
+msk_access_2021,Malignant Neoplasm,NCIT:C9305
+msk_ch_2020,Malignant Neoplasm,NCIT:C9305
+msk_ch_ped_2021,Malignant Neoplasm,NCIT:C9305
+msk_impact_2017,Malignant Neoplasm,NCIT:C9305
+msk_met_2021,Malignant Neoplasm,NCIT:C9305
+msk_spectrum_tme_2022,Ovarian High Grade Serous Adenocarcinoma,NCIT:C105555
+nbl_amc_2012,Neuroblastoma,NCIT:C3270
+nbl_broad_2013,Neuroblastoma; High Risk,NCIT:C3270;NCIT:C102401
+nbl_target_2018_pub,Neuroblastoma,NCIT:C3270
+nbl_ucologne_2015,Neuroblastoma,NCIT:C3270
+nccrcc_genentech_2014,Renal Cell Carcinoma,NCIT:C9385
+nepc_wcm_2016,Prostate Carcinoma,NCIT:C4863
+nhl_bcgsc_2011,Non-Hodgkin Lymphoma,NCIT:C3211
+nhl_bcgsc_2013,Diffuse Large B-Cell Lymphoma,NCIT:C8851
+npc_nusingapore,Nasopharyngeal Carcinoma,NCIT:C3871
+nsclc_mskcc_2015,Lung Non-Small Cell Carcinoma,NCIT:C2926
+nsclc_mskcc_2018,Lung Non-Small Cell Carcinoma,NCIT:C2926
+nsclc_pd1_msk_2018,Lung Non-Small Cell Carcinoma,NCIT:C2926
+nsclc_tcga_broad_2016,Lung Non-Small Cell Carcinoma,NCIT:C2926
+nsclc_tracerx_2017,Lung Non-Small Cell Carcinoma,NCIT:C2926
+nsclc_unito_2016,Lung Non-Small Cell Carcinoma,NCIT:C2926
+ntrk_msk_2019,TRK Receptor Family Fusion Positive;Malignant Neoplasm,NCIT:C138156;NCIT:C9305
+odg_msk_2017,Anaplastic Oligodendroglioma;Anaplastic Oligoastrocytoma,NCIT:C4326;NCIT:C6959
+ov_tcga,Ovarian Serous Adenocarcinoma,NCIT:C7550
+ov_tcga_pan_can_atlas_2018,Ovarian Serous Adenocarcinoma,NCIT:C7550
+ov_tcga_pub,Ovarian High Grade Serous Adenocarcinoma,NCIT:C105555
+paac_jhu_2014,Pancreatic Acinar Cell Carcinoma,NCIT:C7977
+paad_cptac_2021,Pancreatic Carcinoma,NCIT:C3850
+paad_icgc,Pancreatic Ductal Adenocarcinoma,NCIT:C9120
+paad_qcmg_uq_2016,Pancreatic Ductal Adenocarcinoma,NCIT:C9120
+paad_tcga,Pancreatic Adenocarcinoma,NCIT:C8294
+paad_tcga_pan_can_atlas_2018,Pancreatic Adenocarcinoma,NCIT:C8294
+paad_utsw_2015,Pancreatic Carcinoma,NCIT:C3850
+pact_jhu_2011,Pancreatic Carcinoma,NCIT:C3850
+pan_origimed_2020,Carcinoma;Solid,NCIT:C2916;NCIT:C45300
+pancan_pcawg_2020,Malignant Neoplasm,NCIT:C9305
+panet_arcnet_2017,Pancreatic Neuroendocrine Tumor,NCIT:C27720
+panet_jhu_2011,Pancreatic Neuroendocrine Tumor,NCIT:C27720
+panet_shanghai_2013,Pancreatic Insulinoma;Benign,NCIT:C95598;NCIT:C14172
+past_dkfz_heidelberg_2013,Pilocytic Astrocytoma,NCIT:C4047
+pcnsl_mayo_2015,Diffuse Large B-Cell Lymphoma,NCIT:C8851
+pcpg_tcga,Adrenal Gland Pheochromocytoma;Paraganglioma,NCIT:C3326;NCIT:C3308
+pcpg_tcga_pan_can_atlas_2018,Adrenal Gland Pheochromocytoma;Paraganglioma,NCIT:C3326;NCIT:C3308
+pcpg_tcga_pub,Adrenal Gland Pheochromocytoma;Paraganglioma,NCIT:C3326;NCIT:C3308
+pediatric_dkfz_2017,Malignant Neoplasm;Pediatric,NCIT:C9305;NCIT:C39299
+plmeso_nyu_2015,Pleural Mesothelioma,NCIT:C9351
+pog570_bcgsc_2020,Carcinoma;Metastatic,NCIT:C2916;NCIT:C14174
+pptc_2019,Malignant Neoplasm;Xenograft,NCIT:C9305;NCIT:C12932
+prad_broad,Prostate Adenocarcinoma,NCIT:C2919
+prad_broad_2013,Prostate Adenocarcinoma,NCIT:C2919
+prad_cdk12_mskcc_2020,Prostate Adenocarcinoma,NCIT:C2919
+prad_cpcg_2017,Prostate Adenocarcinoma,NCIT:C2919
+prad_eururol_2017,Prostate Adenocarcinoma,NCIT:C2919
+prad_fhcrc,Prostate Adenocarcinoma,NCIT:C2919
+prad_mcspc_mskcc_2020,Metastatic;Castration-Sensitive Prostate Carcinoma,NCIT:C14174;NCIT:C153336
+prad_mich,Prostate Adenocarcinoma;Metastatic,NCIT:C2919;NCIT:C14174
+prad_msk_2019,Prostate Carcinoma,NCIT:C4863
+prad_msk_stopsack_2021,Prostate Carcinoma,NCIT:C4863
+prad_mskcc,Prostate Adenocarcinoma,NCIT:C2919
+prad_mskcc_2014,Prostate Carcinoma,NCIT:C4863
+prad_mskcc_2017,Prostate Carcinoma,NCIT:C4863
+prad_mskcc_cheny1_organoids_2014,Prostate Carcinoma,NCIT:C4863
+prad_p1000,Prostate Carcinoma,NCIT:C4863
+prad_pik3r1_msk_2021,Prostate Adenocarcinoma,NCIT:C2919
+prad_su2c_2015,Metastatic Prostate Carcinoma,NCIT:C8946
+prad_su2c_2019,Castration-Resistant Prostate Carcinoma,NCIT:C130234
+prad_tcga,Prostate Adenocarcinoma,NCIT:C2919
+prad_tcga_pan_can_atlas_2018,Prostate Adenocarcinoma,NCIT:C2919
+prad_tcga_pub,Prostate Adenocarcinoma,NCIT:C2919
+prostate_dkfz_2018,Prostate Carcinoma,NCIT:C4863
+prostate_pcbm_swiss_2019,Brain;Site of Metastasis;Metastatic Prostate Carcinoma,NCIT:C12439;NCIT:C172233;NCIT:C8946
+rbl_cfdna_msk_2020,Retinoblastoma,NCIT:C7541
+rbl_mskcc_2020,Retinoblastoma,NCIT:C7541
+rectal_msk_2019,Rectal Adenocarcinoma,NCIT:C9383
+rectal_msk_2022,Colorectal Carcinoma,NCIT:C2955
+rms_nih_2014,Rhabdomyosarcoma,NCIT:C3359
+rt_target_2018_pub,Rhabdoid Tumor,NCIT:C3808
+sarc_mskcc,Sarcoma,NCIT:C9118
+sarc_tcga,Sarcoma,NCIT:C9118
+sarc_tcga_pan_can_atlas_2018,Sarcoma,NCIT:C9118
+sarc_tcga_pub,Soft Tissue Sarcoma,NCIT:C9306
+sarcoma_mskcc_2022,Sarcoma,NCIT:C9118
+scco_mskcc,Ovarian Small Cell Carcinoma,NCIT:C27390
+sclc_cancercell_gardner_2017,Lung Small Cell Carcinoma,NCIT:C4917
+sclc_clcgp,Lung Small Cell Carcinoma,NCIT:C4917
+sclc_jhu,Lung Small Cell Carcinoma,NCIT:C4917
+sclc_ucologne_2015,Lung Small Cell Carcinoma,NCIT:C4917
+skcm_broad,Cutaneous Melanoma,NCIT:C3510
+skcm_broad_brafresist_2012,Cutaneous Melanoma,NCIT:C3510
+skcm_broad_dfarber,Melanoma,NCIT:C3224
+skcm_dfci_2015,Melanoma;Metastatic,NCIT:C3224;NCIT:C14174
+skcm_mskcc_2014,Melanoma,NCIT:C3224
+skcm_tcga,Melanoma,NCIT:C3224
+skcm_tcga_pan_can_atlas_2018,Melanoma,NCIT:C3224
+skcm_tcga_pub_2015,Melanoma,NCIT:C3224
+skcm_vanderbilt_mskcc_2015,Melanoma,NCIT:C3224
+skcm_yale,Cutaneous Melanoma,NCIT:C3510
+stad_oncosg_2018,Gastric Carcinoma,NCIT:C4911
+stad_pfizer_uhongkong,Gastric Adenocarcinoma,NCIT:C4004
+stad_tcga,Gastric Adenocarcinoma,NCIT:C4004
+stad_tcga_pan_can_atlas_2018,Gastric Adenocarcinoma,NCIT:C4004
+stad_tcga_pub,Gastric Adenocarcinoma,NCIT:C4004
+stad_uhongkong,Gastric Adenocarcinoma,NCIT:C4004
+stad_utokyo,Gastric Adenocarcinoma,NCIT:C4004
+stes_tcga_pub,Gastric Carcinoma,NCIT:C4911
+summit_2018,ERBB2 Gene Mutation;ERBB3 Gene Mutation;Malignant Neoplasm,NCIT:C96866;NCIT:C138064;NCIT:C9305
+tet_nci_2014,Thymic Epithelial Neoplasm,NCIT:C6450
+tgct_tcga,Testicular Germ Cell Tumor,NCIT:C8591
+tgct_tcga_pan_can_atlas_2018,Testicular Germ Cell Tumor,NCIT:C8591
+thca_tcga,Thyroid Gland Carcinoma,NCIT:C4815
+thca_tcga_pan_can_atlas_2018,Thyroid Gland Carcinoma,NCIT:C4815
+thca_tcga_pub,Thyroid Gland Carcinoma,NCIT:C4815
+thym_tcga,Thymoma,NCIT:C3411
+thym_tcga_pan_can_atlas_2018,Thymoma,NCIT:C3411
+thyroid_mskcc_2016,Thyroid Gland Anaplastic Carcinoma,NCIT:C3878
+tmb_mskcc_2018,Malignant Neoplasm,NCIT:C9305
+uccc_nih_2017,Endometrial Clear Cell Adenocarcinoma,NCIT:C8028
+ucec_ccr_cfdna_msk_2022,Endometrial Carcinoma,NCIT:C7558
+ucec_ccr_msk_2022,Endometrial Carcinoma,NCIT:C7558
+ucec_cptac_2020,Endometrial Carcinoma,NCIT:C7558
+ucec_msk_2018,Endometrial Carcinoma,NCIT:C7558
+ucec_tcga,Endometrial Carcinoma,NCIT:C7558
+ucec_tcga_pan_can_atlas_2018,Endometrial Carcinoma,NCIT:C7558
+ucec_tcga_pub,Endometrial Carcinoma,NCIT:C7558
+ucs_jhu_2014,Uterine Carcinosarcoma;Malignant Mixed Mesodermal (Mullerian) Tumor,NCIT:C42700;NCIT:C8975
+ucs_tcga,Uterine Carcinosarcoma,NCIT:C42700
+ucs_tcga_pan_can_atlas_2018,Uterine Carcinosarcoma,NCIT:C42700
+um_qimr_2016,Uveal Melanoma,NCIT:C7712
+urcc_mskcc_2016,Unclassified Renal Cell Carcinoma,NCIT:C27892
+usarc_msk_2020,Uterine Corpus Sarcoma;Mesenchymal,NCIT:C6339;NCIT:C25721
+utuc_cornell_baylor_mdacc_2019,upper tract urothelial carcinoma,MONDO:0020659
+utuc_igbmc_2021,upper tract urothelial carcinoma,MONDO:0020659
+utuc_msk_2019,upper tract urothelial carcinoma,MONDO:0020659
+utuc_mskcc_2015,upper tract urothelial carcinoma,MONDO:0020659
+utuc_pdx_msk_2019,upper tract urothelial carcinoma,MONDO:0020659
+uvm_tcga,Uveal Melanoma,NCIT:C7712
+uvm_tcga_pan_can_atlas_2018,Uveal Melanoma,NCIT:C7712
+vsc_cuk_2018,Vulvar Squamous Cell Carcinoma,NCIT:C4052
+wt_target_2018_pub,Wilms Tumor,NCIT:C3267
+nsclc_ctdx_msk_2022,Metastatic;Lung Non-Small Cell Carcinoma,NCIT:C14174;NCIT:C2926
+bowel_colitis_msk_2022,Colorectal Carcinoma,NCIT:C2955
+nbl_msk_2023,Neuroblastoma,NCIT:C3270
+makeanimpact_ccr_2023,Histiocytosis;Germ Cell Tumor,NCIT:C3106;NCIT:C3708
+prad_organoids_msk_2022,Prostate Carcinoma,NCIT:C4863
+nst_nfosi_ntap,Nerve Sheath Neoplasm,NCIT:C4972
+coadread_mskresistance_2022,Colorectal Carcinoma,NCIT:C2955
+paired_bladder_2022,Bladder Carcinoma,NCIT:C4912
+appendiceal_msk_2022,Appendix Carcinoma,NCIT:C9330
+gist_msk_2022,Gastrointestinal Stromal Tumor,NCIT:C3868
+mtnn_msk_2022,Mature T-Cell and NK-Cell Neoplasm,NCIT:C27909
+rms_msk_2023,Rhabdomyosarcoma,NCIT:C3359
+luad_mskcc_2023_met_organotropism,Lung Adenocarcinoma,NCIT:C3512
+sarcoma_msk_2023,Sarcoma,NCIT:C9118
+aml_ohsu_2022,Acute Myeloid Leukemia,NCIT:C3171
