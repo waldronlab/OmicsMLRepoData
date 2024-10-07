@@ -1,0 +1,252 @@
+---
+title: "Harmonize country information in cbio data"
+author:
+  - Sehyun Oh
+  - Kai Gravel-Pucillo
+date: "`r format(Sys.time(), '%B %d, %Y')`"
+format:
+    html:
+        fontsize: 14pxs
+        toc: true
+        top-depth: 3
+abstract: "Prepare U24 Supplement: AI/ML-ready"
+---
+
+```{r setup, include=FALSE}
+knitr::opts_chunk$set(echo = TRUE, 
+                    warning = FALSE,
+                    message = FALSE,
+                    collapse = TRUE,
+                    eval = TRUE)
+```
+
+# Overview
+
+This .qmd file demonstrates a workflow for curating and harmonizing 
+country data with the cbioportal dataset.
+This file curates information from 6 original columns to produce a curated 
+column relating to the country of the patient.
+
+
+# Setup
+
+## Load Packages
+
+```{r load}
+suppressPackageStartupMessages({
+  library(tidyverse)
+  library(googlesheets4)
+  library(rols)
+  library(dplyr)
+  library(hash)
+  library(vctrs)
+  library(rvest)
+})
+```
+
+## Setup for Curation
+
+We will first add a `curation_id` consisting of study ID, patient ID, and sample ID (`studyId:patientId:sampleId`) to avoid confusion due to duplicated samples.
+```{r curation_setup}
+# Load cbio data
+cbio <- readRDS("C:\\Users\\Owner\\Desktop\\CUNY Internship\\cBioPortal_all_clinicalData_combined_2023-05-18.rds")
+
+# Add curation ID
+cbio$curation_id <- paste(cbio$studyId, cbio$patientId, cbio$sampleId, sep = ":")
+
+# Setup google sheets link to mapping table
+url <- "https://docs.google.com/spreadsheets/d/1OqLt5gBQswFz6HD0T5zYornMmdP_rcplfe5dgyGyN98/edit#gid=0"
+
+ss <- googledrive::as_id(url)
+
+# Define a project directory
+proj_dir <- "C:\\Users\\Owner\\Desktop\\CUNY Internship\\cbio\\Location\\"
+```
+
+
+# Exploratory Data Analysis & Data Curation
+
+## Identifying Relevant Columns & Completeness
+
+Next, we will identify the columns containing values relating to the country of 
+the patient.
+Due to the large number of feature columns which contain a number of both broad
+and very specific column types, we will first query column names for relevant 
+terms and compile these results into a map of original columns and their
+potential curated columns.
+```{r}
+# Create a list of potentially relevant columns based on search terms
+location_columns <- select(cbio, contains(c("country", "region_of_origin", "nation", "continent", "reside"))) %>%
+  select(-contains(c("ination")))
+
+potential_columns <- data.frame(colnames(location_columns))
+
+# Iterate through these columns to create a dataframe of each column's unique values and completeness
+for (col in 1:length(location_columns)){
+  potential_columns$unique_vals[col] <- paste(unlist(unique(location_columns[,col]), use.names = F), collapse=" ")
+  potential_columns$completeness[col] <- (nrow(location_columns) - length(which(is.na(location_columns[,col]))))/nrow(location_columns)
+}
+
+# Remove rows where unique_vals is NA
+potential_columns <- filter(potential_columns, unique_vals!="NA")
+
+# Sort by completeness
+potential_columns <- arrange(potential_columns, desc(completeness))
+
+# Export to csv file to manually remove irrelevant columns
+write.csv(potential_columns, 
+          file = file.path(proj_dir, "potential_country_columns_map.csv"),
+          row.names = FALSE)
+```
+
+After manually removing and rearranging some columns which are irrelevant to 
+this particular curation we can then create a tibble dataframe and import the 
+map of columns to include in this curation:
+```{r}
+# Create tibble
+cbio <- tibble(cbio)
+
+# Load Potential columns map csv file
+pot_col_map <- read.csv(file=file.path(proj_dir, "potential_country_columns_map.csv"))
+
+# Create a subset of cbio containing only relevant columns
+location_cols_cbio <- cbio[,c("curation_id", pot_col_map$colnames.country_columns.)]
+```
+
+Then we will evaluate the completeness and unique values of each of the relevant
+columns, and export this dataframe to manually group columns into a smaller set
+of curated columns:
+```{r}
+# Create a summary dataframe of the relevant columns
+summary_location_cols <- data.frame(colnames(location_cols_cbio[,2:7]))
+
+# Iterate through these columns to create a summary of each column's completeness
+for (col in 1:nrow(summary_location_cols)){
+  summary_location_cols$completeness[col] <- (nrow(location_cols_cbio) - length(which(is.na(location_cols_cbio[,col+1]))))/nrow(location_cols_cbio)
+  summary_location_cols$num_na_vals[col] <- length(which(is.na(location_cols_cbio[,col+1])))
+  summary_location_cols$unique[col] <- paste(unlist(unique(location_cols_cbio[,col+1]), use.names=F), collapse=", ")
+}
+
+# Create a csv file for manual curation
+write.csv(summary_location_cols, 
+          file = file.path(proj_dir, "curated_columns_map.csv"),
+          row.names = FALSE)
+```
+
+Now we can replace character values representing a lack of information with a 
+unique character value ("8X8"), and merge these values into a single column with 
+each distinct value separated by a semicolon.
+```{r}
+# Convert NA values to unique character value (8X8)
+location_cols_cbio <- location_cols_cbio %>% replace(is.na(.), "8X8") %>% data.frame()
+
+# Merge all relevant rows
+for (i in 1:nrow(location_cols_cbio)){
+  location_cols_cbio$merged[i] <- toupper(paste(location_cols_cbio[i,2:7], collapse=";"))
+}
+```
+
+Next, we can remove the unique character representing NA values from the merged
+column:
+```{r}
+# Take out NA values
+location_cols_cbio$merged <- gsub("8X8;", "", location_cols_cbio$merged)
+location_cols_cbio$merged <- gsub(";8X8", "", location_cols_cbio$merged)
+```
+
+Then we can create a list of all unique values included in the merged column,
+and export these values to a csv file to manually develop an ontology map:
+```{r}
+# Count the number of unique values in the merged column
+merged_vals <- list()
+for(r in 1:nrow(location_cols_cbio)){
+  merged_vals <- append(merged_vals, str_split(location_cols_cbio$merged[r], ";"))
+}
+unique_merged_vals <- unique(unlist(merged_vals))
+
+# Make a csv file of the unique values in the merged column
+write.csv(unique_merged_vals, 
+          file= file.path(proj_dir, "country_cbio_unique_vals.csv"), 
+          row.names=F, col.names=F)
+```
+
+# Mapping
+
+## Import Maps
+
+To access the necessary country ontology terms we will load the 
+`cBioPortal_country_map`.
+```{r import_maps, eval=FALSE}
+# import country ontology map
+mapped_terms <- read_sheet(ss, sheet = "cBioPortal_country_map")
+
+# import country ontology map
+mapped_terms <-read.csv(file = file.path(proj_dir, "cBioPortal_country_map.csv"), header=T)
+```
+
+
+# Curating Country Column
+
+Now we can map the values in the merged columns to their corresponding ontology
+terms and propagate these values into the curated columns: 
+```{r}
+# Make a function to remove excess semicolons
+rmv_xtra_semis <- function(x){
+  x <- ifelse(startsWith(x, ";"), sub("^;", "", x), x)
+  return(ifelse(endsWith(x, ";"), sub(";$", "", x), x))
+}
+
+# Iterate through merged column values
+for (x in 1:length(location_cols_cbio$merged)){
+  # Create a list of terms in the value
+  original_terms <- as.list(unlist(strsplit(location_cols_cbio$merged[x], ";")))
+  new_terms <- list()
+  new_term_ids <- list()
+  # Search for replacement terms in the ontology map
+  new_terms <- lapply(original_terms, function(y) mapped_terms$curated_ontology[grep(paste("^",y,"$",sep=""), mapped_terms$original_value, fixed=F)])
+  new_term_ids <- lapply(original_terms, function(y) mapped_terms$curated_ontology_term_id[grep(paste("^",y,"$",sep=""), mapped_terms$original_value, fixed=F)])
+  new_terms <- list_drop_empty(new_terms)
+  new_term_ids <- list_drop_empty(new_term_ids)
+  # Concatenate new lists on ";" delimiter to create curated value
+  location_cols_cbio$curated_country[x] <- rmv_xtra_semis(paste(as.list(unique(new_terms)), collapse= ";"))
+  location_cols_cbio$curated_country_ontology_term_id[x] <- rmv_xtra_semis(paste(as.list(unique(new_term_ids)), collapse= ";"))
+  if(x %% 10000==0){print(x)}
+}
+```
+
+
+## Curated Table Creation
+
+Next, we can clean up the dataframe by replacing the unique character 
+representing NA values with "NA" and updating column names as needed:
+```{r}
+# Replace NA values from original columns with "NA"
+location_cols_cbio <- data.frame(lapply(location_cols_cbio, 
+                                          function(x) gsub("8X8", NA, x)))
+
+# Create a column of relevant source columns
+for (i in 1:nrow(location_cols_cbio)){
+  location_cols_cbio$curated_country_source[i] <- paste(colnames(location_cols_cbio[,2:7][which(!is.na(location_cols_cbio[i,2:7]))]), collapse=";")
+}
+
+# Create a curated dataframe
+curated_location <- location_cols_cbio[,c(1, 8:11)]
+
+# Rename the columns for accuracy & specificity
+colnames(curated_location)[2] <- "original_country"
+
+# Replace empty values from curated columns with "NA"
+curated_location <- data.frame(lapply(curated_location, 
+                                      function(x) gsub("^$", NA, x)))
+```
+
+
+## Export
+
+Finally, we will export our completed table to GitHub.
+```{r export_curated_table, eval=FALSE}
+# export to GitHub
+write.csv(curated_location, 
+          file = file.path(proj_dir, "curated_country.csv"),
+          row.names = FALSE)
+```
