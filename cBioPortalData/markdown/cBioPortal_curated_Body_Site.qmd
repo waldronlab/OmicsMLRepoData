@@ -1,5 +1,5 @@
 ---
-title: "Harmonize bodysite information in cbio data"
+title: "Harmonize body site information in cbio data"
 author:
   - Sehyun Oh
   - Kai Gravel-Pucillo
@@ -113,7 +113,7 @@ cbio <- tibble(cbio)
 # Load Potential columns map csv file
 pot_col_map <- read.csv(file=file.path(proj_dir, "cBioPortal_curation_schema.csv"))
 
-# Get list of all columns to combine into new Bodysite column
+# Get list of all columns to combine into new body_site column
 original_cols <- unlist(strsplit(pot_col_map$original_columns[8], ";"))
 
 # Create a subset of cbio containing only relevant columns
@@ -193,7 +193,7 @@ bodysite_cols_cbio[,binary_cols] <- binary_value_cols[,2:16]
 Additionally, two values ("Head" and "Body") have been identified which represent
 different anatomical locations depending on the column from which the term is 
 originating due to different uses of the term in different studies. To prevent
-inaccurating mapping of these terms, we can change the original value in certain
+inaccurate mapping of these terms, we can change the original value in certain
 columns to be unique:
 ```{r}
 # Distinguish different uses of "Head" in LOCATION column
@@ -252,7 +252,7 @@ unique_merged_vals <- unique(unlist(merged_vals))
 
 # Make a csv file of the unique values in the merged column
 write.csv(unique_merged_vals, 
-          file= file.path(proj_dir, "bodysite_cbio_unique_vals.csv"), 
+          file= file.path(proj_dir, "body_site_cbio_unique_vals.csv"), 
           row.names=F, col.names=F)
 ```
 
@@ -262,17 +262,17 @@ write.csv(unique_merged_vals,
 ## Import Maps
 
 To access the necessary body site ontology terms we will load the 
-`bodysite_ontology_map`.
+`body_site_ontology_map`.
 ```{r import_maps, eval=FALSE}
-# import bodysite ontology map
-mapped_terms <- read_sheet(ss, sheet = "cBioPortal_bodysite_map")
+# import body_site ontology map
+mapped_terms <- read_sheet(ss, sheet = "cBioPortal_body_site_map")
 
-# import bodysite ontology map
-mapped_terms <-read.csv(file = file.path(proj_dir, "cBioPortal_bodysite_map.csv"), header=T)
+# import body_site ontology map
+mapped_terms <-read.csv(file = file.path(proj_dir, "cBioPortal_body_site_map.csv"), header=T)
 ```
 
 
-# Curating Bodysite Columns
+# Curating Body_site Columns
 
 Now we can map the values in the merged columns to their corresponding ontology
 terms and propagate these values into the curated columns: 
@@ -300,8 +300,8 @@ for (x in 1:length(bodysite_cols_cbio$merged)){
   new_terms <- format_list(list_drop_empty(new_terms), "<;>")
   new_term_ids <- format_list(list_drop_empty(new_term_ids), "<;>")
   # Concatenate new lists on ";" delimiter to create curated value
-  bodysite_cols_cbio$curated_bodysite[x] <- format_list(as.list(unlist(strsplit(new_terms, "<;>"))), "<;>")
-  bodysite_cols_cbio$curated_bodysite_ontology_term_id[x] <- format_list(as.list(unlist(strsplit(new_term_ids, "<;>"))), "<;>")
+  bodysite_cols_cbio$curated_body_site[x] <- format_list(as.list(unlist(strsplit(new_terms, "<;>"))), "<;>")
+  bodysite_cols_cbio$curated_body_site_ontology_term_id[x] <- format_list(as.list(unlist(strsplit(new_term_ids, "<;>"))), "<;>")
   if(x %% 10000==0){print(x)}
 }
 ```
@@ -318,14 +318,14 @@ bodysite_cols_cbio <- data.frame(lapply(bodysite_cols_cbio,
 
 # Create a column of relevant source columns
 for (i in 1:nrow(bodysite_cols_cbio)){
-  bodysite_cols_cbio$curated_bodysite_source[i] <- paste(colnames(bodysite_cols_cbio[,2:44][which(!is.na(bodysite_cols_cbio[i,2:44]))]), collapse="<;>")
+  bodysite_cols_cbio$curated_body_site_source[i] <- paste(colnames(bodysite_cols_cbio[,2:44][which(!is.na(bodysite_cols_cbio[i,2:44]))]), collapse="<;>")
 }
 
 # Create a curated dataframe
 curated_bodysite <- bodysite_cols_cbio[,c(1, 45:48)]
 
 # Rename the columns for accuracy & specificity
-colnames(curated_bodysite)[1:2] <- c("curation_id", "original_bodysite")
+colnames(curated_bodysite)[1:2] <- c("curation_id", "original_body_site")
 
 # Replace empty values from curated columns with "NA"
 curated_bodysite <- data.frame(lapply(curated_bodysite, 
@@ -338,6 +338,6 @@ curated_bodysite <- data.frame(lapply(curated_bodysite,
 Finally, we will export our completed table to GitHub.
 ```{r export_curated_table, eval=FALSE}
 # export to GitHub
-write.csv(curated_bodysite, file = file.path(proj_dir, "curated_bodysite.csv"), 
+write.csv(curated_bodysite, file = file.path(proj_dir, "curated_body_site.csv"), 
           row.names=F)
 ```
