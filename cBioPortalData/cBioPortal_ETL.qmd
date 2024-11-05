@@ -42,7 +42,7 @@ source(file.path(cbio_etl_dir, "0_assemble_curated_metadata.R"))
 
 ```{r save, eval=FALSE}
 extDir <- "~/OmicsMLRepo/OmicsMLRepoData/inst/extdata"
-write_csv(curated_all, file.path(extDir, "cBioPortal_curated_metadata.csv")) # 189,439 x 146
+write_csv(curated_all, file.path(extDir, "cBioPortal_curated_metadata.csv")) # 189,439 x 156
 ```
 
 
@@ -52,14 +52,15 @@ the curated attributes formatted in an user-facing version (e.g., no legacy/
 source columns, no ontology term id).
 
 ```{r}
-# requires: `curated_all` from `0_assemble_curated_metadata.R`
-source(file.path(cmd_etl_dir, "2_format_for_release.R"))
+## requires: `curated_all` from `0_assemble_curated_metadata.R`
+## returns: `cbio_meta_release`
+source(file.path(cbio_etl_dir, "2_format_for_release.R"))
 ```
 
 ```{r save_cmd_meta_release, eval=FALSE}
 dir <- "~/OmicsMLRepo/OmicsMLRepoData"
 fpath <- file.path(dir, "inst/extdata/cBioPortal_curated_metadata_release.csv")
-write.csv(cbio_meta_release, fpath, row.names = FALSE)
+write.csv(cbio_meta_release, fpath, row.names = FALSE) # 189,439 x 85
 
 ## Sync the version in GCS bucket
 AnVIL::gsutil_cp(fpath, "gs://omics_ml_repo/cBioPortal_curated_metadata_release.csv")
@@ -78,17 +79,28 @@ The script below (`1_sync_curation_map.R`) syncs all the cBioPortal curation map
 from Google Sheet to the `cbio_maps_dir` (a directory under the local git 
 project).
 
-```{r}
+```{r eval=FALSE}
 # Directory to save curation_maps from Google Sheet
 cbio_maps_dir <- "~/OmicsMLRepo/OmicsMLRepoData/cBioPortalData/maps"
 source(file.path(cbio_etl_dir, "1_sync_curation_map.R"))
 ```
 
-```{r save_curation_maps, eval=FALSE, echo=FALSE}
+```{r maps_updated_through_gh, eval=FALSE}
+target_condition <- read.csv(file.path(cbio_maps_dir, "cBioPortal_target_condition_map.csv"))
+url <- "https://docs.google.com/spreadsheets/d/1omAoO0N3r3rjBIQuhMB_uJU0WDF6hidg1_qwMTVav2c/edit?usp=sharing"
+ss <- googledrive::as_id(url)
+googlesheets4::write_sheet(target_condition, ss = ss, sheet = "cBioPortal_target_condition")
+
+
 write.csv(bodysite_map, file.path(cbio_maps_dir, "cBioPortal_bodysite_map.csv"), row.names = FALSE)
 write.csv(disease_map, file.path(cbio_maps_dir, "cBioPortal_diseases_map.csv"), row.names = FALSE)
-write.csv(country_map, file.path(cbio_maps_dir, "cBioPortal_country_map.csv"), row.names = FALSE)
 write.csv(population_map, file.path(cbio_maps_dir, "cBioPortal_population_map.csv"), row.names = FALSE)
+```
+
+```{r save_curation_maps, eval=FALSE, echo=FALSE}
+write.csv(bodysite_map, file.path(cbio_maps_dir, "cBioPortal_body_site_map.csv"), row.names = FALSE)
+write.csv(country_map, file.path(cbio_maps_dir, "cBioPortal_country_map.csv"), row.names = FALSE)
+write.csv(country_map, file.path(cbio_maps_dir, "cBioPortal_location_map.csv"), row.names = FALSE)
 
 ## Treatments
 write.csv(treatment_name_map, file.path(cbio_maps_dir, "cBioPortal_treatment_name_map.csv"), row.names = FALSE)
@@ -97,7 +109,7 @@ write.csv(treatment_unit_map, file.path(cbio_maps_dir, "cBioPortal_treatment_uni
 write.csv(treatment_case_map, file.path(cbio_maps_dir, "cBioPortal_treatment_case_map.csv"), row.names = FALSE)
 ```
 
-```{r save_maps_for_harmonizer, eval=FALSE}
+```{r save_maps_for_harmonizer, echo=FALSE, eval=FALSE}
 ## Save maps for harmonizer
 attrNames <- c("disease", "treatment_name", "bodysite")
 attrFnames <- paste0("cBioPortal_", attrNames, "_map.csv")
@@ -128,17 +140,17 @@ source(file.path(cbio_etl_dir, "3_assemble_merging_schema_from_data.R"))
 extDir <- "~/OmicsMLRepo/OmicsMLRepoData/inst/extdata"
 write_csv(cbio_ms, file.path(extDir, "cBioPortal_merging_schema.csv"))
 
-## OmicsMLRepoHarmonizer
-hmDir <- "~/OmicsMLRepo/OmicsMLRepoHarmonizer/data"
-file.copy(file.path(extDir, "cBioPortal_merging_schema.csv"),
-          )
+## MetaHarmonizer
+hmDir <- "~/OmicsMLRepo/MetaHarmonizer/data"
+file.copy(from = file.path(extDir, "cBioPortal_merging_schema.csv"),
+          to = file.path(hmDir, "cBioPortal_merging_schema.csv"),
+          recursive = TRUE)
 
 ##### Google Sheet
 url <- "https://docs.google.com/spreadsheets/d/1t2GTvDpgIrR84_ECoft6bQbb2qUr9RoeFtLZWM-ZRDI/edit?usp=sharing"
 ss <- googledrive::as_id(url)
 googlesheets4::write_sheet(cbio_ms, ss = ss, sheet = "cBioPortal_merging_schema")
 ```
-
 
 # Sync per-attribute column compression summary
 Because there are quite a lot of columns involved in cBioPortal metadata 
@@ -156,6 +168,14 @@ write.csv(age_ms, file.path(cbio_ms_dir, "cBioPortal_merging_schema_age.csv"), r
 write.csv(disease_ms, file.path(cbio_ms_dir, "cBioPortal_merging_schema_disease.csv"), row.names = FALSE)
 write.csv(treatment_ms, file.path(cbio_ms_dir, "cBioPortal_merging_schema_treatment.csv"), row.names = FALSE)
 ```
+
+# Sync data dictionary
+```{r eval=FALSE}
+# cBioPortal data dictionary created in Google Sheet
+# Edit this from Google Sheet
+source("~/OmicsMLRepo/OmicsMLRepoData/cBioPortalData/ETL/4_sync_data_dictionary.R")
+```
+
 
 
 # Discrepancies
