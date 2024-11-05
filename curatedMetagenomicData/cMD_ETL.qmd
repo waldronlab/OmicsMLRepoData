@@ -30,6 +30,34 @@ cmd_etl_dir <- "~/OmicsMLRepo/OmicsMLRepoData/curatedMetagenomicData/ETL"
 list.files(cmd_etl_dir)
 ```
 
+# Assemble merging schema
+
+This script load the merging/curation/harmonization schema tables 
+**from Google Sheet** and summarize them in our 'merging schema' format, 
+`cmd_ms`, with completeness and uniqueness information.
+
+```{r}
+source(file.path(cmd_etl_dir, "2_assemble_merging_schema.R"))
+```
+
+```{r save_cmd_merging_schema, eval=FALSE}
+##### Other GitHub projects
+## OmicsMLRepoData
+extDir <- "~/OmicsMLRepo/OmicsMLRepoData/inst/extdata"
+write_csv(cmd_ms, file.path(extDir, "cMD_merging_schema.csv"))
+write_csv(map, file.path(extDir, "cMD_ms_allCols.csv")) # accessory file
+write_csv(dd, file.path(extDir, "cMD_dd_allCols.csv")) # accessory file
+
+# ## OmicsMLDataHarmonizer
+# harmonizerDataDir <- "~/OmicsMLRepo/OmicsMLRepoHarmonizer/data"
+# write_csv(cmd_ms, file.path(harmonizerDataDir, "cMD_merging_schema.csv"))
+
+##### Google Sheet
+url <- "https://docs.google.com/spreadsheets/d/1xziFB_zBl32BjNarcyEN4GupTYpPtq5aDz0GbRbWvtk/edit?usp=sharing"
+ss <- googledrive::as_id(url)
+googlesheets4::write_sheet(cmd_ms, ss = ss, sheet = "cMD_merging_schema")
+```
+
 # Curated metadata table
 
 This script collect all the curated metadata table for each attribute and create the `curated_all` table, which containing 22,588 sample for 46 newly created curated columns.
@@ -65,12 +93,8 @@ fpath <- file.path(dir, "inst/extdata/cMD_curated_metadata_release.csv")
 write.csv(cmd_meta_release, fpath, row.names = FALSE)
 
 ## Sync the version in GCS bucket
-AnVIL::gsutil_cp(fpath, "gs://omics_ml_repo/cMD_curated_metadata_release.csv")
-
-# ## Sync the version in other OmicsMLRepoR package
-# file.copy(from = fpath,
-#           to = "~/OmicsMLRepo/OmicsMLRepoR/inst/extdata/cMD_curated_metadata_release.csv",
-#           overwrite = TRUE)
+options(GCLOUD_SDK_PATH = "~/Tools/google-cloud-sdk")
+AnVILGCP::avcopy(fpath, "gs://omics_ml_repo/cMD_curated_metadata_release.csv")
 ```
 
 # Sync curation maps
@@ -88,11 +112,11 @@ source(file.path(cmd_etl_dir, "1_sync_curation_map.R"))
 ```
 
 ```{r cmd_maps_fromGHtoGoogle, eval=FALSE}
-# # Directory containing curation_maps
-# # In case maps were modified/cleaned programmatically
-# cmd_maps_dir <- "~/OmicsMLRepo/OmicsMLRepoData/curatedMetagenomicData/maps"
-# new_maps <- c("disease", "disease_details", "ancestry", "ancestry_details")
-# source(file.path(cmd_etl_dir, "1_sync_curation_map_upload.R"))
+# Directory containing curation_maps
+# In case maps were modified/cleaned programmatically
+cmd_maps_dir <- "~/OmicsMLRepo/OmicsMLRepoData/curatedMetagenomicData/maps"
+new_maps <- c("target_condition")
+source(file.path(cmd_etl_dir, "1_sync_curation_map_upload.R"))
 ```
 
 ```{r save_maps_for_harmonizer, eval=FALSE}
@@ -106,31 +130,7 @@ source(file.path(cmd_etl_dir, "1_sync_curation_map.R"))
 #           overwrite = TRUE)
 ```
 
-# Assemble merging schema
 
-This script load the merging/curation/harmonization schema tables **from Google Sheet** and summarize them in our 'merging schema' format, `cmd_ms`, with completeness and uniqueness information.
-
-```{r}
-source(file.path(cmd_etl_dir, "2_assemble_merging_schema.R"))
-```
-
-```{r save_cmd_merging_schema, eval=FALSE}
-##### Other GitHub projects
-## OmicsMLRepoData
-extDir <- "~/OmicsMLRepo/OmicsMLRepoData/inst/extdata"
-write_csv(cmd_ms, file.path(extDir, "cMD_merging_schema.csv"))
-write_csv(map, file.path(extDir, "cMD_ms_allCols.csv")) # accessory file
-write_csv(dd, file.path(extDir, "cMD_dd_allCols.csv")) # accessory file
-
-# ## OmicsMLDataHarmonizer
-# harmonizerDataDir <- "~/OmicsMLRepo/OmicsMLRepoHarmonizer/data"
-# write_csv(cmd_ms, file.path(harmonizerDataDir, "cMD_merging_schema.csv"))
-
-##### Google Sheet
-url <- "https://docs.google.com/spreadsheets/d/1xziFB_zBl32BjNarcyEN4GupTYpPtq5aDz0GbRbWvtk/edit?usp=sharing"
-ss <- googledrive::as_id(url)
-googlesheets4::write_sheet(cmd_ms, ss = ss, sheet = "cMD_merging_schema")
-```
 
 # Data dictionary
 

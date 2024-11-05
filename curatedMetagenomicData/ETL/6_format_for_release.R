@@ -19,40 +19,16 @@ curated_all_cleaned <- curated_all_cleaned[-source_ind]
 updated_col_names <- gsub("^curated_", "", colnames(curated_all_cleaned))
 colnames(curated_all_cleaned) <- updated_col_names
 
-
-
-# Add unchanged columns ----------
-extDir <- "~/OmicsMLRepo/OmicsMLRepoData/inst/extdata"
-map <- read_sheet(ss, sheet = "merging_schema_allCols")
-dd <- read_sheet(ss, sheet = "data_dictionary_allCols") %>%
-    mutate(merge = as.character(merge))
-
-kept_categories <- dd %>% filter(merge == FALSE) %>% .[["curated_column"]]
-kept_cols <- map %>%
-    filter(curated_column %in% kept_categories) %>%
-    .[["ori_column"]]
-
-# Subset the metadata to be kept -------
-sampleMetadata <- read_csv(file.path(extDir, "cMD_sampleMetadata.csv"))
-kept_meta <- sampleMetadata %>% select(all_of(kept_cols))
-kept_meta$curation_id <- paste(kept_meta$study_name, # add curation_id to join
-                               kept_meta$sample_id, sep = ":")
-
-# Combine all metadata --------
-cmd_meta_release <- dplyr::full_join(curated_all_cleaned, 
-                                     kept_meta,
-                                     by = "curation_id")
-
 # Add attribute -----------
-cmd_meta_release$package <- "cMD"
-cmd_meta_release$last_updated <- Sys.time()
+curated_all_cleaned$package <- "cMD"
+curated_all_cleaned$last_updated <- Sys.time()
 
 # Update the format of the released version ----------------------------
 formatDir <- "~/OmicsMLRepo/OmicsMLRepoData/curatedMetagenomicData/ETL/format_update/"
 source(file.path(formatDir, "6_1_release.R"))
 
 # Combine data dictionary drafts ----
-allCols <- colnames(cmd_meta_release)
+allCols <- colnames(curated_all_cleaned)
 required_cols <- c("study_name", "subject_id", "sample_id", "curation_id", 
                    "target_condition", "target_condition_ontology_term_id",
                    "control", "control_ontology_term_id", 
@@ -61,5 +37,5 @@ required_cols <- c("study_name", "subject_id", "sample_id", "curation_id",
                    "body_site_details", "body_site_details_ontology_term_id")
 optional_cols <- allCols[!allCols %in% required_cols]
 col_order <- c(required_cols, sort(optional_cols))
-cmd_meta_release <- cmd_meta_release[col_order]
+cmd_meta_release <- curated_all_cleaned[col_order]
 

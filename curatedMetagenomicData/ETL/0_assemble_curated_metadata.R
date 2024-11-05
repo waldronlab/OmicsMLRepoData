@@ -21,26 +21,41 @@ ss <- googledrive::as_id(url)
 dd <- googlesheets4::read_sheet(ss, sheet = "data_dictionary_allCols") %>%
     mutate(merge = as.character(merge))
 ms <- googlesheets4::read_sheet(ss, sheet = "merging_schema_allCols")
-meta <- read.csv(file.path(dir, "inst/extdata/cMD_sampleMetadata.csv"), 
-                 header = TRUE) %>%
+sampleMetadata <- read.csv(file.path(dir, "inst/extdata/cMD_sampleMetadata.csv"), header = TRUE) %>%
     mutate(curation_id = paste(study_name, sample_id, sep = ":"))
-    
-cols_to_keep <- dd[which(dd$keep_origin == "TRUE"),]$curated_column 
-cols_to_keep_names <- ms$ori_column[ms$curated_column %in% cols_to_keep]
-kept_meta <- meta %>% 
+
+# Individual columns to be kept: `keep_origin == TRUE` in dd
+cols_to_keep <- dd %>%
+    filter(keep_origin == TRUE) %>%
+    pull(curated_column)
+cols_to_keep_names <- ms %>%
+    filter(curated_column %in% cols_to_keep) %>%
+    pull(ori_column)
+kept_cols <- sampleMetadata %>% 
     select(all_of(c("curation_id", cols_to_keep_names)))
-colnames(kept_meta) <- c("curation_id", cols_to_keep)
+colnames(kept_cols) <- c("curation_id", cols_to_keep) # to match the colname capitalization
+
+# Categories to be kept: `merge == FALSE` in dd
+categories_to_keep <- dd %>% 
+    filter(merge == FALSE) %>% 
+    pull(curated_column)
+categories_to_keep_names <- ms %>%
+    filter(curated_column %in% categories_to_keep) %>%
+    pull(ori_column)
+kept_categories <- sampleMetadata %>% 
+    select(all_of(c("curation_id", categories_to_keep_names)))
 
 
 # Combine all the curated sample metadata ----
 curated_all <- get(curatedDatObj[1])
 for (i in 2:length(curatedDatObj)) { # assuming there are >= 2 tables to be combined
     dat <- get(curatedDatObj[i])
-    curated_all <- left_join(curated_all, dat, by = "curation_id")
+    curated_all <- dplyr::left_join(curated_all, dat, by = "curation_id")
 }
 
 # Combine original metadata to be kept ----------
-curated_all <- left_join(curated_all, kept_meta, by = "curation_id")
+curated_all <- dplyr::left_join(curated_all, kept_cols, by = "curation_id") %>%
+    dplyr::left_join(., kept_categories, by = "curation_id")
 
 # Update the format ----------------
 formatDir <- "~/OmicsMLRepo/OmicsMLRepoData/curatedMetagenomicData/ETL/format_update/"
