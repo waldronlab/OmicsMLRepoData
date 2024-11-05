@@ -35,7 +35,7 @@ kept_cols <- map %>%
 # Subset the metadata to be kept -------
 sampleMetadata <- read_csv(file.path(extDir, "cMD_sampleMetadata.csv"))
 kept_meta <- sampleMetadata %>% select(all_of(kept_cols))
-kept_meta$curation_id <- paste(kept_meta$study_name, 
+kept_meta$curation_id <- paste(kept_meta$study_name, # add curation_id to join
                                kept_meta$sample_id, sep = ":")
 
 # Combine all metadata --------
@@ -43,14 +43,13 @@ cmd_meta_release <- dplyr::full_join(curated_all_cleaned,
                                      kept_meta,
                                      by = "curation_id")
 
+# Add attribute -----------
+cmd_meta_release$package <- "cMD"
+cmd_meta_release$last_updated <- Sys.time()
+
 # Update the format of the released version ----------------------------
 formatDir <- "~/OmicsMLRepo/OmicsMLRepoData/curatedMetagenomicData/ETL/format_update/"
 source(file.path(formatDir, "6_1_release.R"))
-
-
-
-
-
 
 # Combine data dictionary drafts ----
 allCols <- colnames(cmd_meta_release)
@@ -64,6 +63,3 @@ optional_cols <- allCols[!allCols %in% required_cols]
 col_order <- c(required_cols, sort(optional_cols))
 cmd_meta_release <- cmd_meta_release[col_order]
 
-# Add attribute -----------
-cmd_meta_release$package <- "cMD"
-cmd_meta_release$last_updated <- Sys.time()
