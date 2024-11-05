@@ -1,4 +1,4 @@
-"curated_field","original_field","original_field_completeness","curated_field_completeness","original_field_unique_vals","curated_field_unique_vals","percent_unique_vals_reduction"
+"curated_field","original_field","original_field_completeness","curated_field_completeness","original_field_unique_values","curated_field_unique_values","percent_unique_values_reduction"
 "cancer_subtype","SUBTYPE",19.94,25.3,316,790,0.67
 "cancer_subtype","SUBTYPE_ABBREVIATION",13.61,25.3,51,790,0.67
 "cancer_subtype","CLAUDIN_SUBTYPE",1.05,25.3,8,790,0.67
