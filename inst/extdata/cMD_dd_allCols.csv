@@ -1,10 +1,16 @@
 curated_column,numOfOriCols,numOfCuratCols,merge,keep_origin,addToStats,Expandable,direction,...9
-age;age_unit;age_group,3,3,TRUE,FALSE,TRUE,NA,-,NA
+remove,20,0,Remove,FALSE,FALSE,NA,Remove these columns,NA
+uncurated_metadata,9,1,Uncurated,FALSE,FALSE,NA,Merge to the existing 'uncurated_metadata' column,NA
+identification,5,4,FALSE,FALSE,FALSE,NA,-,NA
+independent,5,6,FALSE,FALSE,FALSE,NA,-,NA
+sequencing,5,5,FALSE,FALSE,FALSE,NA,-,NA
+location,1,1,FALSE,FALSE,FALSE,NA,NA,NA
+age;age_unit;age_group,3,3,TRUE,FALSE,TRUE,NA,schema for curation (age;age_unit;age_group) are different from release (age_years;age_min;age_max;age_group),NA
 ancestry;ancestry_details,1,2,TRUE,FALSE,TRUE,NA,NA,NA
 biomarker,38,1,TRUE,FALSE,TRUE,TRUE,"1) Map column names to ontology. 
 2) Consolidate into three columns: biomarker_name, biomarker_value, and biomerker_unit.",Hematology Test (NCIT:C49286)
 bmi,1,1,TRUE,TRUE,FALSE,NA,Update the colname as lower-case,NA
-"body_site, body_site_details",4,2,TRUE,FALSE,TRUE,NA,NA,NA
+body_site;body_site_details,4,2,TRUE,FALSE,TRUE,NA,NA,NA
 control;disease;disease_details,4,3,TRUE,FALSE,TRUE,NA,NA,NA
 country,1,1,TRUE,FALSE,FALSE,NA,NA,NA
 dietary_restriction,1,1,TRUE,FALSE,FALSE,NA,Rename the column to 'dietary_restriction'. Partially curated - no adequate ontology terms identified.,NA
@@ -16,9 +22,6 @@ feces_phenotype,3,1,TRUE,FALSE,TRUE,NA,NA,NA
 fmt_id,1,1,TRUE,FALSE,FALSE,NA,Rename the column to 'FMT_id',NA
 fmt_role,1,1,TRUE,FALSE,FALSE,NA,"Clean one off-value, 'recipient-before'",NA
 hla,5,1,TRUE,FALSE,TRUE,NA,NA,NA
-identification,4,4,FALSE,FALSE,FALSE,NA,-,NA
-independent,7,6,FALSE,FALSE,FALSE,NA,-,NA
-location,1,1,FALSE,FALSE,FALSE,NA,NA,NA
 ncbi_accession,1,1,TRUE,TRUE,FALSE,NA,Update the colname as lower-case,NA
 neonatal_birth_weight,1,1,TRUE,FALSE,FALSE,NA,NA,NA
 neonatal_delivery_procedure,2,1,TRUE,FALSE,TRUE,NA,Delivery Procedure (NCIT:C81179),NA
@@ -30,16 +33,12 @@ obgyn_lactating,1,1,TRUE,FALSE,FALSE,NA,NA,NA
 obgyn_menopause,1,1,TRUE,FALSE,FALSE,NA,NA,NA
 obgyn_pregnancy,1,1,TRUE,FALSE,FALSE,NA,NA,NA
 pmid,1,1,TRUE,TRUE,FALSE,NA,Update the colname as lower-case,NA
-population;population_details,1,2,FALSE,FALSE,FALSE,NA,NA,NA
 probing_pocket_depth,4,1,TRUE,FALSE,TRUE,TRUE,NA,NA
-remove,20,0,Remove,FALSE,FALSE,NA,Remove these columns,NA
-sequencing,5,5,FALSE,FALSE,FALSE,NA,-,NA
 sex,1,1,TRUE,FALSE,FALSE,NA,NA,NA
 smoker,3,1,TRUE,FALSE,TRUE,NA,smoker' and 'smoke' columns should be merged. 'ever_smoker' should be assigned with 'Ex-smoker' or 'Never smoked tobacco' depending on the 'ever_smoker' column value,NA
 target_condition,0,1,TRUE,FALSE,FALSE,NA,NA,NA
 treatment;antibiotics_current_use,3,2,TRUE,FALSE,TRUE,NA,NA,NA
 tumor_staging_ajcc,2,1,TRUE,FALSE,TRUE,NA,Combine as `tumor_staging` for release,NA
 tumor_staging_tnm,1,1,TRUE,FALSE,TRUE,NA,Combine as `tumor_staging` for release,NA
-uncurated_metadata,8,1,Uncurated,FALSE,FALSE,NA,Merge to the existing 'uncurated_metadata' column,NA
 westernized,1,1,TRUE,FALSE,FALSE,NA,Rename the column to 'westernized' and swipe the values,NA
-NA,142,62,NULL,NA,NA,NA,NA,NA
+NA,141,60,NULL,NA,NA,NA,NA,NA

@@ -41,10 +41,10 @@ triglycerides,biomarker,0.08,Triglyceride Measurement,NCIT:C64812,mg/dL,NA,NA,NA
 urea_nitrogen,biomarker,0.017,Urea Nitrogen Measurement,NCIT:C125949,mmol/L,BUN (Blood Urea Nitrogen),NA,NA
 wbc,biomarker,0.01,White blood cell count (procedure),SNOMED:767002,x10^3 counts/ul,"white blood cell counts, Leukocyte Count (OMIT:0009044)",NA,NA
 BMI,bmi,0.568,NA,NA,NA,NA,NA,NA
-body_site,"body_site, body_site_details",1,NA,NA,NA,Not sure whether it's worth to keep both body site and body subsite,NA,NA
-body_subsite,"body_site, body_site_details",0.096,NA,NA,NA,NA,NA,NA
-dental_sample_type,"body_site, body_site_details",0.007,NA,NA,NA,Didn't we used this for body site curation already? Yes,NA,NA
-disease_location,"body_site, body_site_details",0.018,NA,NA,NA,NA,NA,NA
+body_site,body_site;body_site_details,1,NA,NA,NA,Not sure whether it's worth to keep both body site and body subsite,NA,NA
+body_subsite,body_site;body_site_details,0.096,NA,NA,NA,NA,NA,NA
+dental_sample_type,body_site;body_site_details,0.007,NA,NA,NA,Didn't we used this for body site curation already? Yes,NA,NA
+disease_location,body_site;body_site_details,0.018,NA,NA,NA,NA,NA,NA
 disease,control;disease;disease_details,1,NA,NA,NA,NA,NA,NA
 disease_subtype,control;disease;disease_details,0.136,NA,NA,NA,NA,NA,NA
 history_of_periodontitis,control;disease;disease_details,0.005,periodontitis,EFO:0000649,NA,Yes/No,NA,Dental implants marker.
@@ -91,7 +91,6 @@ lactating,obgyn_lactating,0.043,NA,NA,NA,NA,NA,move to obgyn_lactating
 menopausal_status,obgyn_menopause,0.019,NA,NA,NA,NA,NA,NA
 pregnant,obgyn_pregnancy,0.16,NA,NA,NA,Pregnant (SNOMED:77386006)/ Not pregnant (SNOMED:60001007),NA,NA
 PMID,pmid,1,NA,NA,NA,NA,NA,NA
-population,ancestry;ancestry_details,0.09,NA,NA,NA,NA,NA,NA
 population,ancestry;ancestry_details,0.09,NA,NA,NA,NA,NA,NA
 PPD_B,probing_pocket_depth,0.005,Depth of periodontal pocket (observable entity),SNOMED:286546002,NA,NA,?,"Dental Implants, Basal"
 PPD_D,probing_pocket_depth,0.005,Depth of periodontal pocket (observable entity),SNOMED:286546002,NA,NA,?,"Dental Implants, Distal"
