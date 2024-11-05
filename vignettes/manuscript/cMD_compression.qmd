@@ -1,0 +1,100 @@
+---
+title: "Plot cMD metadata compression summary"
+author:
+  - Sehyun Oh
+date: "`r format(Sys.time(), '%B %d, %Y')`"
+format:
+    html:
+        fontsize: 14pxs
+        toc: true
+        top-depth: 3
+---
+
+```{r setup, include=FALSE}
+knitr::opts_chunk$set(echo = TRUE, 
+                      warning = FALSE,
+                      message = FALSE,
+                      collapse = TRUE)
+```
+
+```{r echo=FALSE}
+suppressPackageStartupMessages({
+    # library(ggsankey)
+    library(ggplot2)
+    library(dplyr)
+    library(readr)
+})
+```
+
+## Load and prepare merging schema
+```{r}
+extDir <- "~/OmicsMLRepo/OmicsMLRepoData/inst/extdata"
+ms <- read_csv(file.path(extDir, "cMD_merging_schema.csv"))
+allCols <- read_csv(file.path(extDir, "cMD_ms_allCols.csv"))
+```
+
+```{r}
+df1 <- allCols[1:2] %>%
+    group_by(curated_column) %>%
+    mutate(from = n(),
+           category = "original") %>%
+    dplyr::rename(column = ori_column)
+    
+df2 <- data.frame(column = unique(unlist(strsplit(allCols$curated_column, ";"))), 
+                  from = 1) %>%
+    mutate(category = "curated",
+           curated_column = column)
+
+df <- rbind(df1, df2)
+df$category <- factor(df$category, levels = c("original", "curated"))
+```
+
+## Plotting
+```{r}
+## Distinct color palette
+library(RColorBrewer)
+n <- length(unique(df$curated_column))
+qual_col_pals <- brewer.pal.info[brewer.pal.info$category == 'qual',]
+col_vector <- unlist(mapply(brewer.pal, 
+                            qual_col_pals$maxcolors, 
+                            rownames(qual_col_pals)))
+```
+
+```{r fig.width=2, fig.height=3}
+ggplot(df, aes(fill = curated_column, y = 1, x = category)) +
+    geom_bar(position = "stack", stat = "identity") +
+    theme_bw(base_size = 10) +
+    theme(legend.position = "none") +
+    scale_fill_manual(values = col_vector) +
+    labs(title = "cMD - Compression", 
+         x = "", y = "# of attributes") +
+    scale_x_discrete(labels = c("Original\nMetadata", "Curated\nMetadata"))
+```
+
+```{r sankey}
+# Load necessary libraries
+library(ggalluvial)
+library(dplyr)
+library(readr)
+
+# Read the data
+data <- allCols[1:2]
+
+# Split the curated_column into separate rows
+data <- data %>%
+  tidyr::separate_rows(curated_column, sep = ";")
+
+# Create the plot with a constant y value (1 for all nodes)
+ggplot(data,
+       aes(axis1 = ori_column, axis2 = curated_column, y = 1)) +
+  scale_x_discrete(limits = c("ori_column", "curated_column"), 
+                   expand = c(.1, .05)) +
+  geom_alluvium(aes(fill = curated_column), alpha = 0.7) +  
+  geom_stratum() +
+  scale_fill_viridis_d(option = "B", alpha = 0.8) +
+  theme_minimal() +
+  theme(legend.position = "none") +
+  ggtitle("cMD Metadata Harmonization/Compression") +
+  labs(y = "# of attributes")
+
+```

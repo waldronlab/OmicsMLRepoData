@@ -1,0 +1,119 @@
+---
+title: "cBioPortal"
+format: html
+editor: visual
+---
+
+# Setup
+```{r}
+suppressPackageStartupMessages({
+    library(OmicsMLRepoCuration)
+    library(dplyr)
+})
+
+devtools::load_all("~/OmicsMLRepo/OmicsMLRepoR")
+```
+
+## Load metadata
+```{r}
+cbio <- getMetadata("cBioPortal")
+# colnames(cbio)
+```
+
+## Helper function
+```{r}
+nonNACols <- function(x) {
+    colInds <- which(colSums(is.na(x)) < nrow(x))
+    res <- x[colInds]
+    return(res)
+}
+```
+
+
+# Attributes
+## Study Sizes
+```{r}
+x <- cbio %>% group_by(studyId) %>% summarize(study_size = n())
+hist(x$study_size, main = "Study Size", xlab = "# samples", ylab = "# studies")
+```
+
+## Ancestry
+```{r eval=FALSE}
+ancestry_terms <- cbio %>%
+    select(pop_ancestry_ontology_term_id) %>%
+    tidyr::separate_longer_delim(., colnames(.), ";") %>%
+    tidyr::separate_longer_delim(., colnames(.), "<;>") %>%
+    tidyr::separate_longer_delim(., colnames(.), "::") %>%
+    unique() %>%
+    na.omit() %>%
+    .[["pop_ancestry_ontology_term_id"]]
+
+dynamic_enums <- getEnumNodes(ancestry_terms, cutoff = 0.8)
+```
+
+## body_site
+[Error] The numbers of terms and term_ids are not matching:
+```{r error_check_with_Kai, eval=FALSE}
+> cbio_body_site_issue_ind <- c(7310, 125029, 125059)
+> cbio_body_site[cbio_body_site_issue_ind, c("curated_body_site", "curated_body_site_ontology_term_id")]
+# A tibble: 3 × 2
+  curated_body_site                                      curated_body_site_ontology_term_id
+  <chr>                                                  <chr>                             
+1 Cerebellum<;>Posterior Cranial Fossa<;>Brain Ventricle NCIT:C12445<;>NCIT:C33361         
+2 Left<;>Temporal Lobe<;>Parietal Lobe                   NCIT:C25229<;>NCIT:C12353         
+3 Left<;>Temporal Lobe<;>Parietal Lobe                   NCIT:C25229<;>NCIT:C12353
+```
+
+## Treatment name
+```{r}
+tn <- getLongMetaTb(cbio, targetCols = "treatment_name") 
+```
+
+Delimiter usage in `treatment_name`
+```{r}
+#' Check whether `;` used 
+#' 
+#' @param meta The metadata table
+#' @param attr The name of the attribute to check the existence of the `pattern`
+#' @param pattern The regular expression of the pattern to detect. 
+#' 
+#' @examples
+#' pattern <- "(?<!<);(?!>)"  # match ; but not <;>
+#' 
+checkDelim <- function(meta, attr, pattern = "(?<!<);(?!>)") {
+    res <- grep(pattern, meta[[attr]], perl = TRUE)
+    length(res)
+}
+```
+
+```{r}
+## The number of rows that contain ; but not <;>
+delim_res <- apply(cbio, 2, function(x) grep(pattern, x, perl = TRUE) %>% length())
+delim_res[delim_res != 0]
+```
+
+
+```{r}
+pattern <- "(?<!<);(?!>)"  # match ; but not <;>
+res <- grepl(pattern, cbio$treatment_name, perl = TRUE)
+head(cbio$treatment_name[res])
+head(cbio[res,])
+
+test <- head(cbio[res,])
+# targetCols <- colnames(test)[grep("treatment_", colnames(test))]
+targetCols <- paste0("treatment_",
+                     c("dose", "duration", "end", "frequency", "group",
+                       "name", "notes", "number", "reason", "start", 
+                       "status", "type"))
+df <- getLongMetaTb(test, targetCols)
+```
+
+
+
+
+## Bodysite
+```{r}
+test <- cbio %>% filter(bodysite == "Soft Tissue<;>Bone<;>Scapula")
+nonNACols(test)
+```
+

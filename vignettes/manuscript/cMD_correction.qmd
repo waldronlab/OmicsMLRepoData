@@ -1,0 +1,174 @@
+---
+title: "Plot cMD metadata compression summary"
+author:
+  - Sehyun Oh
+date: "`r format(Sys.time(), '%B %d, %Y')`"
+format:
+    html:
+        fontsize: 14pxs
+        toc: true
+        top-depth: 3
+---
+
+```{r setup, include=FALSE}
+knitr::opts_chunk$set(echo = TRUE, 
+                      warning = FALSE,
+                      message = FALSE,
+                      collapse = TRUE)
+```
+
+```{r echo=FALSE}
+suppressPackageStartupMessages({
+    library(ggplot2)
+    library(dplyr)
+    library(readr)
+    library(stringr)
+})
+```
+
+## Load data
+```{r}
+extDir <- "~/OmicsMLRepo/OmicsMLRepoData/inst/extdata"
+curated_all <- read_csv(file.path(extDir, "cMD_curated_metadata_all.csv"))
+ms <- read_csv(file.path(extDir, "cMD_merging_schema.csv"))
+dd <- read_csv(file.path(extDir, "cMD_data_dictionary.csv"))
+ori <- read_csv(file.path(extDir, "cMD_sampleMetadata.csv"))
+
+url <- "https://docs.google.com/spreadsheets/d/1xziFB_zBl32BjNarcyEN4GupTYpPtq5aDz0GbRbWvtk/edit?usp=sharing"
+ss <- googledrive::as_id(url)
+dd_allCols <- googlesheets4::read_sheet(ss, sheet = "data_dictionary_allCols")
+```
+
+```{r}
+## Exclude attributes that underwent no/minimum changes.
+keep_ind <- which(dd_allCols$keep_origin == "TRUE")
+cols_to_keep <- dd_allCols[keep_ind,]$curated_column 
+
+## Exclude attributes that contain numeric values
+num_ind <- which(dd$col.class != "character")
+cols_to_skip <- dd[num_ind,]$col.name
+
+curated_attrs <- strsplit(ms$curated_field, ";") %>% 
+    unlist() %>%
+    .[!. %in% cols_to_keep] %>%
+    .[!. %in% cols_to_skip]
+```
+
+
+### Manual comparision 
+- Compare 'curated_age_group' directly with 'age_category' column of the sampleMetadata     
+- Compare 'curated_treatment' directly with 'treatment' column of the sampleMetadata     
+- Compare 'curated_antibiotics_current_use' directly with 'antibiotics_current_use' column of the sampleMetadata      
+- Exclude 'age_years', 'biomarker', 'feces_phenotype_metric', and 'target_condition'     
+
+```{r}
+colnames <- c(paste0("curated_", curated_attrs),
+              paste0("original_", curated_attrs))
+
+ind <- which(!colnames %in% colnames(curated_all))
+colnames[ind]
+```
+
+
+# Check the correction rate
+```{r}
+exclude_attrs <- c("age_years", "biomarker", "feces_phenotype_metric", 
+                   "target_condition", "age_group", "treatment", 
+                   "antibiotics_current_use")
+attrs1 <- curated_attrs[!curated_attrs %in% exclude_attrs]
+```
+
+If compression happened for a given attribute (i.e., curated value is chosen 
+among the values from multiple original columns), we compare the chosen 
+original term and the final curated term. Also, we didn't count the changes
+in the first letter case as 'correction'. 
+
+```{r}
+correction_tb <- as.data.frame(matrix(nrow = length(attrs1), ncol = 4))
+colnames(correction_tb) <- c("curated_column", "num_not_updated", 
+                             "num_updated", "percent_updated")
+
+for (i in seq_along(attrs1)) {
+    ori_val <- tolower(curated_all[[paste0("original_", attrs1[i])]])
+    cura_val <- tolower(curated_all[[paste0("curated_", attrs1[i])]])
+    identical <- ori_val == cura_val # To handle NA:non_NA cases
+    all_ori_nonNA <- sum(!is.na(ori_val))
+    
+    num_updated <- all_ori_nonNA - sum(identical, na.rm = TRUE)
+    update_rate <- round(num_updated/all_ori_nonNA*100, 2)
+    
+    correction_tb$curated_column[i] <- attrs1[i]
+    correction_tb$num_not_updated[i] <- sum(identical, na.rm = TRUE)
+    correction_tb$num_updated[i] <- num_updated
+    correction_tb$percent_updated[i] <- update_rate
+}
+
+correction_tb
+```
+
+```{r}
+## Attributes their curated/original column names are not matching
+attrs2 <- c("age_group", "treatment", "antibiotics_current_use")
+attrs2_ori <- c("age_category", "treatment", "antibiotics_current_use")
+ori$curation_id <- paste(ori$study_name, ori$sample_id, sep = ":")
+temp_tb <- dplyr::left_join(ori[c("curation_id", attrs2_ori)],
+                        curated_all[c("curation_id", paste0("curated_", attrs2))],
+                        by = "curation_id")
+
+correction_tb2 <- as.data.frame(matrix(nrow = length(attrs2), ncol = 4))
+colnames(correction_tb2) <- c("curated_column", "num_not_updated", 
+                              "num_updated", "percent_updated")
+
+for (i in seq_along(attrs2)) {
+    ori_val <- tolower(temp_tb[[attrs2_ori[i]]])
+    cura_val <- tolower(temp_tb[[paste0("curated_", attrs2[i])]])
+    identical <- ori_val == cura_val # To handle NA:non_NA cases
+    all_ori_nonNA <- sum(!is.na(ori_val))
+    
+    num_updated <- all_ori_nonNA - sum(identical, na.rm = TRUE)
+    update_rate <- round(num_updated/all_ori_nonNA*100, 2)
+    
+    correction_tb2$curated_column[i] <- attrs2[i]
+    correction_tb2$num_not_updated[i] <- sum(identical, na.rm = TRUE)
+    correction_tb2$num_updated[i] <- num_updated
+    correction_tb2$percent_updated[i] <- update_rate
+}
+
+correction_tb2
+```
+
+```{r}
+## Manually select attributes to plot
+pick <- c("body_site", "age_group", "disease", "treatment", "fmt_role")
+dat <- rbind(correction_tb, correction_tb2) %>%
+    filter(curated_column %in% pick)
+
+df1 <- dat %>%
+    select(curated_column, num_not_updated) %>%
+    dplyr::rename(num = num_not_updated) %>%
+    mutate(harmonized = "Original")
+
+df2 <- dat %>%
+    select(curated_column, num_updated) %>%
+    dplyr::rename(num = num_updated) %>%
+    mutate(harmonized = "Updated")
+
+df <- rbind(df1, df2)
+```
+
+```{r fig.width=2, fig.height=1.8}
+ggplot(df, aes(fill = harmonized, y = num, x = curated_column)) +
+    geom_bar(position = "stack", stat = "identity") +
+    theme_bw(base_size = 8) +
+    labs(title = "cMD - Correction", 
+         x = "Curated Fields",
+         y = "# of values") +
+    scale_x_discrete(limits = pick) +
+    theme(axis.text.x = element_text(angle = 40, hjust = 1, size = 6)) +
+    theme(legend.title = element_blank(),
+          legend.text = element_text(size = 5),
+          legend.position = c(0.8, 0.8),
+          legend.key.height= unit(0.25, 'cm'),
+          legend.key.width= unit(0.35, 'cm')) +
+    scale_fill_manual(values = c("Grey","Red"))
+```

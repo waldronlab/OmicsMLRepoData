@@ -1,0 +1,78 @@
+---
+title: "Plot cBioPortal metadata compression summary"
+author:
+  - Sehyun Oh
+date: "`r format(Sys.time(), '%B %d, %Y')`"
+format:
+    html:
+        fontsize: 14pxs
+        toc: true
+        top-depth: 3
+---
+
+```{r setup, include=FALSE}
+knitr::opts_chunk$set(echo = TRUE, 
+                      warning = FALSE,
+                      message = FALSE,
+                      collapse = TRUE)
+```
+
+```{r echo=FALSE}
+suppressPackageStartupMessages({
+    # library(ggsankey)
+    library(OmicsMLRepoR)
+    library(ggplot2)
+    library(dplyr)
+    library(readr)
+})
+```
+
+## Load and prepare merging schema
+```{r}
+extDir <- "~/OmicsMLRepo/OmicsMLRepoData/inst/extdata"
+ms <- read_csv(file.path(extDir, "cBioPortal_merging_schema.csv"))
+```
+
+```{r}
+ms_long <- getLongMetaTb(ms, "original_field", delim = ";")
+df1 <- ms_long %>%
+    group_by(curated_field) %>%
+    mutate(from = n(),
+           category = "original") %>%
+    rename(column = original_field,
+           curated_column = curated_field) %>%
+    select(column, curated_column, from, category)
+
+df2 <- ms %>%
+    transmute(column = curated_field,
+              curated_column = curated_field,
+              from = 1,
+              category = "curated")
+
+df <- rbind(df1, df2)
+df$category <- factor(df$category, levels = c("original", "curated"))
+```
+
+## Plotting
+```{r}
+## Distinct color palette
+library(RColorBrewer)
+n <- length(unique(df$curated_column))
+qual_col_pals <- brewer.pal.info[brewer.pal.info$category == 'qual',]
+col_vector <- unlist(mapply(brewer.pal, 
+                            qual_col_pals$maxcolors, 
+                            rownames(qual_col_pals)))
+```
+
+```{r fig.width=2.5, fig.height=3}
+ggplot(df, aes(fill = curated_column, y = 1, x = category)) +
+    geom_bar(position = "stack", stat = "identity") +
+    theme_bw(base_size = 10) +
+    theme(legend.position = "none") +
+    scale_fill_manual(values = col_vector) +
+    labs(title = "cBioPortal - Compression", 
+         x = "", y = "# of attributes") +
+    scale_x_discrete(labels = c("Original\nMetadata", "Curated\nMetadata"))
+
+```
+
