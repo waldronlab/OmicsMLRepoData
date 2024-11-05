@@ -42,3 +42,10 @@ col_order <- c(required_cols, sort(optional_cols)) # alphabetical order
 cbio_meta_release <- cbio_meta_release[col_order] 
 
 attr(cbio_meta_release, "source") <- "cBioPortalData" # add attribute
+
+# Add attribute -----------
+cbio_meta_release$package <- "cBioPortal"
+cbio_meta_release$last_updated <- Sys.time()
+
+# Tidying ---------------
+
