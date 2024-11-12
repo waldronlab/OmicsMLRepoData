@@ -48,4 +48,20 @@ cbio_meta_release$package <- "cBioPortal"
 cbio_meta_release$last_updated <- Sys.time()
 
 # Tidying ---------------
+## Remove all treatment_* columns except treatment_name/type
+all_trt_cols <- grep("treatment_", colnames(cbio_meta_release), value = TRUE)
+kept_trt_cols <- grep("treatment_name|treatment_type", colnames(cbio_meta_release), value = TRUE)
+rm_trt_cols <- setdiff(all_trt_cols, kept_trt_cols)
+cbio_meta_release <- cbio_meta_release %>% select(!all_of(rm_trt_cols))
+
+# dd <- read.csv("~/OmicsMLRepo/OmicsMLRepoData/cBioPortalData/data_dictionary/cBioPortal_data_dictionary.csv")
+# removeCols <- dd %>% filter(main.col == "FALSE") %>% pull(col.name)
+# 
+# ## All the associated cols
+# onto_cols <- paste0(removeCols, "_ontology_term_id")
+# unit_cols <- paste0(removeCols, "_unit")
+# unit_onto_cols <- paste0(unit_cols, "_ontology_term_id")
+# removeColsAll <- intersect(c(removeCols, onto_cols, unit_cols, unit_onto_cols), 
+#                            colnames(cbio_meta_release))
+# cbio_meta_release <- cbio_meta_release %>% select(!removeColsAll)
 
