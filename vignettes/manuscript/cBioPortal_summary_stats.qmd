@@ -1,7 +1,11 @@
 ---
 title: "cBioPortal"
-format: html
-editor: visual
+author: "Sehyun Oh"
+output: rmarkdown::html_vignette
+vignette: >
+  %\VignetteIndexEntry{cBioPortalData pre/post harmonization stats}
+  %\VignetteEngine{knitr::rmarkdown}
+  %\VignetteEncoding{UTF-8}
 ---
 
 # Setup
@@ -37,7 +41,7 @@ x <- cbio %>% group_by(studyId) %>% summarize(study_size = n())
 hist(x$study_size, main = "Study Size", xlab = "# samples", ylab = "# studies")
 ```
 
-## Ancestry
+## ancestry
 ```{r eval=FALSE}
 ancestry_terms <- cbio %>%
     select(pop_ancestry_ontology_term_id) %>%
@@ -64,7 +68,17 @@ dynamic_enums <- getEnumNodes(ancestry_terms, cutoff = 0.8)
 3 Left<;>Temporal Lobe<;>Parietal Lobe                   NCIT:C25229<;>NCIT:C12353
 ```
 
-## Treatment name
+## treatment
+Started from the 6 original groups (original group: resultant features)
+
+name: name
+type: type
+amount: dose_val, dose_unit, number_val, number_unit
+time: start_val, start_unit, end_val, end_unit, duration_val, duration_unit, frequency_val, frequency_unit
+case: status, reason, group
+notes: notes
+
+### treatment name
 ```{r}
 tn <- getLongMetaTb(cbio, targetCols = "treatment_name") 
 ```

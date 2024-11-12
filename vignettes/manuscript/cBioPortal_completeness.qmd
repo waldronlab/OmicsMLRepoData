@@ -141,6 +141,14 @@ tb <- bind_rows(
 )
 ```
 
+```{r}
+## Keep only two treatment attributes - name and type
+all_trt <- grep("treatment_", cbio_ms$curated_field)
+keep_trt <- grep("treatment_name|treatment_type", cbio_ms$curated_field)
+ind <- setdiff(all_trt, keep_trt)
+cbio_ms <- cbio_ms[-ind,]
+```
+
 ```{r completeness_plot, echo=FALSE}
 cbio_completeness <- cbio_ms %>%
     filter(!is.na(original_field_completeness)) %>%
@@ -148,18 +156,24 @@ cbio_completeness <- cbio_ms %>%
     mutate(original_field_completeness = as.numeric(original_field_completeness),
            curated_field_completeness = as.numeric(curated_field_completeness))
 
-cbio_completeness %>%
+completeness_plot <- cbio_completeness %>%
     ggplot() +
     # geom_violin(aes(x = curated_field, y = original_field_completeness), alpha = 0.3) +
     geom_boxplot(aes(x = curated_field, y = original_field_completeness), alpha = 0.3) +
     theme_bw() +
     # scale_y_continuous(limits = c(1, 100), trans = "log10") +
-    labs(title = "Completeness",
-         x = "Curated Fields",
+    labs(x = "Curated Fields",
          y = "Completeness (%)") +
-    theme(axis.text.x = element_text(angle = 90, vjust = 0.5, hjust = 1)) +
+    theme(axis.text.x = element_text(angle = 60, vjust = 1, hjust = 1)) +
+    # scale_x_discrete(guide = guide_axis(n.dodge = 2)) +
     geom_point(aes(x = curated_field, y = curated_field_completeness), 
                col = "red", alpha = 0.2, size = 2, shape = 1)
+
+completeness_plot
+```
+
+```{r}
+ggsave("figures/cbio_completeness.png", width = 6, height = 4, dpi = 600)
 ```
 
 ```{r completeness_variability_plot, echo=FALSE, eval=FALSE}
@@ -189,12 +203,15 @@ cbio_ms_sub %>%
                alpha = 0.3, size = 1) +
     theme_bw() +
     # scale_y_continuous(limits = c(1, 100), trans = "log10") +
-    labs(title = "Consolidation",
-         x = "Curated Fields",
+    labs(x = "Curated Fields",
          y = "# of Unique Values") +
-    theme(axis.text.x = element_text(angle = 90, vjust = 0.5, hjust = 1)) +
+    theme(axis.text.x = element_text(angle = 60, vjust = 1, hjust = 1)) +
     geom_point(aes(x = curated_field, y = curated_field_unique_values), 
                col = "red", size = 2, shape = 1)
+```
+
+```{r}
+ggsave("figures/cbio_consolidation.png", width = 6, height = 4, dpi = 600)
 ```
 
 ### Plot high-impacted subsets

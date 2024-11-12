@@ -34,6 +34,14 @@ ms <- read_csv(file.path(extDir, "cBioPortal_merging_schema.csv"))
 ```
 
 ```{r}
+## Keep only two treatment attributes - name and type
+all_trt <- grep("treatment_", ms$curated_field)
+keep_trt <- grep("treatment_name|treatment_type", ms$curated_field)
+ind <- setdiff(all_trt, keep_trt)
+ms <- ms[-ind,]
+```
+
+```{r}
 ms_long <- getLongMetaTb(ms, "original_field", delim = ";")
 df1 <- ms_long %>%
     group_by(curated_field) %>%
@@ -65,14 +73,18 @@ col_vector <- unlist(mapply(brewer.pal,
 ```
 
 ```{r fig.width=2.5, fig.height=3}
-ggplot(df, aes(fill = curated_column, y = 1, x = category)) +
+cbio_compression <- ggplot(df, aes(fill = curated_column, y = 1, x = category)) +
     geom_bar(position = "stack", stat = "identity") +
-    theme_bw(base_size = 10) +
+    theme_bw(base_size = 9) +
     theme(legend.position = "none") +
     scale_fill_manual(values = col_vector) +
     labs(title = "cBioPortal - Compression", 
          x = "", y = "# of attributes") +
     scale_x_discrete(labels = c("Original\nMetadata", "Curated\nMetadata"))
+cbio_compression
+```
 
+```{r}
+ggsave("figures/cbio_compression.png", width = 2.5, height = 3, dpi = 600)
 ```
 
