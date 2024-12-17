@@ -51,7 +51,7 @@ library(hash)
 We will first add a `curation_id` consisting of study ID, patient ID, and sample ID (`studyId:patientId:sampleId`) to avoid confusion due to duplicated samples.
 ```{r curation_setup}
 # Load cbio data
-cbio <- readRDS("C:\\Users\\Owner\\Desktop\\CUNY Internship\\cBioPortal_all_clinicalData_combined_2023-05-18.rds")
+cbio <- readRDS("D:\\CUNY Internship\\cBioPortal_all_clinicalData_combined_2023-05-18.rds")
 
 # Add curation ID
 cbio$curation_id <- paste(cbio$studyId, cbio$patientId, cbio$sampleId, sep = ":")
@@ -62,7 +62,7 @@ url <- "https://docs.google.com/spreadsheets/d/1DKuoIt2xgSnkdkhYWffubmwrXLA7V7Z7
 ss <- googledrive::as_id(url)
 
 # Define a project directory
-proj_dir <- "C:\\Users\\Owner\\Desktop\\CUNY Internship\\cbio\\Bodysite\\"
+proj_dir <- "D:\\CUNY Internship\\cbio\\Bodysite\\"
 ```
 
 
@@ -116,6 +116,8 @@ pot_col_map <- read.csv(file=file.path(proj_dir, "cBioPortal_curation_schema.csv
 # Get list of all columns to combine into new body_site column
 original_cols <- unlist(strsplit(pot_col_map$original_columns[8], ";"))
 
+original_cols <- setdiff(original_cols, c("ATOMIC_SITE_DETAIL", "TUMOR_ANATOMIC_LOCATION", "PRIMARY_LOCATION", "ESCAPE_LESION_SITE", "PROGRESSION_SITE", "TISSUE_COLLECTION_SITE", "LOCATION_METASTASIS_AT_DX"))
+
 # Create a subset of cbio containing only relevant columns
 bodysite_cols_cbio <- cbio[,c("curation_id", original_cols)]
 ```
@@ -125,7 +127,7 @@ columns, and export this dataframe to manually group columns into a smaller set
 of curated columns:
 ```{r}
 # Create a summary dataframe of the relevant columns
-summary_bodysite_cols <- data.frame(colnames(bodysite_cols_cbio[,2:44]))
+summary_bodysite_cols <- data.frame(colnames(bodysite_cols_cbio[,2:49]))
 
 # Iterate through these columns to create a summary of each column's completeness
 for (col in 1:nrow(summary_bodysite_cols)){
@@ -221,7 +223,7 @@ bodysite_cols_cbio <- bodysite_cols_cbio %>% replace(is.na(.), "8X8") %>% data.f
 
 # Merge all relevant rows
 for (i in 1:nrow(bodysite_cols_cbio)){
-  bodysite_cols_cbio$merged[i] <- toupper(paste(bodysite_cols_cbio[i,2:44], collapse="<;>"))
+  bodysite_cols_cbio$merged[i] <- toupper(paste(bodysite_cols_cbio[i,2:49], collapse="<;>"))
 }
 ```
 
@@ -318,11 +320,11 @@ bodysite_cols_cbio <- data.frame(lapply(bodysite_cols_cbio,
 
 # Create a column of relevant source columns
 for (i in 1:nrow(bodysite_cols_cbio)){
-  bodysite_cols_cbio$curated_body_site_source[i] <- paste(colnames(bodysite_cols_cbio[,2:44][which(!is.na(bodysite_cols_cbio[i,2:44]))]), collapse="<;>")
+  bodysite_cols_cbio$curated_body_site_source[i] <- paste(colnames(bodysite_cols_cbio[,2:49][which(!is.na(bodysite_cols_cbio[i,2:49]))]), collapse="<;>")
 }
 
 # Create a curated dataframe
-curated_bodysite <- bodysite_cols_cbio[,c(1, 45:48)]
+curated_bodysite <- bodysite_cols_cbio[,c(1, 50:53)]
 
 # Rename the columns for accuracy & specificity
 colnames(curated_bodysite)[1:2] <- c("curation_id", "original_body_site")
