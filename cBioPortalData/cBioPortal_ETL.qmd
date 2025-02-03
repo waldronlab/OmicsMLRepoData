@@ -42,7 +42,7 @@ source(file.path(cbio_etl_dir, "0_assemble_curated_metadata.R"))
 
 ```{r save, eval=FALSE}
 extDir <- "~/OmicsMLRepo/OmicsMLRepoData/inst/extdata"
-write_csv(curated_all, file.path(extDir, "cBioPortal_curated_metadata.csv")) # 189,439 x 156
+write_csv(curated_all, file.path(extDir, "cBioPortal_curated_metadata.csv")) # 189,439 x 160
 ```
 
 
@@ -60,7 +60,7 @@ source(file.path(cbio_etl_dir, "2_format_for_release.R"))
 ```{r save_cmd_meta_release, eval=FALSE}
 dir <- "~/OmicsMLRepo/OmicsMLRepoData"
 fpath <- file.path(dir, "inst/extdata/cBioPortal_curated_metadata_release.csv")
-write.csv(cbio_meta_release, fpath, row.names = FALSE) # 189,439 x 85
+write.csv(cbio_meta_release, fpath, row.names = FALSE) # 189,439 x 60
 
 ## Sync the version in GCS bucket
 AnVIL::gsutil_cp(fpath, "gs://omics_ml_repo/cBioPortal_curated_metadata_release.csv")
@@ -82,7 +82,7 @@ project).
 ```{r eval=FALSE}
 # Directory to save curation_maps from Google Sheet
 cbio_maps_dir <- "~/OmicsMLRepo/OmicsMLRepoData/cBioPortalData/maps"
-source(file.path(cbio_etl_dir, "1_sync_curation_map.R"))
+source(file.path(cbio_etl_dir, "1_sync_curation_map.R")) # Should be updated with new maps
 ```
 
 ```{r maps_updated_through_gh, eval=FALSE}
@@ -90,17 +90,18 @@ target_condition <- read.csv(file.path(cbio_maps_dir, "cBioPortal_target_conditi
 url <- "https://docs.google.com/spreadsheets/d/1omAoO0N3r3rjBIQuhMB_uJU0WDF6hidg1_qwMTVav2c/edit?usp=sharing"
 ss <- googledrive::as_id(url)
 googlesheets4::write_sheet(target_condition, ss = ss, sheet = "cBioPortal_target_condition")
-
-
-write.csv(bodysite_map, file.path(cbio_maps_dir, "cBioPortal_bodysite_map.csv"), row.names = FALSE)
-write.csv(disease_map, file.path(cbio_maps_dir, "cBioPortal_diseases_map.csv"), row.names = FALSE)
-write.csv(population_map, file.path(cbio_maps_dir, "cBioPortal_population_map.csv"), row.names = FALSE)
 ```
 
 ```{r save_curation_maps, eval=FALSE, echo=FALSE}
+write.csv(ancestry_detailed_map, 
+          file.path(cbio_maps_dir, "cBioPortal_ancestry_detailed_map.csv"), row.names = FALSE)
+write.csv(ancestry_map, file.path(cbio_maps_dir, "cBioPortal_ancestry_map.csv"), row.names = FALSE)
 write.csv(bodysite_map, file.path(cbio_maps_dir, "cBioPortal_body_site_map.csv"), row.names = FALSE)
 write.csv(country_map, file.path(cbio_maps_dir, "cBioPortal_country_map.csv"), row.names = FALSE)
-write.csv(country_map, file.path(cbio_maps_dir, "cBioPortal_location_map.csv"), row.names = FALSE)
+write.csv(location_map, file.path(cbio_maps_dir, "cBioPortal_location_map.csv"), row.names = FALSE)
+write.csv(disease_map, file.path(cbio_maps_dir, "cBioPortal_disease_map.csv"), row.names = FALSE)
+write.csv(disease_metastasis_map, file.path(cbio_maps_dir, "cBioPortal_disease_metastasis_map.csv"), row.names = FALSE)
+write.csv(vital_status_map, file.path(cbio_maps_dir, "cBioPortal_vital_status_map.csv"), row.names = FALSE)
 
 ## Treatments
 write.csv(treatment_name_map, file.path(cbio_maps_dir, "cBioPortal_treatment_name_map.csv"), row.names = FALSE)
@@ -126,7 +127,8 @@ values for both original and curated fields, and creates the cBioPortal
 merging schema table, `cbio_ms`.
 
 ```{r eval=FALSE}
-## Need the `curated_all` object from the below script
+## Need the `curated_all` object from the below script to run `3_assemble_merging_schema_from_data.R`
+cbio_etl_dir <- "~/OmicsMLRepo/OmicsMLRepoData/cBioPortalData/ETL"
 source(file.path(cbio_etl_dir, "0_assemble_curated_metadata.R"))
 ```
 
@@ -170,6 +172,7 @@ write.csv(treatment_ms, file.path(cbio_ms_dir, "cBioPortal_merging_schema_treatm
 ```
 
 # Sync data dictionary
+This script 'SAVE' data dictionaries.
 ```{r eval=FALSE}
 # cBioPortal data dictionary created in Google Sheet
 # Edit this from Google Sheet
