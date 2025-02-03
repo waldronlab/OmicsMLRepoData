@@ -132,13 +132,13 @@ source(file.path(cmd_etl_dir, "1_sync_curation_map_upload.R"))
 
 
 
-# Data dictionary
+# Establishing Data dictionary
 
 ## Initial assembly
 
 The resulting table from the below script, `template_dd`, contains all the columns in the final version of cMD sampleMetadata (under the `col.name` column).
 
-```{r}
+```{r eval=FALSE}
 # returns: `template_dd`
 source(file.path(cmd_etl_dir, "3_assemble_data_dictionary_template.R")) 
 ```
@@ -147,7 +147,7 @@ source(file.path(cmd_etl_dir, "3_assemble_data_dictionary_template.R"))
 
 Data dictionary contents should be modified only through the `template_*.R` scripts within the `~/OmicsMLRepo/OmicsMLRepoData/curatedMetagenomicData/ETL/R` directory.
 
-```{r}
+```{r eval=FALSE}
 ## From `3_assemble_data_dictionary_template.R`
 # duplicate object at the beginning because manipulations should be assigned 
 # back to the original object, i.e., make modifications on the original object
@@ -186,7 +186,7 @@ file.copy(from = file.path(extDir, "cMD_data_dictionary.csv"),
 
 Add the new attributes to the data dictionary.
 
-```{r}
+```{r eval=FALSE}
 projDir <- "~/OmicsMLRepo/OmicsMLRepoData/curatedMetagenomicData"
 scriptDir <- file.path(projDir, "ETL/R")
 extDir <- "~/OmicsMLRepo/OmicsMLRepoData/inst/extdata"
@@ -207,6 +207,32 @@ url <- "https://docs.google.com/spreadsheets/d/1xziFB_zBl32BjNarcyEN4GupTYpPtq5a
 ss <- googledrive::as_id(url)
 googlesheets4::write_sheet(expanded_dd, ss = ss, sheet = "cMD4_data_dictionary")
 ```
+
+
+# Established Data Dictionary
+Once we established the curatedMetagenomicData metadata dictionary, we keep the
+Google Sheet version as a default and start to make a modification on Google
+Sheet (as of 11.19.24). 
+```{r}
+## Download from Google Sheet
+url <- "https://docs.google.com/spreadsheets/d/1xziFB_zBl32BjNarcyEN4GupTYpPtq5aDz0GbRbWvtk/edit?usp=sharing"
+ss <- googledrive::as_id(url)
+filled_dd <- googlesheets4::read_sheet(ss = ss, sheet = "cMD_data_dictionary")
+```
+
+```{r}
+## GitHub project
+extDir <- "~/OmicsMLRepo/OmicsMLRepoData/inst/extdata"
+write_csv(filled_dd, file.path(extDir, "cMD_data_dictionary.csv"))
+
+## OmicsMLRepoR packages extdata
+file.copy(from = file.path(extDir, "cMD_data_dictionary.csv"),
+          to = "~/OmicsMLRepo/OmicsMLRepoR/inst/extdata/cMD_data_dictionary.csv",
+          overwrite = TRUE)
+```
+
+
+
 
 # Dynamic Enum
 
