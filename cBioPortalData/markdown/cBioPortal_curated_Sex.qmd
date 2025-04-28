@@ -51,7 +51,7 @@ library(hash)
 We will first add a `curation_id` consisting of study ID, patient ID, and sample ID (`studyId:patientId:sampleId`) to avoid confusion due to duplicated samples.
 ```{r curation_setup}
 # Load cbio data
-cbio <- readRDS("C:\\Users\\Owner\\Desktop\\CUNY Internship\\cBioPortal_all_clinicalData_combined_2023-05-18.rds")
+cbio <- readRDS("D:\\CUNY Internship\\cBioPortal_all_clinicalData_combined_2023-05-18.rds")
 
 # Add curation ID
 cbio$curation_id <- paste(cbio$studyId, cbio$patientId, cbio$sampleId, sep = ":")
@@ -62,7 +62,7 @@ url <- "https://docs.google.com/spreadsheets/d/1O_W_QDUZKWRNy4GbDQp3RCObb0FCBSVZ
 ss <- googledrive::as_id(url)
 
 # Define a project directory
-proj_dir <- "C:\\Users\\Owner\\Desktop\\CUNY Internship\\cbio\\Sex\\"
+proj_dir <- "D:\\CUNY Internship\\cbio\\Sex\\"
 ```
 
 
@@ -121,22 +121,35 @@ convert some columns from TRUE/FALSE and Yes/No values into Female/Male values:
 ```{r}
 # Convert Yes/No and T/F columns to descriptive values
 # Create a subset of female anatomy indicator columns to process together
-F_indicators <- c("DMETS_DX_OVARY", "DMETS_DX_FEMALE_GENITAL")
+F_indicators <- c("DMETS_DX_OVARY", "DMETS_DX_FEMALE_GENITAL", "METS_SITES_AT_METS_ABST_OVARY", "METS_SITES_AT_METS_DX_OVARY", "DIAGNOSIS_CANCER_LOC_OVARY", "ANYTIME_CANCER_LOC_OVARY")
+M_indicators <- c("TESTICULAR_INVOLVEMENT", "DMETS_DX_MALE_GENITAL", "FAMILY_HISTORY_TESTICULAR_CANCER", "PRD_PROSTATECTOMY", "TESTIS_TUMOR_MACROEXTENT", "HISTORY_OF_UNDESCENDED_TESTIS", "INCIDENTAL_PROSTATE_CANCER", "TESTES_SITE_OF_RELAPSE")
 
-# Replace "Yes" values with appropriate Female/Male value
+# Replace positive indicator values with appropriate Female/Male value
 sex_cols_cbio[,F_indicators] <- data.frame(lapply(sex_cols_cbio[,F_indicators], function(x) gsub("^Yes$", "Female", x)))
-sex_cols_cbio[,"TESTICULAR_INVOLVEMENT"] <- data.frame(lapply(sex_cols_cbio[,"TESTICULAR_INVOLVEMENT"], function(x) gsub("^Yes$", NA, x)))
-sex_cols_cbio[,"DMETS_DX_MALE_GENITAL"] <- data.frame(lapply(sex_cols_cbio[,"DMETS_DX_MALE_GENITAL"], function(x) gsub("^Yes$", "Male", x)))
+sex_cols_cbio[,F_indicators] <- data.frame(lapply(sex_cols_cbio[,F_indicators], function(x) gsub("^TRUE$", "Female", x)))
+sex_cols_cbio[,F_indicators] <- data.frame(lapply(sex_cols_cbio[,F_indicators], function(x) gsub("^YES$", "Female", x)))
+sex_cols_cbio[,M_indicators] <- data.frame(lapply(sex_cols_cbio[,M_indicators], function(x) gsub("^Yes$", "Male", x)))
+sex_cols_cbio[,M_indicators] <- data.frame(lapply(sex_cols_cbio[,M_indicators], function(x) gsub("^YES$", "Male", x)))
+sex_cols_cbio[,M_indicators] <- data.frame(lapply(sex_cols_cbio[,M_indicators], function(x) gsub("^TRUE$", "Male", x)))
+sex_cols_cbio[,M_indicators] <- data.frame(lapply(sex_cols_cbio[,M_indicators], function(x) ifelse(grepl("^Yes;", x), "Male", x)))
+sex_cols_cbio[,M_indicators] <- data.frame(lapply(sex_cols_cbio[,M_indicators], function(x) ifelse(grepl("^Involves", x), "Male", x)))
 
-# Replace "No" values with appropriate Female/Male value
-sex_cols_cbio[,c(F_indicators, "DMETS_DX_MALE_GENITAL", "TESTICULAR_INVOLVEMENT")] <- data.frame(lapply(sex_cols_cbio[,c(F_indicators, "DMETS_DX_MALE_GENITAL", "TESTICULAR_INVOLVEMENT")], function(x) gsub("^No$", NA, x)))
+# Replace negative indicator values with appropriate Female/Male value
+sex_cols_cbio[,c(F_indicators, M_indicators)] <- data.frame(lapply(sex_cols_cbio[,c(F_indicators, M_indicators)], function(x) gsub("^No$", NA, x)))
+sex_cols_cbio[,c(F_indicators, M_indicators)] <- data.frame(lapply(sex_cols_cbio[,c(F_indicators, M_indicators)], function(x) gsub("^NO$", NA, x)))
+sex_cols_cbio[,c(F_indicators, M_indicators)] <- data.frame(lapply(sex_cols_cbio[,c(F_indicators, M_indicators)], function(x) gsub("^FALSE$", NA, x)))
 
+# Standardize capitalization
 sex_cols_cbio <- data.frame(lapply(sex_cols_cbio, function(x) gsub("FEMALE", "Female", x)))
 sex_cols_cbio <- data.frame(lapply(sex_cols_cbio, function(x) gsub("^MALE$", "Male", x)))
 
-for (val in c("Unknown", "ABSTRACTION_PENDING", "U")){
-  sex_cols_cbio <- data.frame(lapply(sex_cols_cbio, function(x) gsub(val, NA, x)))
-}
+# Convert numeric values to "Female" for "CERVIX_SUV_RESULTS" column
+sex_cols_cbio$CERVIX_SUV_RESULTS <- as.numeric(sex_cols_cbio$CERVIX_SUV_RESULTS)
+sex_cols_cbio$CERVIX_SUV_RESULTS[sex_cols_cbio$CERVIX_SUV_RESULTS >= 0] <- "Female"
+
+# Remove all unclassified values
+approved_vals <- c("Male", "Female")
+sex_cols_cbio[,c(F_indicators, M_indicators)] <- data.frame(lapply(sex_cols_cbio[,c(F_indicators, M_indicators)], function(x) ifelse(x %in% approved_vals, x, NA)))
 
 ```
 
@@ -150,7 +163,7 @@ sex_cols_cbio <- sex_cols_cbio %>% replace(is.na(.), "8X8") %>% data.frame()
 
 # Merge all relevant rows
 for (i in 1:nrow(sex_cols_cbio)){
-  sex_cols_cbio$merged[i] <- toupper(paste(sex_cols_cbio[i,2:7], collapse=";"))
+  sex_cols_cbio$merged[i] <- toupper(paste(sex_cols_cbio[i,2:18], collapse=";"))
 }
 ```
 
@@ -234,11 +247,11 @@ sex_cols_cbio <- data.frame(lapply(sex_cols_cbio,
 
 # Create a column of relevant source columns
 for (i in 1:nrow(sex_cols_cbio)){
-  sex_cols_cbio$curated_sex_source[i] <- paste(colnames(sex_cols_cbio[,2:7][which(!is.na(sex_cols_cbio[i,2:7]))]), collapse=";")
+  sex_cols_cbio$curated_sex_source[i] <- paste(colnames(sex_cols_cbio[,2:18][which(!is.na(sex_cols_cbio[i,2:18]))]), collapse=";")
 }
 
 # Create a curated dataframe
-curated_sex <- sex_cols_cbio[,c(1, 8:11)]
+curated_sex <- sex_cols_cbio[,c(1, 19:22)]
 
 # Rename the columns for accuracy & specificity
 colnames(curated_sex)[2] <- "original_sex"
@@ -316,7 +329,7 @@ prob_studies <- chk %>%
 ```
 
 After reviewing the problem studies, it is apparent that a significant curation
-error has affected the `luad_msk_npjpo_2021` study, as 303 of the curated_sex 
+error has affected the `luad_msk_npjpo_2021` study, as 306 of the curated_sex 
 values originating from this study are in dissention from the majority value
 of those patients. 
 
@@ -326,7 +339,7 @@ in disagreement on curated_sex or if only some values are in disagreement. To do
 this, we will iterate through these remaining patient IDs to find the number of
 additional studies in which each patient ID is present; if it is not present in 
 any additional studies then we cannot confirm if the curated_sex value is accurate,
-however if it is present in addition studies then we know the curated_sex value 
+however if it is present in additional studies then we know the curated_sex value 
 is accurate because the patient ID was excluded from the original dataframe of
 conflicting values:
 ```{r}
@@ -384,7 +397,7 @@ for (pat in chk1$patient_id){
   # Set all values for the patient to be the descriptive value
   curated_sex$curated_sex[which(cbio$patientId==pat)] <- standard_value
   # Set all curated ontology term ids to match the patient's standardized value
-  curated_sex$curated_pop_ancestry_ontology_term_id[which(cbio$patientId==pat)] <- standard_id
+  curated_sex$curated_sex_ontology_term_id[which(cbio$patientId==pat)] <- standard_id
 }
 ```
 
