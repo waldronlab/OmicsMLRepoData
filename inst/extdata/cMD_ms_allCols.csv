@@ -17,8 +17,8 @@ creatinine,biomarker,0.034,Creatinine Measurement,NCIT:C64547,mmol/L,NA,NA,NA
 dyastolic_p,biomarker,0.035,Diastolic Blood Pressure,NCIT:C25299,mm/Hg,blood pressure metric,NA,NA
 eGFR,biomarker,0.005,Estimated Glomerular Filtration Rate,NCIT:C110935,mL/min/1.73m2,"determinant of kidney disease stage, Unit added",NA,NA
 ESR,biomarker,0.004,Erythrocyte Sedimentation Rate Measurement,NCIT:C74611,mm/hr,NA,NA,NA
-fasting_glucose,biomarker,0.009,blood glucose amount,OBA:VT0000188,mg/dL,NA,NA,NA
-fasting_insulin,biomarker,0.005,blood insulin amount,OBA:VT0001560,uU/ml,NA,NA,NA
+fasting_glucose,biomarker,0.009,fasting blood glucose measurement,EFO:0004465,mg/dL,NA,NA,NA
+fasting_insulin,biomarker,0.005,fasting blood insulin measurement,EFO:0004466,uU/ml,NA,NA,NA
 fgf_19,biomarker,0.006,Fibroblast Growth Factor 19 Measurement,NCIT:C154727,pg/ml,fibroblast growth factor 19,NA,NA
 globulin,biomarker,0.014,Globulin Protein Measurement,NCIT:C74738,g/L,NA,NA,NA
 glp_1,biomarker,0.006,Glucagon-like Peptide-1 Measurement,NCIT:C80183,pmol/L,glucagon-like peptide 1,NA,NA
