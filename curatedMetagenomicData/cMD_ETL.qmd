@@ -103,7 +103,7 @@ Curation maps are tables manually created and maintained in Google Sheet. We ass
 
 Four main columns are labeled as `original_value`, `curated_ontology`, `curated_ontology_term_id`, and `curated_ontology_term_db`.
 
-The script below (`1_sync_curation_map.R`) syncs all the cMD curation maps from Google Sheet to the `cbioportal_maps_dir` (a directory under the local git project).
+The script below (`1_sync_curation_map.R`) syncs all the cMD curation maps from Google Sheet to the `cmd_maps_dir` (a directory under the local git project).
 
 ```{r cmd_save_curation_maps, eval=FALSE}
 # Directory to save curation_maps from Google Sheet

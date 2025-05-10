@@ -35,7 +35,8 @@ required_cols <- c("study_name", "subject_id", "sample_id", "curation_id",
                    "country", "country_ontology_term_id", 
                    "body_site", "body_site_ontology_term_id",
                    "body_site_details", "body_site_details_ontology_term_id")
-optional_cols <- allCols[!allCols %in% required_cols]
-col_order <- c(required_cols, sort(optional_cols))
+annot_cols <- c("package", "last_updated")
+optional_cols <- allCols[!allCols %in% c(required_cols, annot_cols)]
+col_order <- c(required_cols, sort(optional_cols), annot_cols)
 cmd_meta_release <- curated_all_cleaned[col_order]
 
