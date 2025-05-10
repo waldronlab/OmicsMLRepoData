@@ -33,6 +33,13 @@ url <- "https://docs.google.com/spreadsheets/d/1Mq1uXYtOElx324n7yyP_jKLdkSDpnQv5
 ss <- googledrive::as_id(url)
 ancestry_map <- googlesheets4::read_sheet(ss = ss, sheet = "cBioPortal_population_ancestry_map")
 
+# ## Population_ancestry Discrepancies
+# url <- "https://docs.google.com/spreadsheets/d/1Mq1uXYtOElx324n7yyP_jKLdkSDpnQv5yx6HHt0CKx4/edit?usp=sharing"
+# ss <- googledrive::as_id(url)
+# discrepancies_patients <- googlesheets4::read_sheet(ss = ss, sheet = "discrepancies_patients")
+# discrepancies_ancestry <- googlesheets4::read_sheet(ss = ss, sheet = "discrepancies_ancestry")
+# dissenting_values <- googlesheets4::read_sheet(ss = ss, sheet = "discrepancies_dissenting_values")
+
 ## Population_ancestry_detailed
 url <- "https://docs.google.com/spreadsheets/d/1Mq1uXYtOElx324n7yyP_jKLdkSDpnQv5yx6HHt0CKx4/edit?usp=sharing"
 ss <- googledrive::as_id(url)

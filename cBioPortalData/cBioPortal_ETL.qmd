@@ -60,10 +60,12 @@ source(file.path(cbio_etl_dir, "2_format_for_release.R"))
 ```{r save_cmd_meta_release, eval=FALSE}
 dir <- "~/OmicsMLRepo/OmicsMLRepoData"
 fpath <- file.path(dir, "inst/extdata/cBioPortal_curated_metadata_release.csv")
-write.csv(cbio_meta_release, fpath, row.names = FALSE) # 189,439 x 60
+fpath_tidy <- file.path(dir, "inst/extdata/cBioPortal_curated_metadata_release_tidy.csv")
+write.csv(cbio_meta_release, fpath, row.names = FALSE) # 189,439 x 87
+write.csv(cbio_meta_release_tidy, fpath_tidy, row.names = FALSE) # 189,439 x 58
 
 ## Sync the version in GCS bucket
-AnVIL::gsutil_cp(fpath, "gs://omics_ml_repo/cBioPortal_curated_metadata_release.csv")
+AnVIL::gsutil_cp(fpath, "gs://omics_ml_repo/cBioPortal_curated_metadata_release_tidy.csv")
 ```
 
 
@@ -102,6 +104,10 @@ write.csv(location_map, file.path(cbio_maps_dir, "cBioPortal_location_map.csv"),
 write.csv(disease_map, file.path(cbio_maps_dir, "cBioPortal_disease_map.csv"), row.names = FALSE)
 write.csv(disease_metastasis_map, file.path(cbio_maps_dir, "cBioPortal_disease_metastasis_map.csv"), row.names = FALSE)
 write.csv(vital_status_map, file.path(cbio_maps_dir, "cBioPortal_vital_status_map.csv"), row.names = FALSE)
+
+# write.csv(discrepancies_patients, file.path(cbio_maps_dir, "ancestry_discrepancies_patients.csv"), row.names = FALSE)
+# write.csv(discrepancies_ancestry, file.path(cbio_maps_dir, "ancestry_discrepancies.csv"), row.names = FALSE)
+# write.csv(dissenting_values, file.path(cbio_maps_dir, "ancestry_dissenting_values.csv"), row.names = FALSE)
 
 ## Treatments
 write.csv(treatment_name_map, file.path(cbio_maps_dir, "cBioPortal_treatment_name_map.csv"), row.names = FALSE)
