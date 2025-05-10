@@ -1,5 +1,5 @@
 ---
-title: "curatedMetagenomicData Results for the AI/ML manuscript"
+title: "cMD Completeness - Overall Effects"
 author: Sehyun Oh
 date: "`r format(Sys.time(), '%B %d, %Y')`"
 format:
@@ -95,9 +95,9 @@ ms[which.max(ms$original_field_num),]
 The completeness of the attributes
 ```{r}
 ms_expanded <- getLongMetaTb(ms,
-                                 targetCols = c("original_field",
-                                                "original_field_completeness",
-                                                "original_field_unique_values"),
+                                 targetCol = c("original_field",
+                                               "original_field_completeness",
+                                               "original_field_unique_values"),
                                  delim = ";") %>%
     summarise(original_field = original_field,
               original_field_completeness = as.numeric(original_field_completeness),
@@ -136,7 +136,7 @@ curated_tb <- data.frame(
     completeness = ms$curated_field_completeness,
     variability = ms$curated_field_unique_values
 ) %>%
-    getLongMetaTb(targetCols = colnames(.), delim = ";")
+    getLongMetaTb(targetCol = colnames(.), delim = ";")
 curated_tb[[2]] <- as.numeric(curated_tb[[2]])
 curated_tb[[3]] <- as.numeric(curated_tb[[3]])
 
@@ -166,8 +166,8 @@ cbio_completeness %>%
                col = "red", alpha = 0.2, size = 2, shape = 1)
 ```
 
-```{r completeness_plot_with_subset, echo=FALSE, fig.width=2.2, fig.height=3.2}
-attrs_selected <- c("biomarker", "hla", "smoker")
+```{r completeness_plot_for_papaer, echo=FALSE, fig.width=2, fig.height=3.5}
+attrs_selected <- c("smoker", "biomarker", "hla")
 cbio_completeness_sub <- ms %>%
     filter(!is.na(original_field_completeness)) %>%
     tidyr::separate_longer_delim(., original_field_completeness, ";") %>%
@@ -181,15 +181,22 @@ cbio_completeness_sub %>%
     geom_boxplot(aes(x = curated_field, y = original_field_completeness), alpha = 0.3) +
     theme_bw() +
     # scale_y_continuous(limits = c(1, 100), trans = "log10") +
-    labs(title = "cMD - Completeness",
+    labs(title = "",
          x = "Curated Fields",
          y = "Completeness (%)") +
     # theme(axis.text.x = element_text(angle = 90, vjust = 0.5, hjust = 1)) +
+    theme(axis.text.x = element_text(angle = 40, hjust = 1, size = 12),
+          axis.text.y = element_text(size = 10),
+          axis.title.y = element_text(size = 12))+
     geom_point(aes(x = curated_field, y = curated_field_completeness), 
                col = "red", alpha = 0.2, size = 2, shape = 1)
 ```
 
-```{r completeness_variability_plot, echo=FALSE}
+```{r}
+ggsave("figures/cmd_completeness.png", width = 2, height = 3.5, dpi = 600)
+```
+
+```{r completeness_variability_plot, echo=FALSE, eval=FALSE}
 ggplot(tb, aes(x = completeness, y = variability, color = group)) + 
     geom_point(position = position_dodge(), alpha = 0.7) + 
     scale_y_continuous(trans = "log10") +
@@ -206,6 +213,9 @@ ggplot(tb, aes(x = completeness, y = variability, color = group)) +
 ## exclude the numeric attributes (i.e., age) from variability calculation
 ms_sub <- ms[-grep("age_*", ms$curated_field),]
 
+## exclude the ID attribute (i.e., ncbi_accession) from variability calculation
+ms_sub <- ms_sub[-grep("ncbi_accession", ms_sub$curated_field),]
+
 ms_sub %>%
     filter(!is.na(original_field_unique_values)) %>%
     tidyr::separate_longer_delim(., original_field_unique_values, ";") %>%
@@ -221,6 +231,58 @@ ms_sub %>%
          x = "Curated Fields",
          y = "# of Unique Values") +
     theme(axis.text.x = element_text(angle = 90, vjust = 0.5, hjust = 1)) +
+    geom_point(aes(x = curated_field, y = curated_field_unique_values), 
+               col = "red", size = 2, shape = 1)
+```
+
+Split the 'combined' attributes from the above.
+```{r echo=FALSE}
+targetRows <- grep(";", ms_sub$curated_field)
+targetCols <- colnames(ms_sub)[grep("curated_", colnames(ms_sub))]
+ms_sub_long <- OmicsMLRepoR::getLongMetaTb(ms_sub[targetRows,], targetCol = targetCols, delim = ";")
+
+ms_sub_long %>%
+    filter(!is.na(original_field_unique_values)) %>%
+    tidyr::separate_longer_delim(., original_field_unique_values, ";") %>%
+    group_by(curated_field) %>%
+    reframe(original_field_unique_values = sum(as.numeric(original_field_unique_values)),
+            curated_field_unique_values = as.numeric(curated_field_unique_values)) %>%
+    ggplot() +
+    geom_point(aes(x = curated_field, y = original_field_unique_values), 
+               alpha = 0.3, size = 1) +
+    theme_bw() +
+    # scale_y_continuous(limits = c(1, 100), trans = "log10") +
+    labs(title = "Variability of Fields",
+         x = "Curated Fields",
+         y = "# of Unique Values") +
+    theme(axis.text.x = element_text(angle = 90, vjust = 0.5, hjust = 1)) +
+    geom_point(aes(x = curated_field, y = curated_field_unique_values), 
+               col = "red", size = 2, shape = 1)
+```
+
+```{r variability_plot_ver1_sub_for_publication, echo=FALSE}
+## Select most critical 
+sub_attributes <- c("ancestry", "biomarker", "disease")
+targetCols <- colnames(ms_sub)[grep("curated_", colnames(ms_sub))]
+ms_sub_long2 <- OmicsMLRepoR::getLongMetaTb(ms_sub, targetCol = targetCols, delim = ";")
+ms_sub2 <- ms_sub_long2 %>%
+    filter(curated_field %in% sub_attributes)
+
+ms_sub2 %>%
+    filter(!is.na(original_field_unique_values)) %>%
+    tidyr::separate_longer_delim(., original_field_unique_values, ";") %>%
+    group_by(curated_field) %>%
+    reframe(original_field_unique_values = sum(as.numeric(original_field_unique_values)),
+            curated_field_unique_values = as.numeric(curated_field_unique_values)) %>%
+    ggplot() +
+    geom_point(aes(x = curated_field, y = original_field_unique_values), 
+               alpha = 0.3, size = 1) +
+    theme_bw() +
+    # scale_y_continuous(limits = c(1, 100), trans = "log10") +
+    labs(title = "Variability of Fields",
+         x = "",
+         y = "# of Unique Values") +
+    theme(axis.text.x = element_text(size = 12)) +
     geom_point(aes(x = curated_field, y = curated_field_unique_values), 
                col = "red", size = 2, shape = 1)
 ```

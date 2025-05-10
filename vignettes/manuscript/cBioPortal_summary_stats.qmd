@@ -10,18 +10,22 @@ vignette: >
 
 # Setup
 ```{r}
-suppressPackageStartupMessages({
-    library(OmicsMLRepoCuration)
-    library(dplyr)
-})
+devtools::load_all("~/OmicsMLRepo/OmicsMLRepoCuration/")
+devtools::install_github("shbrief/OmicsMLRepoR@reshape_functions", force = TRUE)
 
-devtools::load_all("~/OmicsMLRepo/OmicsMLRepoR")
+suppressPackageStartupMessages({
+    library(dplyr)
+    library(OmicsMLRepoR)
+})
 ```
 
 ## Load metadata
 ```{r}
-cbio <- getMetadata("cBioPortal")
-# colnames(cbio)
+# cbio <- getMetadata("cBioPortal")
+
+## Release version of cBioPortal metadata
+extDir <- "~/OmicsMLRepo/OmicsMLRepoData/inst/extdata"
+cbio <- readr::read_csv(file.path(extDir, "cBioPortal_curated_metadata_release.csv"))
 ```
 
 ## Helper function
@@ -34,58 +38,149 @@ nonNACols <- function(x) {
 ```
 
 
-# Attributes
+# Harmonized Attributes
+
+```{r echo=FALSE, eval=FALSE}
 ## Study Sizes
-```{r}
 x <- cbio %>% group_by(studyId) %>% summarize(study_size = n())
 hist(x$study_size, main = "Study Size", xlab = "# samples", ylab = "# studies")
 ```
 
 ## ancestry
+CLARIFY THIS!!
 ```{r eval=FALSE}
 ancestry_terms <- cbio %>%
-    select(pop_ancestry_ontology_term_id) %>%
+    select(population_ancestry_ontology_term_id) %>%
     tidyr::separate_longer_delim(., colnames(.), ";") %>%
     tidyr::separate_longer_delim(., colnames(.), "<;>") %>%
     tidyr::separate_longer_delim(., colnames(.), "::") %>%
     unique() %>%
     na.omit() %>%
-    .[["pop_ancestry_ontology_term_id"]]
+    .[["population_ancestry_ontology_term_id"]]
 
 dynamic_enums <- getEnumNodes(ancestry_terms, cutoff = 0.8)
 ```
 
+### Discrepancies
+```{r}
+mapDir <- "~/OmicsMLRepo/OmicsMLRepoData/cBioPortalData/maps"
+
+## 7,558 patients with different, but not conflicting, values
+patients <- readr::read_csv(file.path(mapDir, "ancestry_discrepancies_patients.csv"))  
+
+## 161 standardized values + 4 non-standardizable (i.e., conflicting) values
+values <- readr::read_csv(file.path(mapDir, "ancestry_discrepancies.csv"))
+
+## Conflicting points for 4 non-standardizable (i.e., conflicting) values --> assigned to `NA`
+dissenting_values <- readr::read_csv(file.path(mapDir, "ancestry_dissenting_values.csv"))
+```
+
+
+
 ## body_site
-[Error] The numbers of terms and term_ids are not matching:
-```{r error_check_with_Kai, eval=FALSE}
-> cbio_body_site_issue_ind <- c(7310, 125029, 125059)
-> cbio_body_site[cbio_body_site_issue_ind, c("curated_body_site", "curated_body_site_ontology_term_id")]
-# A tibble: 3 × 2
-  curated_body_site                                      curated_body_site_ontology_term_id
-  <chr>                                                  <chr>                             
-1 Cerebellum<;>Posterior Cranial Fossa<;>Brain Ventricle NCIT:C12445<;>NCIT:C33361         
-2 Left<;>Temporal Lobe<;>Parietal Lobe                   NCIT:C25229<;>NCIT:C12353         
-3 Left<;>Temporal Lobe<;>Parietal Lobe                   NCIT:C25229<;>NCIT:C12353
+```{r}
+unique_bs <- getLongMetaTb(cbio, "body_site", "<;>") %>%
+    getLongMetaTb("body_site", ";")
+
+table(unique_bs$body_site) %>% sort(decreasing = TRUE) %>% head
+```
+
+
+## cancer-related
+### cancer_status
+```{r}
+table(cbio$cancer_status, useNA = "ifany")
+```
+
+
+### cancer_type
+```{r}
+table(cbio$cancer_type, useNA = "ifany") %>% sort(decreasing = TRUE) %>% head
+```
+
+
+### cancer_subtype
+```{r}
+table(cbio$cancer_subtype, useNA = "ifany") %>% sort(decreasing = TRUE) %>% head
+```
+
+### cancer_type_detailed
+```{r}
+table(cbio$cancer_type_detailed, useNA = "ifany") %>% sort(decreasing = TRUE) %>% head
+```
+
+## country
+```{r}
+table(cbio$country, useNA = "ifany") %>% sort(decreasing = TRUE) %>% head
+```
+
+## disease
+[Question] `Localized` as disease?
+```{r}
+table(cbio$disease, useNA = "ifany") %>% sort(decreasing = TRUE) %>% head
+```
+
+## disease metastasis
+```{r}
+table(cbio$disease_metastasis, useNA = "ifany") %>% sort(decreasing = TRUE) %>% head
+```
+
+## sex
+```{r}
+table(cbio$sex, useNA = "ifany") %>% sort(decreasing = TRUE) %>% head
+```
+
+## specimen_type
+```{r}
+table(cbio$specimen_type, useNA = "ifany") %>% sort(decreasing = TRUE) %>% head
 ```
 
 ## treatment
-Started from the 6 original groups (original group: resultant features)
+Started from the 6 original groups (original group: resultant features).
+Currently, we include `name` and `type` for the release version of harmonized 
+cBioPortal metadata.
 
-name: name
-type: type
-amount: dose_val, dose_unit, number_val, number_unit
-time: start_val, start_unit, end_val, end_unit, duration_val, duration_unit, frequency_val, frequency_unit
-case: status, reason, group
-notes: notes
++ name: name   
++ type: type
++ amount: dose_val, dose_unit, number_val, number_unit
++ time: start_val, start_unit, end_val, end_unit, duration_val, duration_unit, frequency_val, frequency_unit
++ case: status, reason, group
++ notes: notes
 
 ### treatment name
 ```{r}
-tn <- getLongMetaTb(cbio, targetCols = "treatment_name") 
+# ## Temporary data from Kaelyn on 11.14.24
+# cbio <- readRDS("~/OmicsMLRepo/OmicsMLRepoData/inst/extdata/updated_cbio.rds")
+
+## Temporary tidying
+all_trt_cols <- grep("treatment_", colnames(cbio), value = TRUE)
+kept_trt_cols <- grep("treatment_name|treatment_type", colnames(cbio), value = TRUE)
+rm_trt_cols <- setdiff(all_trt_cols, kept_trt_cols)
+cbio <- cbio %>% select(!all_of(rm_trt_cols))
 ```
 
-Delimiter usage in `treatment_name`
 ```{r}
-#' Check whether `;` used 
+tn <- getLongMetaTb(cbio, targetCol = "treatment_name") %>%
+    getLongMetaTb(targetCol = "treatment_name", delim = ";")
+
+head(table(tn$treatment_name) %>% sort(decreasing = TRUE), 10)
+```
+
+### treatment_type
+```{r}
+tt <- getLongMetaTb(cbio, targetCol = "treatment_type") %>%
+    getLongMetaTb(targetCol = "treatment_type", delim = ";")
+
+head(table(tt$treatment_type) %>% sort(decreasing = TRUE), 10)
+```
+
+
+
+
+# Sanity checks
+Delimiter usage in different attributes
+```{r}
+#' Check patterns in values 
 #' 
 #' @param meta The metadata table
 #' @param attr The name of the attribute to check the existence of the `pattern`
@@ -101,6 +196,8 @@ checkDelim <- function(meta, attr, pattern = "(?<!<);(?!>)") {
 ```
 
 ```{r}
+pattern <- "(?<!<);(?!>)"  # match ; but not <;>
+
 ## The number of rows that contain ; but not <;>
 delim_res <- apply(cbio, 2, function(x) grep(pattern, x, perl = TRUE) %>% length())
 delim_res[delim_res != 0]
@@ -108,26 +205,13 @@ delim_res[delim_res != 0]
 
 
 ```{r}
-pattern <- "(?<!<);(?!>)"  # match ; but not <;>
 res <- grepl(pattern, cbio$treatment_name, perl = TRUE)
 head(cbio$treatment_name[res])
 head(cbio[res,])
 
 test <- head(cbio[res,])
 # targetCols <- colnames(test)[grep("treatment_", colnames(test))]
-targetCols <- paste0("treatment_",
-                     c("dose", "duration", "end", "frequency", "group",
-                       "name", "notes", "number", "reason", "start", 
-                       "status", "type"))
-df <- getLongMetaTb(test, targetCols)
-```
-
-
-
-
-## Bodysite
-```{r}
-test <- cbio %>% filter(bodysite == "Soft Tissue<;>Bone<;>Scapula")
-nonNACols(test)
+targetCols <- c("treatment_name", "treatment_type")
+test_long <- getLongMetaTb(test, targetCols)
 ```
 

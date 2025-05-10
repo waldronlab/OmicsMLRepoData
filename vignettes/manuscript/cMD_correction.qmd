@@ -1,5 +1,5 @@
 ---
-title: "Plot cMD metadata compression summary"
+title: "cMD Correction - Value Standardization"
 author:
   - Sehyun Oh
 date: "`r format(Sys.time(), '%B %d, %Y')`"
@@ -138,10 +138,14 @@ correction_tb2
 ```
 
 ```{r}
+datAll <- rbind(correction_tb, correction_tb2)
+datAll %>% arrange(.,desc(percent_updated))
+```
+
+```{r}
 ## Manually select attributes to plot
-pick <- c("body_site", "age_group", "disease", "treatment", "fmt_role")
-dat <- rbind(correction_tb, correction_tb2) %>%
-    filter(curated_column %in% pick)
+pick <- c("body_site", "disease", "age_group", "treatment", "ancestry", "fmt_role")
+dat <- datAll %>% filter(curated_column %in% pick)
 
 df1 <- dat %>%
     select(curated_column, num_not_updated) %>%
@@ -156,19 +160,25 @@ df2 <- dat %>%
 df <- rbind(df1, df2)
 ```
 
-```{r fig.width=2, fig.height=1.8}
+```{r fig.width=3.5, fig.height=3.5}
 ggplot(df, aes(fill = harmonized, y = num, x = curated_column)) +
     geom_bar(position = "stack", stat = "identity") +
     theme_bw(base_size = 8) +
-    labs(title = "cMD - Correction", 
-         x = "Curated Fields",
+    labs(title = "", 
+         x = "",
          y = "# of values") +
     scale_x_discrete(limits = pick) +
-    theme(axis.text.x = element_text(angle = 40, hjust = 1, size = 6)) +
-    theme(legend.title = element_blank(),
-          legend.text = element_text(size = 5),
-          legend.position = c(0.8, 0.8),
+    theme(axis.text.x = element_text(angle = 40, hjust = 1, size = 12),
+          axis.text.y = element_text(size = 10),
+          axis.title.y = element_text(size = 12),
+          legend.title = element_blank(),
+          legend.text = element_text(size = 12),
+          legend.position = c(0.82, 0.87),
           legend.key.height= unit(0.25, 'cm'),
           legend.key.width= unit(0.35, 'cm')) +
     scale_fill_manual(values = c("Grey","Red"))
+```
+
+```{r}
+ggsave("figures/cmd_correction.png", width = 3.5, height = 3.5, dpi = 600)
 ```

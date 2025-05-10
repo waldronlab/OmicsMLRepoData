@@ -147,6 +147,10 @@ all_trt <- grep("treatment_", cbio_ms$curated_field)
 keep_trt <- grep("treatment_name|treatment_type", cbio_ms$curated_field)
 ind <- setdiff(all_trt, keep_trt)
 cbio_ms <- cbio_ms[-ind,]
+
+## Remove '_detailed' attributes
+all_detailed <- grep("_detailed", cbio_ms$curated_field)
+cbio_ms <- cbio_ms[-all_detailed,]
 ```
 
 ```{r completeness_plot, echo=FALSE}
