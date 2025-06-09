@@ -1,0 +1,217 @@
+---
+title: "cBioPortal sample- and specimen- type"
+author: "Sehyun Oh"
+date: "`r format(Sys.time(), '%B %d, %Y')`"
+format:
+    html:
+        fontsize: 14pxs
+        toc: true
+        top-depth: 3
+abstract: "This vignette harmonizes three sample/specimen type columns."
+---
+
+```{r setup, include=FALSE}
+knitr::opts_chunk$set(echo = TRUE, 
+                    warning = FALSE,
+                    message = FALSE,
+                    collapse = TRUE)
+```
+
+# Setup
+
+```{r}
+suppressPackageStartupMessages({
+    library(dplyr)
+})
+```
+
+# Load harmonized map
+
+```{r}
+## Source
+projDir <- "~/OmicsMLRepo/OmicsMLRepoData/cBioPortalData"
+cbios <- readRDS(file.path(projDir, "source/cBioPortal_all_clinicalData_combined_2023-05-18.rds"))
+## Add curation ID
+cbios$curation_id <- paste(cbios$studyId, 
+                           cbios$patientId, 
+                           cbios$sampleId, sep = ":")
+```
+
+```{r}
+mapsDir <- "~/OmicsMLRepo/OmicsMLRepoData/cBioPortalData/maps"
+datDir <- "~/OmicsMLRepo/OmicsMLRepoData/cBioPortalData/data"
+```
+
+```{r}
+term <- "metasta"
+targetCols <- cbios %>%
+    select(-c(curation_id, studyId)) %>%  # remove ID columns
+    sapply(., function(x) {grep(term, x, ignore.case = TRUE) %>% length(.)}) %>% 
+    .[. != 0]
+
+targetCols
+```
+
+```{r eval=FALSE, echo=FALSE}
+sapply(cbios[, names(targetCols)], function(x) 
+    {grep(term, x, ignore.case = TRUE, value = TRUE) %>% unique})
+```
+
+Choose the attributes to harmonize after manual inspection:      
++ For curated_sample_type: SAMPLE_TYPE, SPECIMEN_TYPE,
++ For curated_speciment_type: SAMPLE_CLASS 
+
+```{r}
+## Percentage complete 
+perc <- round(colSums(!is.na(cbios[,names(targetCols)]))/nrow(cbios)*100, 2) %>%
+    sort(decreasing = TRUE)
+perc
+
+## Values under the given attribute
+apply(cbios[,names(perc)[1:10]], 2, function(x) {head(unique(x), 10)})
+```
+
+# Export for manual harmonization
+```{r}
+cols <- c("SAMPLE_TYPE", "SAMPLE_CLASS", "SPECIMEN_TYPE")
+map <- as.data.frame(matrix(nrow = 0, ncol = 2))
+colnames(map) <- c("source_column", "original_value")
+
+for (col in cols) {
+    res <- data.frame(
+        source_column = col,
+        original_value = unique(cbios[,col])
+    )
+    map <- rbind(map, res)
+}
+```
+
+```{r eval=FALSE}
+## Export the template to Google Drive
+url <- "https://docs.google.com/spreadsheets/d/1mwThsSZaSi7R0nPNBbzDk4BFWnzqOWacdh1kZlA97o8/edit?usp=sharing"
+ss <- googledrive::as_id(url)
+googlesheets4::write_sheet(map, ss = ss, sheet = "cBioPortal_sample_specimen_type_map")
+```
+
+Manual review and harmonization
+```{r eval=FALSE}
+url <- "https://docs.google.com/spreadsheets/d/1mwThsSZaSi7R0nPNBbzDk4BFWnzqOWacdh1kZlA97o8/edit?usp=sharing"
+ss <- googledrive::as_id(url)
+finalMap <- googlesheets4::read_sheet(ss = ss, sheet = "cBioPortal_sample_specimen_type_map")
+```
+
+```{r save, eval=FALSE}
+write.csv(finalMap, 
+          file.path(mapsDir, "cBioPortal_sample_specimen_type_map.csv"), 
+          row.names = FALSE)
+```
+
+
+# Harmonize
+```{r}
+df <- cbios[c("curation_id", "SAMPLE_TYPE", "SAMPLE_CLASS", "SPECIMEN_TYPE")]
+
+df$original_sample_type_value <- NA
+df$curated_sample_type_source <- NA
+df$curated_sample_type <- NA
+df$curated_sample_type_ontology_term_id <- NA
+
+df$original_specimen_type_value <- NA
+df$curated_specimen_type_source <- NA
+df$curated_specimen_type <- NA
+df$curated_specimen_type_ontology_term_id <- NA
+```
+
+## sample_type
+```{r}
+finalMap <- readr::read_csv(file.path(mapsDir, "cBioPortal_sample_specimen_type_map.csv"))
+```
+
+```{r}
+## Update the `sample_type` column
+for (i in seq_len(nrow(finalMap))) {
+    
+    sc <- finalMap$source_column[i] 
+    ov <- finalMap$original_value[i]
+    term <- finalMap$`sample_type:curated_ontology`[i]
+    id <- finalMap$`sample_type:curated_ontology_term_id`[i]
+
+    colInd <- which(colnames(df) == sc)
+    if (!is.na(ov)) {
+        rowInd <- which(df[,colInd] == ov)
+        df$original_sample_type_value[rowInd] <- ov
+        df$curated_sample_type_source[rowInd] <- sc
+        df$curated_sample_type[rowInd] <- term
+        df$curated_sample_type_ontology_term_id[rowInd] <- id
+    }
+}
+```
+
+## specimen_type
+```{r}
+## Update the `sample_type` column
+for (i in seq_len(nrow(finalMap))) {
+    
+    sc <- finalMap$source_column[i] 
+    ov <- finalMap$original_value[i]
+    term <- finalMap$`specimen_type:curated_ontology`[i]
+    id <- finalMap$`specimen_type:curated_ontology_term_id`[i]
+
+    colInd <- which(colnames(df) == sc)
+    if (!is.na(ov)) {
+        rowInd <- which(df[,colInd] == ov)
+        df$original_specimen_type_value[rowInd] <- ov
+        df$curated_specimen_type_source[rowInd] <- sc
+        df$curated_specimen_type[rowInd] <- term
+        df$curated_specimen_type_ontology_term_id[rowInd] <- id
+    }
+}
+```
+
+## Harmonization summary
+The completeness of curated attributes actually went down. 
+```{r}
+round(colSums(!is.na(df))/nrow(df)*100, 2)
+```
+
+Total of 77 unique values under three original columns were harmonized into
+20 standardized terms under two curated column.
+
+```{r}
+sapply(df, function(x) {length(unique(x))})
+```
+
+```{r}
+## The number of non-NA values
+round(table(df$curated_sample_type, useNA = "ifany"))
+## Percentage of different sample_type among availables
+round(table(df$curated_sample_type)/nrow(df[!is.na(df$curated_sample_type),])*100,2)
+```
+
+# Save
+## Load the previous version
+```{r eval=FALSE}
+dataDir <- "~/OmicsMLRepo/OmicsMLRepoData/cBioPortalData/data"
+tempDir <- file.path(dataDir, "temp")
+pre_disease <- readr::read_csv(file.path(tempDir, "curated_disease.csv"))
+```
+
+## Reformat
+Format before saving as `curated_sample_specimen_types.csv`
+```{r}
+updated_specimen <- grep("specimen", colnames(df), value = TRUE)
+updated_sample <- grep("sample", colnames(df), value = TRUE)
+
+merged <- pre_disease %>%
+    select(!updated_specimen) %>%
+    left_join(df[c("curation_id", updated_specimen, updated_sample)], by = "curation_id")
+```
+
+## Save
+```{r eval=FALSE}
+write.csv(merged, 
+          file.path(dataDir, "curated_disease.csv"),
+          row.names = FALSE, 
+          col.names = FALSE)
+```
+

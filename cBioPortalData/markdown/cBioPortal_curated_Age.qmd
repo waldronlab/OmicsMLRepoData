@@ -483,3 +483,37 @@ write.csv(curated_age,
           file = file.path(proj_dir, "curated_age.csv"),
           row.names = FALSE)
 ```
+
+# Updates
+## `age_group_ontology_term_id`
+Sehyun fixed the empty character (i.e., `charcater(0)`) under the 
+`age_group_ontology_term_id` column to `NA` 
+```{r eval=FALSE}
+dataDir <- "~/OmicsMLRepo/OmicsMLRepoData/cBioPortalData/data"
+curated_age <- readr::read_csv(file.path(dataDir, "curated_age.csv"))
+curated_age$curated_age_group_ontology_term_id[which(is.na(curated_age$curated_age_group))] <- NA
+write.csv(curated_age, 
+          file = file.path(dataDir, "curated_age.csv"),
+          row.names = FALSE)
+```
+
+## `age_at_diagnosis*`
+`age_at_diagnosis` columns are character, so convert them to numeric.
+```{r eval=FALSE}
+dataDir <- "~/OmicsMLRepo/OmicsMLRepoData/cBioPortalData/data"
+curated_age <- readr::read_csv(file.path(dataDir, "curated_age.csv"))
+cols <- c("original_age_at_diagnosis",
+          "curated_age_at_diagnosis",
+          "curated_age_at_diagnosis_min",
+          "curated_age_at_diagnosis_max",
+          "original_age_at_procurement")
+
+for (col in cols) {
+    curated_age[[col]] <- as.numeric(curated_age[[col]])
+}
+
+write.csv(curated_age, 
+          file = file.path(dataDir, "curated_age.csv"),
+          row.names = FALSE)
+```
+

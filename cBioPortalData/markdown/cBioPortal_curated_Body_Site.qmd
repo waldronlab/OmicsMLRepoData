@@ -343,3 +343,11 @@ Finally, we will export our completed table to GitHub.
 write.csv(curated_bodysite, file = file.path(proj_dir, "curated_body_site.csv"), 
           row.names=F)
 ```
+
+Fixed the error
+```{r}
+curated_bodysite[[179303, "curated_body_site"]] <- "Vulva;Lymph Node<;>Vulva"
+curated_bodysite[[179303, "curated_body_site_ontology_term_id"]] <- "NCIT:12408;NCIT:C12745<;>NCIT:C12408"
+write.csv(curated_bodysite, "~/OmicsMLRepo/OmicsMLRepoData/cBioPortalData/data/curated_body_site.csv", row.names = FALSE)
+```
+
