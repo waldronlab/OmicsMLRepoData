@@ -60,7 +60,9 @@ googlesheets4::write_sheet(cmd_ms, ss = ss, sheet = "cMD_merging_schema")
 
 # Curated metadata table
 
-This script collect all the curated metadata table for each attribute and create the `curated_all` table, which containing 22,588 sample for 46 newly created curated columns.
+This script collect all the curated metadata table for each attribute and 
+create the `curated_all` table, which containing 22,588 sample for 148 columns,
+including source, curated, and accessory columns.
 
 ```{r message=FALSE, warning=FALSE}
 source(file.path(cmd_etl_dir, "0_assemble_curated_metadata.R"))
@@ -80,7 +82,9 @@ file.copy(from = fpath,
 
 # Format for release
 
-This script creates a `cmd_meta_release` table, which containing only the curated attributes formatted in an user-facing version (e.g., no legacy/ source columns, no ontology term id).
+This script creates a `cmd_meta_release` table, which containing only the 
+87 curated attributes formatted in an user-facing version 
+(e.g., no legacy/source columns, no ontology term id).
 
 ```{r}
 # requires: `curated_all` from `0_assemble_curated_metadata.R` is saved
@@ -162,6 +166,34 @@ scriptDir <- file.path(projDir, "ETL/R")
 # returns: the updated `filled_dd`
 source(file.path(cmd_etl_dir, "4_populate_data_dictionary.R")) 
 ```
+
+### Compare with the Google Drive version
+```{r}
+url <- "https://docs.google.com/spreadsheets/d/1xziFB_zBl32BjNarcyEN4GupTYpPtq5aDz0GbRbWvtk/edit?usp=sharing"
+ss <- googledrive::as_id(url)
+gd_dict <- googlesheets4::read_sheet(ss = ss, sheet = "cMD_data_dictionary")
+```
+
+This should be both `TRUE`. Unless, the version of dictionary in Google Drive
+needs updates. 
+
+```{r}
+identical(colnames(filled_dd), colnames(gd_dict))
+all(filled_dd$ColName %in% gd_dict$ColName)
+```
+
+### ODM templates
+```{r}
+url <- "https://docs.google.com/spreadsheets/d/1xziFB_zBl32BjNarcyEN4GupTYpPtq5aDz0GbRbWvtk/edit?usp=sharing"
+ss <- googledrive::as_id(url)
+odm_dict <- googlesheets4::read_sheet(ss = ss, sheet = "cMD_data_dictionary_forODM")
+```
+
+```{r}
+setdiff(gd_dict$ColName, odm_dict$ColName) # attrs should be added to ODM template
+setdiff(odm_dict$ColName, gd_dict$ColName) # attrs should be removed from ODM template
+```
+
 
 
 ## Save

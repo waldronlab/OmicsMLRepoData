@@ -80,7 +80,7 @@ map_to_ms$original_field_completeness <- original_field_completeness
 map_to_ms$curated_field_completeness <- curated_field_completeness
 map_to_ms$original_field_unique_values <- original_field_unique_values
 map_to_ms$curated_field_unique_values <- curated_field_unique_values
-map_to_ms <- full_join(map_to_ms, original_field_num, by = "original_field")
+map_to_ms <- dplyr::full_join(map_to_ms, original_field_num, by = "original_field")
 
 map_to_ms <- map_to_ms %>% 
     dplyr::relocate(original_field_num, .after = original_field) %>%

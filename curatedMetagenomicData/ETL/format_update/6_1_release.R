@@ -21,5 +21,5 @@ merged_feces <- curated_all_cleaned %>%
 
 
 curated_all_cleaned <- curated_all_cleaned %>%
-    full_join(merged_feces, by = "curation_id") %>%
-    select(-all_of(cols))
+    dplyr::full_join(merged_feces, by = "curation_id") %>%
+    dplyr::select(-all_of(cols))
