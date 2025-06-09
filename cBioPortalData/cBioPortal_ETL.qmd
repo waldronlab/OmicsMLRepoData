@@ -42,7 +42,7 @@ source(file.path(cbio_etl_dir, "0_assemble_curated_metadata.R"))
 
 ```{r save, eval=FALSE}
 extDir <- "~/OmicsMLRepo/OmicsMLRepoData/inst/extdata"
-write_csv(curated_all, file.path(extDir, "cBioPortal_curated_metadata.csv")) # 189,439 x 160
+write_csv(curated_all, file.path(extDir, "cBioPortal_curated_metadata.csv")) # 189,439 x 157
 ```
 
 
@@ -53,7 +53,7 @@ source columns, no ontology term id).
 
 ```{r}
 ## requires: `curated_all` from `0_assemble_curated_metadata.R`
-## returns: `cbio_meta_release`
+## returns: `cbio_meta_release` and `cbio_meta_release_tidy`
 source(file.path(cbio_etl_dir, "2_format_for_release.R"))
 ```
 
@@ -61,11 +61,12 @@ source(file.path(cbio_etl_dir, "2_format_for_release.R"))
 dir <- "~/OmicsMLRepo/OmicsMLRepoData"
 fpath <- file.path(dir, "inst/extdata/cBioPortal_curated_metadata_release.csv")
 fpath_tidy <- file.path(dir, "inst/extdata/cBioPortal_curated_metadata_release_tidy.csv")
-write.csv(cbio_meta_release, fpath, row.names = FALSE) # 189,439 x 87
-write.csv(cbio_meta_release_tidy, fpath_tidy, row.names = FALSE) # 189,439 x 58
+write.csv(cbio_meta_release, fpath, row.names = FALSE) # 189,439 x 86
+write.csv(cbio_meta_release_tidy, fpath_tidy, row.names = FALSE) # 189,439 x 57
 
 ## Sync the version in GCS bucket
-AnVIL::gsutil_cp(fpath, "gs://omics_ml_repo/cBioPortal_curated_metadata_release_tidy.csv")
+library(AnVILGCP)
+avcopy(fpath, "gs://omics_ml_repo/cBioPortal_curated_metadata_release_tidy.csv", platform = gcp())
 ```
 
 
