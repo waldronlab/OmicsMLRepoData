@@ -36,13 +36,13 @@ This script collect all the curated metadata table for each attribute and
 create the `curated_all` table, which containing 189,439 sample for 146 newly
 created curated columns.
 
-```{r}
+```{r message=FALSE, warning=FALSE}
 source(file.path(cbio_etl_dir, "0_assemble_curated_metadata.R"))
 ```
 
 ```{r save, eval=FALSE}
 extDir <- "~/OmicsMLRepo/OmicsMLRepoData/inst/extdata"
-write_csv(curated_all, file.path(extDir, "cBioPortal_curated_metadata.csv")) # 189,439 x 160
+write_csv(curated_all, file.path(extDir, "cBioPortal_curated_metadata.csv")) # 189,439 x 157
 ```
 
 
@@ -51,19 +51,27 @@ This script creates a `cbio_meta_release` table, which containing only
 the curated attributes formatted in an user-facing version (e.g., no legacy/
 source columns, no ontology term id).
 
-```{r}
+```{r message=FALSE, warning=FALSE}
 ## requires: `curated_all` from `0_assemble_curated_metadata.R`
-## returns: `cbio_meta_release`
+## returns: `cbio_meta_release` and `cbio_meta_release_tidy`
 source(file.path(cbio_etl_dir, "2_format_for_release.R"))
+```
+
+```{r}
+dim(cbio_meta_release)
+dim(cbio_meta_release_tidy)
 ```
 
 ```{r save_cmd_meta_release, eval=FALSE}
 dir <- "~/OmicsMLRepo/OmicsMLRepoData"
 fpath <- file.path(dir, "inst/extdata/cBioPortal_curated_metadata_release.csv")
-write.csv(cbio_meta_release, fpath, row.names = FALSE) # 189,439 x 60
+fpath_tidy <- file.path(dir, "inst/extdata/cBioPortal_curated_metadata_release_tidy.csv")
+write.csv(cbio_meta_release, fpath, row.names = FALSE) # 189,439 x 86
+write.csv(cbio_meta_release_tidy, fpath_tidy, row.names = FALSE) # 189,439 x 57
 
 ## Sync the version in GCS bucket
-AnVIL::gsutil_cp(fpath, "gs://omics_ml_repo/cBioPortal_curated_metadata_release.csv")
+library(AnVILGCP)
+avcopy(fpath, "gs://omics_ml_repo/cBioPortal_curated_metadata_release_tidy.csv", platform = gcp())
 ```
 
 
@@ -102,6 +110,10 @@ write.csv(location_map, file.path(cbio_maps_dir, "cBioPortal_location_map.csv"),
 write.csv(disease_map, file.path(cbio_maps_dir, "cBioPortal_disease_map.csv"), row.names = FALSE)
 write.csv(disease_metastasis_map, file.path(cbio_maps_dir, "cBioPortal_disease_metastasis_map.csv"), row.names = FALSE)
 write.csv(vital_status_map, file.path(cbio_maps_dir, "cBioPortal_vital_status_map.csv"), row.names = FALSE)
+
+# write.csv(discrepancies_patients, file.path(cbio_maps_dir, "ancestry_discrepancies_patients.csv"), row.names = FALSE)
+# write.csv(discrepancies_ancestry, file.path(cbio_maps_dir, "ancestry_discrepancies.csv"), row.names = FALSE)
+# write.csv(dissenting_values, file.path(cbio_maps_dir, "ancestry_dissenting_values.csv"), row.names = FALSE)
 
 ## Treatments
 write.csv(treatment_name_map, file.path(cbio_maps_dir, "cBioPortal_treatment_name_map.csv"), row.names = FALSE)

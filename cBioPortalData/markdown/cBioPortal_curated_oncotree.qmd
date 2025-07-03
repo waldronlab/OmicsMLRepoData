@@ -1,0 +1,319 @@
+---
+title: "cBioPortal oncoTree"
+author: "Sehyun Oh"
+date: "`r format(Sys.time(), '%B %d, %Y')`"
+format:
+    html:
+        fontsize: 14pxs
+        toc: true
+        top-depth: 3
+abstract: "This vignette replaced `curated_acronym` with `curated_oncotree_code`."
+---
+
+```{r setup, include=FALSE}
+knitr::opts_chunk$set(echo = TRUE, 
+                    warning = FALSE,
+                    message = FALSE,
+                    collapse = TRUE,
+                    eval = FALSE)
+```
+
+```{r}
+suppressPackageStartupMessages({
+    library(dplyr)
+})
+```
+
+# Setup
+```{r load_data, eval=FALSE}
+## Source
+cbio_s <- readRDS("~/OmicsMLRepo/OmicsMLRepoData/cBioPortalData/source/cBioPortal_all_clinicalData_combined_2023-05-18.rds")
+## Add curation ID
+cbio_s$curation_id <- paste(cbio_s$studyId, 
+                            cbio_s$patientId, 
+                            cbio_s$sampleId, sep = ":")
+
+## Harmonized version
+cbioh <- OmicsMLRepoR::getMetadata("cBioPortal")
+```
+
+# Subset oncoTree information
+```{r}
+## ontoTree columns
+ot_cols <- grep("oncotree", colnames(cbio_s), ignore.case = TRUE, value = TRUE)
+
+## Subset
+ot_sub <- cbio_s %>%
+    select(curation_id, patientId, ot_cols)
+
+cbioh_sub <- cbioh %>%
+    select(studyId,
+           curation_id, 
+           target_condition,
+           cancer_type, cancer_type_ontology_term_id,
+           cancer_type_detailed, cancer_type_detailed_ontology_term_id)
+
+all <- left_join(ot_sub, cbioh_sub, by = "curation_id")
+head(all)
+```
+
+# Consolidate oncoTree information
+```{r}
+## We can consolidate all the values to `ONCOTREE_CODE`; i.e., no conflict
+all %>% filter(!is.na(`ONCOTREE CODE`)) %>% pull(ONCOTREE_CODE) %>% table(useNA = "ifany")
+all %>% filter(!is.na(`ONCOTREE_CODE_CANCER_TYPE`)) %>% pull(ONCOTREE_CODE) %>% table(useNA = "ifany")
+all %>% filter(!is.na(`ONCOTREE_PATIENT`)) %>% pull(ONCOTREE_CODE) %>% table(useNA = "ifany")
+```
+
+Before harmonization, OncoTree information is spread across 4 columns, with
+majority under `ONCOTREE_CODE`, and about 89% samples have OncoTree assigned.
+
+```{r}
+## Available OncoTree value counts
+ot_val_ct <- apply(all[ot_cols], 2, function(x) sum(!is.na(x)))
+ot_val_ct/nrow(all)*100
+
+sum(ot_val_ct)/nrow(all)*100
+```
+
+
+```{r}
+# Load required libraries
+library(dplyr)
+
+# Function to process the data frame
+process_oncotree_data <- function(df) {
+  # Create a new data frame with the processed data
+  processed_df <- df %>%
+    mutate(ONCOTREE_CODE = case_when(
+      !is.na(`ONCOTREE CODE`) ~ `ONCOTREE CODE`,
+      !is.na(ONCOTREE_CODE_CANCER_TYPE) ~ ONCOTREE_CODE_CANCER_TYPE,
+      !is.na(ONCOTREE_PATIENT) ~ ONCOTREE_PATIENT,
+      TRUE ~ ONCOTREE_CODE  # Keep original if all others are NA
+    ))
+  
+  return(processed_df)
+}
+```
+
+```{r}
+# Apply the function to process the data
+ot_complete <- process_oncotree_data(all)
+colnames(ot_complete)
+```
+
+
+# OncoTree from `cancer_type` and `cancer_type_details`
+
+```{r}
+## Subset of samples with `cancer_type` but without `oncoTree`
+ct <- ot_complete %>% filter(is.na(ONCOTREE_CODE) & !is.na(cancer_type)) 
+
+## All the unique cancer_type_detail values
+ct_all <- ct %>%
+    OmicsMLRepoR::getLongMetaTb(targetCol = c("cancer_type", "cancer_type_detailed"), delim = "<;>") %>%
+    group_by(cancer_type) %>%
+    summarise(cancer_type_ontology_term_id = unique(cancer_type_ontology_term_id),
+              cancer_type_detailed = unique(cancer_type_detailed),
+              cancer_type_detailed_ontology_term_id = unique(cancer_type_detailed_ontology_term_id))
+```
+
+```{r}
+head(ct_all)
+```
+
+## From `cancer_type`
+### Template
+Create a template/input for `ontology_to_ontology_mapping_tool`
+```{r template, eval=FALSE}
+ct_template_for_auto <- ct_all %>% 
+    rename(NCIT_CODE = cancer_type_ontology_term_id) %>%
+    mutate(NCIT_CODE = gsub("NCIT:", "", NCIT_CODE)) %>%
+    select(NCIT_CODE) %>%
+    filter(!duplicated(cancer_type))
+```
+
+Format the ontology term ID for `ontology_to_ontology_mapping_tool`
+```{r}
+ct_template_for_auto$NCIT_CODE <- gsub("NCIT:", "", ct_template_for_auto$NCIT_CODE)
+```
+
+```{r save_ontotree_map_template, eval=FALSE}
+mapsDir <- "~/OmicsMLRepo/OmicsMLRepoData/cBioPortalData/maps"
+readr::write_tsv(ct_template_for_auto, file.path(mapsDir, "cBioPortal_oncotree_template.tsv"))
+```
+
+### Mapping
+Using the mapper: https://github.com/cBioPortal/oncotree/tree/master/scripts/ontology_to_ontology_mapping_tool 
+```{bash eval=FALSE}
+## Install required packages
+pipx install pandas --force --include-deps
+pipx install requests
+
+## Run ontology-ontotree script
+/usr/bin/python3 /mnt/STORE1/bighome/sehyun/Projects/oncotree/scripts/ontology_to_ontology_mapping_tool/ontology_to_ontology_mapping_tool.py \
+--source-file ~/OmicsMLRepo/OmicsMLRepoData/cBioPortalData/maps/cBioPortal_oncotree_template.tsv \
+--target-file ~/OmicsMLRepo/OmicsMLRepoData/cBioPortalData/maps/cBioPortal_oncotree_map.tsv \
+--source-code NCIT_CODE \
+--target-code ONCOTREE_CODE
+```
+
+### Format for combine
+```{r eval=TRUE}
+mapsDir <- "~/OmicsMLRepo/OmicsMLRepoData/cBioPortalData/maps"
+ot_mapped <- readr::read_table(file.path(mapsDir, "cBioPortal_oncotree_map.tsv"))
+ot_mapped$NCIT_CODE <- paste0("NCIT:", ot_mapped$NCIT_CODE)
+ot <- ct_all %>% 
+    rename(NCIT_CODE = cancer_type_ontology_term_id) %>%
+    select(cancer_type, NCIT_CODE) %>%
+    left_join(ot_mapped, by = "NCIT_CODE")
+ot$index <- seq_len(nrow(ot))
+```
+
+
+
+## From `cancer_type_details`
+The `ct_details_template_for_auto` table was subjected to the same *Mapping* 
+steps as `ct_template_for_auto` using `ontology_to_ontology_mapping_tool.py`.
+
+```{r details_template, eval=FALSE, echo=FALSE}
+ct_details_template_for_auto <- ct_all %>% 
+    rename(NCIT_CODE = cancer_type_detailed_ontology_term_id) %>%
+    mutate(NCIT_CODE = gsub("NCIT:", "", NCIT_CODE)) %>%
+    select(cancer_type_detailed, NCIT_CODE)
+```
+
+
+
+# Merge the mapped OntoTree
+```{r}
+mapsDir <- "~/OmicsMLRepo/OmicsMLRepoData/cBioPortalData/maps"
+ot_mapped <- readr::read_table(file.path(mapsDir, "cBioPortal_oncotree_details_map.tsv"))
+ot_mapped$NCIT_CODE <- paste0("NCIT:", ot_mapped$NCIT_CODE)
+
+## Mark as `details`
+colnames(ot_mapped) <- paste0(colnames(ot_mapped), "_details")
+
+ot_details <- ct_all %>% 
+    rename(NCIT_CODE_details = cancer_type_detailed_ontology_term_id) %>%
+    select(cancer_type_detailed, NCIT_CODE_details) %>%
+    left_join(ot_mapped, by = "NCIT_CODE_details")
+ot_details$index <- seq_len(nrow(ot_details))
+```
+
+Combined ontoTree codes mapped using `cancer_type` and `cancer_type_detailed`
+```{r}
+ot_all <- left_join(ot, ot_details, by = "index")
+```
+
+Export as Google Sheet for manual inspection
+```{r eval=FALSE}
+## Export the template to Google Drive
+url <- "https://docs.google.com/spreadsheets/d/12VWREvQUcRTnB55Hxa3abwA9-Cy99z6bpYY1K6Ry9Ao/edit?usp=sharing"
+ss <- googledrive::as_id(url)
+googlesheets4::write_sheet(ot_all, ss = ss, sheet = "cBioPortal_oncotree_map")
+```
+
+I performed manual review and consolidation.
+```{r}
+url <- "https://docs.google.com/spreadsheets/d/12VWREvQUcRTnB55Hxa3abwA9-Cy99z6bpYY1K6Ry9Ao/edit?usp=sharing"
+ss <- googledrive::as_id(url)
+oncotree_map <- googlesheets4::read_sheet(ss = ss, sheet = "cBioPortal_oncotree_map")
+```
+
+```{r save, eval=FALSE}
+write.csv(oncotree_map, 
+          file.path(mapsDir, "cBioPortal_oncotree_final_map.csv"), 
+          row.names = FALSE)
+```
+
+
+
+# Update
+```{r eval=FALSE, echo=FALSE}
+## A function to get the extra details to help consolidating multiple OncoTree terms
+getTargetCond <- function(ct, ctd, metaTb, attrs = NULL) {
+    res <- metaTb %>%
+        filter(cancer_type == ct & cancer_type_detailed == ctd) %>%
+        group_by(studyId) %>%
+        select(studyId, target_condition, attrs)
+        
+    return(res)
+}
+```
+
+```{r eval=FALSE, echo=FALSE}
+## Get the extra details to help consolidating multiple OncoTree terms
+getTargetCond(ct = "Small Intestinal Carcinoma", 
+              ctd = "Small Intestinal Adenocarcinoma", 
+              cbioh,
+              attrs = c("age_group", "body_site", "acronym", "sex", 
+                        "disease", "specimen_type", "treatment_name"))
+```
+
+```{r}
+mapsDir <- "~/OmicsMLRepo/OmicsMLRepoData/cBioPortalData/maps"
+oncotree_map <- readr::read_csv(file.path(mapsDir, "cBioPortal_oncotree_final_map.csv"))
+```
+
+```{r}
+oncotree_map_final <- oncotree_map %>%
+    select(cancer_type, cancer_type_detailed, ONCOTREE_CODE_final) %>%
+    rename(curated_ontology_term = ONCOTREE_CODE_final)
+```
+
+
+# Curated OncoTree data
+```{r}
+ot_missing_ind <- which(rowSums(is.na(all[,ot_cols])) == 4)
+ot_missing_dat <- all[ot_missing,]
+ot_missing_dat$ONCOTREE_CODE_SUP <- NA
+```
+
+```{r}
+for (i in seq_len(nrow(oncotree_map_final))) {
+    
+    ct <- oncotree_map_final$cancer_type[i]
+    ctd <- oncotree_map_final$cancer_type_detailed[i]
+    ot_term <- oncotree_map_final$curated_ontology_term[i]
+        
+    ind <- which(ot_missing_dat$cancer_type == ct & ot_missing_dat$cancer_type_detailed == ctd)
+    ot_missing_dat$ONCOTREE_CODE_SUP[ind] <- ot_term
+}
+```
+
+```{r}
+ot_map_all <- dplyr::full_join(all,
+                               ot_missing_dat[c("curation_id", "ONCOTREE_CODE_SUP")],
+                               by = "curation_id")
+ot_cols <- grep("ONCOTREE", colnames(ot_map_all), value = TRUE)
+
+## Combine all OncoTree terms across 5 columns
+res <- unite(ot_map_all, col = "curated_oncotree_code", ot_cols, na.rm = TRUE) 
+## Convert emptry string to `NA`
+res$curated_oncotree_code[res$curated_oncotree_code == ""] <- NA 
+```
+
+```{r}
+sum(!is.na(res$curated_oncotree_code))/nrow(res)*100
+```
+
+## Update the `curated_disease.csv`
+```{r eval=FALSE}
+dataDir <- "~/OmicsMLRepo/OmicsMLRepoData/cBioPortalData/data"
+curated_disease <- read_csv(file.path(dataDir, "curated_disease.csv"))
+
+curated_disease_ot <- dplyr::left_join(
+    curated_disease, 
+    res[c("curation_id", "curated_oncotree_code")],
+    by = "curation_id") %>%
+    select(-contains("acronym"))
+```
+
+```{r eval=FALSE}
+write.csv(curated_disease_ot, 
+          file.path(dataDir, "curated_disease.csv"),
+          row.names = FALSE, 
+          col.names = FALSE)
+```
+

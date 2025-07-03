@@ -17,9 +17,9 @@ merged_feces <- curated_all_cleaned %>%
     ) %>%
     select(all_of(c("curation_id", "feces_phenotype", "feces_phenotype_ontology_term_id"))) %>%
     getShortMetaTb(idCols = "curation_id", 
-                   targetCols = c("feces_phenotype", "feces_phenotype_ontology_term_id"))
+                   targetCol = c("feces_phenotype", "feces_phenotype_ontology_term_id"))
 
 
 curated_all_cleaned <- curated_all_cleaned %>%
-    full_join(merged_feces, by = "curation_id") %>%
-    select(-all_of(cols))
+    dplyr::full_join(merged_feces, by = "curation_id") %>%
+    dplyr::select(-all_of(cols))

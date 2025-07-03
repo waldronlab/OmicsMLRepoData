@@ -1,5 +1,5 @@
 ---
-title: "Plot cMD metadata compression summary"
+title: "cMD Compression - Attribute Standardization"
 author:
   - Sehyun Oh
 date: "`r format(Sys.time(), '%B %d, %Y')`"
@@ -64,11 +64,17 @@ col_vector <- unlist(mapply(brewer.pal,
 ggplot(df, aes(fill = curated_column, y = 1, x = category)) +
     geom_bar(position = "stack", stat = "identity") +
     theme_bw(base_size = 10) +
-    theme(legend.position = "none") +
+    theme(axis.text.x = element_text(size = 8.5),
+          axis.text.y = element_text(size = 10),
+          axis.title.y = element_text(size = 12),
+          legend.position = "none") +
     scale_fill_manual(values = col_vector) +
-    labs(title = "cMD - Compression", 
-         x = "", y = "# of attributes") +
+    labs(title = "", x = "", y = "# of attributes") +
     scale_x_discrete(labels = c("Original\nMetadata", "Curated\nMetadata"))
+```
+
+```{r}
+ggsave("figures/cmd_compression.png", width = 2, height = 3, dpi = 600)
 ```
 
 ```{r sankey}

@@ -18,3 +18,9 @@ multiAttrInd <- which(filled_dd$col.name %in% multiAttr)
 filled_dd$delimiter <- NA
 filled_dd$delimiter[multiValInd] <- ";"
 filled_dd$delimiter[multiAttrInd] <- "<;>"
+
+##### Update column names as camel cases starting with capital
+colnames(filled_dd) <- c("ColName", "ColClass", "Unique", "Required",
+                         "MultipleValues", "Description", "AllowedValues",
+                         "Ontology", "OntologyDB", "Delimiter")
+filled_dd$Separater <- NA  # manually filling this for composite attributes

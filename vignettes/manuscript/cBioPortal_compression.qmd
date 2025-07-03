@@ -72,14 +72,13 @@ col_vector <- unlist(mapply(brewer.pal,
                             rownames(qual_col_pals)))
 ```
 
-```{r fig.width=2.5, fig.height=3}
+```{r fig.width=2.8, fig.height=4}
 cbio_compression <- ggplot(df, aes(fill = curated_column, y = 1, x = category)) +
     geom_bar(position = "stack", stat = "identity") +
-    theme_bw(base_size = 9) +
+    theme_bw(base_size = 12) +
     theme(legend.position = "none") +
     scale_fill_manual(values = col_vector) +
-    labs(title = "cBioPortal - Compression", 
-         x = "", y = "# of attributes") +
+    labs(title = "", x = "", y = "# of attributes") +
     scale_x_discrete(labels = c("Original\nMetadata", "Curated\nMetadata"))
 cbio_compression
 ```

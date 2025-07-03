@@ -18,7 +18,8 @@ dd <- read_sheet(ss, sheet = "data_dictionary_allCols")
 dd$merge <- as.character(dd$merge)
 
 # Load original cMD data dictionary
-ori_dd <- read_csv("https://raw.githubusercontent.com/waldronlab/curatedMetagenomicDataCuration/master/inst/extdata/template.csv")
+# ori_dd <- read_csv("https://raw.githubusercontent.com/waldronlab/curatedMetagenomicDataCuration/master/inst/extdata/template.csv")
+ori_dd <- read_csv(file.path(cmd_etl_dir, "source/template.csv"))
 
 # Data dictionary for non-merging columns ----
 cols_to_keep <- dd[which(dd$merge %in% c("FALSE")),]$curated_column # not-affected columns

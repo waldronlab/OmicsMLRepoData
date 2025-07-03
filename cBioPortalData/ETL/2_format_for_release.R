@@ -52,7 +52,7 @@ cbio_meta_release$last_updated <- Sys.time()
 all_trt_cols <- grep("treatment_", colnames(cbio_meta_release), value = TRUE)
 kept_trt_cols <- grep("treatment_name|treatment_type", colnames(cbio_meta_release), value = TRUE)
 rm_trt_cols <- setdiff(all_trt_cols, kept_trt_cols)
-cbio_meta_release <- cbio_meta_release %>% select(!all_of(rm_trt_cols))
+cbio_meta_release_tidy <- cbio_meta_release %>% select(!all_of(rm_trt_cols))
 
 # dd <- read.csv("~/OmicsMLRepo/OmicsMLRepoData/cBioPortalData/data_dictionary/cBioPortal_data_dictionary.csv")
 # removeCols <- dd %>% filter(main.col == "FALSE") %>% pull(col.name)
