@@ -36,7 +36,7 @@ This script collect all the curated metadata table for each attribute and
 create the `curated_all` table, which containing 189,439 sample for 146 newly
 created curated columns.
 
-```{r}
+```{r message=FALSE, warning=FALSE}
 source(file.path(cbio_etl_dir, "0_assemble_curated_metadata.R"))
 ```
 
@@ -51,10 +51,15 @@ This script creates a `cbio_meta_release` table, which containing only
 the curated attributes formatted in an user-facing version (e.g., no legacy/
 source columns, no ontology term id).
 
-```{r}
+```{r message=FALSE, warning=FALSE}
 ## requires: `curated_all` from `0_assemble_curated_metadata.R`
 ## returns: `cbio_meta_release` and `cbio_meta_release_tidy`
 source(file.path(cbio_etl_dir, "2_format_for_release.R"))
+```
+
+```{r}
+dim(cbio_meta_release)
+dim(cbio_meta_release_tidy)
 ```
 
 ```{r save_cmd_meta_release, eval=FALSE}
