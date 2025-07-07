@@ -1,0 +1,163 @@
+---
+title: "Harmonize body site information in cMD sample metadata"
+author:
+  - Sehyun Oh
+  - Kai Gravel-Pucillo
+date: "`r format(Sys.time(), '%B %d, %Y')`"
+format:
+    html:
+        fontsize: 14pxs
+        toc: true
+        top-depth: 3
+abstract: "Prepare U24 Supplement: AI/ML-ready"
+---
+
+```{r setup, include=FALSE}
+knitr::opts_chunk$set(echo = TRUE, 
+                    warning = FALSE,
+                    message = FALSE,
+                    collapse = TRUE,
+                    eval = TRUE)
+```
+
+# Overview
+
+This .qmd file demonstrates a workflow for curating and harmonizing patient
+data relating to body site with the curatedMetagenomicData package.
+This file curates information from the original body_site column to produce 
+the curated body_site column.
+
+# Setup
+## Load Packages
+
+```{r load}
+suppressPackageStartupMessages({
+  library(curatedMetagenomicData)
+  library(tidyverse)
+  library(googlesheets4)
+  library(rols)
+  library(dplyr)
+  library(hash)
+  library(vctrs)
+  library(rvest)
+})
+```
+
+## Setup for Curation
+
+We will first add a `curation_id` consisting of study name and sample ID (`study_name:sample_id`) to avoid confusion due to duplicated samples.
+
+```{r curation_setup}
+# Add curation ID
+sampleMetadata$curation_id <- paste(sampleMetadata$study_name, sampleMetadata$sample_id, sep = ":")
+
+# Define a project directory
+proj_dir <- "D:\\CUNY Internship\\cMD"
+```
+
+# Exploratory Data Analysis & Data Curation
+
+## Manual Data Corrections
+
+Next, we will make some manual corrections to the data.
+We will start by creating a tibble dataframe and checking the completeness of 
+the original column as well as reviewing the unique values:
+```{r}
+# Create a tibble object 
+samplemd <- as_tibble(sampleMetadata)
+
+# Review unique values
+unique(sampleMetadata$body_subsite)
+unique(sampleMetadata$body_site)
+
+# Calculate completeness
+length(samplemd$bristol_score[which(!is.na(samplemd$body_subsite))])/length(samplemd$body_subsite)
+length(samplemd$bristol_score[which(!is.na(samplemd$body_site))])/length(samplemd$body_site)
+```
+
+Then we can create a list of the names of the column which will be included in 
+the merged column, and export these values to a csv file to manually develop an 
+ontology map:
+```{r}
+# Create a dataframe of only the relevant columns
+bodysub_cols <- samplemd %>% select(curation_id, body_subsite, body_site)
+bodysub_cols <- as.data.frame(sapply(bodysub_cols, as.character))
+
+# Get unqiue values for ontology map
+unique_merged_vals <- unique(bodysub_cols[,2:3])
+
+# Make a csv file of the unique values in the merged column
+write.csv(unique_merged_vals, 
+          file= file.path(proj_dir, "body_site_detailed_cols_unique_vals.csv"), 
+          row.names=F, col.names=F)
+```
+
+
+# Mapping
+
+## Import Maps
+
+To access the necessary body site ontology terms we will load the 
+`cMD_body_site_map`.
+```{r import_maps, eval=FALSE}
+# import body_site ontology map
+# mapped_terms <- read_sheet(ss, sheet = "body_site_ontology")
+
+# import body_site_detailed ontology map
+mapped_terms <-read.csv(file = file.path(proj_dir, "cMD_body_site_map.csv"), header=T)
+setdiff(unique_merged_vals$body_site, mapped_terms$original_value)
+```
+
+# Curating body_site_detailed Column
+
+Next we can convert plain numeric values into a combined descriptive and numeric 
+value pair by adding the corresponding column name. We will also take this 
+opportunity to map the new values associated with each column metric and their
+corresponding ontology term IDs:
+```{r}
+# Search for replacement terms in the ontology map
+for (i in 1:length(bodysub_cols$body_site)){
+  if (!is.na(bodysub_cols$body_site[i])){
+    new_term <- mapped_terms$curated_ontology_term[grep(paste("^",bodysub_cols$body_site[i],"$",sep=""), mapped_terms$original_value, fixed=F)]
+    new_term_id <- mapped_terms$curated_ontology_term_id[grep(paste("^",bodysub_cols$body_site[i],"$",sep=""), mapped_terms$original_value, fixed=F)]
+    # Create curated value
+    bodysub_cols$curated_body_site[i] <- new_term
+    bodysub_cols$curated_body_site_ontology_term_id[i] <- new_term_id
+  }else{
+    bodysub_cols$curated_body_site[i] <- NA
+    bodysub_cols$curated_body_site_ontology_term_id[i] <- NA   
+  }
+}
+```
+
+
+## Curated Table Creation
+
+Next, we can clean up the dataframe by replacing the unique character 
+representing NA values with "NA" and updating column names as needed:
+```{r}
+# Create a column of relevant source columns
+for (i in 1:nrow(bodysub_cols)){
+  bodysub_cols$curated_body_site_source[i] <- ifelse(is.na(bodysub_cols$body_site[i]), NA, "body_site")
+}
+
+# Create a curated dataframe
+cur_body_site <- bodysub_cols[,c(1, 3:6)]
+
+cur_body_site <- cur_body_site %>% dplyr::rename(original_body_site = body_site)
+
+# Replace empty values from curated columns with "NA"
+cur_body_site <- data.frame(lapply(cur_body_site, 
+                                      function(x) gsub("^$", NA, x)))
+```
+
+
+## Export
+
+Finally, we will export our completed table to GitHub.
+```{r export_curated_table, eval=FALSE}
+# export to GitHub
+write.csv(cur_body_site, 
+          file = file.path(proj_dir, "curated_body_site.csv"),
+          row.names = FALSE)
+```
