@@ -1,0 +1,147 @@
+---
+title: "cBioPortal specimen type"
+author: "Sehyun Oh"
+date: "`r format(Sys.time(), '%B %d, %Y')`"
+format:
+    html:
+        fontsize: 14pxs
+        toc: true
+        top-depth: 3
+abstract: "This vignette tries to seperate out mixed information under 
+`curated_specimen_type` column, especially metastasis status, into other 
+curated attributes."
+---
+
+```{r setup, include=FALSE}
+knitr::opts_chunk$set(echo = TRUE, 
+                    warning = FALSE,
+                    message = FALSE,
+                    collapse = TRUE, 
+                    eval = FALSE)
+```
+
+# Setup
+```{r}
+suppressPackageStartupMessages({
+    library(dplyr)
+})
+```
+
+## Load data
+```{r}
+extDir <- "~/OmicsMLRepo/OmicsMLRepoData/inst/extdata"
+cbio <- readr::read_csv(file.path(extDir, "cBioPortal_curated_metadata_release.csv"))
+```
+
+```{r}
+specimenType <- cbio %>%
+    filter(!duplicated(specimen_type)) %>%
+    select(specimen_type, specimen_type_ontology_term_id) %>%
+    rename(original_value = specimen_type,
+           original_ontology = specimen_type_ontology_term_id)
+```
+
+## Export for manual harmonization
+```{r eval=FALSE}
+## Export the template to Google Drive
+url <- "https://docs.google.com/spreadsheets/d/1mwThsSZaSi7R0nPNBbzDk4BFWnzqOWacdh1kZlA97o8/edit?usp=sharing"
+ss <- googledrive::as_id(url)
+googlesheets4::write_sheet(specimenType, ss = ss, sheet = "cBioPortal_specimen_type_map")
+```
+
+Perform manual harmonization and import it back:
+```{r}
+url <- "https://docs.google.com/spreadsheets/d/1mwThsSZaSi7R0nPNBbzDk4BFWnzqOWacdh1kZlA97o8/edit?usp=sharing"
+ss <- googledrive::as_id(url)
+specimenType_map <- googlesheets4::read_sheet(ss = ss, sheet = "cBioPortal_specimen_type_map")
+```
+
+```{r save, eval=FALSE}
+mapsDir <- "~/OmicsMLRepo/OmicsMLRepoData/cBioPortalData/maps"
+write.csv(specimenType_map, 
+          file.path(mapsDir, "cBioPortal_specimen_type_map.csv"), 
+          row.names = FALSE)
+```
+
+
+# Load harmonized map
+```{r}
+## Source
+cbio_s <- readRDS("~/OmicsMLRepo/OmicsMLRepoData/cBioPortalData/source/cBioPortal_all_clinicalData_combined_2023-05-18.rds")
+## Add curation ID
+cbio_s$curation_id <- paste(cbio_s$studyId, 
+                            cbio_s$patientId, 
+                            cbio_s$sampleId, sep = ":")
+```
+
+```{r}
+mapsDir <- "~/OmicsMLRepo/OmicsMLRepoData/cBioPortalData/maps"
+datDir <- "~/OmicsMLRepo/OmicsMLRepoData/cBioPortalData/data"
+
+map <- readr::read_csv(file.path(mapsDir, "cBioPortal_specimen_type_map.csv"))
+disease <- readr::read_csv(file.path(datDir, "curated_disease.csv")) # include `specimen_type` column
+metastasis <- readr::read_csv(file.path(datDir, "curated_disease_metastasis.csv")) # include `metastasis` column
+```
+
+Initially, `curated_specimen_type` information was collected from 3 different 
+columns: `SAMPLE_TYPE`, `SPECIMEN_TYPE`, and `SAMPLE_TYPE_DETAIL`.
+```{r}
+unique(disease$curated_specimen_type_source) %>% strsplit(";") %>% unlist %>% unique
+```
+
+```{r}
+## `SAMPLE_TYPE`
+sum(!is.na(cbio_s$SAMPLE_TYPE)) # number of non-NA values = 123,323
+sum(!is.na(cbio_s$SAMPLE_TYPE))/nrow(cbio_s)*100 # completeness = 65.1%
+
+## `SAMPLE_TYPE_DETAIL`
+sum(!is.na(cbio_s$SAMPLE_TYPE_DETAIL)) # number of non-NA values = 511
+sum(!is.na(cbio_s$SAMPLE_TYPE_DETAIL))/nrow(cbio_s)*100 # completeness = 0.27%
+
+## `SPECIMEN_TYPE`
+sum(!is.na(cbio_s$SPECIMEN_TYPE)) # number of non-NA values = 23,348
+sum(!is.na(cbio_s$SPECIMEN_TYPE))/nrow(cbio_s)*100 # completeness = 12.3%
+```
+
+```{r}
+newTb <- disease %>%
+    select(curation_id, curated_specimen_type) %>%
+    rename(orignal_value = curated_specimen_type) %>%
+    mutate(curated_sample_type = NA,
+           curated_sample_type_ontology_term_id = NA)
+```
+
+```{r}
+## Update the `sample_type` column
+for (i in seq_len(nrow(map))) {
+    
+    ov <- map$original_value[i]
+    term <- map$`sample_type:curated_ontology`[i]
+    id <- map$`sample_type:curated_ontology_term_id`[i]
+
+    ind <- which(newTb$orignal_value == ov)
+    if (length(ind) != 0) {
+        newTb$curated_sample_type[ind] <- term
+        newTb$curated_sample_type_ontology_term_id[ind] <- id
+    }
+}
+
+## Update the `specimen_type` column
+newTb$curated_specimen_type <- NA
+newTb$curated_specimen_type_ontology_term_id <- NA
+
+for (i in seq_len(nrow(map))) {
+    
+    ov <- map$original_value[i]
+    term <- map$`specimen_type:curated_ontology`[i]
+    id <- map$`specimen_type:curated_ontology_term_id`[i]
+
+    ind <- which(newTb$orignal_value == ov)
+    if (length(ind) != 0) {
+        newTb$curated_specimen_type[ind] <- term
+        newTb$curated_specimen_type_ontology_term_id[ind] <- id
+    }
+}
+```
+
+

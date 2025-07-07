@@ -1,0 +1,44 @@
+---
+title: "cBioPortal subtype"
+author: "Sehyun Oh"
+date: "`r format(Sys.time(), '%B %d, %Y')`"
+format:
+    html:
+        fontsize: 14pxs
+        toc: true
+        top-depth: 3
+abstract: "This vignette harmonizes disease subtype information."
+---
+
+```{r setup, include=FALSE}
+knitr::opts_chunk$set(echo = TRUE, 
+                    warning = FALSE,
+                    message = FALSE,
+                    collapse = TRUE, 
+                    eval = FALSE)
+```
+
+# Setup
+
+```{r}
+suppressPackageStartupMessages({
+    library(dplyr)
+})
+```
+
+# Load harmonized map
+
+```{r}
+## Source
+projDir <- "~/OmicsMLRepo/OmicsMLRepoData/cBioPortalData"
+cbio_s <- readRDS(file.path(projDir, "source/cBioPortal_all_clinicalData_combined_2023-05-18.rds"))
+## Add curation ID
+cbio_s$curation_id <- paste(cbio_s$studyId, 
+                            cbio_s$patientId, 
+                            cbio_s$sampleId, sep = ":")
+```
+
+```{r}
+grep("subtype", colnames(cbio_s), ignore.case = TRUE, value = TRUE)
+```
+
