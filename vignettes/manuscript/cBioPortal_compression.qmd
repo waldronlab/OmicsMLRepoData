@@ -34,35 +34,52 @@ ms <- read_csv(file.path(extDir, "cBioPortal_merging_schema.csv"))
 ```
 
 ```{r}
-## Keep only two treatment attributes - name and type
-all_trt <- grep("treatment_", ms$curated_field)
-keep_trt <- grep("treatment_name|treatment_type", ms$curated_field)
-ind <- setdiff(all_trt, keep_trt)
-ms <- ms[-ind,]
+ms_long <- ms %>%
+    select(curated_field, original_field, original_field_num) %>%
+    tidyr::separate_longer_delim(., original_field, delim = ";")
+
+# comp_ori <- ms_sub %>%
+#     filter(!duplicated(original_field))
+# 
+# comp_cur <- ms %>%
+#     select(grep("curated_field", colnames(ms), value = TRUE)) %>%
+#     tidyr::separate_longer_delim(., cols = grep("curated_field", colnames(ms), value = TRUE), delim = ";") %>%
+#     filter(!duplicated(curated_field))
 ```
 
 ```{r}
-ms_long <- getLongMetaTb(ms, "original_field", delim = ";")
-df1 <- ms_long %>%
+## original_field
+ori_df <- ms_long %>%
     group_by(curated_field) %>%
-    mutate(from = n(),
-           category = "original") %>%
-    rename(column = original_field,
-           curated_column = curated_field) %>%
-    select(column, curated_column, from, category)
+    mutate(column = original_field,
+           from = n(),
+           category = "original",
+           .keep = "none") %>%
+    dplyr::rename(curated_column = curated_field) %>%
+    filter(!is.na(column))
 
-df2 <- ms %>%
+cur_df <- ms %>%
     transmute(column = curated_field,
               curated_column = curated_field,
               from = 1,
               category = "curated")
 
-df <- rbind(df1, df2)
+df <- rbind(ori_df, cur_df)
 df$category <- factor(df$category, levels = c("original", "curated"))
 ```
 
+Sanity check
+```{r}
+length(unique(df$column[df$category == "original"])) # 673 original columns
+length(unique(df$column[df$category == "curated"])) # 32 curated columns
+```
+
+
+
+
 ## Plotting
 ```{r}
+set.seed(1)
 ## Distinct color palette
 library(RColorBrewer)
 n <- length(unique(df$curated_column))
@@ -87,3 +104,41 @@ cbio_compression
 ggsave("figures/cbio_compression.png", width = 2.5, height = 3, dpi = 600)
 ```
 
+
+## Summary for the report
+```{r}
+## the number of unique columns in original and curated metadata tables
+num_of_cols <- df %>%
+    group_by(category) %>%
+    summarize(num_cols = length(unique(column)))
+num_of_cols
+```
+
+```{r}
+## 32 curated columns
+cur_cols <- df %>% filter(category == "curated") %>% pull(column) %>% unique
+cur_cols
+length(cur_cols)
+```
+
+```{r eval=FALSE}
+cbios <- readRDS("~/OmicsMLRepo/OmicsMLRepoData/cBioPortalData/source/cBioPortal_all_clinicalData_combined_2023-05-18.rds")
+
+## 254 original columns for curated `treatment_type` column
+df %>% 
+    filter(curated_column == "treatment_type") %>% 
+    pull(column) %>% 
+    unique %>% 
+    na.omit %>% 
+    intersect(., colnames(cbios)) %>%
+    length(.)
+```
+
+
+
+# Session Info
+<details>
+```{r eval=TRUE}
+sessionInfo()
+```
+</details>

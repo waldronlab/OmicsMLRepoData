@@ -62,29 +62,6 @@ cbio_ms[which.max(cbio_ms$original_field_num),]
 ```
 
 
-## Consolidation (Value Standardization)
-The number of unique values for a given attribute
-```{r}
-trtDir <- "~/OmicsMLRepo/OmicsMLRepoData/cBioPortalData/cBioPortal_treatment"
-trt_name_type <- read_csv(file.path(trtDir, "maps/cBioPortal_treatment_name_type_map.csv"))
-
-nrow(trt_name_type) # the number of original values
-length(unique(trt_name_type$curated_ontology)) # the number of curated values
-```
-
-```{r}
-trt_case <- read_csv(file.path(trtDir, "maps/cBioPortal_treatment_case_map.csv"))
-
-nrow(trt_case) # the number of original values
-length(unique(trt_case$curated_ontology)) # the number of curated values
-```
-
-```{r}
-trt_amount_time <- read_csv(file.path(trtDir, "maps/cBioPortal_treatment_amount_time_map.csv"))
-
-nrow(trt_amount_time) # the number of original values
-length(unique(trt_amount_time$curated_ontology)) # the number of curated values
-```
 
 
 
@@ -92,11 +69,11 @@ length(unique(trt_amount_time$curated_ontology)) # the number of curated values
 
 The completeness of the attributes
 ```{r}
-cbio_ms_expanded <- getLongMetaTb(cbio_ms,
-                                 targetCols = c("original_field",
+cbio_ms_expanded <- tidyr::separate_longer_delim(cbio_ms,
+                                  cols = c("original_field",
                                                 "original_field_completeness",
                                                 "original_field_unique_values"),
-                                 delim = ";") %>%
+                                  delim = ";") %>%
     summarise(original_field = original_field,
               original_field_completeness = as.numeric(original_field_completeness),
               original_field_unique_values = as.numeric(original_field_unique_values),
@@ -148,8 +125,8 @@ keep_trt <- grep("treatment_name|treatment_type", cbio_ms$curated_field)
 ind <- setdiff(all_trt, keep_trt)
 cbio_ms <- cbio_ms[-ind,]
 
-## Remove '_detailed' attributes
-all_detailed <- grep("_detailed", cbio_ms$curated_field)
+## Remove '_details' attributes
+all_detailed <- grep("_details", cbio_ms$curated_field)
 cbio_ms <- cbio_ms[-all_detailed,]
 ```
 
@@ -180,43 +157,7 @@ completeness_plot
 ggsave("figures/cbio_completeness.png", width = 6, height = 4, dpi = 600)
 ```
 
-```{r completeness_variability_plot, echo=FALSE, eval=FALSE}
-ggplot(tb, aes(x = completeness, y = variability, color = group)) + 
-    geom_point(position = position_dodge(), alpha = 0.7) + 
-    scale_y_continuous(trans = "log10") +
-    ggtitle("Completeness and Variability of Attributes \n (before and after harmonization)") +
-    xlab("Completeness (%)") +
-    ylab("# of Unique Values (log10)") +
-    theme(legend.title = element_blank()) +
-    scale_color_discrete(labels = c("Curated (n=29)", "Original (n=642)"))
-```
 
-
-```{r variability_plot_ver1, echo=FALSE}
-## exclude the numeric attributes (i.e., age) from variability calculation
-cbio_ms_sub <- cbio_ms[-grep("age_*", cbio_ms$curated_field),]
-
-cbio_ms_sub %>%
-    filter(!is.na(original_field_unique_values)) %>%
-    tidyr::separate_longer_delim(., original_field_unique_values, ";") %>%
-    group_by(curated_field) %>%
-    reframe(original_field_unique_values = sum(as.numeric(original_field_unique_values)),
-            curated_field_unique_values = as.numeric(curated_field_unique_values)) %>%
-    ggplot() +
-    geom_point(aes(x = curated_field, y = original_field_unique_values), 
-               alpha = 0.3, size = 1) +
-    theme_bw() +
-    # scale_y_continuous(limits = c(1, 100), trans = "log10") +
-    labs(x = "Curated Fields",
-         y = "# of Unique Values") +
-    theme(axis.text.x = element_text(angle = 60, vjust = 1, hjust = 1)) +
-    geom_point(aes(x = curated_field, y = curated_field_unique_values), 
-               col = "red", size = 2, shape = 1)
-```
-
-```{r}
-ggsave("figures/cbio_consolidation.png", width = 6, height = 4, dpi = 600)
-```
 
 ### Plot high-impacted subsets
 #### Completeness
@@ -233,17 +174,24 @@ comp_summary <- cbio_completeness %>%
 comp_summary
 ```
 
-```{r}
-## top 10 most increased (rate)
-high_comp_rate_attrs <- comp_summary$curated_field[order(comp_summary$increase_num, decreasing = TRUE)[1:10]] 
-## top 10 most increased (num)
-high_comp_num_attrs <- comp_summary$curated_field[order(comp_summary$increase_rate, decreasing = TRUE)[1:10]]
+```{r rate}
+base <- "rate"
+base <- "num"
 
-## remove some with one of the original attribute with high completeness
-target_attrs <- high_comp_rate_attrs[which(!high_comp_rate_attrs %in% c("cancer_type", "cancer_type_detailed", "sex"))] 
+if (base == "rate") {
+    ## top 10 most increased (rate)
+    high_comp_rate_attrs <- comp_summary$curated_field[order(comp_summary$increase_num, decreasing = TRUE)[1:10]] 
+    ## remove three attributes with a high-completeness original attribute
+    target_attrs <- high_comp_rate_attrs[which(!high_comp_rate_attrs %in% c("cancer_type", "cancer_type_detailed", "sex"))]
+} else if (base == "num") {
+    ## top 10 most increased (num)
+    high_comp_num_attrs <- comp_summary$curated_field[order(comp_summary$increase_rate, decreasing = TRUE)[1:10]]
+    ## remove three attributes with a high-completeness original attribute
+    target_attrs <- high_comp_num_attrs[which(!high_comp_num_attrs %in% c("cancer_type", "cancer_type_detailed", "sex"))] 
+}
 ```
 
-```{r subset_plot, echo=FALSE, fig.width=2.7, fig.height=4}
+```{r subset_plot, echo=FALSE, fig.width=2.7, fig.height=4.3}
 sub_ind <- which(cbio_completeness$curated_field %in% target_attrs)
 
 ## Completeness subset
@@ -254,88 +202,52 @@ cbio_completeness[sub_ind,] %>%
     theme_bw() +
     # scale_y_continuous(limits = c(1, 100), trans = "log10") +
     labs(title = "cBioPortal - Completeness",
-         x = "Curated Fields",
+         subtitle = paste("Based on", base), 
+         x = "",
          y = "Completeness (%)") +
-    theme(axis.text.x = element_text(angle = 40, hjust = 1, size = 9)) +
+    theme(axis.text.x = element_text(angle = 60, hjust = 1, size = 9)) +
     geom_point(aes(x = curated_field, y = curated_field_completeness), 
                col = "red", alpha = 0.2, size = 2, shape = 1)
 ```
 
-#### Consolidation
+## Summary for the report
+```{r eval=FALSE, eval=FALSE}
+cbios <- readRDS("~/OmicsMLRepo/OmicsMLRepoData/cBioPortalData/source/cBioPortal_all_clinicalData_combined_2023-05-18.rds")
+cbio <- readr::read_csv("~/OmicsMLRepo/OmicsMLRepoData/inst/extdata/cBioPortal_curated_metadata_release_tidy.csv")
+```
+
+Completeness of attributes before/after harmonization
 ```{r}
-## Consolidation subset
-ms_summary <- cbio_ms_sub %>%
-    filter(!is.na(original_field_unique_values)) %>%
-    tidyr::separate_longer_delim(., original_field_unique_values, ";") %>%
-    group_by(curated_field) %>%
-    reframe(ori = sum(as.numeric(original_field_unique_values)),
-            cura = as.numeric(curated_field_unique_values)) %>%
-    mutate(reduction_rate = round(((ori-cura)/ori)*100, 2), # reduction rate
-           reduction_num = abs(ori-cura)) %>% # the actual number of reduction
-    distinct(curated_field, reduction_num, reduction_rate, ori, cura)
-
-# hist(ms_summary$reduction_rate)
-# high_red_attrs <- ms_summary$curated_field[ms_summary$reduction_rate >= 50]
-high_red_attrs <- ms_summary$curated_field[order(ms_summary$reduction_num, decreasing = TRUE)[1:10]] # top 10 most number reduction
-```
-
-```{r fig.width=3.2, fig.height=4}
-sub_ind <- which(cbio_ms_sub$curated_field %in% high_red_attrs)
-cbio_ms_sub[sub_ind,] %>%
-    filter(!is.na(original_field_unique_values)) %>%
-    tidyr::separate_longer_delim(., original_field_unique_values, ";") %>%
-    group_by(curated_field) %>%
-    reframe(original_field_unique_values = sum(as.numeric(original_field_unique_values)),
-            curated_field_unique_values = as.numeric(curated_field_unique_values)) %>%
-    ggplot() +
-    geom_point(aes(x = curated_field, y = original_field_unique_values), 
-               alpha = 0.3, size = 1) +
-    theme_bw() +
-    # scale_y_continuous(limits = c(1, 100), trans = "log10") +
-    labs(title = "cBioPortalData - Consolidation",
-         x = "Curated Fields",
-         y = "# of Unique Values") +
-    theme(axis.text.x = element_text(angle = 40, hjust = 1, size = 9)) +
-    geom_point(aes(x = curated_field, y = curated_field_unique_values), 
-               col = "red", size = 2, shape = 1)
-```
-
-```{r var_plot_ver2, echo=FALSE}
-## Collect all the map files and calculate how many are coerced
-```
-
-
-## Correction
-```{r}
-
-```
-
-
-
-# Individual Attributes
-## Disease
-```{r}
-msDir <- "~/OmicsMLRepo/OmicsMLRepoData/cBioPortalData/merging_schema"
-disease_ms <- read_csv(file.path(msDir, "cBioPortal_merging_schema_disease.csv"))
-
-length(unique(disease_ms$curated_field)) # the number of curated fields for disease-associated information
-length(unique(disease_ms$original_field)) # the number of original fields for disease curation
+ms <- cbio_ms
+comp_ori <- ms %>%
+    select(grep("original_field", colnames(ms), value = TRUE)) %>%
+    tidyr::separate_longer_delim(., cols = grep("original_field", colnames(ms), value = TRUE), delim = ";") %>%
+    filter(!duplicated(original_field)) %>%
+    filter(!is.na(original_field))
+comp_cur <- ms %>%
+    select(grep("curated_field", colnames(ms), value = TRUE)) %>%
+    tidyr::separate_longer_delim(., cols = grep("curated_field", colnames(ms), value = TRUE), delim = ";") %>%
+    filter(!duplicated(curated_field)) %>%
+    filter(!is.na(curated_field))
 ```
 
 ```{r}
-mapDir <- "~/OmicsMLRepo/OmicsMLRepoData/cBioPortalData/maps"
-disease_map <- read_csv(file.path(mapDir, "cBioPortal_disease_map.csv"))
-```
-
-## Treatment
-466 original columns were merged into six treatment_* columns.
-```{r}
-trt_ms <- cbio_ms[grep("treatment", cbio_ms$curated_field),]
-sapply(trt_ms$original_field, strsplit, ";") %>% unlist %>% unique %>% length
+dim(comp_ori)
+low_comp <- sum(as.numeric(comp_ori$original_field_completeness) < 1, na.rm = TRUE)
+low_comp # the number of attributes with less than 1% completeness = 527
+round(low_comp/nrow(comp_ori)*100, 2) # percentage of attributes with less than 1% complete = 78.31
 ```
 
 ```{r}
+comp_cur <- comp_cur %>% filter(!curated_field %in% c("study_design", "target_condition"))
+comp_cur$curated_field_completeness <- as.numeric(comp_cur$curated_field_completeness)
+comp_cur$curated_field_unique_values <- as.integer(comp_cur$curated_field_unique_values)
 
+dim(comp_cur)
+summary(comp_cur$curated_field_completeness)
+hi_comp <- sum(comp_cur$curated_field_completeness > 10, na.rm = TRUE)
+hi_comp # the number of attributes with > 10% completeness = 15
+round(hi_comp/nrow(comp_cur)*100, 2) # percentage of attributes with > 10% complete = 50
 ```
 
 

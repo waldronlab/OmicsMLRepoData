@@ -1,0 +1,217 @@
+---
+title: "cBioPoral Results for the AI/ML manuscript"
+author:
+  - Sehyun Oh
+date: "`r format(Sys.time(), '%B %d, %Y')`"
+format:
+    html:
+        fontsize: 14pxs
+        toc: true
+        top-depth: 3
+---
+
+```{r setup, include=FALSE}
+knitr::opts_chunk$set(echo = TRUE, 
+                      warning = FALSE,
+                      message = FALSE,
+                      collapse = TRUE)
+```
+
+```{r echo=FALSE}
+suppressPackageStartupMessages({
+    library(dplyr)
+    library(readr)
+    library(ggplot2)
+    library(OmicsMLRepoR)
+    devtools::load_all("~/OmicsMLRepo/OmicsMLRepoCuration/")
+})
+```
+
+# Summary
+Load the merging schema
+```{r}
+extDir <- "~/OmicsMLRepo/OmicsMLRepoData/inst/extdata"
+cbio_ms <- read_csv(file.path(extDir, "cBioPortal_merging_schema.csv"))
+```
+
+## Consolidation (Value Standardization)
+The number of unique values for a given attribute
+```{r}
+trtDir <- "~/OmicsMLRepo/OmicsMLRepoData/cBioPortalData/cBioPortal_treatment"
+trt_name_type <- read_csv(file.path(trtDir, "maps/cBioPortal_treatment_name_type_map.csv"))
+
+nrow(trt_name_type) # the number of original values
+length(unique(trt_name_type$curated_ontology)) # the number of curated values
+```
+
+```{r}
+trt_case <- read_csv(file.path(trtDir, "maps/cBioPortal_treatment_case_map.csv"))
+
+nrow(trt_case) # the number of original values
+length(unique(trt_case$curated_ontology)) # the number of curated values
+```
+
+```{r}
+trt_amount_time <- read_csv(file.path(trtDir, "maps/cBioPortal_treatment_amount_time_map.csv"))
+
+nrow(trt_amount_time) # the number of original values
+length(unique(trt_amount_time$curated_ontology)) # the number of curated values
+```
+
+
+```{r variability_plot_ver1, echo=FALSE}
+## exclude the numeric attributes (i.e., age) from variability calculation
+cbio_ms_sub <- cbio_ms[-grep("age_*", cbio_ms$curated_field),]
+
+cbio_unique_vals <- cbio_ms_sub %>%
+    select(curated_field, curated_field_unique_values, original_field_unique_values) %>%
+    filter(!is.na(original_field_unique_values)) %>%
+    tidyr::separate_longer_delim(., original_field_unique_values, ";") %>%
+    group_by(curated_field) %>%
+    summarise(original_field_unique_values = unique(sum(as.numeric(original_field_unique_values))),
+              curated_field_unique_values = unique(as.numeric(curated_field_unique_values)))
+
+ggplot(cbio_unique_vals) +
+    geom_point(aes(x = curated_field, y = original_field_unique_values), 
+               alpha = 0.3, size = 1) +
+    theme_bw() +
+    # scale_y_continuous(limits = c(1, 100), trans = "log10") +
+    labs(x = "Curated Fields",
+         y = "# of Unique Values") +
+    theme(axis.text.x = element_text(angle = 60, vjust = 1, hjust = 1)) +
+    geom_point(aes(x = curated_field, y = curated_field_unique_values), 
+               col = "red", size = 2, shape = 1)
+```
+
+```{r}
+ggsave("figures/cbio_consolidation.png", width = 6, height = 4, dpi = 600)
+```
+
+#### Consolidation
+```{r}
+## Consolidation subset
+ms_summary <- cbio_ms_sub %>%
+    filter(!is.na(original_field_unique_values)) %>%
+    tidyr::separate_longer_delim(., original_field_unique_values, ";") %>%
+    group_by(curated_field) %>%
+    reframe(ori = sum(as.numeric(original_field_unique_values), na.rm = TRUE),
+            cura = as.numeric(curated_field_unique_values)) %>%
+    mutate(reduction_rate = round(((ori-cura)/ori)*100, 2), # reduction rate
+           reduction_num = abs(ori-cura)) %>% # the actual number of reduction
+    distinct(curated_field, reduction_num, reduction_rate, ori, cura)
+ms_summary
+```
+
+```{r}
+## Top 10 attributes showing the most reduction in unique values. Only in the `release_tidy` table.
+cbio <- readr::read_csv("~/OmicsMLRepo/OmicsMLRepoData/inst/extdata/cBioPortal_curated_metadata_release_tidy.csv")
+
+# hist(ms_summary$reduction_rate)
+# high_red_attrs <- ms_summary$curated_field[ms_summary$reduction_rate >= 50]
+# high_red_attrs <- ms_summary$curated_field[order(ms_summary$reduction_num, decreasing = TRUE)[1:10]] 
+```
+
+```{r}
+# base = "rate"
+# high_red_attrs <- ms_summary %>%
+#     filter(curated_field %in% colnames(cbio)) %>%
+#     arrange(desc(reduction_rate)) %>%  # Based on the 'number' of reduced terms
+#     pull(curated_field) %>%
+#     .[1:10]
+
+base = "num"
+high_red_attrs <- ms_summary %>%
+    filter(curated_field %in% colnames(cbio)) %>%
+    arrange(desc(reduction_num)) %>%  # Based on the 'number' of reduced terms
+    pull(curated_field) %>%
+    .[1:10]
+```
+
+
+```{r fig.width=3.3, fig.height=4.5}
+sub_ind <- which(cbio_ms_sub$curated_field %in% high_red_attrs)
+cbio_ms_sub[sub_ind,] %>%
+    filter(!is.na(original_field_unique_values)) %>%
+    tidyr::separate_longer_delim(., original_field_unique_values, ";") %>%
+    group_by(curated_field) %>%
+    reframe(original_field_unique_values = sum(as.numeric(original_field_unique_values)),
+            curated_field_unique_values = as.numeric(curated_field_unique_values)) %>%
+    ggplot() +
+    geom_point(aes(x = curated_field, y = original_field_unique_values, color = "Original"), alpha = 0.3, size = 1) +
+    geom_point(aes(x = curated_field, y = curated_field_unique_values, color = "Curated"), size = 2, shape = 1) +
+    scale_color_manual(values = c("Original" = "black", "Curated" = "red")) +
+    theme_bw() +
+    labs(title = "cBioPortalData - Consolidation",
+         subtitle = paste("Based on", base), 
+         x = "", 
+         y = "# of Unique Values",
+         color = "Data Type") +
+    theme(axis.text.x = element_text(angle = 60, hjust = 1, size = 9),
+          legend.position = c(0.17, 0.9),
+          # legend.background = element_rect(fill = "white", color = "white"),
+          legend.title = element_blank(),
+          legend.margin = margin(2, 2, 2, 2),
+          legend.box.spacing = unit(0.1, "cm"),
+          legend.spacing.y = unit(0.1, "cm"),
+          legend.key.size = unit(0.8, "lines"))
+```
+
+```{r}
+ggsave("figures/cbio_consolidation_sub.png", width = 3.3, height = 4, dpi = 1200)
+```
+
+## Summary for the report
+Reduction rates on unique values
+```{r}
+summary(ms_summary$reduction_rate)
+```
+
+```{r}
+cbioAll <- readr::read_csv("~/OmicsMLRepo/OmicsMLRepoData/inst/extdata/cBioPortal_curated_metadata.csv")
+
+## Looking for original_values mapped to `Radiation Therapy` in `treatment_name`
+from_name <- cbioAll %>%
+    select(contains("treatment_name")) %>%
+    tidyr::separate_longer_delim(everything(), delim = "<;>") %>%
+    filter(stringr::str_detect(curated_treatment_name, "Radiation Therapy"))
+unique(from_name$original_treatment_name)
+
+## Looking for original_values mapped to `Radiation Therapy` in `treatment_type`
+from_type <- cbioAll %>%
+    select(contains("treatment_type")) %>%
+    tidyr::separate_longer_delim(everything(), delim = "<;>") %>%
+    filter(stringr::str_detect(curated_treatment_type, "Radiation Therapy"))
+unique(from_type$original_treatment_type)
+```
+
+
+
+# Individual Attributes
+## Disease
+```{r}
+msDir <- "~/OmicsMLRepo/OmicsMLRepoData/cBioPortalData/merging_schema"
+disease_ms <- read_csv(file.path(msDir, "cBioPortal_merging_schema_disease.csv"))
+
+length(unique(disease_ms$curated_field)) # the number of curated fields for disease-associated information
+length(unique(disease_ms$original_field)) # the number of original fields for disease curation
+```
+
+```{r}
+mapDir <- "~/OmicsMLRepo/OmicsMLRepoData/cBioPortalData/maps"
+disease_map <- read_csv(file.path(mapDir, "cBioPortal_disease_map.csv"))
+```
+
+## Treatment
+466 original columns were merged into six treatment_* columns.
+```{r}
+trt_ms <- cbio_ms[grep("treatment", cbio_ms$curated_field),]
+sapply(trt_ms$original_field, strsplit, ";") %>% unlist %>% unique %>% length
+```
+
+
+# Session Info
+<details>
+```{r eval=TRUE}
+sessionInfo()
+```
+</details>
