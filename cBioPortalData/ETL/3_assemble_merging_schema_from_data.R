@@ -20,9 +20,11 @@ colnames(cbio_ms) <- c("curated_field",
 cbio_ms$curated_field <- gsub("curated_|_source", "", srcCols)
 
 # Import the original cBioPortal metadata
-dir <- "~/OmicsMLRepo/OmicsMLRepoData/cBioPortalData/source"
-fpath <- file.path(dir, "cBioPortal_all_clinicalData_combined_2023-05-18.rds")
-ori <- readRDS(fpath)
+if (!exists(x = "ori")) {
+    dir <- "~/OmicsMLRepo/OmicsMLRepoData/cBioPortalData/source"
+    fpath <- file.path(dir, "cBioPortal_all_clinicalData_combined_2023-05-18.rds")
+    ori <- readRDS(fpath)
+}
 
 # Load the curation-related functions
 devtools::load_all("~/OmicsMLRepo/OmicsMLRepoCuration/")
@@ -69,10 +71,10 @@ for (i in seq_along(curatedAll)) {
     }
 }
 
-# Add newly created attributes - `study_design` and `target_phenotype`.
+# Add newly created attributes - `study_design` and `target_condition`.
 # These don't have source attributes.
 cbio_ms <- add_row(cbio_ms, 
-                   curated_field = c("study_design", "target_phenotype"))
+                   curated_field = c("study_design", "target_condition"))
 
 
 # Completeness/Unique values for curated columns -------

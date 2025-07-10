@@ -1,7 +1,6 @@
 ---
 title: "ETL process for cBioPortal clinical metadata curation/harmonization"
-author:
-  - Sehyun Oh
+author: "Sehyun Oh"
 date: "`r format(Sys.time(), '%B %d, %Y')`"
 format:
     html:
@@ -58,8 +57,8 @@ source(file.path(cbio_etl_dir, "2_format_for_release.R"))
 ```
 
 ```{r}
-dim(cbio_meta_release)
-dim(cbio_meta_release_tidy)
+dim(cbio_meta_release) # 189439 x 86
+dim(cbio_meta_release_tidy) # 189439 x 82: removing non-availablility info. Finalize the delimiter and use this as 'release'
 ```
 
 ```{r save_cmd_meta_release, eval=FALSE}
@@ -67,7 +66,7 @@ dir <- "~/OmicsMLRepo/OmicsMLRepoData"
 fpath <- file.path(dir, "inst/extdata/cBioPortal_curated_metadata_release.csv")
 fpath_tidy <- file.path(dir, "inst/extdata/cBioPortal_curated_metadata_release_tidy.csv")
 write.csv(cbio_meta_release, fpath, row.names = FALSE) # 189,439 x 86
-write.csv(cbio_meta_release_tidy, fpath_tidy, row.names = FALSE) # 189,439 x 57
+write.csv(cbio_meta_release_tidy, fpath_tidy, row.names = FALSE) # 189,439 x 82
 
 ## Sync the version in GCS bucket
 library(AnVILGCP)
@@ -145,6 +144,11 @@ source(file.path(cbio_etl_dir, "0_assemble_curated_metadata.R"))
 ```
 
 ```{r}
+## Load the original cBioPortal metadata to reduce the loading/running time of the ETL script 3
+dir <- "~/OmicsMLRepo/OmicsMLRepoData/cBioPortalData/source"
+fpath <- file.path(dir, "cBioPortal_all_clinicalData_combined_2023-05-18.rds")
+ori <- readRDS(fpath)
+
 source(file.path(cbio_etl_dir, "3_assemble_merging_schema_from_data.R"))
 ```
 
@@ -186,7 +190,7 @@ write.csv(treatment_ms, file.path(cbio_ms_dir, "cBioPortal_merging_schema_treatm
 # Sync data dictionary
 This script 'SAVE' data dictionaries.
 ```{r eval=FALSE}
-# cBioPortal data dictionary created in Google Sheet
+# cBioPortal data dictionary is created and maintained in Google Sheet
 # Edit this from Google Sheet
 source("~/OmicsMLRepo/OmicsMLRepoData/cBioPortalData/ETL/4_sync_data_dictionary.R")
 ```

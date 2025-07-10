@@ -39,7 +39,8 @@ allCols <- colnames(cbio_meta_release)
 required_cols <- c("studyId", "patientId", "sampleId", "curation_id", "SAMPLE_COUNT")
 optional_cols <- allCols[!allCols %in% required_cols]
 col_order <- c(required_cols, sort(optional_cols)) # alphabetical order
-cbio_meta_release <- cbio_meta_release[col_order] 
+cbio_meta_release <- cbio_meta_release[col_order] %>%
+    dplyr::rename(sample_count = SAMPLE_COUNT) # consistent capitalization of attribute names
 
 attr(cbio_meta_release, "source") <- "cBioPortalData" # add attribute
 
@@ -48,10 +49,14 @@ cbio_meta_release$package <- "cBioPortal"
 cbio_meta_release$last_updated <- Sys.time()
 
 # Tidying ---------------
-## Remove all treatment_* columns except treatment_name/type
-all_trt_cols <- grep("treatment_", colnames(cbio_meta_release), value = TRUE)
-kept_trt_cols <- grep("treatment_name|treatment_type", colnames(cbio_meta_release), value = TRUE)
-rm_trt_cols <- setdiff(all_trt_cols, kept_trt_cols)
+# ## Remove all treatment_* columns except treatment_name/type
+# all_trt_cols <- grep("treatment_", colnames(cbio_meta_release), value = TRUE)
+# kept_trt_cols <- grep("treatment_name|treatment_type", colnames(cbio_meta_release), value = TRUE)
+# rm_trt_cols <- setdiff(all_trt_cols, kept_trt_cols)
+
+## Remove all treatment availability related columns (e.g., `treatment_not_provided`, `treatment_no`)
+rm_trt_cols <- grep("treatment_", colnames(cbio_meta_release), value = TRUE) %>%
+    grep("_no$|_not_", ., value = TRUE)
 cbio_meta_release_tidy <- cbio_meta_release %>% select(!all_of(rm_trt_cols))
 
 # dd <- read.csv("~/OmicsMLRepo/OmicsMLRepoData/cBioPortalData/data_dictionary/cBioPortal_data_dictionary.csv")
