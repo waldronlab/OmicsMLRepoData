@@ -191,14 +191,14 @@ if (base == "rate") {
 }
 ```
 
-```{r subset_plot, echo=FALSE, fig.width=2.7, fig.height=4.3}
+```{r subset_plot, echo=FALSE, fig.width=3, fig.height=4.3}
 sub_ind <- which(cbio_completeness$curated_field %in% target_attrs)
 
 ## Completeness subset
 cbio_completeness[sub_ind,] %>%
-    ggplot() +
-    # geom_violin(aes(x = curated_field, y = original_field_completeness), alpha = 0.3) +
-    geom_boxplot(aes(x = curated_field, y = original_field_completeness), alpha = 0.3) +
+    ggplot(aes(x = curated_field, y = original_field_completeness)) +
+    geom_boxplot(alpha = 0.3, outlier.shape = NA) +
+    geom_jitter(color = "black", alpha = 0.2, size = 1) +
     theme_bw() +
     # scale_y_continuous(limits = c(1, 100), trans = "log10") +
     labs(title = "cBioPortal - Completeness",
@@ -209,6 +209,11 @@ cbio_completeness[sub_ind,] %>%
     geom_point(aes(x = curated_field, y = curated_field_completeness), 
                col = "red", alpha = 0.2, size = 2, shape = 1)
 ```
+
+```{r}
+ggsave("figures/cbio_completeness.png", width = 3, height = 4.3, dpi = 600)
+```
+
 
 ## Summary for the report
 ```{r eval=FALSE, eval=FALSE}

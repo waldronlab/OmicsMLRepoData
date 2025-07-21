@@ -40,8 +40,20 @@ df1 <- allCols[1:2] %>%
            category = "original") %>%
     dplyr::rename(column = ori_column)
     
-df2 <- data.frame(column = unique(unlist(strsplit(allCols$curated_column, ";"))), 
-                  from = 1) %>%
+## All the final columns (i.e., both curated and inherited)
+non_harmonized_cols <- c("identification", "independent", "remove", "sequencing")
+curated <- allCols$curated_column %>%
+    strsplit(";") %>%
+    unlist() %>%
+    unique() %>%
+    setdiff(non_harmonized_cols)
+inherited <- allCols %>%
+    filter(curated_column %in% non_harmonized_cols) %>%
+    filter(curated_column != "remove") %>%
+    pull(ori_column)
+
+df2 <- data.frame(column = c(curated, inherited), 
+                  from = 1) %>%   # `from` counts the number of columns
     mutate(category = "curated",
            curated_column = column)
 
@@ -77,7 +89,27 @@ ggplot(df, aes(fill = curated_column, y = 1, x = category)) +
 ggsave("figures/cmd_compression.png", width = 2, height = 3, dpi = 600)
 ```
 
-```{r sankey}
+Check the actual column names
+```{r}
+## Attributes in the release-version of the metadata
+cmd <- readr::read_csv("~/OmicsMLRepo/OmicsMLRepoData/inst/extdata/cMD_curated_metadata_release.csv")
+fromRelease <- colnames(cmd)[!grepl("ontology_term_id", colnames(cmd))]
+
+## Curated attributes summarized in the allCols table
+fromAllCols <- df %>%
+    filter(category == "curated") %>%
+    pull(curated_column) %>%
+    strsplit(., ";") %>%
+    unlist %>% unique
+
+length(intersect(fromAllCols, fromRelease))
+setdiff(fromAllCols, fromRelease)
+setdiff(fromRelease, fromAllCols)
+```
+
+
+
+```{r sankey eval=FALSE, echo=FALSE}
 # Load necessary libraries
 library(ggalluvial)
 library(dplyr)

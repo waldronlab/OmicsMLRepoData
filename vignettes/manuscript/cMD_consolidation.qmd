@@ -1,0 +1,131 @@
+---
+title: "cMD Consolidation - Changes in the number of unique values"
+author: Sehyun Oh
+date: "`r format(Sys.time(), '%B %d, %Y')`"
+format:
+    html:
+        fontsize: 14pxs
+        toc: true
+        top-depth: 3
+---
+
+```{r setup, include=FALSE}
+knitr::opts_chunk$set(echo = TRUE, 
+                      warning = FALSE,
+                      message = FALSE,
+                      collapse = TRUE)
+```
+
+```{r echo=FALSE}
+suppressPackageStartupMessages({
+    library(dplyr)
+    library(readr)
+    library(ggplot2)
+    library(OmicsMLRepoR)
+    devtools::load_all("~/OmicsMLRepo/OmicsMLRepoCuration/")
+})
+```
+
+Load the merging schema
+```{r}
+extDir <- "~/OmicsMLRepo/OmicsMLRepoData/inst/extdata"
+ms <- read_csv(file.path(extDir, "cMD_merging_schema.csv"))
+```
+
+
+# Unique values
+ 
+```{r variability_plot_for_all, echo=FALSE}
+## attributes to exclude
+exclude_cols <- c(
+    grep("age_*", ms$curated_field, value = TRUE), # numeric
+    "bmi", # numeric
+    "disease_response_pfs;disease_response_pfs_month", # numeric
+    grep("ncbi_accession|pmid", ms$curated_field) # id
+)
+
+ms_sub <- ms %>% 
+    filter(!curated_field %in% exclude_cols) %>% 
+    filter(!is.na(original_field_unique_values)) %>% # remove newly introduced attributes
+    select(curated_field, curated_field_unique_values, original_field_unique_values) %>%
+    tidyr::separate_longer_delim(cols = c("curated_field", "curated_field_unique_values"), delim = ";") %>%
+    tidyr::separate_longer_delim(., original_field_unique_values, ";") %>%
+    group_by(curated_field) %>%
+    reframe(original_field_unique_values = sum(as.numeric(original_field_unique_values)),
+            curated_field_unique_values = as.numeric(curated_field_unique_values)) %>%
+    mutate(diff = abs(curated_field_unique_values - original_field_unique_values)) %>%
+    filter(!duplicated(curated_field))
+
+ggplot(ms_sub) +
+    geom_point(aes(x = curated_field, y = original_field_unique_values), 
+               alpha = 0.3, size = 1) +
+    theme_bw() +
+    scale_y_continuous(limits = c(1, 200)) +
+    labs(title = "Variability of Fields",
+         x = "",
+         y = "# of Unique Values") +
+    theme(axis.text.x = element_text(angle = 90, vjust = 0.5, hjust = 1)) +
+    geom_point(aes(x = curated_field, y = curated_field_unique_values), 
+               col = "red", size = 2, shape = 1)
+```
+
+```{r fig.width=2, fig.height=3.5}
+attrs <- c("ancestry", "disease", "hla", 
+           # "antibiotics_current_use", 
+           # "neonatal_feeding_method", 
+           "treatment")
+
+ms_sub %>%
+    filter(curated_field %in% attrs) %>%
+    ggplot(aes(x = curated_field, y = original_field_unique_values)) +
+    geom_point(alpha = 0.3, size = 1) +
+    theme_bw() +
+    scale_y_continuous(limits = c(1, 200)) +
+    labs(title = "Variability of Fields",
+         x = "",
+         y = "# of Unique Values") +
+    theme(axis.text.x = element_text(angle = 40, hjust = 1, size = 12),
+          axis.text.y = element_text(size = 10),
+          axis.title.y = element_text(size = 12)) +
+    geom_point(aes(x = curated_field, y = curated_field_unique_values), 
+               col = "red", size = 2, shape = 1)
+```
+
+```{r}
+ggsave("figures/cmd_consolidation.png", width = 2, height = 3.5, dpi = 600)
+```
+
+
+```{r jitter_version}
+ms_sub <- ms %>% 
+    filter(!curated_field %in% exclude_cols) %>% 
+    filter(!is.na(original_field_unique_values)) %>% # remove newly introduced attributes
+    select(curated_field, curated_field_unique_values, original_field_unique_values) %>%
+    tidyr::separate_longer_delim(cols = c("curated_field", "curated_field_unique_values"), delim = ";") %>%
+    tidyr::separate_longer_delim(., original_field_unique_values, ";") %>%
+    group_by(curated_field) %>%
+    reframe(original_field_unique_values = as.numeric(original_field_unique_values),
+            curated_field_unique_values = as.numeric(curated_field_unique_values)) %>%
+    mutate(diff = abs(curated_field_unique_values - original_field_unique_values))
+
+ggplot(ms_sub, aes(x = curated_field, y = original_field_unique_values)) +
+    geom_boxplot() +
+    geom_jitter(alpha = 0.3, size = 1) +
+    theme_bw() +
+    scale_y_continuous(limits = c(1, 200)) +
+    labs(title = "Variability of Fields",
+         x = "",
+         y = "# of Unique Values") +
+    theme(axis.text.x = element_text(angle = 90, vjust = 0.5, hjust = 1)) +
+    geom_point(aes(x = curated_field, y = curated_field_unique_values), 
+               col = "red", size = 2, shape = 1)
+```
+
+
+# Session Info
+<details>
+```{r eval=TRUE}
+sessionInfo()
+```
+</details>
+
