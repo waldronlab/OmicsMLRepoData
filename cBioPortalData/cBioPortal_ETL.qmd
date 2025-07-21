@@ -70,7 +70,8 @@ write.csv(cbio_meta_release_tidy, fpath_tidy, row.names = FALSE) # 189,439 x 82
 
 ## Sync the version in GCS bucket
 library(AnVILGCP)
-avcopy(fpath, "gs://omics_ml_repo/cBioPortal_curated_metadata_release_tidy.csv", platform = gcp())
+avcopy(fpath, "gs://omics_ml_repo/cBioPortal_curated_metadata_release.csv", platform = gcp())
+avcopy(fpath_tidy, "gs://omics_ml_repo/cBioPortal_curated_metadata_release_tidy.csv", platform = gcp())
 ```
 
 
