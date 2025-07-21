@@ -284,33 +284,25 @@ for (x in 1:length(disease_cols_cbio$merged)){
   original_terms <- as.list(unlist(strsplit(disease_cols_cbio$merged[x], "<;>")))
   new_terms <- list()
   new_term_ids <- list()
+  new_terms2 <- list()
+  new_term_ids2 <- list()
   # Search for replacement terms in the ontology map
   new_terms <- lapply(original_terms, function(y) format_list(list_drop_empty(as.list(mapped_terms$curated_ontology[grep(paste("^",y,"$",sep=""), mapped_terms$original_value, fixed=F)])), "<;>"))
   new_term_ids <- lapply(original_terms, function(y) format_list(list_drop_empty(as.list(mapped_terms$curated_ontology_term_id[grep(paste("^",y,"$",sep=""), mapped_terms$original_value, fixed=F)])), "<;>"))
   new_terms <- format_list(list_drop_empty(new_terms), "<;>")
   new_term_ids <- format_list(list_drop_empty(new_term_ids), "<;>")
+   new_terms2 <- lapply(original_terms, function(y) format_list(list_drop_empty(as.list(mapped_terms2$curated_ontology[grep(paste("^",y,"$",sep=""), mapped_terms2$original_value, fixed=F)])), "<;>"))
+  new_term_ids2 <- lapply(original_terms, function(y) format_list(list_drop_empty(as.list(mapped_terms2$curated_ontology_term_id[grep(paste("^",y,"$",sep=""), mapped_terms2$original_value, fixed=F)])), "<;>"))
+  new_terms2 <- format_list(list_drop_empty(new_terms2), "<;>")
+  new_term_ids2 <- format_list(list_drop_empty(new_term_ids2), "<;>")
   # Concatenate new lists on ";" delimiter to create curated value
   disease_cols_cbio$curated_disease_metastasis[x] <- format_list(as.list(unlist(strsplit(new_terms, "<;>"))), "<;>")
   disease_cols_cbio$curated_disease_metastasis_ontology_term_id[x] <- format_list(as.list(unlist(strsplit(new_term_ids, "<;>"))), "<;>")
+  disease_cols_cbio$curated_disease_metastasic_site[x] <- format_list(as.list(unlist(strsplit(new_terms2, "<;>"))), "<;>")
+  disease_cols_cbio$curated_disease_metastasic_site_ontology_term_id[x] <- format_list(as.list(unlist(strsplit(new_term_ids2, "<;>"))), "<;>")
   if(x %% 10000==0){print(x)}
 }
 
-# Iterate through merged column values
-for (x in 1:length(disease_cols_cbio$merged)){
-  # Create a list of terms in the value
-  original_terms <- as.list(unlist(strsplit(disease_cols_cbio$merged[x], "<;>")))
-  new_terms <- list()
-  new_term_ids <- list()
-  # Search for replacement terms in the ontology map
-  new_terms <- lapply(original_terms, function(y) format_list(list_drop_empty(as.list(mapped_terms2$curated_ontology[grep(paste("^",y,"$",sep=""), mapped_terms$original_value, fixed=F)])), "<;>"))
-  new_term_ids <- lapply(original_terms, function(y) format_list(list_drop_empty(as.list(mapped_terms2$curated_ontology_term_id[grep(paste("^",y,"$",sep=""), mapped_terms$original_value, fixed=F)])), "<;>"))
-  new_terms <- format_list(list_drop_empty(new_terms), "<;>")
-  new_term_ids <- format_list(list_drop_empty(new_term_ids), "<;>")
-  # Concatenate new lists on ";" delimiter to create curated value
-  disease_cols_cbio$curated_disease_metastasic_site[x] <- format_list(as.list(unlist(strsplit(new_terms, "<;>"))), "<;>")
-  disease_cols_cbio$curated_disease_metastasic_site _ontology_term_id[x] <- format_list(as.list(unlist(strsplit(new_term_ids, "<;>"))), "<;>")
-  if(x %% 10000==0){print(x)}
-}
 ```
 
 
