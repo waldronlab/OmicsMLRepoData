@@ -6,7 +6,7 @@
 cols <- c("feces_phenotype_metric", "feces_phenotype_value", "feces_phenotype_metric_ontology_term_id")
 merged_feces <- curated_all_cleaned %>%
     select(all_of(c("curation_id", cols, "package"))) %>%
-    getLongMetaTb(targetCol = cols, delim = ";") %>%
+    tidyr::separate_longer_delim(cols = cols, delim = ";") %>%
     mutate(
         feces_phenotype = case_when(
             feces_phenotype_metric != "NA" & feces_phenotype_value != "NA" ~ 
