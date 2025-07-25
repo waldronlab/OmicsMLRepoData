@@ -16,8 +16,14 @@ ss <- googledrive::as_id(url)
 
 ## Release
 dd_release <- googlesheets4::read_sheet(ss = ss, sheet = "data_dictionary")
+dd_columns <- c("ColName", "Released", "ColClass", "Unique",
+                 "Required", "MultipleValue", "Description", "AllowedValues", 
+                 "Delimiter", "Separater", "DynamicEnum", "DynamicEnumProperty")
+dd_release <- dd_release |> dplyr::select(dd_columns)
+if (ncol(dd_release) != length(dd_columns)) {stop("Double-check subset")}
+
 write.csv(dd_release,
-          file.path(cbio_dd_dir, "cBioPortal_data_dictionary.csv"),
+          file.path("~/OmicsMLRepo/OmicsMLRepoData/inst/extdata/cBioPortal_data_dictionary.csv"),
           row.names = FALSE)
 
 ## Release for OmicsMLRepoR
