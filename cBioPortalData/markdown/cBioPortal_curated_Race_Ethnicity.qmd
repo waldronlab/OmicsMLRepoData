@@ -1,0 +1,69 @@
+---
+title: "Untitled"
+output: html_document
+date: "2024-11-13"
+---
+
+# Load the data
+We think 'ancestry' is the better concept to describe biological/cultural 
+origin of a person; however, most of data schema, including NIH endorsed
+CDE, adopt both race and ethnicity. To be compatible with them, we decide
+to re-record the harmonized ancestry information into those two attributes.
+
+```{r}
+dat <- readr::read_csv("~/OmicsMLRepo/OmicsMLRepoData/cBioPortalData/data/curated_population_ancestry.csv")
+```
+
+```{r}
+map <- readr::read_csv("~/OmicsMLRepo/OmicsMLRepoData/cBioPortalData/maps/cBioPortal_population_ancestry_detailed_map.csv")
+```
+
+
+# Get dynamic enums
+We find the dynamic enums to separate curated terms into 'Race' and 'Ethnicity'.
+
+```{r}
+v1 <- readr::read_csv("~/OmicsMLRepo/OmicsMLRepoData/inst/extdata/cBioPortal_curated_metadata_release_v1.csv")
+v2 <- readr::read_csv("~/OmicsMLRepo/OmicsMLRepoData/inst/extdata/cBioPortal_curated_metadata_release_v2.csv")
+```
+
+```{r}
+v1All <- v1 %>%
+    select(pop_ancestry_ontology_term_id) %>%
+    tidyr::separate_longer_delim(., colnames(.), ";") %>%
+    tidyr::separate_longer_delim(., colnames(.), "<;>") %>%
+    tidyr::separate_longer_delim(., colnames(.), "::") %>%
+    unique() %>%
+    na.omit() %>%
+    pull(pop_ancestry_ontology_term_id)
+length(v1All)
+```
+
+```{r}
+v2AllMain <- v2 %>%
+    select(population_ancestry_ontology_term_id) %>%
+    tidyr::separate_longer_delim(., colnames(.), ";") %>%
+    tidyr::separate_longer_delim(., colnames(.), "<;>") %>%
+    tidyr::separate_longer_delim(., colnames(.), "::") %>%
+    unique() %>%
+    na.omit() %>%
+    pull(population_ancestry_ontology_term_id)
+v2AllDetail <- v2 %>%
+    select(population_ancestry_detailed_ontology_term_id) %>%
+    tidyr::separate_longer_delim(., colnames(.), ";") %>%
+    tidyr::separate_longer_delim(., colnames(.), "<;>") %>%
+    tidyr::separate_longer_delim(., colnames(.), "::") %>%
+    unique() %>%
+    na.omit() %>%
+    pull(population_ancestry_detailed_ontology_term_id)
+
+v2All <- unique(c(v2AllMain, v2AllDetail))
+length(v2All)
+
+setdiff(v1All, v2All)
+```
+
+```{r}
+dynamic_enums <- OmicsMLRepoCuration::mapNodes(allTerms, cutoff = 0.9)
+```
+

@@ -50,9 +50,16 @@ targetCols <- cbios %>%
     .[. != 0]
 
 targetCols
+length(targetCols)
 ```
 
 ```{r eval=FALSE, echo=FALSE}
+## Completeness of each attribute
+sapply(cbios[, names(targetCols)], function(x) 
+    {round(sum(!is.na(x))/nrow(cbios)*100, 2)}) %>%
+    sort(., decreasing = TRUE)
+
+## Unique values per attribute
 sapply(cbios[, names(targetCols)], function(x) 
     {grep(term, x, ignore.case = TRUE, value = TRUE) %>% unique})
 ```

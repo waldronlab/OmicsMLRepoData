@@ -409,3 +409,80 @@ Finally, we will export our completed table to GitHub.
 write.csv(curated_sex, file = file.path(proj_dir, "curated_sex.csv"), 
           row.names=F)
 ```
+
+
+# Update
+```{r}
+datDir <- "~/OmicsMLRepo/OmicsMLRepoData/cBioPortalData/data"
+sex <- readr::read_csv(file.path(datDir, "curated_sex.csv"))
+```
+
+```{r}
+disease <- readr::read_csv(file.path(datDir, "curated_disease.csv"))
+ref <- disease %>% 
+    select(curated_cancer_type) %>% 
+    filter(!duplicated(curated_cancer_type))
+```
+
+## Export for manual harmonization
+```{r eval=FALSE}
+## Export the template to Google Drive
+url <- "https://docs.google.com/spreadsheets/d/1O_W_QDUZKWRNy4GbDQp3RCObb0FCBSVZPrkQA-0zdPk/edit?usp=sharing"
+ss <- googledrive::as_id(url)
+googlesheets4::write_sheet(ref, ss = ss, sheet = "cBioPortal_sex_inference")
+```
+
+Perform manual harmonization and import it back:
+```{r}
+url <- "https://docs.google.com/spreadsheets/d/1O_W_QDUZKWRNy4GbDQp3RCObb0FCBSVZPrkQA-0zdPk/edit?usp=sharing"
+ss <- googledrive::as_id(url)
+sex_map <- googlesheets4::read_sheet(ss = ss, sheet = "cBioPortal_sex_inference")
+
+## Subset the ones to update
+ind <- which(rowSums(!is.na(sex_map[2:3])) == 2)
+map <- sex_map[ind,]
+```
+
+Summary of the inaccurate sex record based on the cancer type
+```{r}
+tb <- left_join(sex, disease[,c("curation_id", "curated_cancer_type")], by = "curation_id")
+res <- tb %>% 
+    filter(curated_cancer_type %in% map$curated_cancer_type) %>%
+    group_by(curated_cancer_type) %>%
+    summarise(female = sum(curated_sex == "Female", na.rm = TRUE),
+              male = sum(curated_sex == "Male", na.rm = TRUE),
+              na = sum(is.na(curated_sex)),
+              n = n())
+res
+```
+
+```{r}
+updated_tb <- tb
+
+for (i in seq_len(nrow(map))) {
+    
+    ## Correct information
+    ct <- map$curated_cancer_type[i] # cancer_type
+    ct_sex <- map$infered_sex[i] # sex infered from cancer_type
+    ct_sex_id <- map$infered_sex_ontology_term_id[i]
+    
+    ## Identify the wrong entry
+    sub <- tb %>%
+        filter(curated_cancer_type == ct) %>%
+        filter(curated_sex != ct_sex | is.na(curated_sex)) %>%
+        pull(curation_id)
+    
+    ## Fixing
+    ind <- which(updated_tb$curation_id %in% sub)
+    updated_tb[ind, "curated_sex"] <- ct_sex
+    updated_tb[ind, "curated_sex_ontology_term_id"] <- ct_sex_id
+    updated_tb[ind, "curated_sex_source"] <- "curated_cancer_type"
+}
+```
+
+```{r eval=FALSE}
+write.csv(updated_tb[,1:5],
+          file.path(datDir, "curated_sex.csv"), 
+          row.names = FALSE)
+```
+
