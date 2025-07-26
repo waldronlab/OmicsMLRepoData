@@ -111,7 +111,7 @@ to include in this curation:
 cbio <- tibble(cbio)
 
 # Change "Cancer Type" column name
-cbio <- cbio %>% rename("CANCER.TYPE" = "CANCER TYPE")
+cbio <- cbio %>% dplyr::rename("CANCER.TYPE" = `CANCER TYPE`)
 
 # Load Potential columns map csv file
 pot_col_map <- read.csv(file=file.path(proj_dir, "cBioPortal_curation_schema.csv"))
@@ -253,8 +253,11 @@ curated columns we will load the `cBioPortal_disease_curation_summary.csv` file:
 # import disease ontology map
 # mapped_terms <- read_sheet(ss, sheet = "cBioPortal_disease_metastasis_map.csv")
 
-# import disease ontology map
+# import disease metastasis ontology map
 mapped_terms <-read.csv(file = file.path(proj_dir, "cBioPortal_disease_metastasis_map.csv"), header=T)
+
+# import disease metastasic site ontology map
+mapped_terms2 <-read.csv(file = file.path(proj_dir, "cBioPortal_disease_metastasic_site_map.csv"), header=T)
 ```
 
 
@@ -281,16 +284,25 @@ for (x in 1:length(disease_cols_cbio$merged)){
   original_terms <- as.list(unlist(strsplit(disease_cols_cbio$merged[x], "<;>")))
   new_terms <- list()
   new_term_ids <- list()
+  new_terms2 <- list()
+  new_term_ids2 <- list()
   # Search for replacement terms in the ontology map
   new_terms <- lapply(original_terms, function(y) format_list(list_drop_empty(as.list(mapped_terms$curated_ontology[grep(paste("^",y,"$",sep=""), mapped_terms$original_value, fixed=F)])), "<;>"))
   new_term_ids <- lapply(original_terms, function(y) format_list(list_drop_empty(as.list(mapped_terms$curated_ontology_term_id[grep(paste("^",y,"$",sep=""), mapped_terms$original_value, fixed=F)])), "<;>"))
   new_terms <- format_list(list_drop_empty(new_terms), "<;>")
   new_term_ids <- format_list(list_drop_empty(new_term_ids), "<;>")
+   new_terms2 <- lapply(original_terms, function(y) format_list(list_drop_empty(as.list(mapped_terms2$curated_ontology[grep(paste("^",y,"$",sep=""), mapped_terms2$original_value, fixed=F)])), "<;>"))
+  new_term_ids2 <- lapply(original_terms, function(y) format_list(list_drop_empty(as.list(mapped_terms2$curated_ontology_term_id[grep(paste("^",y,"$",sep=""), mapped_terms2$original_value, fixed=F)])), "<;>"))
+  new_terms2 <- format_list(list_drop_empty(new_terms2), "<;>")
+  new_term_ids2 <- format_list(list_drop_empty(new_term_ids2), "<;>")
   # Concatenate new lists on ";" delimiter to create curated value
   disease_cols_cbio$curated_disease_metastasis[x] <- format_list(as.list(unlist(strsplit(new_terms, "<;>"))), "<;>")
   disease_cols_cbio$curated_disease_metastasis_ontology_term_id[x] <- format_list(as.list(unlist(strsplit(new_term_ids, "<;>"))), "<;>")
+  disease_cols_cbio$curated_disease_metastasic_site[x] <- format_list(as.list(unlist(strsplit(new_terms2, "<;>"))), "<;>")
+  disease_cols_cbio$curated_disease_metastasic_site_ontology_term_id[x] <- format_list(as.list(unlist(strsplit(new_term_ids2, "<;>"))), "<;>")
   if(x %% 10000==0){print(x)}
 }
+
 ```
 
 
@@ -303,20 +315,21 @@ representing NA values with "NA" and updating column names as needed:
 disease_cols_cbio <- data.frame(lapply(disease_cols_cbio, 
                                           function(x) gsub("8X8", NA, x)))
 
+# Replace empty values from curated columns with "NA"
+disease_cols_cbio <- data.frame(lapply(disease_cols_cbio, 
+                                      function(x) gsub("^$", NA, x)))
+
 # Create a column of relevant source columns
 for (i in 1:nrow(disease_cols_cbio)){
-  disease_cols_cbio$curated_body_site_source[i] <- paste(colnames(disease_cols_cbio[,2:92][which(!is.na(disease_cols_cbio[i,2:92]))]), collapse="<;>")
+  disease_cols_cbio$curated_metastasis_source[i] <- paste(colnames(disease_cols_cbio[,2:92][which(!is.na(disease_cols_cbio[i,2:92]))]), collapse="<;>")
+  disease_cols_cbio$curated_metastasic_site_source[i] <- paste(colnames(disease_cols_cbio[,2:92][which(!is.na(disease_cols_cbio[i,2:92]))]), collapse="<;>")
 }
 
 # Create a curated dataframe
-curated_metastasis <- disease_cols_cbio[,c(1, 93:96)]
+curated_metastasis <- disease_cols_cbio[,c(1, 93:99)]
 
 # Rename the columns for accuracy & specificity
 colnames(curated_metastasis)[1:2] <- c("curation_id", "original_disease_metastasis")
-
-# Replace empty values from curated columns with "NA"
-curated_metastasis <- data.frame(lapply(curated_metastasis, 
-                                      function(x) gsub("^$", NA, x)))
 ```
 
 
