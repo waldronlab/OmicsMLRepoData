@@ -172,6 +172,12 @@ source(file.path(cmd_etl_dir, "4_populate_data_dictionary.R"))
 url <- "https://docs.google.com/spreadsheets/d/1xziFB_zBl32BjNarcyEN4GupTYpPtq5aDz0GbRbWvtk/edit?usp=sharing"
 ss <- googledrive::as_id(url)
 gd_dict <- googlesheets4::read_sheet(ss = ss, sheet = "cMD_data_dictionary")
+
+dd_columns <- c("ColName", "ColClass", "Unique",
+                "Required", "MultipleValues", "Description", "AllowedValues", 
+                "Delimiter", "Separater", "DynamicEnum", "DynamicEnumProperty")
+gd_dict <- gd_dict |> dplyr::select(dd_columns)
+if (ncol(gd_dict) != length(dd_columns)) {stop("Double-check subset")}
 ```
 
 This should be both `TRUE`. Unless, the version of dictionary in Google Drive
@@ -211,6 +217,11 @@ googlesheets4::write_sheet(filled_dd, ss = ss, sheet = "cMD_data_dictionary")
 ## OmicsMLRepoR packages extdata
 file.copy(from = file.path(extDir, "cMD_data_dictionary.csv"),
           to = "~/OmicsMLRepo/OmicsMLRepoR/inst/extdata/cMD_data_dictionary.csv",
+          overwrite = TRUE)
+
+## curatedMetagenomicDataCuration extdata
+file.copy(from = file.path(extDir, "cMD_data_dictionary.csv"),
+          to = "~/Projects/curatedMetagenomicDataCuration/inst/extdata/cMD_data_dictionary.csv",
           overwrite = TRUE)
 ```
 
