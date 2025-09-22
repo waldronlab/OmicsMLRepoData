@@ -3,7 +3,7 @@
 ### GitHub version is for user facing, so do not make any major modification 
 ### outside of Google Sheet. 
 
-cbio_dd_dir <- "~/OmicsMLRepo/OmicsMLRepoData/cBioPortalData/data_dictionary/"
+extDir <- "~/OmicsMLRepo/OmicsMLRepoData/inst/extdata"
 
 url <- "https://docs.google.com/spreadsheets/d/1t2GTvDpgIrR84_ECoft6bQbb2qUr9RoeFtLZWM-ZRDI/edit?usp=sharing"
 ss <- googledrive::as_id(url)
@@ -22,11 +22,12 @@ dd_columns <- c("ColName", "ColClass", "Unique",
 dd_release <- dd_release |> dplyr::select(dd_columns)
 if (ncol(dd_release) != length(dd_columns)) {stop("Double-check subset")}
 
+## Save in OmicsMLRepoData repository
 write.csv(dd_release,
-          file.path("~/OmicsMLRepo/OmicsMLRepoData/inst/extdata/cBioPortal_data_dictionary.csv"),
+          file.path(extDir, "cBioPortal_data_dictionary.csv"),
           row.names = FALSE)
 
 ## Release for OmicsMLRepoR
-file.copy(from = file.path(cbio_dd_dir, "cBioPortal_data_dictionary.csv"),
+file.copy(from = file.path(extDir, "cBioPortal_data_dictionary.csv"),
           to = "~/OmicsMLRepo/OmicsMLRepoR/inst/extdata/cBioPortal_data_dictionary.csv",
           overwrite = TRUE)

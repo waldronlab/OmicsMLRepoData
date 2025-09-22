@@ -207,12 +207,12 @@ setdiff(odm_dict$ColName, gd_dict$ColName) # attrs should be removed from ODM te
 ```{r save_cmd_dd_schema, eval=FALSE}
 ## GitHub project
 extDir <- "~/OmicsMLRepo/OmicsMLRepoData/inst/extdata"
-write_csv(filled_dd, file.path(extDir, "cMD_data_dictionary.csv"))
+write_csv(gd_dict, file.path(extDir, "cMD_data_dictionary.csv"))
 
 ## Google Sheet
 url <- "https://docs.google.com/spreadsheets/d/1xziFB_zBl32BjNarcyEN4GupTYpPtq5aDz0GbRbWvtk/edit?usp=sharing"
 ss <- googledrive::as_id(url)
-googlesheets4::write_sheet(filled_dd, ss = ss, sheet = "cMD_data_dictionary")
+googlesheets4::write_sheet(gd_dict, ss = ss, sheet = "cMD_data_dictionary")
 
 ## OmicsMLRepoR packages extdata
 file.copy(from = file.path(extDir, "cMD_data_dictionary.csv"),
