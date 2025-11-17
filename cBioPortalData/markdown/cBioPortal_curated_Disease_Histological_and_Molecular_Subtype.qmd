@@ -131,7 +131,6 @@ columns, and export this dataframe to manually group columns into a smaller set
 of curated columns:
 ```{r}
 # Create a summary dataframe of the relevant columns
-
 summary_disease_cols <- data.frame(colnames(disease_cols_cbio))
 
 # Iterate through these columns to create a summary of each column's completeness
@@ -230,6 +229,20 @@ disease_cols_cbio <- data.frame(lapply(disease_cols_cbio, function(x) gsub("\\)"
 Then we can create a list of all unique values included in the merged column,
 and export these values to a csv file to manually develop an ontology map:
 ```{r}
+# Clarify "superficial" (bladder cancer vs melanoma)
+for(x in 1:length(disease_cols_cbio$merged)){
+  vals <- unlist(strsplit(disease_cols_cbio$merged[x], "<;>"))
+  if("SKIN CANCER, NON-MELANOMA" %in% vals & "SUPERFICIAL" %in% vals){
+    vals[vals == "SUPERFICIAL"] <- "SUPERFICIAL_S"
+    disease_cols_cbio$merged[x] <- paste(as.list(vals), collapse= "<;>")
+    print(disease_cols_cbio$merged[x])
+  }else if("BLADDER CANCER" %in% vals & "SUPERFICIAL" %in% vals){
+    vals[vals == "SUPERFICIAL"] <- "SUPERFICIAL_B"
+    disease_cols_cbio$merged[x] <- paste(as.list(vals), collapse= "<;>")
+    print(disease_cols_cbio$merged[x])
+  }
+}
+
 # Count the number of unique values in the merged column (2164 excluding icd codes)
 merged_vals <- list()
 for(r in 1:nrow(disease_cols_cbio)){
