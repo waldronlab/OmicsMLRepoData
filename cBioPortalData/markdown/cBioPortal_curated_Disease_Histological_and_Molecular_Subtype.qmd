@@ -58,7 +58,7 @@ cbio <- readRDS("D:\\CUNY Internship\\cBioPortal_all_clinicalData_combined_2023-
 cbio$curation_id <- paste(cbio$studyId, cbio$patientId, cbio$sampleId, sep = ":")
 
 # Setup google sheets link to mapping table
-url <- "https://docs.google.com/spreadsheets/d/1IgrVEdgCZdvBmWrER21A57lSkfDjdRdV3RbK_yoqMl4/edit?usp=sharing"
+url <- "https://docs.google.com/spreadsheets/d/1ULYSi3ijVeqms0lmR1tbwwcGQhxAEfZIUwzxYVhpQ3Y/edit?usp=sharing"
 
 ss <- googledrive::as_id(url)
 
