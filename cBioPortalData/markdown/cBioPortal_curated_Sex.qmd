@@ -153,26 +153,13 @@ sex_cols_cbio[,c(F_indicators, M_indicators)] <- data.frame(lapply(sex_cols_cbio
 
 ```
 
-Now that all columns include descriptive values, we can replace character values
-representing a lack of information with a unique character value ("8X8"), and 
-merge these values into a single column with each distinct value separated by a 
-semicolon.
+Now that all columns include descriptive values, we can merge these values into 
+a single column with each distinct value separated by a semicolon.
 ```{r}
-# Convert NA values to unique character value (8X8)
-sex_cols_cbio <- sex_cols_cbio %>% replace(is.na(.), "8X8") %>% data.frame()
-
 # Merge all relevant rows
 for (i in 1:nrow(sex_cols_cbio)){
-  sex_cols_cbio$merged[i] <- toupper(paste(sex_cols_cbio[i,2:18], collapse=";"))
+  sex_cols_cbio$merged[i] <- toupper(paste(na.omit(as.vector(unlist(sex_cols_cbio[i,2:18]))), collapse="<;>"))
 }
-```
-
-Next, we can remove the unique character representing NA values from the merged
-column:
-```{r}
-# Take out NA values
-sex_cols_cbio$merged <- gsub("8X8;", "", sex_cols_cbio$merged)
-sex_cols_cbio$merged <- gsub(";8X8", "", sex_cols_cbio$merged)
 ```
 
 Then we can create a list of all unique values included in the merged column,
@@ -238,13 +225,8 @@ for (x in 1:length(sex_cols_cbio$merged)){
 
 ## Curated Table Creation
 
-Next, we can clean up the dataframe by replacing the unique character 
-representing NA values with "NA" and updating column names as needed:
+Next, we can clean up the dataframe by updating column names as needed:
 ```{r}
-# Replace NA values from original columns with "NA"
-sex_cols_cbio <- data.frame(lapply(sex_cols_cbio, 
-                                          function(x) gsub("8X8", NA, x)))
-
 # Create a column of relevant source columns
 for (i in 1:nrow(sex_cols_cbio)){
   sex_cols_cbio$curated_sex_source[i] <- paste(colnames(sex_cols_cbio[,2:18][which(!is.na(sex_cols_cbio[i,2:18]))]), collapse=";")

@@ -195,30 +195,21 @@ binary_value_cols <- data.frame(lapply(binary_value_cols, function(x) gsub("_", 
 disease_cols_cbio[,binary_cols] <- binary_value_cols[,2:17]
 ```
 
-Now that all columns include descriptive values, we can replace character values
-representing a lack of information with a unique character value ("8X8"), and 
+Now that all columns include descriptive values, we can  
 merge these values into a single column with each distinct value separated by a 
 special 3-character delimiter ("<;>"). This delimiter was implemented so as to
 preserve curated ontology terms containing semicolons, which are the main 
 delimiter utilized in the broader curation.
 ```{r}
-# Convert NA values to unique character value (8X8)
-disease_cols_cbio <- disease_cols_cbio %>% replace(is.na(.), "8X8") %>% data.frame()
-
-# Merge all relevant rows #TODO: update the number of columns?
+# Merge all relevant rows
 for (i in 1:nrow(disease_cols_cbio)){
-  disease_cols_cbio$merged[i] <- toupper(paste(disease_cols_cbio[i,2:92], collapse="<;>"))
+  disease_cols_cbio$merged[i] <- toupper(paste(na.omit(as.vector(unlist(disease_cols_cbio[i,2:92]))), collapse="<;>"))
 }
 ```
 
-Next, we can remove the unique character representing NA values from the merged
-column. Additionally we can remove the pipe delimiter from all values to 
+Next, we can remove the pipe delimiter from all values to 
 prevent interpretation of the pipe as a regex character during queries:
 ```{r}
-# Take out NA values
-disease_cols_cbio$merged <- gsub("8X8<;>", "", disease_cols_cbio$merged)
-disease_cols_cbio$merged <- gsub("<;>8X8", "", disease_cols_cbio$merged)
-
 # Remove pipes and parentheses
 disease_cols_cbio <- data.frame(lapply(disease_cols_cbio, function(x) gsub("\\|", "", x)))
 disease_cols_cbio <- data.frame(lapply(disease_cols_cbio, function(x) gsub("\\(", "", x)))
@@ -296,13 +287,8 @@ for (x in 1:length(disease_cols_cbio$merged)){
 
 ## Curated Table Creation
 
-Next, we can clean up the dataframe by replacing the unique character 
-representing NA values with "NA" and updating column names as needed:
+Next, we can clean up the dataframe by updating column names as needed:
 ```{r}
-# Replace NA values from original columns with "NA" #TODO: need to update numbers in this whole section
-disease_cols_cbio <- data.frame(lapply(disease_cols_cbio, 
-                                          function(x) gsub("8X8", NA, x)))
-
 # Create a column of relevant source columns
 for (i in 1:nrow(disease_cols_cbio)){
   disease_cols_cbio$curated_body_site_source[i] <- paste(colnames(disease_cols_cbio[,2:92][which(!is.na(disease_cols_cbio[i,2:92]))]), collapse="<;>")

@@ -211,30 +211,21 @@ bodysite_cols_cbio$LOCATION[which(cbio$studyId=="egc_tmucih_2015")] <- sapply(bo
 bodysite_cols_cbio$TUMOR_SITE[which(cbio$studyId=="stad_oncosg_2018")] <- sapply(bodysite_cols_cbio$TUMOR_SITE[which(cbio$studyId=="stad_oncosg_2018")], function(x) gsub("^Body$", "BodyStomach", x))
 ```
 
-Now that all columns include descriptive values, we can replace character values
-representing a lack of information with a unique character value ("8X8"), and 
-merge these values into a single column with each distinct value separated by a 
+Now that all columns include descriptive values, we can merge these values into 
+a single column with each distinct value separated by a 
 special 3-character delimiter ("<;>"). This delimiter was implemented so as to
 preserve curated ontology terms containing semicolons, which are the main 
 delimiter utilized in the broader curation.
 ```{r}
-# Convert NA values to unique character value (8X8)
-bodysite_cols_cbio <- bodysite_cols_cbio %>% replace(is.na(.), "8X8") %>% data.frame()
-
 # Merge all relevant rows
 for (i in 1:nrow(bodysite_cols_cbio)){
-  bodysite_cols_cbio$merged[i] <- toupper(paste(bodysite_cols_cbio[i,2:49], collapse="<;>"))
+  bodysite_cols_cbio$merged[i] <- toupper(paste(na.omit(as.vector(unlist(bodysite_cols_cbio[i,2:17]))), collapse="<;>"))
 }
 ```
 
-Next, we can remove the unique character representing NA values from the merged
-column. Additionally we can remove the pipe delimiter from all values to 
+Next, we can remove the pipe delimiter from all values to 
 prevent interpretation of the pipe as a regex character during queries:
 ```{r}
-# Take out NA values
-bodysite_cols_cbio$merged <- gsub("8X8<;>", "", bodysite_cols_cbio$merged)
-bodysite_cols_cbio$merged <- gsub("<;>8X8", "", bodysite_cols_cbio$merged)
-
 # Remove pipes and parentheses
 bodysite_cols_cbio <- data.frame(lapply(bodysite_cols_cbio, function(x) gsub("\\|", "", x)))
 bodysite_cols_cbio <- data.frame(lapply(bodysite_cols_cbio, function(x) gsub("\\(", "", x)))
@@ -311,13 +302,8 @@ for (x in 1:length(bodysite_cols_cbio$merged)){
 
 ## Curated Table Creation
 
-Next, we can clean up the dataframe by replacing the unique character 
-representing NA values with "NA" and updating column names as needed:
+Next, we can clean up the dataframe by updating column names as needed:
 ```{r}
-# Replace NA values from original columns with "NA"
-bodysite_cols_cbio <- data.frame(lapply(bodysite_cols_cbio, 
-                                          function(x) gsub("8X8", NA, x)))
-
 # Create a column of relevant source columns
 for (i in 1:nrow(bodysite_cols_cbio)){
   bodysite_cols_cbio$curated_body_site_source[i] <- paste(colnames(bodysite_cols_cbio[,2:49][which(!is.na(bodysite_cols_cbio[i,2:49]))]), collapse="<;>")
