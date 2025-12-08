@@ -134,25 +134,13 @@ write.csv(summary_location_cols,
           row.names = FALSE)
 ```
 
-Now we can replace character values representing a lack of information with a 
-unique character value ("8X8"), and merge these values into a single column with 
+Now we can merge these values into a single column with 
 each distinct value separated by a semicolon.
 ```{r}
-# Convert NA values to unique character value (8X8)
-location_cols_cbio <- location_cols_cbio %>% replace(is.na(.), "8X8") %>% data.frame()
-
 # Merge all relevant rows
 for (i in 1:nrow(location_cols_cbio)){
-  location_cols_cbio$merged[i] <- toupper(paste(location_cols_cbio[i,2:7], collapse=";"))
+  location_cols_cbio$merged[i] <- toupper(paste(na.omit(as.vector(unlist(location_cols_cbio[i,2:7]))), collapse="<;>"))
 }
-```
-
-Next, we can remove the unique character representing NA values from the merged
-column:
-```{r}
-# Take out NA values
-location_cols_cbio$merged <- gsub("8X8;", "", location_cols_cbio$merged)
-location_cols_cbio$merged <- gsub(";8X8", "", location_cols_cbio$merged)
 ```
 
 Then we can create a list of all unique values included in the merged column,
@@ -218,13 +206,8 @@ for (x in 1:length(location_cols_cbio$merged)){
 
 ## Curated Table Creation
 
-Next, we can clean up the dataframe by replacing the unique character 
-representing NA values with "NA" and updating column names as needed:
+Next, we can clean up the dataframe by updating column names as needed:
 ```{r}
-# Replace NA values from original columns with "NA"
-location_cols_cbio <- data.frame(lapply(location_cols_cbio, 
-                                          function(x) gsub("8X8", NA, x)))
-
 # Create a column of relevant source columns
 for (i in 1:nrow(location_cols_cbio)){
   location_cols_cbio$curated_location_source[i] <- paste(colnames(location_cols_cbio[,2:7][which(!is.na(location_cols_cbio[i,2:7]))]), collapse=";")

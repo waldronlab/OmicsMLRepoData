@@ -50,7 +50,7 @@ suppressPackageStartupMessages({
 We will first add a `curation_id` consisting of study ID, patient ID, and sample ID (`studyId:patientId:sampleId`) to avoid confusion due to duplicated samples.
 ```{r curation_setup}
 # Load cbio data
-cbio <- readRDS("C:\\Users\\Owner\\Desktop\\CUNY Internship\\cBioPortal_all_clinicalData_combined_2023-05-18.rds")
+cbio <- readRDS("D:\\CUNY Internship\\cBioPortal_all_clinicalData_combined_2023-05-18.rds")
 
 # Add curation ID
 cbio$curation_id <- paste(cbio$studyId, cbio$patientId, cbio$sampleId, sep = ":")
@@ -61,7 +61,7 @@ url <- "https://docs.google.com/spreadsheets/d/1HDB845dzSFu25i6xEPfk06eR9n70IB-2
 ss <- googledrive::as_id(url)
 
 # Define a project directory
-proj_dir <- "C:\\Users\\Owner\\Desktop\\CUNY Internship\\cbio\\Age\\"
+proj_dir <- "D:\\CUNY Internship\\cbio\\Age\\"
 ```
 
 
@@ -107,7 +107,7 @@ map of columns to include in this curation:
 cbio <- tibble(cbio)
 
 # Change "Diagnosis Age" column name
-cbio <- cbio %>% rename("DIAGNOSIS.AGE" = "DIAGNOSIS AGE")
+cbio$`DIAGNOSIS.AGE` <- cbio$`DIAGNOSIS AGE`
 
 # Load Potential columns map csv file
 pot_col_map <- read.csv(file=file.path(proj_dir, "potential_age_columns_map.csv"))
@@ -141,13 +141,9 @@ for (col in 1:nrow(summary_age_cols)){
 }
 ```
 
-Now we can replace character values representing a lack of information with a 
-unique character value ("8X8"), and merge these values into a single column with 
+Now we can merge these values into a single column with 
 each distinct value separated by a semicolon.
 ```{r}
-# Convert NA values to unique character value (8X8)
-age_cols_cbio <- age_cols_cbio %>% replace(is.na(.), "8X8") %>% data.frame()
-
 # Initialize dataframe
 age_curated_cols <- data.frame(age_cols_cbio$curation_id)
 
@@ -155,7 +151,7 @@ age_curated_cols <- data.frame(age_cols_cbio$curation_id)
 for (curcol in keys(cols_to_curate)){
   # Merge all relevant rows
   for (i in 1:nrow(age_cols_cbio)){
-    age_curated_cols[i,curcol] <- toupper(paste(age_cols_cbio[i,cols_to_curate[[curcol]]], collapse=";"))
+    age_curated_cols[i,curcol] <- toupper(paste(na.omit(as.vector(unlist(age_cols_cbio[i,cols_to_curate[[curcol]]]))), collapse=";"))
   }
   print(curcol)
 }
@@ -177,16 +173,6 @@ for (col in 1:nrow(summary_age_cols)){
 write.csv(summary_age_cols, 
           file = file.path(proj_dir, "curated_columns_map.csv"),
           row.names = FALSE)
-```
-
-Next, we can remove the unique character representing NA values from the merged
-column:
-```{r}
-for (i in 2:5){
-  # Take out NA values
-  age_curated_cols[,i] <- gsub("8X8;", "", age_curated_cols[,i])
-  age_curated_cols[,i] <- gsub(";8X8", "", age_curated_cols[,i])
-}
 ```
 
 Then we can check if any merged column contains more than one age value per sample:
@@ -218,11 +204,11 @@ will remove from the curation. Once this has been done we will filter the
 remaining values by the accepted realistic age range:
 ```{r}
 # Set AGE_AT_DIAGNOSIS values from nbl_msk_2023 study to NA
-age_cols_cbio$AGE_AT_DIAGNOSIS[which(cbio$studyId=="nbl_msk_2023")] <- "8X8"
+age_cols_cbio$AGE_AT_DIAGNOSIS[which(cbio$studyId=="nbl_msk_2023")] <- ""
 
 # Set values less than 0 or greater than 100 to NA
 for (col in colnames(age_cols_cbio[,2:34])){
-  age_cols_cbio[which(130 < as.numeric(age_cols_cbio[,col])),col] <- "8X8"
+  age_cols_cbio[which(130 < as.numeric(age_cols_cbio[,col], )),col] <- "8X8"
   age_cols_cbio[which(0 > as.numeric(age_cols_cbio[,col])),col] <- "8X8"
 }
 ```
@@ -276,7 +262,7 @@ age_cols_cbio <- age_cols_cbio %>% replace(is.na(.), "8X8") %>% data.frame()
 for (curcol in keys(cols_to_curate)){
   # Merge all relevant rows
   for (i in 1:nrow(age_cols_cbio)){
-    age_curated_cols[i,paste("curated", curcol, sep="_")] <- toupper(paste(age_cols_cbio[i,cols_to_curate[[curcol]]], collapse=";"))
+    age_curated_cols[i,paste("curated", curcol, sep="_")] <- toupper(paste(na.omit(as.vector(unlist(age_cols_cbio[i,cols_to_curate[[curcol]]]))), collapse=";"))
   }
   print(curcol)
 }
