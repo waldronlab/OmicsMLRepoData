@@ -42,6 +42,7 @@ library(rvest)
 library(rols)
 library(vctrs)
 library(hash)
+library(purrr)
 })
 ```
 
@@ -284,6 +285,59 @@ for (x in 1:length(disease_cols_cbio$merged)){
 }
 ```
 
+Next we can condense repetitive values into a single curated term: 
+```{r}
+# Load in the condensed_concepts table
+condensed_curations <- read_delim(file.path(proj_dir,"cBioPortal_disease_cancer_type_detailed_condensed_values_map.csv"), delim = ",")
+
+# Expand the essential_concepts into list form
+condensed_curations <- condensed_curations %>%
+  mutate(essential_concepts_split = str_split(essential_concepts, fixed("<;>")),
+         essential_ontologies_split = str_split(essential_ontology_term_ids, fixed("<;>")),
+         essential_concepts_size  = lengths(essential_concepts_split)) %>%
+  arrange(desc(essential_concepts_size))
+
+# Convert curated values into lists
+disease_cols_cbio <- disease_cols_cbio %>%
+  mutate(curated_split = str_split(curated_cancer_type_detailed, fixed("<;>")),
+         curated_onto_split = str_split(curated_cancer_type_detailed_ontology_term_id, fixed("<;>")))
+
+# Iterate through all rows of the cBioPortal data
+disease_cols_cbio <- disease_cols_cbio %>% rowwise() %>%
+  mutate(updated_values = {
+      current_vals <- curated_split
+      current_vals <- unlist(current_vals)
+      # Iterate through condensed_curations to prep value mapping
+      for (i in 1:nrow(condensed_curations)){
+        essential_concepts_vals <- condensed_curations$essential_concepts_split[[i]]
+        condensed_val <- condensed_curations$condensed_concept[[i]]
+        # If all essential values are in the curated column, replace with condensed value
+        if (all(essential_concepts_vals %in% current_vals)){
+          current_vals <- unique(c(setdiff(current_vals, essential_concepts_vals), condensed_val))
+        }
+      }
+      # Collapse remaining values on delimiter
+      str_c(current_vals, collapse = "<;>")
+    }) %>% ungroup()
+disease_cols_cbio <- disease_cols_cbio %>% rowwise() %>%
+  mutate(updated_ontos = {
+      current_onto_vals <- curated_onto_split
+      current_onto_vals <- unlist(current_onto_vals)
+      # Iterate through condensed_curations to prep ontology value mapping
+      for (i in 1:nrow(condensed_curations)){
+        essential_ontologies_vals <- condensed_curations$essential_ontologies_split[[i]]
+        condensed_onto_val <- condensed_curations$condensed_ontology_term_id[[i]]
+        # If all essential values are in the curated column, replace with condensed value
+        if (all(essential_ontologies_vals %in% current_onto_vals)){
+          current_onto_vals <- unique(c(setdiff(current_onto_vals, essential_ontologies_vals), condensed_onto_val))
+        }
+      }
+      # Collapse remaining values on delimiter
+      str_c(current_onto_vals, collapse = "<;>")
+    }) %>%  ungroup() 
+disease_cols_cbio <- disease_cols_cbio %>% select(-curated_split, -curated_onto_split, -curated_cancer_type_detailed, -curated_cancer_type_detailed_ontology_term_id)
+disease_cols_cbio <- disease_cols_cbio %>% rename(curated_cancer_type_detailed = updated_values, curated_cancer_type_detailed_ontology_term_id = updated_ontos)
+```
 
 ## Curated Table Creation
 
