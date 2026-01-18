@@ -30,6 +30,61 @@ cmd_etl_dir <- "~/OmicsMLRepo/OmicsMLRepoData/curatedMetagenomicData/ETL"
 list.files(cmd_etl_dir)
 ```
 
+# Automated ETL Pipeline
+
+**⚠️ New in 2024**: The cMD ETL process has been refactored into an automated, modular pipeline with comprehensive validation and logging.
+
+## Quick Start
+
+To run the complete ETL pipeline:
+
+```bash
+# Run all steps
+Rscript curatedMetagenomicData/ETL/run_etl_pipeline.R
+
+# Run specific steps
+Rscript curatedMetagenomicData/ETL/run_etl_pipeline.R --steps "01,02,03"
+
+# Validation only
+Rscript curatedMetagenomicData/ETL/run_etl_pipeline.R --validate-only
+```
+
+## Documentation
+
+Comprehensive documentation is available in the ETL directory:
+
+- **[README.md](ETL/README.md)**: Quick start guide and overview
+- **[ARCHITECTURE.md](ETL/ARCHITECTURE.md)**: System design and data flow
+- **[RUNBOOK.md](ETL/RUNBOOK.md)**: Step-by-step execution procedures
+- **[TROUBLESHOOTING.md](ETL/TROUBLESHOOTING.md)**: Common issues and solutions
+
+## Pipeline Steps
+
+The automated pipeline consists of 7 sequential steps:
+
+1. **01_sync_curation_maps.R** - Download curation maps from Google Sheets
+2. **02_assemble_curated_metadata.R** - Combine curated data files
+3. **03_build_merging_schema.R** - Create schema mapping
+4. **04_build_data_dictionary.R** - Build comprehensive data dictionary
+5. **05_add_dynamic_enums.R** - Add dynamic enumeration nodes
+6. **06_format_for_release.R** - Format for user-facing release
+7. **07_validate_and_export.R** - Validate and sync to all targets
+
+## Key Features
+
+- **Configuration Management**: Centralized configuration in `config.yaml`
+- **Comprehensive Logging**: Structured logs with multiple levels
+- **Validation Framework**: Automated validation at each step
+- **Provenance Tracking**: Full audit trail of execution
+- **Error Handling**: Graceful error handling with detailed messages
+- **GitHub Actions**: Automated weekly execution
+
+## Manual Execution (Legacy)
+
+The sections below document the manual, step-by-step execution process. This is maintained for reference and backwards compatibility, but the automated pipeline (above) is recommended for routine execution.
+
+---
+
 # Curated metadata table
 
 This script collect all the curated metadata table for each attribute and 
