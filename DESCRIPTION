@@ -21,3 +21,14 @@ License: Artistic-2.0
 Encoding: UTF-8
 Roxygen: list(markdown = TRUE)
 RoxygenNote: 7.2.3
+Imports:
+    readr,
+    dplyr,
+    yaml,
+    googlesheets4,
+    googledrive
+Suggests:
+    logger,
+    jsonlite,
+    testthat (>= 3.0.0)
+Config/testthat/edition: 3
