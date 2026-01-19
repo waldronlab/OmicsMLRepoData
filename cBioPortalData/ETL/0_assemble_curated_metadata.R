@@ -25,5 +25,19 @@ curatedAll <- c(curatedDatObj, curatedTrtObj) # names of all the curated tables
 curated_all <- get(curatedAll[1])
 for (i in 2:length(curatedAll)) { # assuming there are >= 2 tables to be combined
     dat <- get(curatedAll[i])
+    
+    # check whether there is redundant columns
+    shared_cols <- intersect(colnames(curated_all), colnames(dat))
+    redundant_cols <- setdiff(shared_cols, "curation_id")
+    if (length(redundant_cols) != 0) {
+        fname <- curatedAll[i]
+        cols <- paste(redundant_cols, collapse = "\n")
+        msg <- paste(fname, "includes redundant columns:\n", cols)
+        message(msg)
+    }
+    
     curated_all <- dplyr::left_join(curated_all, dat, by = "curation_id")
 }
+
+# Check redundant column names --------------
+source("~/OmicsMLRepo/OmicsMLRepoData/cBioPortalData/ETL/format_update/0_1_check_redundant_columns.r")
