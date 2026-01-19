@@ -2,8 +2,8 @@ ColName,ColClass,Unique,Required,MultipleValues,Description,AllowedValues,Delimi
 study_name,character,non-unique,optional,FALSE,Dataset name.,[a-zA-Z-]+_[0-9]{4}|[a-zA-Z-]+_[0-9]{4}[a-zA-Z-]+|[a-zA-Z-]+_[0-9]{4}_[a-zA-Z-]+|[a-zA-Z-]+_[0-9]{4}_[a-zA-Z0-9]+,NA,NA,NA,NA
 subject_id,character,non-unique,required,FALSE,Subject identifier.,[0-9a-zA-Z]\S+,NA,NA,NA,NA
 sample_id,character,unique,required,FALSE,Sample identifier.,[0-9a-zA-Z]\S+,NA,NA,NA,NA
-target_condition,character,non-unique,required,TRUE,The primary phenotype/condition of interest in the study from which the sample is derived,NA,;,NA,NCIT:C7057;EFO_0000408,descendant
-control,character,non-unique,required,FALSE,"Whether the sample is control, case, or not used in the study",Study Control|Case|Not Used,NA,NA,NA,NA
+target_condition,character,non-unique,required,TRUE,The primary phenotype/condition of interest in the study from which the sample is derived,NA,;,NA,NCIT:C7057;EFO:0000408,descendant
+control,character,non-unique,required,FALSE,"Whether the sample is control, case, or not used in the study",Study Control;Case;Not Used,NA,NA,NA,NA
 country,character,non-unique,required,FALSE,Location where subject lives and/or data was collected,NA,NA,NA,NCIT:C25464,descendant
 body_site,character,non-unique,required,FALSE,"Named locations of or within the body. The anatomical location(s) affected by the patient's disease/condition/cancer, often the site from which the sample was derived",feces;milk;nasal cavity;oral cavity;skin epidermis;vagina,NA,NA,NA,NA
 age,integer,non-unique,optional,FALSE,Age of the subject using the unit specified under 'age_unit' column,[0-9]+,NA,NA,NA,NA
@@ -18,8 +18,8 @@ body_site_details,character,non-unique,optional,FALSE,Subject's body subsite the
 curator,character,non-unique,required,TRUE,Curator name.,NA,;,NA,NA,NA
 days_from_first_collection,integer,non-unique,optional,FALSE,Used for time series studies.,[0-9]+,NA,NA,NA,NA
 dietary_restriction,character,non-unique,optional,FALSE,Dietary regime (partial match to SNOMED:182922004 or SNOMED:162536008),omnivore;vegan;vegetarian;high_fiber;low_fiber;high_gluten;low_gluten,NA,NA,NA,NA
-disease,character,non-unique,optional,TRUE,Reported disease/condition type(s) for a participant. 'Healthy' if disease(s)/condition(s) assessed under a given study is not detected,NA,;,NA,NCIT:C7057;EFO_0000408,descendant
-disease_details,character,non-unique,optional,TRUE,Reported disease/condition type(s) for a participant in details. 'Healthy' if disease(s)/condition(s) assessed under a given study is not detected,NA,;,NA,NCIT:C7057;EFO_0000408,descendant
+disease,character,non-unique,optional,TRUE,Reported disease/condition type(s) for a participant. 'Healthy' if disease(s)/condition(s) assessed under a given study is not detected,NA,;,NA,NCIT:C7057;EFO:0000408,descendant
+disease_details,character,non-unique,optional,TRUE,Reported disease/condition type(s) for a participant in details. 'Healthy' if disease(s)/condition(s) assessed under a given study is not detected,NA,;,NA,NCIT:C7057;EFO:0000408,descendant
 disease_response_orr,character,non-unique,optional,FALSE,"Overal Response (ORR, NCIT:C96613): An assessment of the overall response of the disease to the therapy",Yes;No,NA,NA,NA,NA
 disease_response_pfs,character,non-unique,optional,FALSE,"Progression Free Survival (PFS, EFO:0004920): Progression free survival is a measurement from a defined time point e.g. diagnosis and indicates that the disease did not progress i.e. tumours did not increase in size and new incidences did not occur. PFS is usually used in analyzing results of treatment for advanced disease.",Yes;No,NA,NA,NA,NA
 disease_response_pfs_month,integer,non-unique,optional,FALSE,A time point used to observe PFS. Unit is 'month',[0-9]+,NA,NA,NA,NA
