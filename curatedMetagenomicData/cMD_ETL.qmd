@@ -26,13 +26,15 @@ suppressPackageStartupMessages({
     library(dplyr)
 })
 
-cmd_etl_dir <- "~/OmicsMLRepo/OmicsMLRepoData/curatedMetagenomicData/ETL"
+cmd_dir <- "~/OmicsMLRepo/OmicsMLRepoData/curatedMetagenomicData"
+cmd_etl_dir <- file.path(cmd_dir, "ETL")
 list.files(cmd_etl_dir)
 ```
 
 # Automated ETL Pipeline
 
-**⚠️ New in 2024**: The cMD ETL process has been refactored into an automated, modular pipeline with comprehensive validation and logging.
+**⚠️ New in 2024**: The cMD ETL process has been refactored into an automated, 
+modular pipeline with comprehensive validation and logging.
 
 ## Quick Start
 
@@ -158,11 +160,15 @@ googlesheets4::write_sheet(cmd_ms, ss = ss, sheet = "cMD_merging_schema")
 
 # Sync curation maps
 
-Curation maps are tables manually created and maintained in Google Sheet. We assign appropriate ontology terms to original values. These tables contain four main columns with some additional columns depending on a attribute.
+Curation maps are tables manually created and maintained in Google Sheet. We 
+assign appropriate ontology terms to original values. These tables contain 
+four main columns with some additional columns depending on a attribute.
 
-Four main columns are labeled as `original_value`, `curated_ontology`, `curated_ontology_term_id`, and `curated_ontology_term_db`.
+Four main columns are labeled as `original_value`, `curated_ontology`, 
+`curated_ontology_term_id`, and `curated_ontology_term_db`.
 
-The script below (`1_sync_curation_map.R`) syncs all the cMD curation maps from Google Sheet to the `cmd_maps_dir` (a directory under the local git project).
+The script below (`1_sync_curation_map.R`) syncs all the cMD curation maps from 
+Google Sheet to the `cmd_maps_dir` (a directory under the local git project).
 
 ```{r cmd_save_curation_maps, eval=FALSE}
 # Directory to save curation_maps from Google Sheet
@@ -195,7 +201,8 @@ source(file.path(cmd_etl_dir, "1_sync_curation_map_upload.R"))
 
 ## Initial assembly
 
-The resulting table from the below script, `template_dd`, contains all the columns in the final version of cMD sampleMetadata (under the `col.name` column).
+The resulting table from the below script, `template_dd`, contains all the 
+columns in the final version of cMD sampleMetadata (under the `col.name` column).
 
 ```{r eval=FALSE}
 # returns: `template_dd`
@@ -258,8 +265,8 @@ setdiff(odm_dict$ColName, gd_dict$ColName) # attrs should be removed from ODM te
 
 
 ## Save
-
-```{r save_cmd_dd_schema, eval=FALSE}
+Save cMD data dictionary schema
+```{r eval=FALSE}
 ## GitHub project
 extDir <- "~/OmicsMLRepo/OmicsMLRepoData/inst/extdata"
 write_csv(gd_dict, file.path(extDir, "cMD_data_dictionary.csv"))
