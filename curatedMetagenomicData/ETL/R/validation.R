@@ -5,8 +5,15 @@
 
 # Source helper functions
 source_helpers <- function() {
-    script_dir <- dirname(sys.frame(1)$ofile)
-    if (is.null(script_dir) || script_dir == "") {
+    # Try to get script path from command args
+    args <- commandArgs(trailingOnly = FALSE)
+    file_arg <- grep("^--file=", args, value = TRUE)
+    
+    if (length(file_arg) > 0) {
+        script_path <- sub("^--file=", "", file_arg)
+        script_dir <- dirname(normalizePath(script_path))
+    } else {
+        # Fallback for interactive sessions or when sourced
         script_dir <- "curatedMetagenomicData/ETL/R"
     }
     

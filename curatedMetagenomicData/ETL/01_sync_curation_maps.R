@@ -10,10 +10,31 @@ suppressPackageStartupMessages({
 })
 
 # Source helper modules
-script_dir <- dirname(sys.frame(1)$ofile)
-if (is.null(script_dir) || script_dir == "") {
-    script_dir <- "curatedMetagenomicData/ETL"
+# Determine script directory robustly
+get_script_dir <- function() {
+    # Try to get script path from command args (works with Rscript)
+    args <- commandArgs(trailingOnly = FALSE)
+    file_arg <- grep("^--file=", args, value = TRUE)
+    
+    if (length(file_arg) > 0) {
+        script_path <- sub("^--file=", "", file_arg)
+        return(dirname(normalizePath(script_path)))
+    }
+    
+    # Fallback for interactive or sourced execution
+    tryCatch({
+        if (exists("ofile", where = sys.frame(1), inherits = FALSE)) {
+            return(dirname(sys.frame(1)$ofile))
+        }
+    }, error = function(e) {
+        # Ignore error and use fallback
+    })
+    
+    # Final fallback to expected location
+    return("curatedMetagenomicData/ETL")
 }
+
+script_dir <- get_script_dir()
 
 source(file.path(script_dir, "R/config_loader.R"))
 source(file.path(script_dir, "R/utils/logging_helpers.R"))

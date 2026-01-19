@@ -19,12 +19,17 @@ load_config <- function(config_file = NULL) {
     
     if (is.null(config_file)) {
         # Default to config.yaml in ETL directory
-        script_dir <- dirname(sys.frame(1)$ofile)
-        if (is.null(script_dir) || script_dir == "") {
-            # Fallback for interactive sessions
-            config_file <- "curatedMetagenomicData/ETL/config.yaml"
+        # Try to get script path from command args
+        args <- commandArgs(trailingOnly = FALSE)
+        file_arg <- grep("^--file=", args, value = TRUE)
+        
+        if (length(file_arg) > 0) {
+            script_path <- sub("^--file=", "", file_arg)
+            script_dir <- dirname(normalizePath(script_path))
+            config_file <- file.path(script_dir, "config.yaml")
         } else {
-            config_file <- file.path(dirname(script_dir), "config.yaml")
+            # Fallback for interactive sessions or when sourced
+            config_file <- "curatedMetagenomicData/ETL/config.yaml"
         }
     }
     
