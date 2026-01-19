@@ -21,7 +21,7 @@ ss <- googledrive::as_id(url)
 dd <- googlesheets4::read_sheet(ss, sheet = "data_dictionary_allCols") %>%
     mutate(merge = as.character(merge))
 ms <- googlesheets4::read_sheet(ss, sheet = "merging_schema_allCols")
-sampleMetadata <- read.csv(file.path(dir, "inst/extdata/cMD_sampleMetadata.csv"), header = TRUE) %>%
+sampleMetadata <- read.csv(file.path(cmd_dir, "source/sampleMetadata.csv"), header = TRUE) %>%
     mutate(curation_id = paste(study_name, sample_id, sep = ":"))
 
 # Individual columns to be kept: `keep_origin == TRUE` in dd

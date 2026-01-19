@@ -34,8 +34,7 @@ age_ind <- which(map_to_ms$curated_field == "age;age_unit;age_group")
 map_to_ms$curated_field[age_ind] <- "age_years;age_group"
 
 # Completeness and uniqueness of original fields -----
-dir <- "~/OmicsMLRepo/OmicsMLRepoData/inst/extdata"
-originalSampleMetadata <- read_csv(file.path(dir, "cMD_sampleMetadata.csv"))
+originalSampleMetadata <- read_csv(file.path(cmd_dir, "source/sampleMetadata.csv"))
 a <- map_to_ms$original_field 
 original_field_name <- sapply(a, function(x) {
     strsplit(x, split = ";") %>% 
