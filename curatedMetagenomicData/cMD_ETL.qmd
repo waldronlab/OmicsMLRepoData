@@ -26,7 +26,8 @@ suppressPackageStartupMessages({
     library(dplyr)
 })
 
-cmd_etl_dir <- "~/OmicsMLRepo/OmicsMLRepoData/curatedMetagenomicData/ETL"
+cmd_dir <- "~/OmicsMLRepo/OmicsMLRepoData/curatedMetagenomicData"
+cmd_etl_dir <- file.path(cmd_dir, "ETL")
 list.files(cmd_etl_dir)
 ```
 
@@ -176,7 +177,7 @@ gd_dict <- googlesheets4::read_sheet(ss = ss, sheet = "cMD_data_dictionary")
 dd_columns <- c("ColName", "ColClass", "Unique",
                 "Required", "MultipleValues", "Description", "AllowedValues", 
                 "Delimiter", "Separater", "DynamicEnum", "DynamicEnumProperty")
-gd_dict <- gd_dict |> dplyr::select(dd_columns)
+gd_dict <- gd_dict |> dplyr::select(all_of(dd_columns))
 if (ncol(gd_dict) != length(dd_columns)) {stop("Double-check subset")}
 ```
 
