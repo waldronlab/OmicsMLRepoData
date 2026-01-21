@@ -52,6 +52,49 @@ Rscript curatedMetagenomicData/ETL/run_etl_pipeline.R --config my_config.yaml
 
 ## Pipeline Steps
 
+**Note**: This is the refactored pipeline (PR #115+). Legacy scripts (0-6, 99) exist for reference but should not be used. All new development uses the numbered format (01-07).
+
+### Refactoring Pattern
+
+All refactored scripts follow a consistent pattern:
+
+```r
+# 1. Load libraries with suppressPackageStartupMessages
+suppressPackageStartupMessages({
+    library(readr)
+    library(dplyr)
+})
+
+# 2. Define get_script_dir() helper
+get_script_dir <- function() { ... }
+
+# 3. Source required modules
+source(file.path(script_dir, "R/config_loader.R"))
+source(file.path(script_dir, "R/utils/logging_helpers.R"))
+source(file.path(script_dir, "R/utils/data_helpers.R"))
+source(file.path(script_dir, "R/provenance.R"))
+
+# 4. Load config and initialize logging
+config <- load_config()
+init_logger(config, "script_name")
+
+# 5. Log step start
+log_step_start("step_name", "description")
+
+# 6. Wrap main logic in tryCatch
+tryCatch({
+    # Main business logic here
+    # Use safe_read_csv() and safe_write_csv()
+    # Add provenance with add_provenance()
+    # Write provenance log
+    
+    log_step_complete("step_name")
+}, error = function(e) {
+    log_step_error("step_name", e$message)
+    stop(e)
+})
+```
+
 ```mermaid
 graph TD
     A[01: Sync Curation Maps] --> B[02: Assemble Curated Metadata]
@@ -72,13 +115,45 @@ graph TD
 
 ### Step Descriptions
 
+All scripts follow a consistent pattern with configuration management, logging, validation, and error handling:
+
 1. **01_sync_curation_maps.R** - Downloads curation maps from Google Sheets
+   - Syncs attribute-specific curation maps (cMD_*_map.csv)
+   - Validates required columns
+   - Creates backups before overwriting
+
 2. **02_assemble_curated_metadata.R** - Combines curated data files into single table
+   - Loads individual curated attribute CSV files from `data_dir`
+   - Merges with original metadata columns marked for retention
+   - Produces `cMD_curated_metadata_all.csv`
+
 3. **03_build_merging_schema.R** - Creates schema mapping original to curated columns
+   - Imports merging schema design from Google Sheets
+   - Calculates completeness and uniqueness statistics
+   - Produces `cMD_merging_schema.csv`
+
 4. **04_build_data_dictionary.R** - Builds comprehensive data dictionary
+   - Consolidates templates from scripts 3, 4, and 5 (legacy)
+   - Populates attribute descriptions using template scripts
+   - Adds ontology database summaries
+   - Produces `cMD_data_dictionary.csv`
+
 5. **05_add_dynamic_enums.R** - Adds dynamic enumeration nodes for ontology terms
+   - Applies dynamic enum nodes for key attributes
+   - Target attributes: biomarker, body_site, disease, country, target_condition, treatment
+   - Updates data dictionary in place
+
 6. **06_format_for_release.R** - Formats data for user-facing release
+   - Removes internal columns (original_*, *_source)
+   - Strips curated_ prefix from column names
+   - Orders columns logically
+   - Produces `cMD_curated_metadata_release.csv`
+
 7. **07_validate_and_export.R** - Validates outputs and syncs to all targets
+   - Runs comprehensive validation on all outputs
+   - Generates validation report
+   - Syncs files to configured target repositories
+   - Creates execution and provenance reports
 
 ## Configuration
 
