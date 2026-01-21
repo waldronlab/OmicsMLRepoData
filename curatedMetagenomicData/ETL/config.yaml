@@ -1,0 +1,106 @@
+# Configuration file for curatedMetagenomicData ETL Pipeline
+# This file centralizes all paths, URLs, and settings used across ETL scripts
+
+# Project paths
+paths:
+  project_dir: "~/OmicsMLRepo/OmicsMLRepoData"
+  etl_dir: "curatedMetagenomicData/ETL"
+  maps_dir: "curatedMetagenomicData/maps"
+  data_dir: "curatedMetagenomicData/data"
+  output_dir: "inst/extdata"
+  script_dir: "curatedMetagenomicData/ETL/R"
+  log_dir: "curatedMetagenomicData/ETL/logs"
+
+# Google Sheets URLs
+google_sheets:
+  curation_maps_url: "https://docs.google.com/spreadsheets/d/1QSbB_b1DkfqOc7q5eHE0IDHSiGqNUyTE8d4GzbSEzjM/edit?usp=sharing"
+  merging_schema_url: "https://docs.google.com/spreadsheets/d/1xziFB_zBl32BjNarcyEN4GupTYpPtq5aDz0GbRbWvtk/edit?usp=sharing"
+
+# Sync targets for output files
+sync_targets:
+  - name: "OmicsMLRepoCuration"
+    path: "~/OmicsMLRepo/OmicsMLRepoCuration/inst/extdata"
+  - name: "OmicsMLRepoR"
+    path: "~/OmicsMLRepo/OmicsMLRepoR/inst/extdata"
+  - name: "curatedMetagenomicDataCuration"
+    path: "~/Projects/curatedMetagenomicDataCuration/inst/extdata"
+
+# Google Cloud Storage
+gcs:
+  bucket: "gs://omics_ml_repo"
+
+# Output file names
+output_files:
+  curated_all: "cMD_curated_metadata_all.csv"
+  curated_release: "cMD_curated_metadata_release.csv"
+  merging_schema: "cMD_merging_schema.csv"
+  data_dictionary: "cMD_data_dictionary.csv"
+  expanded_dictionary: "cMD4_data_dictionary.csv"
+  ms_all_cols: "cMD_ms_allCols.csv"
+  dd_all_cols: "cMD_dd_allCols.csv"
+
+# Google Sheets sheet names
+google_sheets_sheets:
+  merging_schema: "cMD_merging_schema"
+  merging_schema_all: "merging_schema_allCols"
+  data_dictionary: "cMD_data_dictionary"
+  data_dictionary_all: "data_dictionary_allCols"
+  data_dictionary_expanded: "cMD4_data_dictionary"
+  original_metadata: "cMD_sampleMetadata"
+
+# Required columns for validation
+required_columns:
+  curated_metadata:
+    - study_name
+    - subject_id
+    - sample_id
+    - body_site
+    - country
+  curation_maps:
+    - original_value
+    - curated_ontology_term
+    - curated_ontology_term_id
+    - curated_ontology_term_db
+  data_dictionary:
+    - ColName
+    - ColClass
+    - Description
+    - AllowedValues
+
+# ETL step configuration
+etl_steps:
+  - id: "01"
+    name: "sync_curation_maps"
+    script: "01_sync_curation_maps.R"
+    description: "Sync curation maps from Google Sheets"
+  - id: "02"
+    name: "assemble_curated_metadata"
+    script: "02_assemble_curated_metadata.R"
+    description: "Assemble curated metadata from individual files"
+  - id: "03"
+    name: "build_merging_schema"
+    script: "03_build_merging_schema.R"
+    description: "Build merging schema from Google Sheets"
+  - id: "04"
+    name: "build_data_dictionary"
+    script: "04_build_data_dictionary.R"
+    description: "Build comprehensive data dictionary"
+  - id: "05"
+    name: "add_dynamic_enums"
+    script: "05_add_dynamic_enums.R"
+    description: "Add dynamic enumeration nodes"
+  - id: "06"
+    name: "format_for_release"
+    script: "06_format_for_release.R"
+    description: "Format metadata for release"
+  - id: "07"
+    name: "validate_and_export"
+    script: "07_validate_and_export.R"
+    description: "Final validation and export to all targets"
+
+# Logging configuration
+logging:
+  level: "INFO"  # DEBUG, INFO, WARN, ERROR
+  format: "{time} [{level}] {msg}"
+  console: true
+  file: true

@@ -1,0 +1,113 @@
+name: ETL Pipeline
+
+on:
+  schedule:
+    - cron: '0 2 * * 1'  # Weekly Monday at 2am UTC
+  workflow_dispatch:      # Manual trigger
+    inputs:
+      steps:
+        description: 'Steps to run (all, 01, 02, etc. or comma-separated like 01,02,03)'
+        required: false
+        default: 'all'
+      validate_only:
+        description: 'Run validation only (true/false)'
+        required: false
+        default: 'false'
+
+jobs:
+  run-etl:
+    runs-on: ubuntu-latest
+    
+    steps:
+      - name: Checkout repository
+        uses: actions/checkout@v3
+      
+      - name: Setup R
+        uses: r-lib/actions/setup-r@v2
+        with:
+          r-version: '4.3'
+      
+      - name: Install system dependencies
+        run: |
+          sudo apt-get update
+          sudo apt-get install -y \
+            libcurl4-openssl-dev \
+            libssl-dev \
+            libxml2-dev \
+            libfontconfig1-dev \
+            libharfbuzz-dev \
+            libfribidi-dev
+      
+      - name: Query dependencies
+        run: |
+          install.packages('remotes')
+          saveRDS(remotes::dev_package_deps(dependencies = TRUE), ".github/depends.Rds", version = 2)
+          writeLines(sprintf("R-%i.%i", getRversion()$major, getRversion()$minor), ".github/R-version")
+        shell: Rscript {0}
+      
+      - name: Cache R packages
+        uses: actions/cache@v3
+        with:
+          path: ${{ env.R_LIBS_USER }}
+          key: ${{ runner.os }}-${{ hashFiles('.github/R-version') }}-1-${{ hashFiles('.github/depends.Rds') }}
+          restore-keys: ${{ runner.os }}-${{ hashFiles('.github/R-version') }}-1-
+      
+      - name: Install R dependencies
+        run: |
+          Rscript -e 'install.packages(c("readr", "dplyr", "yaml", "googlesheets4", "googledrive", "logger", "jsonlite", "testthat"))'
+          Rscript -e 'if (!require("OmicsMLRepoR")) remotes::install_github("waldronlab/OmicsMLRepoR")'
+          Rscript -e 'if (!require("OmicsMLRepoCuration")) remotes::install_github("waldronlab/OmicsMLRepoCuration")'
+      
+      - name: Authenticate with Google
+        env:
+          GOOGLE_SHEETS_TOKEN: ${{ secrets.GOOGLE_SHEETS_TOKEN }}
+        run: |
+          if [ -n "$GOOGLE_SHEETS_TOKEN" ]; then
+            echo "$GOOGLE_SHEETS_TOKEN" > ~/.google_token.json
+            Rscript -e 'googlesheets4::gs4_auth(path = "~/.google_token.json")'
+          else
+            echo "Warning: GOOGLE_SHEETS_TOKEN not set, skipping authentication"
+          fi
+      
+      - name: Run ETL Pipeline
+        run: |
+          if [ "${{ github.event.inputs.validate_only }}" = "true" ]; then
+            Rscript curatedMetagenomicData/ETL/run_etl_pipeline.R --validate-only
+          else
+            Rscript curatedMetagenomicData/ETL/run_etl_pipeline.R --steps "${{ github.event.inputs.steps || 'all' }}"
+          fi
+      
+      - name: Run Tests
+        run: |
+          Rscript -e 'testthat::test_dir("tests/testthat")'
+        continue-on-error: true
+      
+      - name: Upload Execution Logs
+        uses: actions/upload-artifact@v3
+        if: always()
+        with:
+          name: etl-execution-logs
+          path: curatedMetagenomicData/ETL/logs/*.log
+          retention-days: 30
+      
+      - name: Upload Validation Reports
+        uses: actions/upload-artifact@v3
+        if: always()
+        with:
+          name: validation-reports
+          path: curatedMetagenomicData/ETL/logs/*report*.txt
+          retention-days: 30
+      
+      - name: Commit and Push Results
+        if: success() && github.event.inputs.validate_only != 'true'
+        run: |
+          git config --local user.email "action@github.com"
+          git config --local user.name "GitHub Action"
+          git add inst/extdata/*.csv
+          git add curatedMetagenomicData/maps/*.csv
+          if git diff --staged --quiet; then
+            echo "No changes to commit"
+          else
+            git commit -m "Auto: ETL pipeline run $(date +'%Y-%m-%d %H:%M:%S')"
+            git push
+          fi

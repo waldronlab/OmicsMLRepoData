@@ -4,3 +4,14 @@
 .Ruserdata
 *.html
 ~/R/temp/*
+
+# ETL Pipeline logs
+curatedMetagenomicData/ETL/logs/*.log
+curatedMetagenomicData/ETL/logs/*.txt
+curatedMetagenomicData/ETL/logs/*.json
+!curatedMetagenomicData/ETL/logs/README.md
+
+# Temporary files
+*.backup_*
+.google_token.json
+
