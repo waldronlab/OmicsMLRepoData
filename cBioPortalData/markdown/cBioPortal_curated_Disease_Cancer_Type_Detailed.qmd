@@ -317,7 +317,7 @@ disease_cols_cbio <- disease_cols_cbio %>% rowwise() %>%
         }
       }
       # Collapse remaining values on delimiter
-      str_c(current_vals, collapse = "<;>")
+      format_list(current_vals, "<;>")
     }) %>% ungroup()
 disease_cols_cbio <- disease_cols_cbio %>% rowwise() %>%
   mutate(updated_ontos = {
@@ -333,11 +333,12 @@ disease_cols_cbio <- disease_cols_cbio %>% rowwise() %>%
         }
       }
       # Collapse remaining values on delimiter
-      str_c(current_onto_vals, collapse = "<;>")
+      format_list(current_onto_vals, "<;>")
     }) %>%  ungroup() 
 disease_cols_cbio <- disease_cols_cbio %>% select(-curated_split, -curated_onto_split, -curated_cancer_type_detailed, -curated_cancer_type_detailed_ontology_term_id)
 disease_cols_cbio <- disease_cols_cbio %>% rename(curated_cancer_type_detailed = updated_values, curated_cancer_type_detailed_ontology_term_id = updated_ontos)
 ```
+
 
 ## Curated Table Creation
 
@@ -345,7 +346,7 @@ Next, we can clean up the dataframe by updating column names as needed:
 ```{r}
 # Create a column of relevant source columns
 for (i in 1:nrow(disease_cols_cbio)){
-  disease_cols_cbio$curated_body_site_source[i] <- paste(colnames(disease_cols_cbio[,2:92][which(!is.na(disease_cols_cbio[i,2:92]))]), collapse="<;>")
+  disease_cols_cbio$curated_cancer_type_detailed_source[i] <- paste(colnames(disease_cols_cbio[,2:92][which(!is.na(disease_cols_cbio[i,2:92]))]), collapse="<;>")
 }
 
 # Remove extraneous delimiters
