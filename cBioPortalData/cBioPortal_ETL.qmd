@@ -41,7 +41,7 @@ source(file.path(cbio_etl_dir, "0_assemble_curated_metadata.R"))
 
 ```{r save, eval=FALSE}
 extDir <- "~/OmicsMLRepo/OmicsMLRepoData/inst/extdata"
-write_csv(curated_all, file.path(extDir, "cBioPortal_curated_metadata.csv")) # 189,439 x 172 (from 157)
+write_csv(curated_all, file.path(extDir, "cBioPortal_curated_metadata.csv")) # 189,439 x 159
 ```
 
 
@@ -57,16 +57,16 @@ source(file.path(cbio_etl_dir, "2_format_for_release.R"))
 ```
 
 ```{r}
-dim(cbio_meta_release) # 189439 x 86
-dim(cbio_meta_release_tidy) # 189439 x 82: removing non-availability info. Finalize the delimiter and use this as 'release'
+dim(cbio_meta_release) # 189439 x 87
+dim(cbio_meta_release_tidy) # 189439 x 83: removing non-availability info. Finalize the delimiter and use this as 'release'
 ```
 
 ```{r save_cmd_meta_release, eval=FALSE}
 dir <- "~/OmicsMLRepo/OmicsMLRepoData"
 fpath <- file.path(dir, "inst/extdata/cBioPortal_curated_metadata_release.csv")
 fpath_tidy <- file.path(dir, "inst/extdata/cBioPortal_curated_metadata_release_tidy.csv")
-write.csv(cbio_meta_release, fpath, row.names = FALSE) # 189,439 x 86
-write.csv(cbio_meta_release_tidy, fpath_tidy, row.names = FALSE) # 189,439 x 82
+write.csv(cbio_meta_release, fpath, row.names = FALSE) # 189,439 x 87
+write.csv(cbio_meta_release_tidy, fpath_tidy, row.names = FALSE) # 189,439 x 83
 
 ## Sync the version in GCS bucket
 library(AnVILGCP)
