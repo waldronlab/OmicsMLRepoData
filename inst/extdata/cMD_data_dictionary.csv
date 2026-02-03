@@ -1,21 +1,26 @@
 ColName,ColClass,Unique,Required,MultipleValues,Description,AllowedValues,Delimiter,Separater,DynamicEnum,DynamicEnumProperty
-study_name,character,non-unique,optional,FALSE,Dataset name.,[a-zA-Z-]+_[0-9]{4}|[a-zA-Z-]+_[0-9]{4}[a-zA-Z-]+|[a-zA-Z-]+_[0-9]{4}_[a-zA-Z-]+|[a-zA-Z-]+_[0-9]{4}_[a-zA-Z0-9]+,NA,NA,NA,NA
 subject_id,character,non-unique,required,FALSE,Subject identifier.,[0-9a-zA-Z]\S+,NA,NA,NA,NA
 sample_id,character,unique,required,FALSE,Sample identifier.,[0-9a-zA-Z]\S+,NA,NA,NA,NA
 target_condition,character,non-unique,required,TRUE,The primary phenotype/condition of interest in the study from which the sample is derived,NA,;,NA,NCIT:C7057;EFO:0000408,descendant
 control,character,non-unique,required,FALSE,"Whether the sample is control, case, or not used in the study",Study Control;Case;Not Used,NA,NA,NA,NA
 country,character,non-unique,required,FALSE,Location where subject lives and/or data was collected,NA,NA,NA,NCIT:C25464,descendant
 body_site,character,non-unique,required,FALSE,"Named locations of or within the body. The anatomical location(s) affected by the patient's disease/condition/cancer, often the site from which the sample was derived",feces;milk;nasal cavity;oral cavity;skin epidermis;vagina,NA,NA,NA,NA
+ancestry,character,non-unique,required,FALSE,Population category defined using ancestry informative markers (AIMs) based on genetic/genomic data (children of HANCESTRO:0004),NA,NA,NA,HANCESTRO:0004,children
+ancestry_details,character,non-unique,required,TRUE,Population category defined using ancestry informative markers (AIMs) based on genetic/genomic data (descendants of `ancestry`),NA,;,NA,HANCESTRO:0004,descendant
+curator,character,non-unique,required,TRUE,Curator name.,NA,;,NA,NA,NA
+median_read_length,integer,non-unique,required,FALSE,Median read length - calculated from raw data.,[0-9]+|NA,NA,NA,NA,NA
+minimum_read_length,integer,non-unique,required,FALSE,Minimum read length - calculated from raw data.,[0-9]+|NA,NA,NA,NA,NA
+number_bases,double,non-unique,required,FALSE,Total number of bases sequenced in the sample - calculated from raw data.,[0-9]+,NA,NA,NA,NA
+number_reads,integer,non-unique,required,FALSE,Number of final reads - calculated from raw data.,[0-9]+,NA,NA,NA,NA
+sequencing_platform,character,non-unique,required,FALSE,A scientific instrument used to automate the DNA sequencing process,IlluminaHiSeq;IlluminaMiSeq;IlluminaNextSeq;IlluminaNovaSeq;IonProton,NA,NA,NA,NA
+study_name,character,non-unique,optional,FALSE,Dataset name.,[a-zA-Z-]+_[0-9]{4}|[a-zA-Z-]+_[0-9]{4}[a-zA-Z-]+|[a-zA-Z-]+_[0-9]{4}_[a-zA-Z-]+|[a-zA-Z-]+_[0-9]{4}_[a-zA-Z0-9]+,NA,NA,NA,NA
 age,integer,non-unique,optional,FALSE,Age of the subject using the unit specified under 'age_unit' column,[0-9]+,NA,NA,NA,NA
 age_group,character,non-unique,optional,FALSE,11 <= Adolescent < 18|18 <= Adult < 65|2 <= Children 2-11 Years Old < 11|65 <= Elderly < 130|0 <= Infant < 2,Adolescent;Adult;Children 2-11 Years Old;Elderly;Infant,NA,NA,NA,NA
 age_unit,character,non-unique,optional,FALSE,Unit of the subject's age specified under 'age' column,Day;Week;Month;Year,NA,NA,NA,NA
-ancestry,character,non-unique,required,FALSE,Population category defined using ancestry informative markers (AIMs) based on genetic/genomic data (children of HANCESTRO:0004),NA,NA,NA,HANCESTRO:0004,children
-ancestry_details,character,non-unique,required,TRUE,Population category defined using ancestry informative markers (AIMs) based on genetic/genomic data (descendants of `ancestry`),NA,;,NA,HANCESTRO:0004,descendant
 antibiotics_current_use,character,non-unique,optional,FALSE,Antibiotics current usage. `Yes` for currently using and `No` for not using,Yes;No,NA,NA,NA,NA
 biomarker,character,non-unique,optional,TRUE,"A measurable and quantifiable characteristic or substance that serves as an indicator of a biological state, condition, or process within an organism.",NA,<;>,NA,NA,NA
 bmi,double,non-unique,optional,FALSE,body mass index (EFO:0004340): An indicator of body density as determined by the relationship of BODY WEIGHT to BODY HEIGHT. BMI=weight (kg)/height squared (m2).,[0-9]+\.?[0-9]*,NA,NA,NA,NA
 body_site_details,character,non-unique,optional,FALSE,Subject's body subsite the given sample was collected from. Should be more specific information than bodysite,NA,NA,NA,NA,NA
-curator,character,non-unique,required,TRUE,Curator name.,NA,;,NA,NA,NA
 days_from_first_collection,integer,non-unique,optional,FALSE,Used for time series studies.,[0-9]+,NA,NA,NA,NA
 dietary_restriction,character,non-unique,optional,FALSE,Dietary regime (partial match to SNOMED:182922004 or SNOMED:162536008),omnivore;vegan;vegetarian;high_fiber;low_fiber;high_gluten;low_gluten,NA,NA,NA,NA
 disease,character,non-unique,optional,TRUE,Reported disease/condition type(s) for a participant. 'Healthy' if disease(s)/condition(s) assessed under a given study is not detected,NA,;,NA,NCIT:C7057;EFO:0000408,descendant
@@ -33,23 +38,18 @@ fmt_role,character,non-unique,optional,FALSE,"The role of the FMT (Fecal microbi
 hla,character,non-unique,optional,TRUE,HLA complex. A family of proteins that are essential for the presentation of peptide antigens on cell surfaces that modulate the host defensive activities of T-cells. This protein family includes major histocompatibility complex (MHC) class I and class II proteins.,HLA protein complex with DQ1 serotype;HLA protein complex with DQ2 serotype;HLA protein complex with DQ3 serotype;HLA protein complex with DQ4 serotype;HLA protein complex with DQ5 serotype;HLA-DQA1*02:01 protein complex;HLA-DQB1*03:01 protein complex;HLA-DQB1*03:02 protein complex;HLA-DQB1*05:01 protein complex;HLA-DQB1*06:04 protein complex;HLA-DRB1*04:01 protein complex;HLA-DRB1*04:02 protein complex;HLA-DRB1*04:04 protein complex;HLA-DRB1*04:05 protein complex;HLA-DRB1*04:08 protein complex,;,NA,MRO:0001676,descendant
 lifestyle,character,non-unique,optional,FALSE,to describe the lifestyle of non-westernized people,Hunter-gatherer;Agriculturalist;Agropastoralist;Pastoralist;Fisher,NA,NA,NA,NA
 location,character,non-unique,optional,FALSE,Free-form additional location information.,.+,NA,NA,NA,NA
-median_read_length,integer,non-unique,required,FALSE,Median read length - calculated from raw data.,[0-9]+|NA,NA,NA,NA,NA
-minimum_read_length,integer,non-unique,required,FALSE,Minimum read length - calculated from raw data.,[0-9]+|NA,NA,NA,NA,NA
 ncbi_accession,character,non-unique,optional,FALSE,A semicolon-separated vector of NCBI accessions,[ES]R[SR][0-9]+,NA,NA,NA,NA
 neonatal_birth_weight,numeric,non-unique,optional,FALSE,The mass or quantity of heaviness of an individual at BIRTH. (EFO:0004344) Unit is in gram.,^[1-9]\d*(\.\d+)?$,NA,NA,NA,NA
 neonatal_delivery_procedure,character,non-unique,optional,FALSE,Description of the method by which a fetus is delivered. (NCIT:C81179),Elective Cesarean Delivery;Emergency Cesarean Delivery;Cesarean Section;Vaginal Delivery,NA,NA,NA,NA
 neonatal_feeding_method,character,non-unique,optional,FALSE,"Infant feeding methods. 'Breastfeeding' refers feeding milk from human (include non-mother's and through bottle), 'Mixed_feeding' refers both breastfeeding and formula feeding, 'Exclusively Breastfeeding;Mixed Feeding' referes the cases where any breastfeeding was done but formula feeding information is unavailable.",Exclusively Breastfeeding;Mixed Feeding;Exclusively Breastfeeding;Exclusively Formula Feeding;Mixed Feeding;No Breastfeeding,NA,NA,NA,NA
 neonatal_gestational_age,numeric,non-unique,optional,FALSE,"The age of the conceptus, beginning from the time of FERTILIZATION. (EFO:0005112) Unit in weeks.",^[1-9]\d*(\.\d+)?$,NA,NA,NA,NA
 neonatal_preterm_birth,character,non-unique,optional,FALSE,Birth when a fetus is less than 37 weeks and 0 days gestational age (NCIT:C92861).,Yes;No,NA,NA,NA,NA
-number_bases,double,non-unique,required,FALSE,Total number of bases sequenced in the sample - calculated from raw data.,[0-9]+,NA,NA,NA,NA
-number_reads,integer,non-unique,required,FALSE,Number of final reads - calculated from raw data.,[0-9]+,NA,NA,NA,NA
 obgyn_birth_control,character,non-unique,optional,FALSE,Use of birth control pill (Oral Contraceptive),Yes;No,NA,NA,NA,NA
 obgyn_lactating,character,non-unique,optional,FALSE,An indication that the subject is currently producing milk. (NCIT:C82463),Yes;No,NA,NA,NA,NA
 obgyn_menopause,character,non-unique,optional,FALSE,An indicator as to whether the female subject is in menopause,Premenopausal;Postmenopausal;Perimenopausal,NA,NA,NCIT:C106541,descendant
 obgyn_pregnancy,character,non-unique,optional,FALSE,The pregnancy status of an individual.,Pregnant;Not Pregnant,NA,NA,NA,NA
 pmid,character,non-unique,optional,FALSE,Identifier of the main publication in PubMed,[0-9]{8},NA,NA,NA,NA
 probing_pocket_depth,character,non-unique,optional,TRUE,Depth of periodontal pocket measured at the different tooth's regions,Buccal surface;Distal surface of tooth;Lingual surface of tooth;Mesial surface of tooth,<;>,NA,NA,NA
-sequencing_platform,character,non-unique,required,FALSE,A scientific instrument used to automate the DNA sequencing process,IlluminaHiSeq;IlluminaMiSeq;IlluminaNextSeq;IlluminaNovaSeq;IonProton,NA,NA,NA,NA
 sex,character,non-unique,optional,FALSE,Biological sex of the subject,Female;Male,NA,NA,NA,NA
 smoker,character,non-unique,optional,FALSE,Tobacco smoking behavior. Assign `Non-smoker (finding)` only when the past smoking behavior information is unavailable.,smoker (finding);Non-smoker (finding);Ex-smoker (finding);Never smoked tobacco (finding),NA,NA,NA,NA
 subcohort,character,non-unique,optional,FALSE,Identifier of a sub-set of the cohort. Can be everything.,[0-9a-zA-Z]\S+,NA,NA,NA,NA
