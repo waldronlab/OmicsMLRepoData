@@ -64,7 +64,7 @@ curated_smoker <- data.frame(
 ) 
 
 # sex ----
-sex <- read.csv(file.path(dataDir, "curated_sex.csv"))
+# sex <- read.csv(file.path(dataDir, "curated_sex.csv"))
 curated_sex <- data.frame(
     col.name = "sex",
     col.class = "character",

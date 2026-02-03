@@ -137,7 +137,7 @@ source(file.path(cmd_etl_dir, "1_sync_curation_map_upload.R"))
 
 
 
-# Establishing Data dictionary
+# Establishing Data dictionary - ARCHIVED!!
 
 ## Initial assembly
 
@@ -205,7 +205,7 @@ setdiff(odm_dict$ColName, gd_dict$ColName) # attrs should be removed from ODM te
 
 ## Save
 
-```{r save_cmd_dd_schema, eval=FALSE}
+```{r eval=FALSE}
 ## GitHub project
 extDir <- "~/OmicsMLRepo/OmicsMLRepoData/inst/extdata"
 write_csv(gd_dict, file.path(extDir, "cMD_data_dictionary.csv"))
@@ -276,40 +276,24 @@ file.copy(from = file.path(extDir, "cMD_data_dictionary.csv"),
 ```
 
 
-
-
-# Dynamic Enum
+## Dynamic Enum
 
 ```{r}
 enum_dd <- filled_dd
-enum_dd$dynamic_enum <- NA
-enum_dd$dynamic_enum_property <- NA
+enum_dd$DynamicEnum <- NA
+enum_dd$DynamicEnumProperty <- NA
 ```
 
-This script populate the dynamic enum nodes for the selected attributes. Target attributes are inside the script, so if you want to add/remove target attributes to extract dynamic enum nodes for, make a modification in this script.
+This script populate the dynamic enum nodes for the selected attributes. Target 
+attributes are inside the script, so if you want to add/remove target attributes 
+to extract dynamic enum nodes for, make a modification in this script.
 
 ```{r eval=FALSE}
 # requires: `enum_dd`
 # returns: `cmd_dd`
-source(file.path(cmd_etl_dir, "5_dynamic_enum.R"))  
+source(file.path(cmd_etl_dir, "99_dynamic_enum.R"))  
 ```
 
-```{r eval=FALSE, echo=FALSE}
-## Test individual dynamic enum
-target_attr <- c("biomarker", "body_site", "country", "disease", "hla",
-                 "target_condition", "treatment")
-curated_col <- target_attr[5]
-dd <- read_csv("~/OmicsMLRepo/OmicsMLRepoData/inst/extdata/cMD_data_dictionary.csv")
-colnames <- c(curated_col, paste0("curated_", curated_col))
-ind <- which(dd$col.name %in% colnames)
-terms <- dd[[ind, "ontology"]] %>% 
-    strsplit(split = "\\|") %>% 
-    unlist %>% na.omit %>% as.vector
-terms <- gsub("SNOMED:", "", terms)
-onto <- sapply(terms, function(x) unlist(strsplit(x, split = ":"))[1])
-topNodes <- commonNodes(ids = terms, dbs = onto)
-topNodes
-```
 
 ```{r save_cmd_dd_schema, eval=FALSE}
 ## GitHub project
@@ -322,8 +306,8 @@ ss <- googledrive::as_id(url)
 googlesheets4::write_sheet(cmd_dd, ss = ss, sheet = "cMD_data_dictionary")
 ```
 
-# Main files
 
+# Main files
 ```{r}
 extDir <- "~/OmicsMLRepo/OmicsMLRepoData/inst/extdata"
 curated_all <- read_csv(file.path(extDir, "cMD_curated_metadata_release.csv"))

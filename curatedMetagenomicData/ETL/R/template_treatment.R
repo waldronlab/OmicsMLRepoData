@@ -25,7 +25,7 @@ curated_treatment <- data.frame(
 )
 
 # antibiotics_current_use ----
-abx <- read.csv(file.path(dataDir, "curated_treatment.csv"))
+# abx <- read.csv(file.path(dataDir, "curated_treatment.csv"))
 curated_abx_current_use <- data.frame(
     col.name = "antibiotics_current_use",
     col.class = "character",
