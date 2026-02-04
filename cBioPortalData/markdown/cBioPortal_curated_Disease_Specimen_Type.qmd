@@ -204,7 +204,7 @@ delimiter utilized in the broader curation.
 ```{r}
 # Merge all relevant rows
 for (i in 1:nrow(disease_cols_cbio)){
-  disease_cols_cbio$merged[i] <- toupper(paste(na.omit(as.vector(unlist(disease_cols_cbio[i,2:92]))), collapse="<;>"))
+  disease_cols_cbio$merged[i] <- toupper(paste(na.omit(as.vector(unlist(disease_cols_cbio[i,2:96]))), collapse="<;>"))
 }
 ```
 
