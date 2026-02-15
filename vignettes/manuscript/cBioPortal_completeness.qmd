@@ -74,7 +74,7 @@ cbio_ms_expanded <- tidyr::separate_longer_delim(cbio_ms,
                                                 "original_field_completeness",
                                                 "original_field_unique_values"),
                                   delim = ";") %>%
-    summarise(original_field = original_field,
+    plyr::summarise(original_field = original_field,
               original_field_completeness = as.numeric(original_field_completeness),
               original_field_unique_values = as.numeric(original_field_unique_values),
               curated_field = curated_field) %>%
@@ -205,13 +205,13 @@ cbio_completeness[sub_ind,] %>%
          subtitle = paste("Based on", base), 
          x = "",
          y = "Completeness (%)") +
-    theme(axis.text.x = element_text(angle = 60, hjust = 1, size = 9)) +
+    theme(axis.text.x = element_text(angle = 60, hjust = 1, size = 10)) +
     geom_point(aes(x = curated_field, y = curated_field_completeness), 
                col = "red", alpha = 0.2, size = 2, shape = 1)
 ```
 
 ```{r}
-ggsave("figures/cbio_completeness.png", width = 3, height = 4.3, dpi = 600)
+ggsave("figures/cbio_completeness.png", width = 4.1, height = 4.3, dpi = 600)
 ```
 
 

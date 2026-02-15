@@ -147,7 +147,8 @@ cbio_ms_sub[sub_ind,] %>%
          y = "# of Unique Values",
          color = "Data Type") +
     theme(axis.text.x = element_text(angle = 60, hjust = 1, size = 9),
-          legend.position = c(0.17, 0.9),
+          # legend.position = c(0.17, 0.9),
+          legend.position = "none",
           # legend.background = element_rect(fill = "white", color = "white"),
           legend.title = element_blank(),
           legend.margin = margin(2, 2, 2, 2),
@@ -157,7 +158,7 @@ cbio_ms_sub[sub_ind,] %>%
 ```
 
 ```{r}
-ggsave("figures/cbio_consolidation_sub.png", width = 3.3, height = 4, dpi = 1200)
+ggsave("figures/cbio_consolidation_sub.png", width = 3.5, height = 3.5, dpi = 1200)
 ```
 
 ## Summary for the report
