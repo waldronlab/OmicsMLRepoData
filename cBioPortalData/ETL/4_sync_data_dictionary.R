@@ -16,9 +16,9 @@ ss <- googledrive::as_id(url)
 
 ## Release
 dd_release <- googlesheets4::read_sheet(ss = ss, sheet = "data_dictionary")
-dd_columns <- c("ColName", "ColClass", "Unique",
-                 "Required", "MultipleValues", "Description", "AllowedValues", 
-                 "Delimiter", "Separater", "DynamicEnum", "DynamicEnumProperty")
+dd_columns <- c("col.name", "col.class", "unique", "required", "multiplevalues", 
+                "description", "allowedvalues", "delimiter", "separator", "dynamic.enum", 
+                "dynamic.enum.property", "corpus.type", "static.enum")
 dd_release <- dd_release |> dplyr::select(dd_columns)
 if (ncol(dd_release) != length(dd_columns)) {stop("Double-check subset")}
 

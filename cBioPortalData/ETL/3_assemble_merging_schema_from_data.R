@@ -22,7 +22,7 @@ cbio_ms$curated_field <- gsub("curated_|_source", "", srcCols)
 # Import the original cBioPortal metadata
 if (!exists(x = "ori")) {
     dir <- "~/OmicsMLRepo/OmicsMLRepoData/cBioPortalData/source"
-    fpath <- file.path(dir, "cBioPortal_all_clinicalData_combined_2023-05-18.rds")
+    fpath <- file.path(dir, "cBioPortal_all_clinicalData_combined_2026-01-29.rds")
     ori <- readRDS(fpath)
 }
 
