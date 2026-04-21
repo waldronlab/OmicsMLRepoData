@@ -247,8 +247,8 @@ curated columns we will load the `cBioPortal_disease_curation_summary.csv` file:
 # import disease metastasis ontology map
 mapped_terms <-read.csv(file = file.path(proj_dir, "cBioPortal_disease_metastasis_map.csv"), header=T)
 
-# import disease metastasic site ontology map
-mapped_terms2 <-read.csv(file = file.path(proj_dir, "cBioPortal_disease_metastasic_site_map.csv"), header=T)
+# import disease metastatic site ontology map
+mapped_terms2 <-read.csv(file = file.path(proj_dir, "cBioPortal_disease_metastatic_site_map.csv"), header=T)
 ```
 
 
@@ -289,8 +289,8 @@ for (x in 1:length(disease_cols_cbio$merged)){
   # Concatenate new lists on ";" delimiter to create curated value
   disease_cols_cbio$curated_disease_metastasis[x] <- format_list(as.list(unlist(strsplit(new_terms, "<;>"))), "<;>")
   disease_cols_cbio$curated_disease_metastasis_ontology_term_id[x] <- format_list(as.list(unlist(strsplit(new_term_ids, "<;>"))), "<;>")
-  disease_cols_cbio$curated_disease_metastasic_site[x] <- format_list(as.list(unlist(strsplit(new_terms2, "<;>"))), "<;>")
-  disease_cols_cbio$curated_disease_metastasic_site_ontology_term_id[x] <- format_list(as.list(unlist(strsplit(new_term_ids2, "<;>"))), "<;>")
+  disease_cols_cbio$curated_disease_metastatic_site[x] <- format_list(as.list(unlist(strsplit(new_terms2, "<;>"))), "<;>")
+  disease_cols_cbio$curated_disease_metastatic_site_ontology_term_id[x] <- format_list(as.list(unlist(strsplit(new_term_ids2, "<;>"))), "<;>")
   if(x %% 10000==0){print(x)}
 }
 
@@ -307,8 +307,8 @@ disease_cols_cbio <- data.frame(lapply(disease_cols_cbio,
 
 # Create a column of relevant source columns
 for (i in 1:nrow(disease_cols_cbio)){
-  disease_cols_cbio$curated_metastasis_source[i] <- paste(colnames(disease_cols_cbio[,2:92][which(!is.na(disease_cols_cbio[i,2:92]))]), collapse="<;>")
-  disease_cols_cbio$curated_metastasic_site_source[i] <- paste(colnames(disease_cols_cbio[,2:92][which(!is.na(disease_cols_cbio[i,2:92]))]), collapse="<;>")
+  disease_cols_cbio$curated_disease_metastasis_source[i] <- paste(colnames(disease_cols_cbio[,2:92][which(!is.na(disease_cols_cbio[i,2:92]))]), collapse="<;>")
+  disease_cols_cbio$curated_disease_metastatic_site_source[i] <- paste(colnames(disease_cols_cbio[,2:92][which(!is.na(disease_cols_cbio[i,2:92]))]), collapse="<;>")
 }
 
 # Create a curated dataframe
