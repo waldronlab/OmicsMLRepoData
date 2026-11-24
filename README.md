@@ -22,6 +22,24 @@ In summary, the OmicsMLRepo project simplifies the process of cross-study,
 multi-faceted data analyses through metadata harmonization and standardization, 
 making Omics data more AI/ML-ready. 
 
+> **Data dictionaries are frozen here (2026-11-24).** The cBioPortal and
+> curatedMetagenomicData data dictionaries in [`inst/extdata/`](inst/extdata/)
+> are no longer updated in this repository. They are maintained, versioned and
+> released as target schemas in
+> [MetaHarmonizerSchemaRegistry](https://github.com/shbrief/MetaHarmonizerSchemaRegistry):
+>
+> | Here (frozen) | Maintained as |
+> |---|---|
+> | `inst/extdata/cBioPortal_data_dictionary.csv` | `schema/omicsmlrepo_cbio/omicsmlprepo_cbio_schema.csv` |
+> | `inst/extdata/cMD_data_dictionary.csv` | `schema/curatedmetagenomicdata/cmd_schema.csv` |
+>
+> The Google Sheets these files were synced from are no longer the source of
+> truth; the sync code is commented out. To change a dictionary, open a pull
+> request in the registry. To reproduce the OmicsMLRepo paper, use release
+> `v1.0.0` of this repository and the data on Zenodo
+> ([10.5281/zenodo.14110745](https://doi.org/10.5281/zenodo.14110745)). See
+> [`inst/extdata/README.md`](inst/extdata/README.md) for details.
+
 [curatedMetagenomicData]: https://bioconductor.org/packages/release/data/experiment/html/curatedMetagenomicData.html
 [cBioPortalData]: https://bioconductor.org/packages/release/bioc/html/cBioPortalData.html 
 [OmicsMLRepoR]: https://github.com/shbrief/OmicsMLRepoR 
