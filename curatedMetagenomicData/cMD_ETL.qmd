@@ -170,23 +170,25 @@ source(file.path(cmd_etl_dir, "4_populate_data_dictionary.R"))
 
 ### Compare with the Google Drive version
 ```{r}
-url <- "https://docs.google.com/spreadsheets/d/1xziFB_zBl32BjNarcyEN4GupTYpPtq5aDz0GbRbWvtk/edit?usp=sharing"
-ss <- googledrive::as_id(url)
-gd_dict <- googlesheets4::read_sheet(ss = ss, sheet = "cMD_data_dictionary")
+# [Sheet sync disabled 2026-11-24: MetaHarmonizerSchemaRegistry schema/*/*_schema.csv is the source of truth. See docs/target_schema.md there.]
+# url <- "https://docs.google.com/spreadsheets/d/1xziFB_zBl32BjNarcyEN4GupTYpPtq5aDz0GbRbWvtk/edit?usp=sharing"
+# ss <- googledrive::as_id(url)
+# gd_dict <- googlesheets4::read_sheet(ss = ss, sheet = "cMD_data_dictionary")
 
-dd_columns <- c("ColName", "ColClass", "Unique",
-                "Required", "MultipleValues", "Description", "AllowedValues", 
-                "Delimiter", "Separater", "DynamicEnum", "DynamicEnumProperty")
-gd_dict <- gd_dict |> dplyr::select(all_of(dd_columns))
-if (ncol(gd_dict) != length(dd_columns)) {stop("Double-check subset")}
+# dd_columns <- c("ColName", "ColClass", "Unique",
+#                 "Required", "MultipleValues", "Description", "AllowedValues", 
+#                 "Delimiter", "Separater", "DynamicEnum", "DynamicEnumProperty")
+# gd_dict <- gd_dict |> dplyr::select(all_of(dd_columns))
+# if (ncol(gd_dict) != length(dd_columns)) {stop("Double-check subset")}
 ```
 
 This should be both `TRUE`. Unless, the version of dictionary in Google Drive
 needs updates. 
 
 ```{r}
-identical(colnames(filled_dd), colnames(gd_dict))
-all(filled_dd$ColName %in% gd_dict$ColName)
+# [Sheet sync disabled 2026-11-24: MetaHarmonizerSchemaRegistry schema/*/*_schema.csv is the source of truth. See docs/target_schema.md there.]
+# identical(colnames(filled_dd), colnames(gd_dict))
+# all(filled_dd$ColName %in% gd_dict$ColName)
 ```
 
 ### ODM templates
@@ -197,8 +199,9 @@ odm_dict <- googlesheets4::read_sheet(ss = ss, sheet = "cMD_data_dictionary_forO
 ```
 
 ```{r}
-setdiff(gd_dict$ColName, odm_dict$ColName) # attrs should be added to ODM template
-setdiff(odm_dict$ColName, gd_dict$ColName) # attrs should be removed from ODM template
+# [Sheet sync disabled 2026-11-24: MetaHarmonizerSchemaRegistry schema/*/*_schema.csv is the source of truth. See docs/target_schema.md there.]
+# setdiff(gd_dict$ColName, odm_dict$ColName) # attrs should be added to ODM template
+# setdiff(odm_dict$ColName, gd_dict$ColName) # attrs should be removed from ODM template
 ```
 
 
@@ -206,24 +209,25 @@ setdiff(odm_dict$ColName, gd_dict$ColName) # attrs should be removed from ODM te
 ## Save
 
 ```{r eval=FALSE}
-## GitHub project
-extDir <- "~/OmicsMLRepo/OmicsMLRepoData/inst/extdata"
-write_csv(gd_dict, file.path(extDir, "cMD_data_dictionary.csv"))
+# [Sheet sync disabled 2026-11-24: MetaHarmonizerSchemaRegistry schema/*/*_schema.csv is the source of truth. See docs/target_schema.md there.]
+# ## GitHub project
+# extDir <- "~/OmicsMLRepo/OmicsMLRepoData/inst/extdata"
+# write_csv(gd_dict, file.path(extDir, "cMD_data_dictionary.csv"))
 
-## Google Sheet
-url <- "https://docs.google.com/spreadsheets/d/1xziFB_zBl32BjNarcyEN4GupTYpPtq5aDz0GbRbWvtk/edit?usp=sharing"
-ss <- googledrive::as_id(url)
-googlesheets4::write_sheet(gd_dict, ss = ss, sheet = "cMD_data_dictionary")
+# ## Google Sheet
+# url <- "https://docs.google.com/spreadsheets/d/1xziFB_zBl32BjNarcyEN4GupTYpPtq5aDz0GbRbWvtk/edit?usp=sharing"
+# ss <- googledrive::as_id(url)
+# googlesheets4::write_sheet(gd_dict, ss = ss, sheet = "cMD_data_dictionary")
 
-## OmicsMLRepoR packages extdata
-file.copy(from = file.path(extDir, "cMD_data_dictionary.csv"),
-          to = "~/OmicsMLRepo/OmicsMLRepoR/inst/extdata/cMD_data_dictionary.csv",
-          overwrite = TRUE)
+# ## OmicsMLRepoR packages extdata
+# file.copy(from = file.path(extDir, "cMD_data_dictionary.csv"),
+#           to = "~/OmicsMLRepo/OmicsMLRepoR/inst/extdata/cMD_data_dictionary.csv",
+#           overwrite = TRUE)
 
-## curatedMetagenomicDataCuration extdata
-file.copy(from = file.path(extDir, "cMD_data_dictionary.csv"),
-          to = "~/Projects/curatedMetagenomicDataCuration/inst/extdata/cMD_data_dictionary.csv",
-          overwrite = TRUE)
+# ## curatedMetagenomicDataCuration extdata
+# file.copy(from = file.path(extDir, "cMD_data_dictionary.csv"),
+#           to = "~/Projects/curatedMetagenomicDataCuration/inst/extdata/cMD_data_dictionary.csv",
+#           overwrite = TRUE)
 ```
 
 # Expand data dictionary
@@ -246,10 +250,11 @@ source(file.path(cmd_etl_dir, "5_expand_data_dictionary.R"))
 extDir <- "~/OmicsMLRepo/OmicsMLRepoData/inst/extdata"
 write_csv(expanded_dd, file.path(extDir, "cMD4_data_dictionary.csv"))
 
-## Google Sheet
-url <- "https://docs.google.com/spreadsheets/d/1xziFB_zBl32BjNarcyEN4GupTYpPtq5aDz0GbRbWvtk/edit?usp=sharing"
-ss <- googledrive::as_id(url)
-googlesheets4::write_sheet(expanded_dd, ss = ss, sheet = "cMD4_data_dictionary")
+# [Sheet sync disabled 2026-11-24: MetaHarmonizerSchemaRegistry schema/*/*_schema.csv is the source of truth. See docs/target_schema.md there.]
+# ## Google Sheet
+# url <- "https://docs.google.com/spreadsheets/d/1xziFB_zBl32BjNarcyEN4GupTYpPtq5aDz0GbRbWvtk/edit?usp=sharing"
+# ss <- googledrive::as_id(url)
+# googlesheets4::write_sheet(expanded_dd, ss = ss, sheet = "cMD4_data_dictionary")
 ```
 
 
@@ -258,30 +263,33 @@ Once we established the curatedMetagenomicData metadata dictionary, we keep the
 Google Sheet version as a default and start to make a modification on Google
 Sheet (as of 11.19.24). 
 ```{r}
-## Download from Google Sheet
-url <- "https://docs.google.com/spreadsheets/d/1xziFB_zBl32BjNarcyEN4GupTYpPtq5aDz0GbRbWvtk/edit?usp=sharing"
-ss <- googledrive::as_id(url)
-filled_dd <- googlesheets4::read_sheet(ss = ss, sheet = "cMD_data_dictionary")
+# [Sheet sync disabled 2026-11-24: MetaHarmonizerSchemaRegistry schema/*/*_schema.csv is the source of truth. See docs/target_schema.md there.]
+# ## Download from Google Sheet
+# url <- "https://docs.google.com/spreadsheets/d/1xziFB_zBl32BjNarcyEN4GupTYpPtq5aDz0GbRbWvtk/edit?usp=sharing"
+# ss <- googledrive::as_id(url)
+# filled_dd <- googlesheets4::read_sheet(ss = ss, sheet = "cMD_data_dictionary")
 ```
 
 ```{r}
-## GitHub project
-extDir <- "~/OmicsMLRepo/OmicsMLRepoData/inst/extdata"
-write_csv(filled_dd, file.path(extDir, "cMD_data_dictionary.csv"))
+# [Sheet sync disabled 2026-11-24: MetaHarmonizerSchemaRegistry schema/*/*_schema.csv is the source of truth. See docs/target_schema.md there.]
+# ## GitHub project
+# extDir <- "~/OmicsMLRepo/OmicsMLRepoData/inst/extdata"
+# write_csv(filled_dd, file.path(extDir, "cMD_data_dictionary.csv"))
 
-## OmicsMLRepoR packages extdata
-file.copy(from = file.path(extDir, "cMD_data_dictionary.csv"),
-          to = "~/OmicsMLRepo/OmicsMLRepoR/inst/extdata/cMD_data_dictionary.csv",
-          overwrite = TRUE)
+# ## OmicsMLRepoR packages extdata
+# file.copy(from = file.path(extDir, "cMD_data_dictionary.csv"),
+#           to = "~/OmicsMLRepo/OmicsMLRepoR/inst/extdata/cMD_data_dictionary.csv",
+#           overwrite = TRUE)
 ```
 
 
 ## Dynamic Enum
 
 ```{r}
-enum_dd <- filled_dd
-enum_dd$DynamicEnum <- NA
-enum_dd$DynamicEnumProperty <- NA
+# [Sheet sync disabled 2026-11-24: MetaHarmonizerSchemaRegistry schema/*/*_schema.csv is the source of truth. See docs/target_schema.md there.]
+# enum_dd <- filled_dd
+# enum_dd$DynamicEnum <- NA
+# enum_dd$DynamicEnumProperty <- NA
 ```
 
 This script populate the dynamic enum nodes for the selected attributes. Target 
@@ -296,14 +304,15 @@ source(file.path(cmd_etl_dir, "99_dynamic_enum.R"))
 
 
 ```{r save_cmd_dd_schema, eval=FALSE}
-## GitHub project
-extDir <- "~/OmicsMLRepo/OmicsMLRepoData/inst/extdata"
-write_csv(cmd_dd, file.path(extDir, "cMD_data_dictionary.csv"))
+# [Sheet sync disabled 2026-11-24: MetaHarmonizerSchemaRegistry schema/*/*_schema.csv is the source of truth. See docs/target_schema.md there.]
+# ## GitHub project
+# extDir <- "~/OmicsMLRepo/OmicsMLRepoData/inst/extdata"
+# write_csv(cmd_dd, file.path(extDir, "cMD_data_dictionary.csv"))
 
-## Google Sheet
-url <- "https://docs.google.com/spreadsheets/d/1xziFB_zBl32BjNarcyEN4GupTYpPtq5aDz0GbRbWvtk/edit?usp=sharing"
-ss <- googledrive::as_id(url)
-googlesheets4::write_sheet(cmd_dd, ss = ss, sheet = "cMD_data_dictionary")
+# ## Google Sheet
+# url <- "https://docs.google.com/spreadsheets/d/1xziFB_zBl32BjNarcyEN4GupTYpPtq5aDz0GbRbWvtk/edit?usp=sharing"
+# ss <- googledrive::as_id(url)
+# googlesheets4::write_sheet(cmd_dd, ss = ss, sheet = "cMD_data_dictionary")
 ```
 
 

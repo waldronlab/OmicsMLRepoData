@@ -3,9 +3,10 @@
 
 
 ### Google Drive ---------------------------------------------------------------
-url <- "https://docs.google.com/spreadsheets/d/1xziFB_zBl32BjNarcyEN4GupTYpPtq5aDz0GbRbWvtk/edit?usp=sharing"
-ss <- googledrive::as_id(url)
-cmd_dd <- googlesheets4::read_sheet(ss = ss, sheet = "cMD_data_dictionary")
+# [Sheet sync disabled 2026-11-24: MetaHarmonizerSchemaRegistry schema/*/*_schema.csv is the source of truth. See docs/target_schema.md there.]
+# url <- "https://docs.google.com/spreadsheets/d/1xziFB_zBl32BjNarcyEN4GupTYpPtq5aDz0GbRbWvtk/edit?usp=sharing"
+# ss <- googledrive::as_id(url)
+# cmd_dd <- googlesheets4::read_sheet(ss = ss, sheet = "cMD_data_dictionary")
 
 ## Sanity check
 (isTRUE(cmd_dd$multipleClasses)) {sum(!is.na(cmd_dd$Delimiter))}
@@ -19,10 +20,11 @@ cmd_dd_gh <-
 
 
 
-extDir <- "~/OmicsMLRepo/OmicsMLRepoData/inst/extdata"
-write.csv(final_data_dictionary, 
-          file.path(extDir, "cMD_data_dictionary.csv"), 
-          row.names = FALSE)
+# [Sheet sync disabled 2026-11-24: MetaHarmonizerSchemaRegistry schema/*/*_schema.csv is the source of truth. See docs/target_schema.md there.]
+# extDir <- "~/OmicsMLRepo/OmicsMLRepoData/inst/extdata"
+# write.csv(final_data_dictionary, 
+#           file.path(extDir, "cMD_data_dictionary.csv"), 
+#           row.names = FALSE)
 
 
 

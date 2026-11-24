@@ -193,7 +193,8 @@ This script 'SAVE' data dictionaries.
 ```{r eval=FALSE}
 # cBioPortal data dictionary is created and maintained in Google Sheet
 # Edit this from Google Sheet
-source("~/OmicsMLRepo/OmicsMLRepoData/cBioPortalData/ETL/4_sync_data_dictionary.R")
+# [Sheet sync disabled 2026-11-24: MetaHarmonizerSchemaRegistry schema/*/*_schema.csv is the source of truth. See docs/target_schema.md there.]
+# source("~/OmicsMLRepo/OmicsMLRepoData/cBioPortalData/ETL/4_sync_data_dictionary.R")
 ```
 
 

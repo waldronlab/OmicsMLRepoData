@@ -5,8 +5,9 @@
 
 extDir <- "~/OmicsMLRepo/OmicsMLRepoData/inst/extdata"
 
-url <- "https://docs.google.com/spreadsheets/d/1t2GTvDpgIrR84_ECoft6bQbb2qUr9RoeFtLZWM-ZRDI/edit?usp=sharing"
-ss <- googledrive::as_id(url)
+# [Sheet sync disabled 2026-11-24: MetaHarmonizerSchemaRegistry schema/*/*_schema.csv is the source of truth. See docs/target_schema.md there.]
+# url <- "https://docs.google.com/spreadsheets/d/1t2GTvDpgIrR84_ECoft6bQbb2qUr9RoeFtLZWM-ZRDI/edit?usp=sharing"
+# ss <- googledrive::as_id(url)
 
 # ## All
 # dd_all <- googlesheets4::read_sheet(ss = ss, sheet = "data_dictionary_all")
@@ -14,20 +15,21 @@ ss <- googledrive::as_id(url)
 #           file.path(cbio_dd_dir, "cBioPortal_data_dictionary_all.csv"),
 #           row.names = FALSE)
 
-## Release
-dd_release <- googlesheets4::read_sheet(ss = ss, sheet = "data_dictionary")
-dd_columns <- c("col.name", "col.class", "unique", "required", "multiplevalues", 
-                "description", "allowedvalues", "delimiter", "separator", "dynamic.enum", 
-                "dynamic.enum.property", "corpus.type", "static.enum")
-dd_release <- dd_release |> dplyr::select(dd_columns)
-if (ncol(dd_release) != length(dd_columns)) {stop("Double-check subset")}
+# [Sheet sync disabled 2026-11-24: MetaHarmonizerSchemaRegistry schema/*/*_schema.csv is the source of truth. See docs/target_schema.md there.]
+# ## Release
+# dd_release <- googlesheets4::read_sheet(ss = ss, sheet = "data_dictionary")
+# dd_columns <- c("col.name", "col.class", "unique", "required", "multiplevalues", 
+#                 "description", "allowedvalues", "delimiter", "separator", "dynamic.enum", 
+#                 "dynamic.enum.property", "corpus.type", "static.enum")
+# dd_release <- dd_release |> dplyr::select(dd_columns)
+# if (ncol(dd_release) != length(dd_columns)) {stop("Double-check subset")}
 
-## Save in OmicsMLRepoData repository
-write.csv(dd_release,
-          file.path(extDir, "cBioPortal_data_dictionary.csv"),
-          row.names = FALSE)
+# ## Save in OmicsMLRepoData repository
+# write.csv(dd_release,
+#           file.path(extDir, "cBioPortal_data_dictionary.csv"),
+#           row.names = FALSE)
 
-## Release for OmicsMLRepoR
-file.copy(from = file.path(extDir, "cBioPortal_data_dictionary.csv"),
-          to = "~/OmicsMLRepo/OmicsMLRepoR/inst/extdata/cBioPortal_data_dictionary.csv",
-          overwrite = TRUE)
+# ## Release for OmicsMLRepoR
+# file.copy(from = file.path(extDir, "cBioPortal_data_dictionary.csv"),
+#           to = "~/OmicsMLRepo/OmicsMLRepoR/inst/extdata/cBioPortal_data_dictionary.csv",
+#           overwrite = TRUE)
