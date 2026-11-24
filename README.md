@@ -46,8 +46,6 @@ making Omics data more AI/ML-ready.
 
 <br>
 
-<img src="https://raw.githubusercontent.com/waldronlab/OmicsMLRepoData/master/metadata_harmonization_process.png" width="90%" height="90%"/>
-
 ### Hamonized metadata
 You can access the harmonized version of metadata using the 
 `OmicsMLRepoR::getMetadata` function:
